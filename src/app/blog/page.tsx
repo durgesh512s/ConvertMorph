@@ -1,0 +1,200 @@
+import React from 'react';
+import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Blog - PDF Tips & Tutorials | ConvertMorph',
+  description: 'Expert tips, tutorials, and insights about PDF tools, document management, and file conversion best practices.',
+  keywords: 'PDF tips, PDF tutorials, document management, file conversion, PDF tools guide',
+  openGraph: {
+    title: 'Blog - PDF Tips & Tutorials | ConvertMorph',
+    description: 'Expert tips, tutorials, and insights about PDF tools, document management, and file conversion best practices.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: '/blog',
+  },
+};
+
+const blogPosts = [
+  {
+    title: 'How to Compress PDF Files: Complete Guide 2024',
+    excerpt: 'Learn how to compress PDF files effectively. Reduce file size while maintaining quality with our step-by-step guide and free online tools.',
+    date: '2024-01-15',
+    readTime: '8 min read',
+    slug: 'how-to-compress-pdf-files',
+    category: 'PDF Tools',
+  },
+  {
+    title: 'How to Merge PDF Files Online: Free & Secure',
+    excerpt: 'Learn how to merge multiple PDF files into one document online. Free, secure, and easy-to-use PDF merger tool with step-by-step guide.',
+    date: '2024-01-20',
+    readTime: '6 min read',
+    slug: 'merge-pdf-files-online',
+    category: 'PDF Tools',
+  },
+  {
+    title: 'Convert Images to PDF: JPG, PNG to PDF Online Free',
+    excerpt: 'Convert JPG, PNG, and other images to PDF online for free. Combine multiple images into one PDF or create separate PDFs. No software required.',
+    date: '2024-01-25',
+    readTime: '7 min read',
+    slug: 'convert-images-to-pdf',
+    category: 'PDF Tools',
+  },
+  {
+    title: 'How to Split PDF Pages: Extract & Separate PDF Files Online',
+    excerpt: 'Learn how to split PDF files by pages, extract specific pages, or separate large PDFs into smaller documents. Free online PDF splitter tool.',
+    date: '2024-01-30',
+    readTime: '6 min read',
+    slug: 'split-pdf-pages',
+    category: 'PDF Tools',
+  },
+  {
+    title: 'Convert PDF to Images: Extract Pages as JPG/PNG Online',
+    excerpt: 'Convert PDF pages to high-quality JPG or PNG images online. Extract all pages or specific pages from PDF documents. Free and secure conversion.',
+    date: '2024-02-05',
+    readTime: '7 min read',
+    slug: 'convert-pdf-to-images',
+    category: 'PDF Tools',
+  },
+];
+
+export default function BlogPage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            PDF Tips & Tutorials
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Expert guides, tips, and best practices for working with PDF files. 
+            Learn how to compress, merge, split, and convert PDFs like a pro.
+          </p>
+        </div>
+
+        {/* Featured Post */}
+        <div className="mb-12">
+          <Card className="bg-gradient-to-r from-primary/5 to-blue-50 border-primary/20 hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="flex items-center justify-between mb-2">
+                <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                  Featured
+                </span>
+                <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <div className="flex items-center space-x-1">
+                    <Calendar className="h-4 w-4" />
+                    <span>{new Date(blogPosts[0].date).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Clock className="h-4 w-4" />
+                    <span>{blogPosts[0].readTime}</span>
+                  </div>
+                </div>
+              </div>
+              <CardTitle className="text-3xl mb-2">
+                {blogPosts[0].title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed mb-6 text-lg">
+                {blogPosts[0].excerpt}
+              </p>
+              <Link 
+                href={`/blog/${blogPosts[0].slug}`}
+                className="inline-flex items-center bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium"
+              >
+                Read Full Guide
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Blog Posts Grid */}
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
+          {blogPosts.slice(1).map((post) => (
+            <Card key={post.slug} className="bg-white hover:shadow-lg transition-shadow group">
+              <CardHeader>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
+                    {post.category}
+                  </span>
+                  <div className="flex items-center space-x-3 text-sm text-gray-500">
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="h-3 w-3" />
+                      <span>{new Date(post.date).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-3 w-3" />
+                      <span>{post.readTime}</span>
+                    </div>
+                  </div>
+                </div>
+                <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors">
+                  {post.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  {post.excerpt}
+                </p>
+                <Link 
+                  href={`/blog/${post.slug}`}
+                  className="inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors"
+                >
+                  Read More
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Newsletter Signup */}
+        <Card className="mt-16 bg-gradient-to-r from-primary/5 to-blue-50 border-primary/20">
+          <CardContent className="text-center py-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Stay Updated
+            </h2>
+            <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
+              Get the latest PDF tips, tutorials, and tool updates delivered to your inbox. 
+              Join thousands of users who trust ConvertMorph for their document needs.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
+              <button className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                Subscribe
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 mt-3">
+              No spam, unsubscribe at any time.
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Categories */}
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+            Browse by Category
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {['PDF Compression', 'File Merging', 'Document Splitting', 'Format Conversion'].map((category) => (
+              <div key={category} className="bg-white rounded-lg p-4 text-center hover:shadow-md transition-shadow border">
+                <h3 className="font-medium text-gray-900 mb-1">{category}</h3>
+                <p className="text-sm text-gray-500">Coming Soon</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

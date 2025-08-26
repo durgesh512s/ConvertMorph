@@ -1,0 +1,406 @@
+'use client'
+
+import { useState } from 'react'
+import { Metadata } from 'next'
+import { FileImage, Download, FileText, Zap, Settings } from 'lucide-react'
+import { Dropzone, UploadedFile } from '@/components/Dropzone'
+
+const metadata: Metadata = {
+  title: 'Images to PDF | DocMorph - Convert JPG PNG to PDF',
+  description: 'Convert JPG, PNG images to PDF. Combine multiple images into one PDF or create separate PDFs for each image.',
+  openGraph: {
+    title: 'Images to PDF | DocMorph',
+    description: 'Convert images to PDF with our free online converter.',
+    type: 'website',
+  },
+}
+
+interface ConvertedFile {
+  name: string
+  pageCount: number
+  downloadUrl: string
+}
+
+export default function ImagesToPDFPage() {
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [convertedFiles, setConvertedFiles] = useState<ConvertedFile[]>([])
+  const [conversionMode, setConversionMode] = useState<'single' | 'multiple'>('single')
+  const [pageSize, setPageSize] = useState<'A4' | 'Letter' | 'Auto'>('A4')
+  const [orientation, setOrientation] = useState<'portrait' | 'landscape' | 'auto'>('auto')
+
+  const handleFilesAdded = (files: File[]) => {
+    const newFiles: UploadedFile[] = files.map(file => ({
+      id: Math.random().toString(36).substr(2, 9),
+      file,
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      status: 'success'
+    }))
+    setUploadedFiles(prev => [...prev, ...newFiles])
+    setConvertedFiles([])
+  }
+
+  const handleFileRemove = (fileId: string) => {
+    setUploadedFiles(prev => prev.filter(f => f.id !== fileId))
+  }
+
+  const handleConvert = async () => {
+    if (uploadedFiles.length === 0) return
+
+    setIsProcessing(true)
+    
+    // Simulate conversion process
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    
+    let results: ConvertedFile[] = []
+    
+    if (conversionMode === 'single') {
+      // Combine all images into one PDF
+      results = [{
+        name: 'combined_images.pdf',
+        pageCount: uploadedFiles.length,
+        downloadUrl: URL.createObjectURL(uploadedFiles[0].file) // Placeholder
+      }]
+    } else {
+      // Create separate PDF for each image
+      results = uploadedFiles.map(file => ({
+        name: file.name.replace(/\.(jpg|jpeg|png)$/i, '.pdf'),
+        pageCount: 1,
+        downloadUrl: URL.createObjectURL(file.file) // Placeholder
+      }))
+    }
+    
+    setConvertedFiles(results)
+    setIsProcessing(false)
+  }
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="flex justify-center mb-4">
+              <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
+                <FileImage className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              </div>
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Images to PDF
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Convert JPG, PNG images to PDF. Combine multiple images into one document or create separate PDFs.
+            </p>
+          </div>
+
+          {/* Conversion Settings */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+              <Settings className="h-5 w-5 mr-2" />
+              Conversion Settings
+            </h2>
+            
+            {/* Conversion Mode */}
+            <div className="mb-6">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Conversion Mode</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div
+                  className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                    conversionMode === 'single'
+                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                  }`}
+                  onClick={() => setConversionMode('single')}
+                >
+                  <div className="flex items-center mb-2">
+                    <input
+                      type="radio"
+                      checked={conversionMode === 'single'}
+                      onChange={() => setConversionMode('single')}
+                      className="mr-2"
+                    />
+                    <h4 className="font-medium text-gray-900 dark:text-white">
+                      Single PDF
+                    </h4>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Combine all images into one PDF document
+                  </p>
+                </div>
+
+                <div
+                  className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                    conversionMode === 'multiple'
+                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                  }`}
+                  onClick={() => setConversionMode('multiple')}
+                >
+                  <div className="flex items-center mb-2">
+                    <input
+                      type="radio"
+                      checked={conversionMode === 'multiple'}
+                      onChange={() => setConversionMode('multiple')}
+                      className="mr-2"
+                    />
+                    <h4 className="font-medium text-gray-900 dark:text-white">
+                      Multiple PDFs
+                    </h4>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Create separate PDF for each image
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Page Settings */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="pageSize" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Page Size
+                </label>
+                <select
+                  id="pageSize"
+                  value={pageSize}
+                  onChange={(e) => setPageSize(e.target.value as 'A4' | 'Letter' | 'Auto')}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                >
+                  <option value="A4">A4 (210 × 297 mm)</option>
+                  <option value="Letter">Letter (8.5 × 11 in)</option>
+                  <option value="Auto">Auto (fit to image)</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="orientation" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Orientation
+                </label>
+                <select
+                  id="orientation"
+                  value={orientation}
+                  onChange={(e) => setOrientation(e.target.value as 'portrait' | 'landscape' | 'auto')}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                >
+                  <option value="auto">Auto</option>
+                  <option value="portrait">Portrait</option>
+                  <option value="landscape">Landscape</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* File Upload */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+            <Dropzone
+              onFilesAdded={handleFilesAdded}
+              onFileRemove={handleFileRemove}
+              uploadedFiles={uploadedFiles}
+              accept={{ 
+                'image/jpeg': ['.jpg', '.jpeg'],
+                'image/png': ['.png']
+              }}
+              maxFiles={20}
+              maxSize={10 * 1024 * 1024} // 10MB per image
+            />
+            
+            {uploadedFiles.length > 0 && (
+              <div className="mt-6">
+                <button
+                  onClick={handleConvert}
+                  disabled={isProcessing}
+                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                >
+                  {isProcessing ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Converting to PDF...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="h-5 w-5 mr-2" />
+                      Convert to PDF ({uploadedFiles.length} image{uploadedFiles.length !== 1 ? 's' : ''})
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Results */}
+          {convertedFiles.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
+                <Download className="h-5 w-5 mr-2" />
+                Converted PDFs ({convertedFiles.length})
+              </h3>
+              
+              <div className="space-y-4">
+                {convertedFiles.map((file, index) => (
+                  <div key={index} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <FileText className="h-5 w-5 text-green-500 mr-3" />
+                        <div>
+                          <p className="font-medium text-gray-900 dark:text-white">{file.name}</p>
+                          <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                            <span>{file.pageCount} page{file.pageCount !== 1 ? 's' : ''}</span>
+                            <span>•</span>
+                            <span>Size: {pageSize} {orientation !== 'auto' ? orientation : ''}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600 flex space-x-4">
+                {convertedFiles.length > 1 && (
+                  <button
+                    onClick={() => {
+                      // Download all as ZIP
+                    }}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download All as ZIP
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    setUploadedFiles([])
+                    setConvertedFiles([])
+                  }}
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200"
+                >
+                  Convert More Images
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Features */}
+          <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                <FileImage className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">Multiple Formats</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Support for JPG, JPEG, and PNG image formats
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                <Settings className="h-6 w-6 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">Custom Settings</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Choose page size, orientation, and conversion mode
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                <Zap className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">Fast Processing</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Quick conversion with optimized image compression
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                <FileText className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+              </div>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">Batch Convert</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Convert multiple images at once or combine into one PDF
+              </p>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="mt-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+              Frequently Asked Questions
+            </h2>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  What image formats are supported?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  We support JPG, JPEG, and PNG image formats. These are the most common image formats and provide the best compatibility with PDF conversion.
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  Can I combine multiple images into one PDF?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Yes! You can choose between two conversion modes: combine all images into a single PDF document, or create separate PDF files for each image.
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  What is the maximum file size for images?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Each image can be up to 10MB in size. You can upload up to 20 images at once for batch conversion.
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  How do I choose the right page size?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  A4 is the standard international paper size, Letter is common in North America, and Auto will fit the PDF page to your image dimensions for the best quality.
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  Are my images stored on your servers?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  No, all image processing happens locally in your browser. Your images are never uploaded to our servers, ensuring complete privacy and security.
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  Can I control the image quality in the PDF?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  The conversion maintains the original image quality while optimizing for PDF format. The resulting PDF will preserve your image clarity and colors.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
