@@ -2,10 +2,10 @@ import { Metadata } from 'next'
 import { Zap, Shield, Globe, Heart } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'About DocMorph | Fast, Private PDF Tools',
-  description: 'Learn about DocMorph - fast, private file tools for everyone. Convert, compress, and organize PDFs and images right in your browser.',
+  title: 'About ConvertMorph | Fast, Private PDF Tools',
+  description: 'Learn about ConvertMorph - fast, private file tools for everyone. Convert, compress, and organize PDFs and images right in your browser.',
   openGraph: {
-    title: 'About DocMorph | Fast, Private PDF Tools',
+    title: 'About ConvertMorph | Fast, Private PDF Tools',
     description: 'Fast, private file tools for everyone. Many tasks run locally on your device.',
     type: 'website',
   },
@@ -22,14 +22,14 @@ export default function AboutPage() {
               Fast, private file tools for everyone.
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              DocMorph helps you convert, compress, and organize PDFs and images right in your browser. Many tasks run locally on your device — so your files don&apos;t need to leave your computer.
+              ConvertMorph helps you convert, compress, and organize PDFs and images right in your browser. Many tasks run locally on your device — so your files don&apos;t need to leave your computer.
             </p>
           </div>
 
-          {/* Why DocMorph Section */}
+          {/* Why ConvertMorph Section */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-              Why DocMorph?
+              Why ConvertMorph?
             </h2>
             
             <div className="grid md:grid-cols-3 gap-8">
@@ -77,7 +77,7 @@ export default function AboutPage() {
               Our Mission
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed text-center max-w-3xl mx-auto">
-              We believe that powerful file processing tools should be accessible to everyone without compromising privacy or requiring expensive software. DocMorph brings professional-grade PDF and image tools directly to your browser, ensuring your files stay secure while delivering the performance you need.
+              We believe that powerful file processing tools should be accessible to everyone without compromising privacy or requiring expensive software. ConvertMorph brings professional-grade PDF and image tools directly to your browser, ensuring your files stay secure while delivering the performance you need.
             </p>
           </div>
 
@@ -127,7 +127,7 @@ export default function AboutPage() {
                 Universal Access
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Our tools work on any device with a modern web browser. No downloads, installations, or platform restrictions. Whether you&apos;re on Windows, Mac, Linux, or mobile, DocMorph works for you.
+                Our tools work on any device with a modern web browser. No downloads, installations, or platform restrictions. Whether you&apos;re on Windows, Mac, Linux, or mobile, ConvertMorph works for you.
               </p>
             </div>
 
@@ -137,7 +137,7 @@ export default function AboutPage() {
                 Privacy by Design
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                We built DocMorph with privacy as a core principle, not an afterthought. Local processing, automatic file deletion, and minimal data collection ensure your documents remain private.
+                We built ConvertMorph with privacy as a core principle, not an afterthought. Local processing, automatic file deletion, and minimal data collection ensure your documents remain private.
               </p>
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function AboutPage() {
               Built for You
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              DocMorph is built by a team of developers who understand the importance of privacy and efficiency in file processing. We use DocMorph ourselves every day and continuously improve it based on real-world needs.
+              ConvertMorph is built by a team of developers who understand the importance of privacy and efficiency in file processing. We use ConvertMorph ourselves every day and continuously improve it based on real-world needs.
             </p>
             
             <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-600">

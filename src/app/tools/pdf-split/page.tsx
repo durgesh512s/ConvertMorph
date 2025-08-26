@@ -6,10 +6,10 @@ import { Scissors, Download, FileText, Zap, Info } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 
 const metadata: Metadata = {
-  title: 'PDF Split | DocMorph - Split PDF Pages',
+  title: 'PDF Split | ConvertMorph - Split PDF Pages',
   description: 'Split PDF files by page ranges. Extract specific pages or split into multiple documents with our free PDF splitter.',
   openGraph: {
-    title: 'PDF Split | DocMorph',
+    title: 'PDF Split | ConvertMorph',
     description: 'Split PDF files by page ranges with our free online tool.',
     type: 'website',
   },

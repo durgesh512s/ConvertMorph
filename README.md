@@ -1,4 +1,4 @@
-# DocMorph
+# ConvertMorph
 Fast, private PDF & image tools. Many operations run locally in your browser.
 
 ## 🚀 Features

@@ -2,11 +2,11 @@ import { Metadata } from 'next'
 import { Mail, MessageSquare, Clock } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Contact Us | DocMorph - PDF Tools',
-  description: 'Get in touch with the DocMorph team. We&apos;re here to help with your PDF processing needs and answer any questions.',
+  title: 'Contact Us | ConvertMorph - PDF Tools',
+  description: 'Get in touch with the ConvertMorph team. We&apos;re here to help with your PDF processing needs and answer any questions.',
   openGraph: {
-    title: 'Contact Us | DocMorph',
-    description: 'Get in touch with the DocMorph team for support and questions.',
+    title: 'Contact Us | ConvertMorph',
+    description: 'Get in touch with the ConvertMorph team for support and questions.',
     type: 'website',
   },
 }
@@ -114,7 +114,7 @@ export default function ContactPage() {
                     <Mail className="h-6 w-6 text-blue-600 mt-1" />
                     <div>
                       <h3 className="font-medium text-gray-900 dark:text-white">Email</h3>
-                      <p className="text-gray-600 dark:text-gray-300">support@docmorph.com</p>
+                      <p className="text-gray-600 dark:text-gray-300">support@convertmorph.com</p>
                     </div>
                   </div>
 
@@ -156,7 +156,7 @@ export default function ContactPage() {
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">Is DocMorph free to use?</h4>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Is ConvertMorph free to use?</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-300">
                       Yes, all our core PDF tools are completely free with no hidden costs.
                     </p>

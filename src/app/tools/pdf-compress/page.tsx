@@ -6,10 +6,10 @@ import { Archive, Download, FileText, Zap, Settings } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 
 const metadata: Metadata = {
-  title: 'PDF Compress | DocMorph - Reduce PDF File Size',
+  title: 'PDF Compress | ConvertMorph - Reduce PDF File Size',
   description: 'Compress PDF files to reduce their size while maintaining quality. Choose from Light, Medium, or Strong compression levels.',
   openGraph: {
-    title: 'PDF Compress | DocMorph',
+    title: 'PDF Compress | ConvertMorph',
     description: 'Reduce PDF file size with our free online PDF compressor.',
     type: 'website',
   },

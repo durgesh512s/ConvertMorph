@@ -6,10 +6,10 @@ import { FileImage, Download, FileText, Zap, Settings } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 
 const metadata: Metadata = {
-  title: 'Images to PDF | DocMorph - Convert JPG PNG to PDF',
+  title: 'Images to PDF | ConvertMorph - Convert JPG PNG to PDF',
   description: 'Convert JPG, PNG images to PDF. Combine multiple images into one PDF or create separate PDFs for each image.',
   openGraph: {
-    title: 'Images to PDF | DocMorph',
+    title: 'Images to PDF | ConvertMorph',
     description: 'Convert images to PDF with our free online converter.',
     type: 'website',
   },
