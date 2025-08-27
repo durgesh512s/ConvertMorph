@@ -116,7 +116,7 @@ export default function ToolsPage() {
           {tools.map((tool) => {
             const Icon = tool.icon;
             return (
-              <Card key={tool.title} className="hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
+              <Card key={tool.title} className="hover:shadow-lg transition-all duration-200 hover:-translate-y-1 flex flex-col h-full">
                 <CardHeader>
                   <div className="flex items-center space-x-3 mb-2">
                     <Icon className={`h-8 w-8 ${tool.color}`} />
@@ -126,8 +126,8 @@ export default function ToolsPage() {
                     {tool.description}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 mb-6">
+                <CardContent className="flex flex-col flex-1">
+                  <ul className="space-y-2 mb-6 flex-1">
                     {tool.features.map((feature, index) => (
                       <li key={index} className="flex items-center text-sm text-gray-600">
                         <ArrowRight className="h-4 w-4 text-gray-400 mr-2" />
@@ -135,7 +135,7 @@ export default function ToolsPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button asChild className="w-full">
+                  <Button asChild className="w-full mt-auto">
                     <Link href={tool.href}>Use Tool</Link>
                   </Button>
                 </CardContent>

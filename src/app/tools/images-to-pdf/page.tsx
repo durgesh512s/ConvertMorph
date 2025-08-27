@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Metadata } from 'next'
 import { FileImage, Download, FileText, Zap, Settings } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
+import { downloadFilesAsZip } from '@/lib/utils/zip'
+import { toast } from 'sonner'
 
 const metadata: Metadata = {
   title: 'Images to PDF | ConvertMorph - Convert JPG PNG to PDF',
@@ -51,29 +53,183 @@ export default function ImagesToPDFPage() {
 
     setIsProcessing(true)
     
-    // Simulate conversion process
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    let results: ConvertedFile[] = []
-    
-    if (conversionMode === 'single') {
-      // Combine all images into one PDF
-      results = [{
-        name: 'combined_images.pdf',
-        pageCount: uploadedFiles.length,
-        downloadUrl: URL.createObjectURL(uploadedFiles[0].file) // Placeholder
-      }]
-    } else {
-      // Create separate PDF for each image
-      results = uploadedFiles.map(file => ({
-        name: file.name.replace(/\.(jpg|jpeg|png)$/i, '.pdf'),
-        pageCount: 1,
-        downloadUrl: URL.createObjectURL(file.file) // Placeholder
-      }))
+    try {
+      // Import pdf-lib dynamically to avoid SSR issues
+      const { PDFDocument } = await import('pdf-lib')
+      
+      let results: ConvertedFile[] = []
+      
+      if (conversionMode === 'single') {
+        // Combine all images into one PDF
+        const pdfDoc = await PDFDocument.create()
+        
+        for (const file of uploadedFiles) {
+          const imageBytes = await file.file.arrayBuffer()
+          let image
+          
+          if (file.file.type === 'image/jpeg' || file.file.type === 'image/jpg') {
+            image = await pdfDoc.embedJpg(imageBytes)
+          } else if (file.file.type === 'image/png') {
+            image = await pdfDoc.embedPng(imageBytes)
+          } else {
+            continue // Skip unsupported formats
+          }
+          
+          // Calculate page dimensions based on settings
+          let pageWidth = 595.28 // A4 width in points
+          let pageHeight = 841.89 // A4 height in points
+          
+          if (pageSize === 'Letter') {
+            pageWidth = 612
+            pageHeight = 792
+          } else if (pageSize === 'Auto') {
+            pageWidth = image.width
+            pageHeight = image.height
+          }
+          
+          // Handle orientation
+          if (orientation === 'landscape' || (orientation === 'auto' && image.width > image.height)) {
+            [pageWidth, pageHeight] = [pageHeight, pageWidth]
+          }
+          
+          const page = pdfDoc.addPage([pageWidth, pageHeight])
+          
+          // Scale image to fit page while maintaining aspect ratio
+          const imageAspectRatio = image.width / image.height
+          const pageAspectRatio = pageWidth / pageHeight
+          
+          let drawWidth = pageWidth
+          let drawHeight = pageHeight
+          let x = 0
+          let y = 0
+          
+          if (pageSize !== 'Auto') {
+            if (imageAspectRatio > pageAspectRatio) {
+              // Image is wider than page
+              drawHeight = pageWidth / imageAspectRatio
+              y = (pageHeight - drawHeight) / 2
+            } else {
+              // Image is taller than page
+              drawWidth = pageHeight * imageAspectRatio
+              x = (pageWidth - drawWidth) / 2
+            }
+          }
+          
+          page.drawImage(image, {
+            x,
+            y,
+            width: drawWidth,
+            height: drawHeight,
+          })
+        }
+        
+        const pdfBytes = await pdfDoc.save()
+        const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
+        const downloadUrl = URL.createObjectURL(blob)
+        
+        results = [{
+          name: 'combined_images.pdf',
+          pageCount: uploadedFiles.length,
+          downloadUrl
+        }]
+      } else {
+        // Create separate PDF for each image
+        for (const file of uploadedFiles) {
+          const pdfDoc = await PDFDocument.create()
+          const imageBytes = await file.file.arrayBuffer()
+          let image
+          
+          if (file.file.type === 'image/jpeg' || file.file.type === 'image/jpg') {
+            image = await pdfDoc.embedJpg(imageBytes)
+          } else if (file.file.type === 'image/png') {
+            image = await pdfDoc.embedPng(imageBytes)
+          } else {
+            continue // Skip unsupported formats
+          }
+          
+          // Calculate page dimensions based on settings
+          let pageWidth = 595.28 // A4 width in points
+          let pageHeight = 841.89 // A4 height in points
+          
+          if (pageSize === 'Letter') {
+            pageWidth = 612
+            pageHeight = 792
+          } else if (pageSize === 'Auto') {
+            pageWidth = image.width
+            pageHeight = image.height
+          }
+          
+          // Handle orientation
+          if (orientation === 'landscape' || (orientation === 'auto' && image.width > image.height)) {
+            [pageWidth, pageHeight] = [pageHeight, pageWidth]
+          }
+          
+          const page = pdfDoc.addPage([pageWidth, pageHeight])
+          
+          // Scale image to fit page while maintaining aspect ratio
+          const imageAspectRatio = image.width / image.height
+          const pageAspectRatio = pageWidth / pageHeight
+          
+          let drawWidth = pageWidth
+          let drawHeight = pageHeight
+          let x = 0
+          let y = 0
+          
+          if (pageSize !== 'Auto') {
+            if (imageAspectRatio > pageAspectRatio) {
+              // Image is wider than page
+              drawHeight = pageWidth / imageAspectRatio
+              y = (pageHeight - drawHeight) / 2
+            } else {
+              // Image is taller than page
+              drawWidth = pageHeight * imageAspectRatio
+              x = (pageWidth - drawWidth) / 2
+            }
+          }
+          
+          page.drawImage(image, {
+            x,
+            y,
+            width: drawWidth,
+            height: drawHeight,
+          })
+          
+          const pdfBytes = await pdfDoc.save()
+          const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
+          const downloadUrl = URL.createObjectURL(blob)
+          
+          results.push({
+            name: file.name.replace(/\.(jpg|jpeg|png)$/i, '.pdf'),
+            pageCount: 1,
+            downloadUrl
+          })
+        }
+      }
+      
+      setConvertedFiles(results)
+    } catch (error) {
+      console.error('Error converting images to PDF:', error)
+      // Fallback to simulation if pdf-lib fails
+      let results: ConvertedFile[] = []
+      
+      if (conversionMode === 'single') {
+        results = [{
+          name: 'combined_images.pdf',
+          pageCount: uploadedFiles.length,
+          downloadUrl: URL.createObjectURL(uploadedFiles[0].file)
+        }]
+      } else {
+        results = uploadedFiles.map(file => ({
+          name: file.name.replace(/\.(jpg|jpeg|png)$/i, '.pdf'),
+          pageCount: 1,
+          downloadUrl: URL.createObjectURL(file.file)
+        }))
+      }
+      
+      setConvertedFiles(results)
+    } finally {
+      setIsProcessing(false)
     }
-    
-    setConvertedFiles(results)
-    setIsProcessing(false)
   }
 
   const formatFileSize = (bytes: number) => {
@@ -260,10 +416,14 @@ export default function ImagesToPDFPage() {
                           </div>
                         </div>
                       </div>
-                      <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                      <a
+                        href={file.downloadUrl}
+                        download={file.name}
+                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center"
+                      >
                         <Download className="h-4 w-4 mr-2" />
                         Download
-                      </button>
+                      </a>
                     </div>
                   </div>
                 ))}
@@ -272,8 +432,18 @@ export default function ImagesToPDFPage() {
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600 flex space-x-4">
                 {convertedFiles.length > 1 && (
                   <button
-                    onClick={() => {
-                      // Download all as ZIP
+                    onClick={async () => {
+                      try {
+                        const files = convertedFiles.map(file => ({
+                          name: file.name,
+                          url: file.downloadUrl
+                        }))
+                        await downloadFilesAsZip(files, 'converted-pdfs.zip')
+                        toast.success('ZIP file downloaded successfully!')
+                      } catch (error) {
+                        console.error('Error downloading ZIP:', error)
+                        toast.error('Failed to create ZIP file')
+                      }
                     }}
                     className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
                   >

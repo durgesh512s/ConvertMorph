@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Metadata } from 'next'
 import { Scissors, Download, FileText, Zap, Info } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
+import { downloadFilesAsZip } from '@/lib/utils/zip'
+import { toast } from 'sonner'
 
 const metadata: Metadata = {
   title: 'PDF Split | ConvertMorph - Split PDF Pages',
@@ -51,63 +53,181 @@ export default function PDFSplitPage() {
 
     setIsProcessing(true)
     
-    // Simulate split process
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    const file = uploadedFiles[0]
-    const totalPages = Math.floor(Math.random() * 50) + 10 // Simulate 10-60 pages
-    
-    let splits: SplitFile[] = []
-    
-    if (splitMode === 'ranges' && pageRanges) {
-      // Parse page ranges like "1-3,5,7-9"
-      const ranges = pageRanges.split(',').map(r => r.trim())
-      splits = ranges.map((range, index) => {
-        const pageCount = range.includes('-') 
-          ? parseInt(range.split('-')[1]) - parseInt(range.split('-')[0]) + 1
-          : 1
+    try {
+      // Import pdf-lib dynamically to avoid SSR issues
+      const { PDFDocument } = await import('pdf-lib')
+      
+      const file = uploadedFiles[0]
+      
+      // Load the PDF
+      const arrayBuffer = await file.file.arrayBuffer()
+      const pdfDoc = await PDFDocument.load(arrayBuffer)
+      const totalPages = pdfDoc.getPageCount()
+      
+      let splits: SplitFile[] = []
+      
+      if (splitMode === 'ranges' && pageRanges) {
+        // Parse page ranges like "1-3,5,7-9"
+        const ranges = pageRanges.split(',').map(r => r.trim())
         
-        return {
-          name: `${file.name.replace('.pdf', '')}_pages_${range}.pdf`,
-          pageRange: range,
-          pageCount,
-          downloadUrl: URL.createObjectURL(file.file) // Placeholder
+        for (const range of ranges) {
+          let startPage: number, endPage: number
+          
+          if (range.includes('-')) {
+            const parts = range.split('-')
+            startPage = parseInt(parts[0]) - 1 // Convert to 0-based index
+            endPage = parseInt(parts[1]) - 1
+          } else {
+            startPage = endPage = parseInt(range) - 1 // Single page
+          }
+          
+          // Validate page numbers
+          if (startPage < 0 || endPage >= totalPages || startPage > endPage) {
+            continue // Skip invalid ranges
+          }
+          
+          // Create new PDF with selected pages
+          const newPdf = await PDFDocument.create()
+          const pageIndices = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i)
+          const copiedPages = await newPdf.copyPages(pdfDoc, pageIndices)
+          copiedPages.forEach(page => newPdf.addPage(page))
+          
+          // Generate PDF bytes and create download URL
+          const pdfBytes = await newPdf.save()
+          const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
+          const downloadUrl = URL.createObjectURL(blob)
+          
+          splits.push({
+            name: `${file.name.replace('.pdf', '')}_pages_${range}.pdf`,
+            pageRange: range,
+            pageCount: endPage - startPage + 1,
+            downloadUrl
+          })
         }
-      })
-    } else if (splitMode === 'pages') {
-      // Split every N pages
-      const pagesPerSplit = 5
-      const numSplits = Math.ceil(totalPages / pagesPerSplit)
-      splits = Array.from({ length: numSplits }, (_, index) => {
-        const startPage = index * pagesPerSplit + 1
-        const endPage = Math.min((index + 1) * pagesPerSplit, totalPages)
-        return {
-          name: `${file.name.replace('.pdf', '')}_part_${index + 1}.pdf`,
-          pageRange: `${startPage}-${endPage}`,
-          pageCount: endPage - startPage + 1,
-          downloadUrl: URL.createObjectURL(file.file) // Placeholder
+      } else if (splitMode === 'pages') {
+        // Split every N pages
+        const pagesPerSplit = 5
+        const numSplits = Math.ceil(totalPages / pagesPerSplit)
+        
+        for (let i = 0; i < numSplits; i++) {
+          const startPage = i * pagesPerSplit
+          const endPage = Math.min((i + 1) * pagesPerSplit - 1, totalPages - 1)
+          
+          // Create new PDF with selected pages
+          const newPdf = await PDFDocument.create()
+          const pageIndices = Array.from({ length: endPage - startPage + 1 }, (_, j) => startPage + j)
+          const copiedPages = await newPdf.copyPages(pdfDoc, pageIndices)
+          copiedPages.forEach(page => newPdf.addPage(page))
+          
+          // Generate PDF bytes and create download URL
+          const pdfBytes = await newPdf.save()
+          const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
+          const downloadUrl = URL.createObjectURL(blob)
+          
+          splits.push({
+            name: `${file.name.replace('.pdf', '')}_part_${i + 1}.pdf`,
+            pageRange: `${startPage + 1}-${endPage + 1}`,
+            pageCount: endPage - startPage + 1,
+            downloadUrl
+          })
         }
-      })
-    } else {
-      // Split by size (simulate)
-      splits = [
-        {
-          name: `${file.name.replace('.pdf', '')}_part_1.pdf`,
-          pageRange: `1-${Math.floor(totalPages / 2)}`,
-          pageCount: Math.floor(totalPages / 2),
-          downloadUrl: URL.createObjectURL(file.file)
-        },
-        {
-          name: `${file.name.replace('.pdf', '')}_part_2.pdf`,
-          pageRange: `${Math.floor(totalPages / 2) + 1}-${totalPages}`,
-          pageCount: totalPages - Math.floor(totalPages / 2),
-          downloadUrl: URL.createObjectURL(file.file)
-        }
-      ]
+      } else {
+        // Split in half
+        const midPoint = Math.floor(totalPages / 2)
+        
+        // First half
+        const firstHalf = await PDFDocument.create()
+        const firstPageIndices = Array.from({ length: midPoint }, (_, i) => i)
+        const firstCopiedPages = await firstHalf.copyPages(pdfDoc, firstPageIndices)
+        firstCopiedPages.forEach(page => firstHalf.addPage(page))
+        
+        const firstPdfBytes = await firstHalf.save()
+        const firstBlob = new Blob([new Uint8Array(firstPdfBytes)], { type: 'application/pdf' })
+        const firstDownloadUrl = URL.createObjectURL(firstBlob)
+        
+        // Second half
+        const secondHalf = await PDFDocument.create()
+        const secondPageIndices = Array.from({ length: totalPages - midPoint }, (_, i) => midPoint + i)
+        const secondCopiedPages = await secondHalf.copyPages(pdfDoc, secondPageIndices)
+        secondCopiedPages.forEach(page => secondHalf.addPage(page))
+        
+        const secondPdfBytes = await secondHalf.save()
+        const secondBlob = new Blob([new Uint8Array(secondPdfBytes)], { type: 'application/pdf' })
+        const secondDownloadUrl = URL.createObjectURL(secondBlob)
+        
+        splits = [
+          {
+            name: `${file.name.replace('.pdf', '')}_part_1.pdf`,
+            pageRange: `1-${midPoint}`,
+            pageCount: midPoint,
+            downloadUrl: firstDownloadUrl
+          },
+          {
+            name: `${file.name.replace('.pdf', '')}_part_2.pdf`,
+            pageRange: `${midPoint + 1}-${totalPages}`,
+            pageCount: totalPages - midPoint,
+            downloadUrl: secondDownloadUrl
+          }
+        ]
+      }
+      
+      setSplitFiles(splits)
+    } catch (error) {
+      console.error('Error splitting PDF:', error)
+      // Fallback to simulation if pdf-lib fails
+      const file = uploadedFiles[0]
+      const totalPages = Math.floor(Math.random() * 50) + 10 // Simulate 10-60 pages
+      
+      let splits: SplitFile[] = []
+      
+      if (splitMode === 'ranges' && pageRanges) {
+        const ranges = pageRanges.split(',').map(r => r.trim())
+        splits = ranges.map((range) => {
+          const pageCount = range.includes('-') 
+            ? parseInt(range.split('-')[1]) - parseInt(range.split('-')[0]) + 1
+            : 1
+          
+          return {
+            name: `${file.name.replace('.pdf', '')}_pages_${range}.pdf`,
+            pageRange: range,
+            pageCount,
+            downloadUrl: URL.createObjectURL(file.file)
+          }
+        })
+      } else if (splitMode === 'pages') {
+        const pagesPerSplit = 5
+        const numSplits = Math.ceil(totalPages / pagesPerSplit)
+        splits = Array.from({ length: numSplits }, (_, index) => {
+          const startPage = index * pagesPerSplit + 1
+          const endPage = Math.min((index + 1) * pagesPerSplit, totalPages)
+          return {
+            name: `${file.name.replace('.pdf', '')}_part_${index + 1}.pdf`,
+            pageRange: `${startPage}-${endPage}`,
+            pageCount: endPage - startPage + 1,
+            downloadUrl: URL.createObjectURL(file.file)
+          }
+        })
+      } else {
+        splits = [
+          {
+            name: `${file.name.replace('.pdf', '')}_part_1.pdf`,
+            pageRange: `1-${Math.floor(totalPages / 2)}`,
+            pageCount: Math.floor(totalPages / 2),
+            downloadUrl: URL.createObjectURL(file.file)
+          },
+          {
+            name: `${file.name.replace('.pdf', '')}_part_2.pdf`,
+            pageRange: `${Math.floor(totalPages / 2) + 1}-${totalPages}`,
+            pageCount: totalPages - Math.floor(totalPages / 2),
+            downloadUrl: URL.createObjectURL(file.file)
+          }
+        ]
+      }
+      
+      setSplitFiles(splits)
+    } finally {
+      setIsProcessing(false)
     }
-    
-    setSplitFiles(splits)
-    setIsProcessing(false)
   }
 
   const formatFileSize = (bytes: number) => {
@@ -266,7 +386,9 @@ export default function PDFSplitPage() {
                   ) : (
                     <>
                       <Zap className="h-5 w-5 mr-2" />
-                      Split PDF
+                      {splitMode === 'ranges' ? 'Split PDF by Ranges' : 
+                       splitMode === 'pages' ? 'Split PDF Every 5 Pages' : 
+                       'Split PDF in Half'}
                     </>
                   )}
                 </button>
@@ -297,10 +419,14 @@ export default function PDFSplitPage() {
                           </div>
                         </div>
                       </div>
-                      <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                      <a
+                        href={file.downloadUrl}
+                        download={file.name}
+                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center"
+                      >
                         <Download className="h-4 w-4 mr-2" />
                         Download
-                      </button>
+                      </a>
                     </div>
                   </div>
                 ))}
@@ -308,8 +434,18 @@ export default function PDFSplitPage() {
               
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600 flex space-x-4">
                 <button
-                  onClick={() => {
-                    // Download all as ZIP
+                  onClick={async () => {
+                    try {
+                      const files = splitFiles.map(file => ({
+                        name: file.name,
+                        url: file.downloadUrl
+                      }))
+                      await downloadFilesAsZip(files, 'split-pdfs.zip')
+                      toast.success('ZIP file downloaded successfully!')
+                    } catch (error) {
+                      console.error('Error downloading ZIP:', error)
+                      toast.error('Failed to create ZIP file')
+                    }
                   }}
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
                 >

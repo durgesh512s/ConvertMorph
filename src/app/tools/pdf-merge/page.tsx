@@ -58,41 +58,52 @@ export default function PDFMergePage() {
     setResult(null);
 
     try {
-      // Simulate processing progress
-      const progressInterval = setInterval(() => {
-        setProcessingProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return 90;
-          }
-          return prev + 10;
-        });
-      }, 200);
+      // Import pdf-lib dynamically to avoid SSR issues
+      const { PDFDocument } = await import('pdf-lib');
+      
+      // Create a new PDF document
+      const mergedPdf = await PDFDocument.create();
+      setProcessingProgress(10);
 
-      // Create FormData for file upload
-      const formData = new FormData();
-      uploadedFiles.forEach((uploadedFile, index) => {
-        formData.append(`file-${index}`, uploadedFile.file);
-      });
+      // Process each uploaded file
+      for (let i = 0; i < uploadedFiles.length; i++) {
+        const uploadedFile = uploadedFiles[i];
+        
+        // Load the PDF
+        const arrayBuffer = await uploadedFile.file.arrayBuffer();
+        const pdf = await PDFDocument.load(arrayBuffer);
+        
+        // Copy all pages from this PDF to the merged PDF
+        const pageIndices = pdf.getPageIndices();
+        const copiedPages = await mergedPdf.copyPages(pdf, pageIndices);
+        
+        // Add the copied pages to the merged PDF
+        copiedPages.forEach((page) => mergedPdf.addPage(page));
+        
+        // Update progress
+        setProcessingProgress(10 + ((i + 1) / uploadedFiles.length) * 80);
+      }
 
-      // For now, simulate the merge process
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      clearInterval(progressInterval);
+      // Generate the merged PDF bytes
+      const pdfBytes = await mergedPdf.save();
       setProcessingProgress(100);
 
-      // Simulate successful result
+      // Create download URL
+      const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' });
+      const downloadUrl = URL.createObjectURL(blob);
+
       const totalSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
       setResult({
         success: true,
-        downloadUrl: '#', // This would be the actual download URL
+        downloadUrl,
         filename: 'merged.pdf',
         originalSize: totalSize,
-        newSize: Math.floor(totalSize * 0.95), // Simulate slight size change
+        newSize: pdfBytes.length,
       });
 
       toast.success('PDFs merged successfully!');
     } catch (error) {
+      console.error('Error merging PDFs:', error);
       setResult({
         success: false,
         error: error instanceof Error ? error.message : 'Failed to merge PDFs',

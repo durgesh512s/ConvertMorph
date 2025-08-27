@@ -129,18 +129,18 @@ export default function Home() {
             {tools.map((tool) => {
               const Icon = tool.icon;
               return (
-                <Card key={tool.title} className="hover:shadow-lg transition-shadow">
+                <Card key={tool.title} className="hover:shadow-lg transition-shadow flex flex-col h-full">
                   <CardHeader>
                     <div className="flex items-center space-x-3">
                       <Icon className={`h-8 w-8 ${tool.color}`} />
                       <CardTitle className="text-xl">{tool.title}</CardTitle>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base mb-4">
+                  <CardContent className="flex flex-col flex-1">
+                    <CardDescription className="text-base mb-4 flex-1">
                       {tool.description}
                     </CardDescription>
-                    <Button asChild className="w-full">
+                    <Button asChild className="w-full mt-auto">
                       <Link href={tool.href}>Try Now</Link>
                     </Button>
                   </CardContent>
