@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Metadata } from 'next'
 import { FileImage, Download, FileText, Zap, Settings } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
@@ -9,16 +8,6 @@ import { toast } from 'sonner'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
-
-const metadata: Metadata = {
-  title: 'Images to PDF | ConvertMorph - Convert JPG PNG to PDF',
-  description: 'Convert JPG, PNG images to PDF. Combine multiple images into one PDF or create separate PDFs for each image.',
-  openGraph: {
-    title: 'Images to PDF | ConvertMorph',
-    description: 'Convert images to PDF with our free online converter.',
-    type: 'website',
-  },
-}
 
 interface ConvertedFile {
   name: string

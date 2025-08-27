@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     siteName: "ConvertMorph",
     images: [
       {
-        url: '/og-image.png',
+        url: '/og/og-template.png',
         width: 1200,
         height: 630,
         alt: 'ConvertMorph - Fast, Private PDF Tools',
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ConvertMorph - Fast, Private PDF Tools",
     description: "Fast, private PDF tools — free forever. Convert, compress, and organize PDFs in your browser.",
-    images: ['/og-image.png'],
+    images: ['/og/og-template.png'],
   },
   robots: {
     index: true,

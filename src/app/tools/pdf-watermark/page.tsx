@@ -1,26 +1,5 @@
-import { Metadata } from 'next'
 import { Type } from 'lucide-react'
 import { PDFWatermarkClient } from '@/components/PDFWatermarkClient'
-
-export const metadata: Metadata = {
-  title: 'Add Watermark to PDF - Free PDF Watermark Tool | ConvertMorph',
-  description: 'Add text watermarks to your PDF documents for free. Choose position, transparency, and styling. Secure your documents with custom watermarks.',
-  keywords: 'PDF watermark, add watermark to PDF, PDF security, document protection, text watermark, PDF branding',
-  openGraph: {
-    title: 'Add Watermark to PDF - Free PDF Watermark Tool',
-    description: 'Add text watermarks to your PDF documents for free. Choose position, transparency, and styling.',
-    type: 'website',
-    url: 'https://convertmorph.com/tools/pdf-watermark',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Add Watermark to PDF - Free PDF Watermark Tool',
-    description: 'Add text watermarks to your PDF documents for free. Choose position, transparency, and styling.',
-  },
-  alternates: {
-    canonical: 'https://convertmorph.com/tools/pdf-watermark',
-  },
-}
 
 const jsonLd = {
   '@context': 'https://schema.org',

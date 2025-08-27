@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Metadata } from 'next'
 import { 
   Move3D, 
   RotateCw, 
@@ -15,22 +14,6 @@ import {
   Shield
 } from 'lucide-react'
 import { PDFOrganizeClient } from '@/components/PDFOrganizeClient'
-
-const metadata: Metadata = {
-  title: 'PDF Organize - Reorder & Rotate Pages | ConvertMorph',
-  description: 'Visually reorder and rotate PDF pages with drag-and-drop interface. Organize your PDF documents with thumbnail preview and keyboard shortcuts.',
-  keywords: 'PDF organize, reorder pages, rotate PDF, PDF page management, drag drop PDF',
-  openGraph: {
-    title: 'PDF Organize - Reorder & Rotate Pages',
-    description: 'Visually reorder and rotate PDF pages with drag-and-drop interface',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'PDF Organize - Reorder & Rotate Pages',
-    description: 'Visually reorder and rotate PDF pages with drag-and-drop interface',
-  },
-}
 
 const jsonLd = {
   '@context': 'https://schema.org',

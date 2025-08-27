@@ -1,35 +1,5 @@
-import { Metadata } from 'next'
 import { Hash } from 'lucide-react'
 import { PDFPageNumClient } from '@/components/PDFPageNumClient'
-
-export const metadata: Metadata = {
-  title: 'Add Page Numbers to PDF - Free PDF Page Numbering Tool | ConvertMorph',
-  description: 'Add page numbers to your PDF documents for free. Choose position, format, and starting number. Fast, secure, and works offline in your browser.',
-  keywords: 'PDF page numbers, add page numbers PDF, PDF numbering, page numbering tool, PDF footer, PDF header',
-  openGraph: {
-    title: 'Add Page Numbers to PDF - Free PDF Page Numbering Tool',
-    description: 'Add page numbers to your PDF documents for free. Choose position, format, and starting number. Fast, secure, and works offline in your browser.',
-    type: 'website',
-    url: 'https://convertmorph.com/tools/pdf-pagenum',
-    images: [
-      {
-        url: '/og-pdf-pagenum.png',
-        width: 1200,
-        height: 630,
-        alt: 'Add Page Numbers to PDF Tool',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Add Page Numbers to PDF - Free PDF Page Numbering Tool',
-    description: 'Add page numbers to your PDF documents for free. Choose position, format, and starting number.',
-    images: ['/og-pdf-pagenum.png'],
-  },
-  alternates: {
-    canonical: 'https://convertmorph.com/tools/pdf-pagenum',
-  },
-}
 
 const jsonLd = {
   '@context': 'https://schema.org',

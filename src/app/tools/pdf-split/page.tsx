@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Metadata } from 'next'
 import { Scissors, Download, FileText, Zap, Info } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
@@ -9,16 +8,6 @@ import { toast } from 'sonner'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
-
-const metadata: Metadata = {
-  title: 'PDF Split | ConvertMorph - Split PDF Pages',
-  description: 'Split PDF files by page ranges. Extract specific pages or split into multiple documents with our free PDF splitter.',
-  openGraph: {
-    title: 'PDF Split | ConvertMorph',
-    description: 'Split PDF files by page ranges with our free online tool.',
-    type: 'website',
-  },
-}
 
 interface SplitFile {
   name: string

@@ -1,35 +1,5 @@
-import { Metadata } from 'next'
 import { PenTool } from 'lucide-react'
 import { PDFSignClient } from '@/components/PDFSignClient'
-
-export const metadata: Metadata = {
-  title: 'PDF Fill & Sign - Add Signatures to PDF Documents | ConvertMorph',
-  description: 'Add signatures and text to your PDF documents for free. Draw signatures, add text fields, and fill forms. Fast, secure, and works offline in your browser.',
-  keywords: 'PDF signature, sign PDF, fill PDF, PDF forms, digital signature, e-signature, PDF signing tool',
-  openGraph: {
-    title: 'PDF Fill & Sign - Add Signatures to PDF Documents',
-    description: 'Add signatures and text to your PDF documents for free. Draw signatures, add text fields, and fill forms. Fast, secure, and works offline in your browser.',
-    type: 'website',
-    url: 'https://convertmorph.com/tools/pdf-sign',
-    images: [
-      {
-        url: '/og-pdf-sign.png',
-        width: 1200,
-        height: 630,
-        alt: 'PDF Fill & Sign Tool',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'PDF Fill & Sign - Add Signatures to PDF Documents',
-    description: 'Add signatures and text to your PDF documents for free. Draw signatures, add text fields, and fill forms.',
-    images: ['/og-pdf-sign.png'],
-  },
-  alternates: {
-    canonical: 'https://convertmorph.com/tools/pdf-sign',
-  },
-}
 
 const jsonLd = {
   '@context': 'https://schema.org',

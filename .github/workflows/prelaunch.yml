@@ -1,0 +1,107 @@
+name: Prelaunch Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  prelaunch:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run ESLint
+      run: npm run lint
+
+    - name: Build application
+      run: npm run build
+
+    - name: Run unit tests
+      run: npm run test
+
+    - name: Run AdSense readiness check
+      run: npm run check:adsense
+
+    - name: Install Cypress dependencies
+      run: npx cypress install
+
+    - name: Start server for E2E tests
+      run: npm start &
+      env:
+        CI: true
+
+    - name: Wait for server
+      run: npx wait-on http://localhost:3000 --timeout 60000
+
+    - name: Run Cypress E2E tests
+      run: npm run test:e2e
+      env:
+        CYPRESS_baseUrl: http://localhost:3000
+
+    - name: Run Lighthouse CI
+      run: npm run lhci
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+    - name: Upload Lighthouse results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: lighthouse-results-${{ matrix.node-version }}
+        path: .lighthouseci/
+
+    - name: Generate prelaunch summary
+      if: always()
+      run: |
+        echo "## 🚀 Prelaunch Check Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### ✅ Completed Checks:" >> $GITHUB_STEP_SUMMARY
+        echo "- ESLint validation" >> $GITHUB_STEP_SUMMARY
+        echo "- Application build" >> $GITHUB_STEP_SUMMARY
+        echo "- Unit tests" >> $GITHUB_STEP_SUMMARY
+        echo "- AdSense readiness" >> $GITHUB_STEP_SUMMARY
+        echo "- End-to-end tests" >> $GITHUB_STEP_SUMMARY
+        echo "- Lighthouse performance audit" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📊 Results:" >> $GITHUB_STEP_SUMMARY
+        echo "All prelaunch checks have been executed. Review individual step results above." >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📋 Next Steps:" >> $GITHUB_STEP_SUMMARY
+        echo "If all checks pass, the application is ready for deployment." >> $GITHUB_STEP_SUMMARY
+        echo "Review the [Launch Checklist](./docs/LAUNCH_CHECKLIST.md) for manual verification items." >> $GITHUB_STEP_SUMMARY
+
+  deployment-gate:
+    needs: prelaunch
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Deployment readiness check
+      run: |
+        echo "🎉 All prelaunch checks passed!"
+        echo "✅ Application is ready for deployment"
+        echo ""
+        echo "📋 Manual checklist items to verify:"
+        echo "- Domain and SSL configuration"
+        echo "- Environment variables set"
+        echo "- CDN/hosting configured"
+        echo "- Analytics tracking verified"
+        echo ""
+        echo "Refer to docs/LAUNCH_CHECKLIST.md for complete verification."
