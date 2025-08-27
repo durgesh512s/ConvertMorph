@@ -115,21 +115,21 @@ export function PDFWatermarkClient() {
     
     switch (position) {
       case 'top-left':
-        return { x: margin, y: pageHeight - margin }
+        return { x: margin, y: pageHeight - margin - textHeight / 2 }
       case 'top-center':
-        return { x: pageWidth / 2, y: pageHeight - margin }
+        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight - margin - textHeight / 2 }
       case 'top-right':
-        return { x: pageWidth - margin, y: pageHeight - margin }
+        return { x: pageWidth - margin - textWidth, y: pageHeight - margin - textHeight / 2 }
       case 'center':
-        return { x: pageWidth / 2, y: pageHeight / 2 }
+        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 + textHeight / 4 }
       case 'bottom-left':
-        return { x: margin, y: margin + textHeight }
+        return { x: margin, y: margin + textHeight / 2 }
       case 'bottom-center':
-        return { x: pageWidth / 2, y: margin + textHeight }
+        return { x: pageWidth / 2 - textWidth / 2, y: margin + textHeight / 2 }
       case 'bottom-right':
-        return { x: pageWidth - margin, y: margin + textHeight }
+        return { x: pageWidth - margin - textWidth, y: margin + textHeight / 2 }
       default:
-        return { x: pageWidth / 2, y: pageHeight / 2 }
+        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 + textHeight / 4 }
     }
   }
 
@@ -460,7 +460,7 @@ export function PDFWatermarkClient() {
               <Button
                 onClick={handleProcess}
                 disabled={isProcessing || !watermarkSettings.text.trim()}
-                className="w-full"
+                className="w-full bg-cyan-600 hover:bg-cyan-700 text-white"
                 size="lg"
               >
                 {isProcessing ? (

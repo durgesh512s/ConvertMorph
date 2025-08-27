@@ -171,32 +171,26 @@ export default function PDFMergePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
-              <GitMerge className="h-8 w-8 text-green-600 dark:text-green-400" />
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="flex justify-center mb-4">
+              <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
+                <GitMerge className="h-8 w-8 text-green-600 dark:text-green-400" />
+              </div>
             </div>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              PDF Merge
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Combine multiple PDF files into a single document. Preserve page order and bookmarks. All processing happens in your browser for maximum privacy.
+            </p>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            PDF Merge
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Combine multiple PDF files into a single document. Upload your PDFs and merge them instantly.
-          </p>
-        </div>
 
-        {/* Upload Section */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Upload PDF Files</CardTitle>
-            <CardDescription>
-              Select multiple PDF files to merge. Files will be merged in the order they appear.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+          {/* Upload Section */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
             <Dropzone
               onFilesAdded={handleFilesAdded}
               onFileRemove={handleFileRemove}
@@ -205,24 +199,23 @@ export default function PDFMergePage() {
               maxFiles={20}
               disabled={isProcessing}
             />
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Processing Section */}
-        {uploadedFiles.length >= 2 && (
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Merge PDFs</CardTitle>
-              <CardDescription>
+          {/* Processing Section */}
+          {uploadedFiles.length >= 2 && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                Merge PDFs
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Ready to merge {uploadedFiles.length} PDF files
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
+              
               {isProcessing && (
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium">Processing...</span>
-                    <span className="text-sm text-gray-500">{processingProgress}%</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">Processing...</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">{processingProgress}%</span>
                   </div>
                   <Progress value={processingProgress} className="h-2" />
                 </div>
@@ -231,81 +224,164 @@ export default function PDFMergePage() {
               <Button 
                 onClick={handleMerge}
                 disabled={isProcessing || uploadedFiles.length < 2}
-                className="w-full"
+                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400"
                 size="lg"
               >
                 {isProcessing ? 'Merging...' : `Merge ${uploadedFiles.length} PDFs`}
               </Button>
-            </CardContent>
-          </Card>
-        )}
+            </div>
+          )}
 
-        {/* Result Section */}
-        {result && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+          {/* Result Section */}
+          {result && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                 {result.success ? (
-                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
                 ) : (
-                  <AlertCircle className="h-5 w-5 text-red-600" />
+                  <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
                 )}
                 <span>{result.success ? 'Merge Complete' : 'Merge Failed'}</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </h3>
+              
               {result.success ? (
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                     <div>
-                      <p className="font-medium text-green-900">{result.filename}</p>
-                      <p className="text-sm text-green-700">
+                      <p className="font-medium text-green-900 dark:text-green-100">{result.filename}</p>
+                      <p className="text-sm text-green-700 dark:text-green-300">
                         {result.originalSize && result.newSize && (
                           <>Original: {formatFileSize(result.originalSize)} → Final: {formatFileSize(result.newSize)}</>
                         )}
                       </p>
                     </div>
-                    <Button asChild>
-                      <a href={result.downloadUrl} download={result.filename}>
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </a>
-                    </Button>
+                    <a
+                      href={result.downloadUrl}
+                      download={result.filename}
+                      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </a>
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-red-50 rounded-lg">
-                  <p className="text-red-900">{result.error}</p>
+                <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                  <p className="text-red-900 dark:text-red-100">{result.error}</p>
                 </div>
               )}
-            </CardContent>
-          </Card>
-        )}
+            </div>
+          )}
 
-        {/* FAQ Section */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Frequently Asked Questions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <h3 className="font-medium text-gray-900 mb-2">How many PDFs can I merge?</h3>
-              <p className="text-gray-600">You can merge up to 20 PDF files at once, with a maximum file size of 100MB per file.</p>
+          {/* Features */}
+          <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                <GitMerge className="h-6 w-6 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">Combine Multiple PDFs</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Merge up to 20 PDF files into a single document
+              </p>
             </div>
-            <div>
-              <h3 className="font-medium text-gray-900 mb-2">Will the quality be preserved?</h3>
-              <p className="text-gray-600">Yes, the original quality of your PDFs will be maintained during the merge process.</p>
+            
+            <div className="text-center">
+              <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                <CheckCircle className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">Preserve Formatting</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Maintain original quality and formatting of all documents
+              </p>
             </div>
-            <div>
-              <h3 className="font-medium text-gray-900 mb-2">Is my data secure?</h3>
-              <p className="text-gray-600">Absolutely. All processing happens in your browser - your files never leave your device.</p>
+            
+            <div className="text-center">
+              <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                <AlertCircle className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">Custom Page Order</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Files are merged in the order you upload them
+              </p>
             </div>
-            <div>
-              <h3 className="font-medium text-gray-900 mb-2">Can I change the order of pages?</h3>
-              <p className="text-gray-600">Files are merged in the order they appear in the list. You can remove and re-add files to change the order.</p>
+            
+            <div className="text-center">
+              <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                <Download className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+              </div>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">Instant Download</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Download your merged PDF immediately after processing
+              </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+              Frequently Asked Questions
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    How many PDF files can I merge at once?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    You can merge up to 20 PDF files in a single operation. This limit ensures optimal performance and prevents browser memory issues.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Are bookmarks and links preserved?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    Basic document structure is preserved, but complex interactive elements like bookmarks and internal links may not function correctly in the merged document.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Is my data secure during the merge process?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    Absolutely! All PDF merging happens entirely in your browser. Your files are never uploaded to our servers, ensuring complete privacy and security.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Will the page order be preserved?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    Yes, the pages will be merged in the exact order you upload the files. The first uploaded file will appear first, followed by the second file, and so on.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    What&apos;s the maximum file size for merging?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    Each individual PDF can be up to 50MB, and the total combined size of all files should not exceed 200MB for optimal performance.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Can I rearrange files before merging?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    Currently, files are merged in upload order. To change the order, remove and re-upload files in your desired sequence before clicking merge.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

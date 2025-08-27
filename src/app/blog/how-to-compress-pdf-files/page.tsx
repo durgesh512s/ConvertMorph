@@ -137,7 +137,7 @@ export default function CompressPDFGuide() {
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Privacy & Security</h4>
                   <p className="text-gray-700 text-sm">
-                    When using online tools, ensure they don't store your files permanently. 
+                    When using online tools, ensure they don&apos;t store your files permanently. 
                     ConvertMorph processes files locally and automatically deletes them after compression.
                   </p>
                 </div>
@@ -154,7 +154,7 @@ export default function CompressPDFGuide() {
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 mt-8">
               <h4 className="font-semibold text-primary mb-2">Ready to compress your PDFs?</h4>
               <p className="text-gray-700 mb-4">
-                Try ConvertMorph's free PDF compression tool with multiple quality options.
+                Try ConvertMorph&apos;s free PDF compression tool with multiple quality options.
               </p>
               <Link 
                 href="/tools/pdf-compress" 

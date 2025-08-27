@@ -541,7 +541,7 @@ export function PDFPageNumClient() {
               <Button
                 onClick={handleProcess}
                 disabled={isProcessing}
-                className="w-full"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-400 text-white"
                 size="lg"
               >
                 {isProcessing ? (

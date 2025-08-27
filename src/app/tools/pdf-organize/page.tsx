@@ -106,22 +106,21 @@ export default function PDFOrganizePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqData) }}
       />
       
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 dark:from-gray-900 dark:to-gray-800">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-12">
               <div className="flex justify-center mb-4">
-                <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
-                  <Move3D className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                <div className="bg-indigo-100 dark:bg-indigo-900 p-3 rounded-full">
+                  <Move3D className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
                 </div>
               </div>
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 PDF Organize
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                Visually reorder and rotate PDF pages with an intuitive drag-and-drop interface. 
-                Organize your documents with thumbnail previews and powerful editing tools.
+                Reorder and rotate PDF pages with visual drag-and-drop interface. Organize your documents with thumbnail previews and powerful editing tools. All processing happens in your browser for maximum privacy.
               </p>
             </div>
 
@@ -291,42 +290,46 @@ export default function PDFOrganizePage() {
             </div>
 
             {/* FAQ Section */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
+            <div className="mt-16">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
                 Frequently Asked Questions
               </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                    How do I reorder pages in a PDF?
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Upload your PDF and you'll see thumbnail previews of each page. Simply drag and drop the thumbnails to reorder them, then download the reorganized PDF.
-                  </p>
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                      How do I reorder pages in a PDF?
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Upload your PDF and you&apos;ll see thumbnail previews of each page. Simply drag and drop the thumbnails to reorder them, then download the reorganized PDF.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                      Can I rotate individual pages?
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Yes! Each page thumbnail has rotation buttons that let you rotate pages in 90-degree increments (clockwise and counterclockwise).
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                    Can I rotate individual pages?
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Yes! Each page thumbnail has rotation buttons that let you rotate pages in 90-degree increments (clockwise and counterclockwise).
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                    What keyboard shortcuts are available?
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Use Ctrl+Z for undo, Ctrl+Y for redo, and Ctrl+D to download. Press ? to see all available shortcuts.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-                    Is there a limit to the number of pages?
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    You can organize PDFs with up to 200 pages. For larger documents, consider splitting them first using our PDF Split tool.
-                  </p>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                      What keyboard shortcuts are available?
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Use Ctrl+Z for undo, Ctrl+Y for redo, and Ctrl+D to download. Press ? to see all available shortcuts.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                      Is there a limit to the number of pages?
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      You can organize PDFs with up to 200 pages. For larger documents, consider splitting them first using our PDF Split tool.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

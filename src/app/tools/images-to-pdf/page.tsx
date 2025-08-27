@@ -302,14 +302,14 @@ export default function ImagesToPDFPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
             <div className="flex justify-center mb-4">
-              <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
-                <FileImage className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full">
+                <FileImage className="h-8 w-8 text-orange-600 dark:text-orange-400" />
               </div>
             </div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -436,7 +436,7 @@ export default function ImagesToPDFPage() {
                 <button
                   onClick={handleConvert}
                   disabled={isProcessing}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                  className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
                 >
                   {isProcessing ? (
                     <>
@@ -480,7 +480,7 @@ export default function ImagesToPDFPage() {
                       <a
                         href={file.downloadUrl}
                         download={file.name}
-                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center"
+                        className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center"
                       >
                         <Download className="h-4 w-4 mr-2" />
                         Download
@@ -506,7 +506,7 @@ export default function ImagesToPDFPage() {
                         toast.error('Failed to create ZIP file')
                       }
                     }}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                    className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
                   >
                     <Download className="h-4 w-4 mr-2" />
                     Download All as ZIP
@@ -569,64 +569,68 @@ export default function ImagesToPDFPage() {
           </div>
 
           {/* FAQ Section */}
-          <div className="mt-16 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+          <div className="mt-16">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
               Frequently Asked Questions
             </h2>
             
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  What image formats are supported?
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  We support JPG, JPEG, and PNG image formats. These are the most common image formats and provide the best compatibility with PDF conversion.
-                </p>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    What image formats are supported?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    We support JPG, JPEG, and PNG image formats. These are the most common image formats and provide the best compatibility with PDF conversion.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Can I combine multiple images into one PDF?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Yes! You can choose between two conversion modes: combine all images into a single PDF document, or create separate PDF files for each image.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    What is the maximum file size for images?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Each image can be up to 10MB in size. You can upload up to 20 images at once for batch conversion.
+                  </p>
+                </div>
               </div>
               
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Can I combine multiple images into one PDF?
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Yes! You can choose between two conversion modes: combine all images into a single PDF document, or create separate PDF files for each image.
-                </p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  What is the maximum file size for images?
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Each image can be up to 10MB in size. You can upload up to 20 images at once for batch conversion.
-                </p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  How do I choose the right page size?
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  A4 is the standard international paper size, Letter is common in North America, and Auto will fit the PDF page to your image dimensions for the best quality.
-                </p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Are my images stored on your servers?
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  No, all image processing happens locally in your browser. Your images are never uploaded to our servers, ensuring complete privacy and security.
-                </p>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Can I control the image quality in the PDF?
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  The conversion maintains the original image quality while optimizing for PDF format. The resulting PDF will preserve your image clarity and colors.
-                </p>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    How do I choose the right page size?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    A4 is the standard international paper size, Letter is common in North America, and Auto will fit the PDF page to your image dimensions for the best quality.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Are my images stored on your servers?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    No, all image processing happens locally in your browser. Your images are never uploaded to our servers, ensuring complete privacy and security.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Can I control the image quality in the PDF?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    The conversion maintains the original image quality while optimizing for PDF format. The resulting PDF will preserve your image clarity and colors.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

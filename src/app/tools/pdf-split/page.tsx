@@ -32,7 +32,8 @@ export default function PDFSplitPage() {
   const [isProcessing, setIsProcessing] = useState(false)
   const [splitFiles, setSplitFiles] = useState<SplitFile[]>([])
   const [pageRanges, setPageRanges] = useState('')
-  const [splitMode, setSplitMode] = useState<'ranges' | 'pages' | 'size'>('ranges')
+  const [splitMode, setSplitMode] = useState<'ranges' | 'pages' | 'half'>('ranges')
+  const [pagesPerSplit, setPagesPerSplit] = useState(5)
 
   const handleFilesAdded = (files: File[]) => {
     const newFiles: UploadedFile[] = files.map(file => ({
@@ -129,7 +130,6 @@ export default function PDFSplitPage() {
         }
       } else if (splitMode === 'pages') {
         // Split every N pages
-        const pagesPerSplit = 5
         const numSplits = Math.ceil(totalPages / pagesPerSplit)
         
         for (let i = 0; i < numSplits; i++) {
@@ -235,7 +235,6 @@ export default function PDFSplitPage() {
           }
         })
       } else if (splitMode === 'pages') {
-        const pagesPerSplit = 5
         const numSplits = Math.ceil(totalPages / pagesPerSplit)
         splits = Array.from({ length: numSplits }, (_, index) => {
           const startPage = index * pagesPerSplit + 1
@@ -279,14 +278,14 @@ export default function PDFSplitPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
             <div className="flex justify-center mb-4">
-              <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
-                <Scissors className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
+                <Scissors className="h-8 w-8 text-purple-600 dark:text-purple-400" />
               </div>
             </div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -348,23 +347,23 @@ export default function PDFSplitPage() {
                   </h3>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Split into chunks of 5 pages each
+                  Split into chunks of {pagesPerSplit} pages each
                 </p>
               </div>
 
               <div
                 className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
-                  splitMode === 'size'
+                  splitMode === 'half'
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                     : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                 }`}
-                onClick={() => setSplitMode('size')}
+                onClick={() => setSplitMode('half')}
               >
                 <div className="flex items-center mb-2">
                   <input
                     type="radio"
-                    checked={splitMode === 'size'}
-                    onChange={() => setSplitMode('size')}
+                    checked={splitMode === 'half'}
+                    onChange={() => setSplitMode('half')}
                     className="mr-2"
                   />
                   <h3 className="font-medium text-gray-900 dark:text-white">
@@ -398,6 +397,29 @@ export default function PDFSplitPage() {
                 </div>
               </div>
             )}
+
+            {splitMode === 'pages' && (
+              <div>
+                <label htmlFor="pagesPerSplit" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Pages per Split
+                </label>
+                <input
+                  type="number"
+                  id="pagesPerSplit"
+                  value={pagesPerSplit}
+                  onChange={(e) => setPagesPerSplit(Math.max(1, parseInt(e.target.value) || 1))}
+                  min="1"
+                  max="100"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                />
+                <div className="mt-2 flex items-start space-x-2">
+                  <Info className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Specify how many pages each split file should contain. For example, setting this to 5 will create files with 5 pages each.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* File Upload */}
@@ -416,7 +438,7 @@ export default function PDFSplitPage() {
                 <button
                   onClick={handleSplit}
                   disabled={isProcessing || (splitMode === 'ranges' && !pageRanges.trim())}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                  className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
                 >
                   {isProcessing ? (
                     <>
@@ -427,7 +449,7 @@ export default function PDFSplitPage() {
                     <>
                       <Zap className="h-5 w-5 mr-2" />
                       {splitMode === 'ranges' ? 'Split PDF by Ranges' : 
-                       splitMode === 'pages' ? 'Split PDF Every 5 Pages' : 
+                       splitMode === 'pages' ? `Split PDF Every ${pagesPerSplit} Pages` : 
                        'Split PDF in Half'}
                     </>
                   )}
@@ -493,7 +515,7 @@ export default function PDFSplitPage() {
                       toast.error('Failed to create ZIP file')
                     }
                   }}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                  className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Download All as ZIP
@@ -552,6 +574,81 @@ export default function PDFSplitPage() {
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 Download all split files as a convenient ZIP archive
               </p>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+              Frequently Asked Questions
+            </h2>
+            
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    How do I split a PDF by page ranges?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Select &quot;Page Ranges&quot; mode and enter your desired ranges in the format &quot;1-3,5,7-9&quot;. 
+                    This will create separate PDFs for pages 1-3, page 5, and pages 7-9. Use commas to 
+                    separate multiple ranges.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    What does &quot;Every N Pages&quot; mode do?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    This mode splits your PDF into chunks of a specified number of pages. For example, 
+                    if you set it to 5 pages, a 20-page PDF will be split into 4 separate files with 
+                    5 pages each.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    How does &quot;Split in Half&quot; work?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    This mode divides your PDF into two equal parts. A 20-page document becomes two 
+                    10-page documents. If the page count is odd, the first half gets the extra page.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Is there a file size limit for splitting?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    You can split PDF files up to 100MB in size. All processing happens in your browser, 
+                    so larger files may take longer to process depending on your device's capabilities.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Are my files secure when splitting?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Yes, your PDF is processed entirely in your browser. No files are uploaded to our 
+                    servers, ensuring complete privacy and security of your documents.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    Can I download all split files at once?
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Yes, after splitting you can download all files individually or use the &quot;Download All as ZIP&quot; 
+                    button to get all split files in a single compressed archive for convenience.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

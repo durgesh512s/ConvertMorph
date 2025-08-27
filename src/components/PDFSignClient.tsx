@@ -56,6 +56,11 @@ export function PDFSignClient() {
   const [showTextInput, setShowTextInput] = useState(false)
   const [textInput, setTextInput] = useState('')
   const [fontSize, setFontSize] = useState(16)
+  const [draggedElement, setDraggedElement] = useState<string | null>(null)
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+  const [resizingElement, setResizingElement] = useState<string | null>(null)
+  const [resizeHandle, setResizeHandle] = useState<string | null>(null)
+  const [initialSize, setInitialSize] = useState({ width: 0, height: 0 })
   
   const { track } = useAnalytics()
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -201,6 +206,194 @@ export function PDFSignClient() {
   const removeElement = (elementId: string) => {
     setElements(prev => prev.filter(el => el.id !== elementId))
   }
+
+  // Drag and drop handlers
+  const handleMouseDown = (e: React.MouseEvent, elementId: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    const element = elements.find(el => el.id === elementId)
+    if (!element || !pdfContainerRef.current) return
+    
+    const rect = pdfContainerRef.current.getBoundingClientRect()
+    
+    // Calculate scale factor for current display
+    const canvas = pdfContainerRef.current.querySelector('canvas')
+    const currentPageData = pdfPages[currentPage]
+    if (!canvas || !currentPageData) return
+    
+    const scaleX = canvas.offsetWidth / currentPageData.width
+    const scaleY = canvas.offsetHeight / currentPageData.height
+    
+    // Calculate display position of element
+    const displayX = element.x * scaleX
+    const displayY = element.y * scaleY
+    
+    // Calculate offset from mouse to element's top-left corner in display coordinates
+    const offsetX = e.clientX - rect.left - displayX
+    const offsetY = e.clientY - rect.top - displayY
+    
+    setDraggedElement(elementId)
+    setDragOffset({ x: offsetX, y: offsetY })
+  }
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!draggedElement || !pdfContainerRef.current) return
+    
+    const rect = pdfContainerRef.current.getBoundingClientRect()
+    
+    // Get current page dimensions for boundary checking
+    const currentPageData = pdfPages[currentPage]
+    if (!currentPageData) return
+    
+    // Calculate scale factor
+    const canvas = pdfContainerRef.current.querySelector('canvas')
+    if (!canvas) return
+    
+    const scaleX = canvas.offsetWidth / currentPageData.width
+    const scaleY = canvas.offsetHeight / currentPageData.height
+    
+    // Calculate new position in display coordinates
+    const displayX = e.clientX - rect.left - dragOffset.x
+    const displayY = e.clientY - rect.top - dragOffset.y
+    
+    // Convert to actual PDF coordinates
+    const actualX = displayX / scaleX
+    const actualY = displayY / scaleY
+    
+    // Use requestAnimationFrame for smoother updates
+    requestAnimationFrame(() => {
+      setElements(prev => prev.map(el => {
+        if (el.id === draggedElement) {
+          // Ensure element stays within page bounds
+          const boundedX = Math.max(0, Math.min(actualX, currentPageData.width - el.width))
+          const boundedY = Math.max(0, Math.min(actualY, currentPageData.height - el.height))
+          
+          return {
+            ...el,
+            x: boundedX,
+            y: boundedY
+          }
+        }
+        return el
+      }))
+    })
+  }, [draggedElement, dragOffset, pdfPages, currentPage])
+
+  const handleMouseUp = useCallback(() => {
+    setDraggedElement(null)
+    setDragOffset({ x: 0, y: 0 })
+    setResizingElement(null)
+    setResizeHandle(null)
+    setInitialSize({ width: 0, height: 0 })
+  }, [])
+
+  // Resize handlers
+  const handleResizeStart = (e: React.MouseEvent, elementId: string, handle: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    const element = elements.find(el => el.id === elementId)
+    if (!element) return
+    
+    setResizingElement(elementId)
+    setResizeHandle(handle)
+    setInitialSize({ width: element.width, height: element.height })
+  }
+
+  const handleResizeMove = useCallback((e: MouseEvent) => {
+    if (!resizingElement || !resizeHandle || !pdfContainerRef.current) return
+    
+    const element = elements.find(el => el.id === resizingElement)
+    if (!element) return
+    
+    const rect = pdfContainerRef.current.getBoundingClientRect()
+    const currentPageData = pdfPages[currentPage]
+    if (!currentPageData) return
+    
+    const canvas = pdfContainerRef.current.querySelector('canvas')
+    if (!canvas) return
+    
+    const scaleX = canvas.offsetWidth / currentPageData.width
+    const scaleY = canvas.offsetHeight / currentPageData.height
+    
+    // Calculate mouse position relative to element's top-left corner
+    const mouseX = (e.clientX - rect.left) / scaleX
+    const mouseY = (e.clientY - rect.top) / scaleY
+    
+    let newWidth = element.width
+    let newHeight = element.height
+    
+    // Calculate new dimensions based on resize handle
+    if (resizeHandle.includes('right')) {
+      newWidth = Math.max(20, mouseX - element.x)
+    }
+    if (resizeHandle.includes('bottom')) {
+      newHeight = Math.max(20, mouseY - element.y)
+    }
+    if (resizeHandle.includes('left')) {
+      newWidth = Math.max(20, element.x + element.width - mouseX)
+    }
+    if (resizeHandle.includes('top')) {
+      newHeight = Math.max(20, element.y + element.height - mouseY)
+    }
+    
+    // Maintain aspect ratio for corner handles
+    if (resizeHandle.includes('corner')) {
+      const aspectRatio = initialSize.width / initialSize.height
+      if (resizeHandle.includes('right') || resizeHandle.includes('left')) {
+        newHeight = newWidth / aspectRatio
+      } else {
+        newWidth = newHeight * aspectRatio
+      }
+    }
+    
+    // Ensure element stays within page bounds
+    newWidth = Math.min(newWidth, currentPageData.width - element.x)
+    newHeight = Math.min(newHeight, currentPageData.height - element.y)
+    
+    requestAnimationFrame(() => {
+      setElements(prev => prev.map(el => {
+        if (el.id === resizingElement) {
+          const updatedElement = { ...el, width: newWidth, height: newHeight }
+          
+          // For text elements, update font size proportionally
+          if (el.type === 'text' && el.fontSize) {
+            const scaleFactor = newHeight / el.height
+            updatedElement.fontSize = Math.max(8, Math.min(72, el.fontSize * scaleFactor))
+          }
+          
+          return updatedElement
+        }
+        return el
+      }))
+    })
+  }, [resizingElement, resizeHandle, initialSize, pdfPages, currentPage, elements])
+
+  // Add global mouse event listeners for dragging and resizing
+  useEffect(() => {
+    if (draggedElement) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+      
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+      }
+    }
+  }, [draggedElement, handleMouseMove, handleMouseUp])
+
+  useEffect(() => {
+    if (resizingElement) {
+      document.addEventListener('mousemove', handleResizeMove)
+      document.addEventListener('mouseup', handleMouseUp)
+      
+      return () => {
+        document.removeEventListener('mousemove', handleResizeMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+      }
+    }
+  }, [resizingElement, handleResizeMove, handleMouseUp])
 
   // Handle canvas drawing
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -490,38 +683,99 @@ export function PDFSignClient() {
                       {/* Overlay elements for current page */}
                       {elements
                         .filter(el => el.pageIndex === currentPage)
-                        .map(element => (
-                          <div
-                            key={element.id}
-                            className="absolute border-2 border-blue-500 bg-blue-50 bg-opacity-50 cursor-pointer group"
-                            style={{
-                              left: `${element.x}px`,
-                              top: `${element.y}px`,
-                              width: `${element.width}px`,
-                              height: `${element.height}px`,
-                            }}
-                            onClick={() => removeElement(element.id)}
-                          >
-                            <div className="absolute -top-6 left-0 bg-blue-600 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                              {element.type === 'signature' ? 'Signature' : 'Text'} - Click to remove
-                            </div>
-                            {element.type === 'text' && (
-                              <div 
-                                className="w-full h-full flex items-center justify-center text-black"
-                                style={{ fontSize: `${(element.fontSize || 16) * 0.8}px` }}
-                              >
-                                {element.content}
+                        .map(element => {
+                          // Calculate display position based on canvas scaling
+                          const canvas = pdfContainerRef.current?.querySelector('canvas')
+                          const currentPageData = pdfPages[currentPage]
+                          
+                          if (!canvas || !currentPageData) return null
+                          
+                          const scaleX = canvas.offsetWidth / currentPageData.width
+                          const scaleY = canvas.offsetHeight / currentPageData.height
+                          
+                          const displayX = element.x * scaleX
+                          const displayY = element.y * scaleY
+                          const displayWidth = element.width * scaleX
+                          const displayHeight = element.height * scaleY
+                          
+                          return (
+                            <div
+                              key={element.id}
+                              className={`absolute border-2 bg-opacity-50 group select-none ${
+                                draggedElement === element.id 
+                                  ? 'border-rose-500 bg-rose-50 cursor-grabbing' 
+                                  : 'border-blue-500 bg-blue-50 cursor-grab hover:border-rose-500 hover:bg-rose-50'
+                              }`}
+                              style={{
+                                left: `${displayX}px`,
+                                top: `${displayY}px`,
+                                width: `${displayWidth}px`,
+                                height: `${displayHeight}px`,
+                              }}
+                              onMouseDown={(e) => handleMouseDown(e, element.id)}
+                              onDoubleClick={() => removeElement(element.id)}
+                            >
+                              <div className="absolute -top-6 left-0 bg-blue-600 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                {element.type === 'signature' ? '✍️ Signature' : '📝 Text'} - Drag to move, resize handles to resize, double-click to remove
                               </div>
-                            )}
-                            {element.type === 'signature' && (
-                              <img 
-                                src={element.content} 
-                                alt="Signature" 
-                                className="w-full h-full object-contain"
-                              />
-                            )}
-                          </div>
-                        ))}
+                              
+                              {/* Resize Handles */}
+                              <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                {/* Corner handles */}
+                                <div
+                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-nw-resize -top-1 -left-1"
+                                  onMouseDown={(e) => handleResizeStart(e, element.id, 'corner-top-left')}
+                                />
+                                <div
+                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-ne-resize -top-1 -right-1"
+                                  onMouseDown={(e) => handleResizeStart(e, element.id, 'corner-top-right')}
+                                />
+                                <div
+                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-sw-resize -bottom-1 -left-1"
+                                  onMouseDown={(e) => handleResizeStart(e, element.id, 'corner-bottom-left')}
+                                />
+                                <div
+                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-se-resize -bottom-1 -right-1"
+                                  onMouseDown={(e) => handleResizeStart(e, element.id, 'corner-bottom-right')}
+                                />
+                                
+                                {/* Edge handles */}
+                                <div
+                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-n-resize -top-1 left-1/2 transform -translate-x-1/2"
+                                  onMouseDown={(e) => handleResizeStart(e, element.id, 'top')}
+                                />
+                                <div
+                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-s-resize -bottom-1 left-1/2 transform -translate-x-1/2"
+                                  onMouseDown={(e) => handleResizeStart(e, element.id, 'bottom')}
+                                />
+                                <div
+                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-w-resize -left-1 top-1/2 transform -translate-y-1/2"
+                                  onMouseDown={(e) => handleResizeStart(e, element.id, 'left')}
+                                />
+                                <div
+                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-e-resize -right-1 top-1/2 transform -translate-y-1/2"
+                                  onMouseDown={(e) => handleResizeStart(e, element.id, 'right')}
+                                />
+                              </div>
+                              {element.type === 'text' && (
+                                <div 
+                                  className="w-full h-full flex items-center justify-center text-black pointer-events-none"
+                                  style={{ fontSize: `${(element.fontSize || 16) * scaleX}px` }}
+                                >
+                                  {element.content}
+                                </div>
+                              )}
+                              {element.type === 'signature' && (
+                                <img 
+                                  src={element.content} 
+                                  alt="Signature" 
+                                  className="w-full h-full object-contain pointer-events-none"
+                                  draggable={false}
+                                />
+                              )}
+                            </div>
+                          )
+                        })}
                     </div>
                   )}
                 </div>
@@ -540,8 +794,7 @@ export function PDFSignClient() {
                 </h3>
                 <Button
                   onClick={() => setShowSignaturePad(true)}
-                  className="w-full"
-                  variant="outline"
+                  className="w-full bg-rose-600 hover:bg-rose-700 text-white"
                 >
                   <PenTool className="w-4 h-4 mr-2" />
                   Draw Signature
@@ -558,8 +811,7 @@ export function PDFSignClient() {
                 </h3>
                 <Button
                   onClick={() => setShowTextInput(true)}
-                  className="w-full"
-                  variant="outline"
+                  className="w-full bg-rose-600 hover:bg-rose-700 text-white"
                 >
                   <Type className="w-4 h-4 mr-2" />
                   Add Text
@@ -599,7 +851,7 @@ export function PDFSignClient() {
                 <Button
                   onClick={handleProcess}
                   disabled={isProcessing || elements.length === 0}
-                  className="w-full"
+                  className="w-full bg-rose-600 hover:bg-rose-700 disabled:bg-gray-400 text-white"
                   size="lg"
                 >
                   {isProcessing ? (
@@ -657,7 +909,7 @@ export function PDFSignClient() {
                 <Button onClick={() => setShowSignaturePad(false)} variant="outline" className="flex-1">
                   Cancel
                 </Button>
-                <Button onClick={saveSignature} className="flex-1">
+                <Button onClick={saveSignature} className="flex-1 bg-rose-600 hover:bg-rose-700 text-white">
                   <Save className="w-4 h-4 mr-2" />
                   Save
                 </Button>
@@ -699,7 +951,7 @@ export function PDFSignClient() {
                 <Button onClick={() => setShowTextInput(false)} variant="outline" className="flex-1">
                   Cancel
                 </Button>
-                <Button onClick={addTextElement} className="flex-1" disabled={!textInput.trim()}>
+                <Button onClick={addTextElement} className="flex-1 bg-rose-600 hover:bg-rose-700 disabled:bg-gray-400 text-white" disabled={!textInput.trim()}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Text
                 </Button>

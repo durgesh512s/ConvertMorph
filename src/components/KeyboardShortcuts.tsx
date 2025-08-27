@@ -11,6 +11,9 @@ interface KeyboardShortcutsProps {
 export function KeyboardShortcuts({ onUpload, onDownload, onClear }: KeyboardShortcutsProps) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Guard against undefined event.key
+      if (!event.key) return;
+      
       // Check for modifier keys (Ctrl on Windows/Linux, Cmd on Mac)
       const isModifierPressed = event.ctrlKey || event.metaKey;
       

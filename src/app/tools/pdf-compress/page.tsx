@@ -598,6 +598,67 @@ export default function PDFCompressPage() {
               </p>
             </div>
           </div>
+
+          {/* FAQ Section */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+              Frequently Asked Questions
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    What compression levels are available?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    We offer three compression levels: Light (150 DPI, ~20% reduction), Medium (120 DPI, ~40% reduction), and Strong (96 DPI, ~60% reduction). Choose based on your quality and file size requirements.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    How many files can I compress at once?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    You can compress up to 10 PDF files simultaneously. Each file can be up to 100MB in size for optimal processing speed.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    Will compression affect PDF quality?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Compression reduces file size by optimizing images and removing unnecessary data. Light compression maintains high quality, while stronger compression provides smaller files with some quality trade-off.
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    How much can I reduce file size?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    File size reduction varies based on content and compression level. Image-heavy PDFs typically see 20-60% reduction, while text-only documents may have smaller reductions.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    Are my files secure during compression?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Yes, all files are processed securely and temporarily. Files are automatically deleted from our servers after processing, and we don&quot;t store or access your document content.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    Can I download all compressed files at once?
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Yes, when compressing multiple files, you can download them individually or use the &quot;Download All as ZIP&quot; option to get all compressed PDFs in a single archive.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
