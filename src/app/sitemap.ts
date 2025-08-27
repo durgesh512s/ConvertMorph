@@ -3,6 +3,35 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.SITE_URL || 'http://localhost:3000'
   
+  // Current PDF Tools
+  const pdfTools = [
+    'pdf-compress',
+    'pdf-merge', 
+    'pdf-split',
+    'images-to-pdf',
+    'pdf-to-images',
+    'pdf-organize',
+    'pdf-watermark',
+    'pdf-pagenum',
+    'pdf-sign'
+  ]
+
+  // Future Tools (for SEO preparation)
+  const futureTools = [
+    // Image Tools
+    'image-compress',
+    'background-remover',
+    'image-converter',
+    // Text Tools
+    'plagiarism-checker',
+    'word-counter',
+    'text-formatter',
+    // Finance Tools
+    'tax-calculator',
+    'loan-calculator',
+    'investment-calculator'
+  ]
+  
   return [
     {
       url: baseUrl,
@@ -16,60 +45,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/tools/pdf-compress`,
+    // Current PDF Tools
+    ...pdfTools.map(tool => ({
+      url: `${baseUrl}/tools/${tool}`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/tools/pdf-merge`,
+    })),
+    // Future Tools (lower priority until implemented)
+    ...futureTools.map(tool => ({
+      url: `${baseUrl}/tools/${tool}`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/tools/pdf-split`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/tools/images-to-pdf`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/tools/pdf-to-images`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/tools/pdf-organize`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/tools/pdf-watermark`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/tools/pdf-pagenum`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/tools/pdf-sign`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),

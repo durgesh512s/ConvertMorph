@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Archive, Download, FileText, Zap, Settings } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
+import { RelatedArticles } from '@/components/RelatedArticles'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { names } from '@/lib/names'
@@ -659,6 +660,9 @@ export default function PDFCompressPage() {
               </div>
             </div>
           </div>
+
+          {/* Related Articles */}
+          <RelatedArticles toolName="pdf-compress" />
         </div>
       </div>
     </div>

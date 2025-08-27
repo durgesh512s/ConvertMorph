@@ -7,7 +7,19 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        brand: {
+          primary: '#2563eb',
+          'primary-light': '#3b82f6',
+          'gray-bg': '#f9fafb',
+        },
+      },
+      fontFamily: {
+        'brand-heading': ['Inter', 'sans-serif'],
+        'brand-body': ['Inter', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 } satisfies Config;
