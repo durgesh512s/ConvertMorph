@@ -484,24 +484,50 @@ export function PDFSignClient() {
         const element = elements[i]
         const page = pages[element.pageIndex]
         
+        // CRITICAL: Convert from scaled canvas coordinates (1.5x) back to original PDF coordinates (1x)
+        // The preview canvas is rendered at 1.5x scale, but element coordinates are stored in that scaled system
+        const CANVAS_SCALE = 1.5
+        const actualX = element.x / CANVAS_SCALE
+        const actualY = element.y / CANVAS_SCALE
+        const actualWidth = element.width / CANVAS_SCALE
+        const actualHeight = element.height / CANVAS_SCALE
+        const actualFontSize = (element.fontSize || 16) / CANVAS_SCALE
+        
         if (element.type === 'signature') {
           // Convert base64 image to bytes
           const imageBytes = Uint8Array.from(atob(element.content.split(',')[1]), c => c.charCodeAt(0))
           const image = await pdfDoc.embedPng(imageBytes)
           
+          // Get the page dimensions from the original PDF page
+          const pageHeight = page.getHeight()
+          
+          // Convert coordinates from canvas coordinate system (top-left origin) 
+          // to PDF coordinate system (bottom-left origin)
+          const pdfX = actualX
+          const pdfY = pageHeight - actualY - actualHeight
+          
           // Add signature image to page
           page.drawImage(image, {
-            x: element.x,
-            y: page.getHeight() - element.y - element.height,
-            width: element.width,
-            height: element.height,
+            x: pdfX,
+            y: pdfY,
+            width: actualWidth,
+            height: actualHeight,
           })
         } else if (element.type === 'text') {
+          // Get the page dimensions from the original PDF page
+          const pageHeight = page.getHeight()
+          
+          // Convert coordinates from canvas coordinate system (top-left origin) 
+          // to PDF coordinate system (bottom-left origin)
+          // For text, we need to account for the font size to position the baseline correctly
+          const pdfX = actualX
+          const pdfY = pageHeight - actualY - actualFontSize
+          
           // Add text to page
           page.drawText(element.content, {
-            x: element.x,
-            y: page.getHeight() - element.y - (element.fontSize || 16),
-            size: element.fontSize || 16,
+            x: pdfX,
+            y: pdfY,
+            size: actualFontSize,
           })
         }
         
