@@ -5,7 +5,7 @@ export function parsePageRanges(input: string, maxPages: number): number[] {
   const pages = new Set<number>();
   
   for (const p of parts) {
-    const m = p.match(/^([0-9]+)(?:-([0-9]+))?$/);
+    const m = p.match(/^([0-9]+)(?:\s*-\s*([0-9]+))?$/);
     if (!m) throw new Error(`Invalid token: ${p}`);
     
     const start = Number(m[1]);

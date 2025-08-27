@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { Shield, Lock, Trash2, Eye, Clock } from 'lucide-react'
+import { Shield, Lock, Trash2, Eye } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | ConvertMorph - PDF Tools',
