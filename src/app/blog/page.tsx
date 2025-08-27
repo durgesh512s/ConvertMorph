@@ -63,14 +63,14 @@ const blogPosts = [
 
 export default function BlogPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-950 dark:to-blue-950/40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             PDF Tips & Tutorials
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             Expert guides, tips, and best practices for working with PDF files. 
             Learn how to compress, merge, split, and convert PDFs like a pro.
           </p>
@@ -78,13 +78,13 @@ export default function BlogPage() {
 
         {/* Featured Post */}
         <div className="mb-12">
-          <Card className="bg-gradient-to-r from-primary/5 to-blue-50 border-primary/20 hover:shadow-lg transition-shadow">
+          <Card className="bg-gradient-to-r from-blue-50/50 to-blue-50 dark:from-blue-950/20 dark:to-blue-900/20 border-blue-200/50 dark:border-blue-800/30 hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between mb-2">
-                <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                   Featured
                 </span>
-                <div className="flex items-center space-x-4 text-sm text-gray-500">
+                <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                   <div className="flex items-center space-x-1">
                     <Calendar className="h-4 w-4" />
                     <span>{new Date(blogPosts[0].date).toLocaleDateString()}</span>
@@ -95,17 +95,17 @@ export default function BlogPage() {
                   </div>
                 </div>
               </div>
-              <CardTitle className="text-3xl mb-2">
+              <CardTitle className="text-3xl mb-2 dark:text-white">
                 {blogPosts[0].title}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700 leading-relaxed mb-6 text-lg">
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6 text-lg">
                 {blogPosts[0].excerpt}
               </p>
               <Link 
                 href={`/blog/${blogPosts[0].slug}`}
-                className="inline-flex items-center bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium"
+                className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
                 Read Full Guide
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -117,13 +117,13 @@ export default function BlogPage() {
         {/* Blog Posts Grid */}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
           {blogPosts.slice(1).map((post) => (
-            <Card key={post.slug} className="bg-white hover:shadow-lg transition-shadow group">
+            <Card key={post.slug} className="bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow group">
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
+                  <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 px-2 py-1 rounded text-xs font-medium">
                     {post.category}
                   </span>
-                  <div className="flex items-center space-x-3 text-sm text-gray-500">
+                  <div className="flex items-center space-x-3 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center space-x-1">
                       <Calendar className="h-3 w-3" />
                       <span>{new Date(post.date).toLocaleDateString()}</span>
@@ -134,17 +134,17 @@ export default function BlogPage() {
                     </div>
                   </div>
                 </div>
-                <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors">
+                <CardTitle className="text-xl mb-2 group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400 transition-colors">
                   {post.title}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 leading-relaxed mb-4">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
                   {post.excerpt}
                 </p>
                 <Link 
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors"
+                  className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                 >
                   Read More
                   <ArrowRight className="ml-1 h-4 w-4" />
@@ -155,12 +155,12 @@ export default function BlogPage() {
         </div>
 
         {/* Newsletter Signup */}
-        <Card className="mt-16 bg-gradient-to-r from-primary/5 to-blue-50 border-primary/20">
+        <Card className="mt-16 bg-gradient-to-r from-blue-50/50 to-blue-50 dark:from-blue-950/20 dark:to-blue-900/20 border-blue-200/50 dark:border-blue-800/30">
           <CardContent className="text-center py-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
               Stay Updated
             </h2>
-            <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
+            <p className="text-gray-700 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
               Get the latest PDF tips, tutorials, and tool updates delivered to your inbox. 
               Join thousands of users who trust ConvertMorph for their document needs.
             </p>
@@ -168,13 +168,13 @@ export default function BlogPage() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-              <button className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">
+              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
                 Subscribe
               </button>
             </div>
-            <p className="text-sm text-gray-500 mt-3">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
               No spam, unsubscribe at any time.
             </p>
           </CardContent>
@@ -182,14 +182,14 @@ export default function BlogPage() {
 
         {/* Categories */}
         <div className="mt-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
             Browse by Category
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {['PDF Compression', 'File Merging', 'Document Splitting', 'Format Conversion'].map((category) => (
-              <div key={category} className="bg-white rounded-lg p-4 text-center hover:shadow-md transition-shadow border">
-                <h3 className="font-medium text-gray-900 mb-1">{category}</h3>
-                <p className="text-sm text-gray-500">Coming Soon</p>
+              <div key={category} className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center hover:shadow-md transition-shadow border dark:border-gray-700">
+                <h3 className="font-medium text-gray-900 dark:text-white mb-1">{category}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Coming Soon</p>
               </div>
             ))}
           </div>

@@ -83,6 +83,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="/android-chrome-192x192.png" sizes="192x192" type="image/png" />
+        <link rel="icon" href="/android-chrome-512x512.png" sizes="512x512" type="image/png" />
+      </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <div className="flex min-h-screen flex-col">
           <Navbar />

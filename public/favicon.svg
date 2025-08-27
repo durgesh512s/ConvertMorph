@@ -1,0 +1,16 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background for better visibility -->
+  <rect width="32" height="32" rx="4" fill="#2563eb"/>
+  
+  <!-- Simplified document outline - larger and bolder -->
+  <rect x="6" y="4" width="20" height="24" rx="2" fill="white" stroke="none"/>
+  
+  <!-- Arrow in center - larger and bolder -->
+  <g transform="translate(16, 16)">
+    <path d="M-6 0 L6 0 M2 -4 L6 0 L2 4" stroke="#2563eb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  
+  <!-- Morph effect dots - larger -->
+  <circle cx="10" cy="8" r="1.5" fill="#2563eb" opacity="0.8"/>
+  <circle cx="22" cy="24" r="1.5" fill="#2563eb" opacity="0.8"/>
+</svg>
