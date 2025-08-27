@@ -6,6 +6,9 @@ import { FileImage, Download, FileText, Zap, Settings } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
+import { newJobId } from '@/lib/jobs/id'
+import { names } from '@/lib/names'
+import { track } from '@/lib/analytics/client'
 
 const metadata: Metadata = {
   title: 'Images to PDF | ConvertMorph - Convert JPG PNG to PDF',
@@ -42,6 +45,15 @@ export default function ImagesToPDFPage() {
     }))
     setUploadedFiles(prev => [...prev, ...newFiles])
     setConvertedFiles([])
+    
+    // Track file uploads
+    files.forEach(file => {
+      track('file_upload', {
+        tool: 'img2pdf',
+        sizeMb: Math.round(file.size / (1024 * 1024) * 100) / 100,
+        pages: 0
+      })
+    })
   }
 
   const handleFileRemove = (fileId: string) => {
@@ -51,13 +63,26 @@ export default function ImagesToPDFPage() {
   const handleConvert = async () => {
     if (uploadedFiles.length === 0) return
 
+    const jobId = newJobId('img2pdf')
+    const startTime = Date.now()
     setIsProcessing(true)
+    
+    // Track job start
+    track('job_start', {
+      jobId,
+      tool: 'img2pdf',
+      fileCount: uploadedFiles.length,
+      conversionMode,
+      pageSize,
+      orientation
+    })
     
     try {
       // Import pdf-lib dynamically to avoid SSR issues
       const { PDFDocument } = await import('pdf-lib')
       
       let results: ConvertedFile[] = []
+      const totalOriginalSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0)
       
       if (conversionMode === 'single') {
         // Combine all images into one PDF
@@ -127,8 +152,11 @@ export default function ImagesToPDFPage() {
         const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
         const downloadUrl = URL.createObjectURL(blob)
         
+        // Use names helper for filename
+        const filename = names.imgToPdf(true, uploadedFiles.length)
+        
         results = [{
-          name: 'combined_images.pdf',
+          name: filename,
           pageCount: uploadedFiles.length,
           downloadUrl
         }]
@@ -198,32 +226,65 @@ export default function ImagesToPDFPage() {
           const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
           const downloadUrl = URL.createObjectURL(blob)
           
+          // Use names helper for filename
+          const filename = names.imgToPdf(false, 1)
+          
           results.push({
-            name: file.name.replace(/\.(jpg|jpeg|png)$/i, '.pdf'),
+            name: filename,
             pageCount: 1,
             downloadUrl
           })
         }
       }
       
+      const durationMs = Date.now() - startTime
+      const totalResultSize = results.reduce((sum, result) => {
+        // Estimate PDF size (actual size would require blob.size but that's async)
+        return sum + (totalOriginalSize / uploadedFiles.length)
+      }, 0)
+      
+      // Track successful conversion
+      track('job_success', {
+        jobId,
+        tool: 'img2pdf',
+        durationMs,
+        resultSizeMb: Math.round(totalResultSize / (1024 * 1024) * 100) / 100,
+        fileCount: uploadedFiles.length,
+        conversionMode,
+        pageSize,
+        orientation
+      })
+      
       setConvertedFiles(results)
     } catch (error) {
       console.error('Error converting images to PDF:', error)
+      
+      // Track error
+      track('job_error', {
+        jobId,
+        tool: 'img2pdf',
+        code: 'conversion_failed'
+      })
+      
       // Fallback to simulation if pdf-lib fails
       let results: ConvertedFile[] = []
       
       if (conversionMode === 'single') {
+        const filename = names.imgToPdf(true, uploadedFiles.length)
         results = [{
-          name: 'combined_images.pdf',
+          name: filename,
           pageCount: uploadedFiles.length,
           downloadUrl: URL.createObjectURL(uploadedFiles[0].file)
         }]
       } else {
-        results = uploadedFiles.map(file => ({
-          name: file.name.replace(/\.(jpg|jpeg|png)$/i, '.pdf'),
-          pageCount: 1,
-          downloadUrl: URL.createObjectURL(file.file)
-        }))
+        results = uploadedFiles.map(file => {
+          const filename = names.imgToPdf(false, 1)
+          return {
+            name: filename,
+            pageCount: 1,
+            downloadUrl: URL.createObjectURL(file.file)
+          }
+        })
       }
       
       setConvertedFiles(results)

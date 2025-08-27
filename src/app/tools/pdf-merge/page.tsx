@@ -7,6 +7,9 @@ import { Dropzone, UploadedFile } from '@/components/Dropzone';
 import { Progress } from '@/components/ui/progress';
 import { GitMerge, Download, AlertCircle, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { newJobId } from '@/lib/jobs/id';
+import { names } from '@/lib/names';
+import { track } from '@/lib/analytics/client';
 
 interface ProcessingResult {
   success: boolean;
@@ -40,6 +43,15 @@ export default function PDFMergePage() {
     }));
 
     setUploadedFiles(prev => [...prev, ...newFiles]);
+    
+    // Track file uploads
+    pdfFiles.forEach(file => {
+      track('file_upload', {
+        tool: 'merge',
+        sizeMb: Math.round(file.size / (1024 * 1024) * 100) / 100,
+        pages: 0 // PDF page count would need to be extracted
+      })
+    })
   };
 
   const handleFileRemove = (fileId: string) => {
@@ -53,9 +65,19 @@ export default function PDFMergePage() {
       return;
     }
 
+    // Generate job ID for tracking
+    const jobId = newJobId('merge');
+
     setIsProcessing(true);
     setProcessingProgress(0);
     setResult(null);
+
+    // Track job start
+    track('job_start', {
+      tool: 'merge',
+      jobId,
+      fileCount: uploadedFiles.length
+    });
 
     try {
       // Import pdf-lib dynamically to avoid SSR issues
@@ -64,6 +86,8 @@ export default function PDFMergePage() {
       // Create a new PDF document
       const mergedPdf = await PDFDocument.create();
       setProcessingProgress(10);
+
+      let totalPages = 0;
 
       // Process each uploaded file
       for (let i = 0; i < uploadedFiles.length; i++) {
@@ -80,6 +104,8 @@ export default function PDFMergePage() {
         // Add the copied pages to the merged PDF
         copiedPages.forEach((page) => mergedPdf.addPage(page));
         
+        totalPages += pageIndices.length;
+        
         // Update progress
         setProcessingProgress(10 + ((i + 1) / uploadedFiles.length) * 80);
       }
@@ -93,17 +119,39 @@ export default function PDFMergePage() {
       const downloadUrl = URL.createObjectURL(blob);
 
       const totalSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
+      
+      // Use consistent filename convention
+      const mergedFilename = names.merge();
+
       setResult({
         success: true,
         downloadUrl,
-        filename: 'merged.pdf',
+        filename: mergedFilename,
         originalSize: totalSize,
         newSize: pdfBytes.length,
+      });
+
+      // Track successful completion
+      track('job_success', {
+        tool: 'merge',
+        jobId,
+        fileCount: uploadedFiles.length,
+        totalPages,
+        totalOriginalSize: totalSize,
+        finalSize: pdfBytes.length
       });
 
       toast.success('PDFs merged successfully!');
     } catch (error) {
       console.error('Error merging PDFs:', error);
+      
+      // Track error
+      track('job_error', {
+        tool: 'merge',
+        jobId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+
       setResult({
         success: false,
         error: error instanceof Error ? error.message : 'Failed to merge PDFs',
@@ -242,7 +290,7 @@ export default function PDFMergePage() {
           <CardContent className="space-y-4">
             <div>
               <h3 className="font-medium text-gray-900 mb-2">How many PDFs can I merge?</h3>
-              <p className="text-gray-600">You can merge up to 20 PDF files at once, with a maximum file size of 25MB per file.</p>
+              <p className="text-gray-600">You can merge up to 20 PDF files at once, with a maximum file size of 100MB per file.</p>
             </div>
             <div>
               <h3 className="font-medium text-gray-900 mb-2">Will the quality be preserved?</h3>

@@ -18,6 +18,8 @@ import {
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { Progress } from '@/components/Progress'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { newJobId } from '@/lib/jobs/id'
+import { names } from '@/lib/names'
 import { 
   DndContext, 
   closestCenter, 
@@ -374,9 +376,24 @@ export function PDFOrganizeClient() {
   const handleProcess = useCallback(async () => {
     if (!file || pages.length === 0) return
     
+    const jobId = newJobId('organize')
+    const startTime = Date.now()
+    const originalSizeMb = file.size / (1024 * 1024)
+    const rotationsApplied = pages.filter(p => p.rotation !== 0).length
+    
     setIsProcessing(true)
     setProgress(0)
     setError(null)
+    
+    // Track job start
+    track('job_start', {
+      jobId,
+      tool: 'organize',
+      fileCount: 1,
+      pageCount: pages.length,
+      rotationsApplied,
+      originalSizeMb
+    })
     
     try {
       // Import pdf-lib dynamically to avoid SSR issues
@@ -415,35 +432,54 @@ export function PDFOrganizeClient() {
       
       // Generate the PDF bytes
       const pdfBytes = await newPdf.save()
+      const resultSizeMb = pdfBytes.length / (1024 * 1024)
       
       setProgress(100)
+      
+      // Use names helper for filename
+      const filename = names.organize(file.name)
       
       // Create download link
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `organized_${file.name}`
+      link.download = filename
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
       
+      const durationMs = Date.now() - startTime
+      
       toast.success('PDF organized and downloaded successfully!')
       
-      track('pdf_organize_success', {
-        page_count: pages.length,
-        rotations_applied: pages.filter(p => p.rotation !== 0).length,
-        file_size: pdfBytes.length
+      // Track successful completion
+      track('job_success', {
+        jobId,
+        tool: 'organize',
+        durationMs,
+        pageCount: pages.length,
+        rotationsApplied,
+        originalSizeMb,
+        resultSizeMb
       })
       
     } catch (error) {
       console.error('Error processing PDF:', error)
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const durationMs = Date.now() - startTime
+      
       setError(errorMessage)
       toast.error('Failed to organize PDF')
-      track('pdf_organize_error', {
-        error: errorMessage
+      
+      // Track error
+      track('job_error', {
+        jobId,
+        tool: 'organize',
+        error: errorMessage,
+        durationMs,
+        pageCount: pages.length
       })
     } finally {
       setIsProcessing(false)
@@ -504,7 +540,7 @@ export function PDFOrganizeClient() {
           uploadedFiles={uploadedFiles}
           accept={{ 'application/pdf': ['.pdf'] }}
           maxFiles={1}
-          maxSize={25 * 1024 * 1024} // 25MB
+          maxSize={100 * 1024 * 1024} // 100MB
         />
       )}
 

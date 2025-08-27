@@ -152,7 +152,7 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-medium text-gray-900 dark:text-white">What file size limits do you have?</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Currently, we support files up to 25MB and PDFs with up to 200 pages.
+                      Currently, we support files up to 100MB and PDFs with up to 200 pages.
                     </p>
                   </div>
                   <div>

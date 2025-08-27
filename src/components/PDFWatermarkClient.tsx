@@ -17,6 +17,8 @@ import {
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { Progress } from '@/components/Progress'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { newJobId } from '@/lib/jobs/id'
+import { names } from '@/lib/names'
 
 interface WatermarkSettings {
   text: string
@@ -138,9 +140,26 @@ export function PDFWatermarkClient() {
       return
     }
     
+    const jobId = newJobId('watermark')
+    const startTime = Date.now()
+    const originalSizeMb = file.size / (1024 * 1024)
+    
     setIsProcessing(true)
     setProgress(0)
     setError(null)
+    
+    // Track job start
+    track('job_start', {
+      jobId,
+      tool: 'watermark',
+      fileCount: 1,
+      watermarkText: watermarkSettings.text,
+      position: watermarkSettings.position,
+      opacity: watermarkSettings.opacity,
+      fontSize: watermarkSettings.fontSize,
+      rotation: watermarkSettings.rotation,
+      originalSizeMb
+    })
     
     try {
       // Import pdf-lib dynamically to avoid SSR issues
@@ -202,37 +221,56 @@ export function PDFWatermarkClient() {
       
       // Generate the PDF bytes
       const pdfBytes = await pdfDoc.save()
+      const resultSizeMb = pdfBytes.length / (1024 * 1024)
       
       setProgress(100)
+      
+      // Use names helper for filename
+      const filename = names.watermark(file.name)
       
       // Create download link
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `watermarked_${file.name}`
+      link.download = filename
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
       
+      const durationMs = Date.now() - startTime
+      
       toast.success('PDF watermarked and downloaded successfully!')
       
-      track('pdf_watermark_success', {
-        page_count: totalPages,
-        watermark_text: watermarkSettings.text,
+      // Track successful completion
+      track('job_success', {
+        jobId,
+        tool: 'watermark',
+        durationMs,
+        pageCount: totalPages,
+        watermarkText: watermarkSettings.text,
         position: watermarkSettings.position,
         opacity: watermarkSettings.opacity,
-        file_size: pdfBytes.length
+        originalSizeMb,
+        resultSizeMb
       })
       
     } catch (error) {
       console.error('Error adding watermark:', error)
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const durationMs = Date.now() - startTime
+      
       setError(errorMessage)
       toast.error('Failed to add watermark to PDF')
-      track('pdf_watermark_error', {
-        error: errorMessage
+      
+      // Track error
+      track('job_error', {
+        jobId,
+        tool: 'watermark',
+        error: errorMessage,
+        durationMs,
+        watermarkText: watermarkSettings.text
       })
     } finally {
       setIsProcessing(false)
@@ -268,7 +306,7 @@ export function PDFWatermarkClient() {
           uploadedFiles={uploadedFiles}
           accept={{ 'application/pdf': ['.pdf'] }}
           maxFiles={1}
-          maxSize={25 * 1024 * 1024} // 25MB
+          maxSize={100 * 1024 * 1024} // 100MB
         />
       )}
 

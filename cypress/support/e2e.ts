@@ -16,5 +16,34 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Set sensible defaults for ConvertMorph testing
+beforeEach(() => {
+  // Set default viewport for consistent testing
+  cy.viewport(1280, 800)
+  
+  // Set reasonable timeouts
+  Cypress.config('defaultCommandTimeout', 10000)
+  Cypress.config('requestTimeout', 15000)
+  Cypress.config('responseTimeout', 15000)
+  
+  // Configure retries for flaky tests
+  Cypress.config('retries', {
+    runMode: 2,
+    openMode: 0
+  })
+})
+
+// Global error handling
+Cypress.on('uncaught:exception', (err, runnable) => {
+  // Ignore certain errors that don't affect functionality
+  if (err.message.includes('ResizeObserver loop limit exceeded')) {
+    return false
+  }
+  if (err.message.includes('Non-Error promise rejection captured')) {
+    return false
+  }
+  // Let other errors fail the test
+  return true
+})
+
+// Custom assertions can be added here if needed

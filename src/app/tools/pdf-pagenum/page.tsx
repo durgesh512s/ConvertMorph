@@ -104,7 +104,7 @@ const faqJsonLd = {
       name: 'Are there any file size limits?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Our tool can handle PDF files up to 25MB in size. For larger files, consider compressing your PDF first or splitting it into smaller sections.',
+        text: 'Our tool can handle PDF files up to 100MB in size. For larger files, consider compressing your PDF first or splitting it into smaller sections.',
       },
     },
   ],
@@ -237,7 +237,7 @@ export default function PDFPageNumPage() {
                 Are there any file size limits?
               </h3>
               <p className="text-gray-600">
-                Our tool can handle PDF files up to 25MB in size. For larger files, consider compressing 
+                Our tool can handle PDF files up to 100MB in size. For larger files, consider compressing 
                 your PDF first or splitting it into smaller sections.
               </p>
             </div>

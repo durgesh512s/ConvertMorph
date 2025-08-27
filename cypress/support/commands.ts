@@ -2,6 +2,29 @@
 
 // Custom commands for PDF tools testing
 
+// Upload multiple files to a file input
+Cypress.Commands.add('upload', (fileInputSelector: string, filePaths: string[]) => {
+  cy.get(fileInputSelector).selectFile(filePaths.map(path => `public/samples/${path}`), { force: true })
+})
+
+// Wait for download to be available (blob-based UIs)
+Cypress.Commands.add('expectDownload', (labelTextOrSelector: string) => {
+  // Check if it's a selector or text
+  if (labelTextOrSelector.startsWith('[') || labelTextOrSelector.startsWith('.') || labelTextOrSelector.startsWith('#')) {
+    cy.get(labelTextOrSelector, { timeout: 30000 }).should('be.visible').and('not.be.disabled')
+  } else {
+    cy.contains(labelTextOrSelector, { timeout: 30000 }).should('be.visible')
+  }
+  // Also check for download links
+  cy.get('a[download]', { timeout: 30000 }).should('exist')
+})
+
+// Assert that specific text is visible on the page
+Cypress.Commands.add('assertVisibleText', (text: string) => {
+  cy.contains(text).should('be.visible')
+})
+
+// Legacy commands for backward compatibility
 Cypress.Commands.add('uploadFile', (fileName: string, fileType: string = 'application/pdf') => {
   cy.get('input[type="file"]').selectFile(`cypress/fixtures/${fileName}`, { force: true })
 })

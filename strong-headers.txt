@@ -1,0 +1,13 @@
+HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch
+content-disposition: attachment; filename="test-10mb.compressed.pdf"
+content-type: application/pdf
+x-compressed-bytes: 719459
+x-original-bytes: 10705702
+Date: Wed, 27 Aug 2025 12:03:31 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+

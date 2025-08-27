@@ -20,6 +20,8 @@ import {
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { Progress } from '@/components/Progress'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { newJobId } from '@/lib/jobs/id'
+import { names } from '@/lib/names'
 
 interface SignatureElement {
   id: string
@@ -252,6 +254,24 @@ export function PDFSignClient() {
     setProgress(0)
     setError(null)
     
+    const startTime = Date.now()
+    const jobId = newJobId('sign')
+    const elementCount = elements.length
+    const signatureCount = elements.filter(el => el.type === 'signature').length
+    const textCount = elements.filter(el => el.type === 'text').length
+    const originalSizeMb = Number((file.size / (1024 * 1024)).toFixed(2))
+    
+    // Track job start
+    track('job_start', {
+      jobId,
+      tool: 'sign',
+      fileCount: 1,
+      elementCount,
+      signatureCount,
+      textCount,
+      originalSizeMb
+    })
+    
     try {
       // Import pdf-lib dynamically to avoid SSR issues
       const { PDFDocument } = await import('pdf-lib')
@@ -264,6 +284,7 @@ export function PDFSignClient() {
       
       // Get all pages
       const pages = pdfDoc.getPages()
+      const pageCount = pages.length
       
       // Process each element
       for (let i = 0; i < elements.length; i++) {
@@ -299,27 +320,39 @@ export function PDFSignClient() {
       
       // Generate the PDF bytes
       const pdfBytes = await pdfDoc.save()
+      const resultSizeMb = Number((pdfBytes.length / (1024 * 1024)).toFixed(2))
       
       setProgress(100)
+      
+      // Use names helper for filename
+      const filename = names.sign(file.name)
       
       // Create download link
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `signed_${file.name}`
+      link.download = filename
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
       
+      const durationMs = Date.now() - startTime
+      
       toast.success('PDF signed and downloaded successfully!')
       
-      track('pdf_sign_success', {
-        element_count: elements.length,
-        signature_count: elements.filter(el => el.type === 'signature').length,
-        text_count: elements.filter(el => el.type === 'text').length,
-        file_size: pdfBytes.length
+      // Track job success
+      track('job_success', {
+        jobId,
+        tool: 'sign',
+        durationMs,
+        pageCount,
+        elementCount,
+        signatureCount,
+        textCount,
+        originalSizeMb,
+        resultSizeMb
       })
       
     } catch (error) {
@@ -327,8 +360,19 @@ export function PDFSignClient() {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       setError(errorMessage)
       toast.error('Failed to sign PDF')
-      track('pdf_sign_error', {
-        error: errorMessage
+      
+      const durationMs = Date.now() - startTime
+      
+      // Track job error
+      track('job_error', {
+        jobId,
+        tool: 'sign',
+        durationMs,
+        error: errorMessage,
+        elementCount,
+        signatureCount,
+        textCount,
+        originalSizeMb
       })
     } finally {
       setIsProcessing(false)
@@ -362,7 +406,7 @@ export function PDFSignClient() {
           uploadedFiles={uploadedFiles}
           accept={{ 'application/pdf': ['.pdf'] }}
           maxFiles={1}
-          maxSize={25 * 1024 * 1024} // 25MB
+          maxSize={100 * 1024 * 1024} // 100MB
         />
       )}
 

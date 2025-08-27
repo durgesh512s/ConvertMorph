@@ -94,7 +94,7 @@ const faqJsonLd = {
       name: 'Are there any file size limits?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'The default limit is 25MB per file, but this can handle most PDF documents. For larger files, consider compressing your PDF first.'
+        text: 'The default limit is 100MB per file, but this can handle most PDF documents. For larger files, consider compressing your PDF first.'
       }
     }
   ]
@@ -211,7 +211,7 @@ export default function PDFWatermarkPage() {
                   Are there any file size limits?
                 </h3>
                 <p className="text-gray-600 text-sm">
-                  The default limit is 25MB per file, but this can handle most PDF documents. For larger files, consider compressing your PDF first.
+                  The default limit is 100MB per file, but this can handle most PDF documents. For larger files, consider compressing your PDF first.
                 </p>
               </div>
             </div>

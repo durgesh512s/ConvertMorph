@@ -1,52 +1,42 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
-export function KeyboardShortcuts() {
-  const router = useRouter();
+interface KeyboardShortcutsProps {
+  onUpload?: () => void;
+  onDownload?: () => void;
+  onClear?: () => void;
+}
 
+export function KeyboardShortcuts({ onUpload, onDownload, onClear }: KeyboardShortcutsProps) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Check if Ctrl (or Cmd on Mac) is pressed
-      const isCtrlOrCmd = event.ctrlKey || event.metaKey;
+      // Check for modifier keys (Ctrl on Windows/Linux, Cmd on Mac)
+      const isModifierPressed = event.ctrlKey || event.metaKey;
       
-      if (isCtrlOrCmd) {
-        switch (event.key.toLowerCase()) {
-          case 'u':
-            event.preventDefault();
-            // Focus on file input if available
-            const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-            if (fileInput) {
-              fileInput.click();
-            }
-            break;
-          case 'd':
-            event.preventDefault();
-            // Trigger download if available
-            const downloadButton = document.querySelector('[data-download]') as HTMLButtonElement;
-            if (downloadButton) {
-              downloadButton.click();
-            }
-            break;
-          case 'h':
-            event.preventDefault();
-            router.push('/');
-            break;
-          case 't':
-            event.preventDefault();
-            router.push('/tools');
-            break;
-        }
+      // Ctrl/Cmd + U for upload
+      if (isModifierPressed && event.key.toLowerCase() === 'u') {
+        event.preventDefault();
+        onUpload?.();
+        return;
       }
       
-      // Reset functionality with 'R' key
-      if (event.key.toLowerCase() === 'r' && !event.ctrlKey && !event.metaKey) {
-        const resetButton = document.querySelector('[data-reset]') as HTMLButtonElement;
-        if (resetButton) {
+      // D for download (no modifier needed)
+      if (event.key.toLowerCase() === 'd' && !isModifierPressed && !event.altKey && !event.shiftKey) {
+        // Only trigger if not in an input field
+        const target = event.target as HTMLElement;
+        if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA' && !target.isContentEditable) {
           event.preventDefault();
-          resetButton.click();
+          onDownload?.();
         }
+        return;
+      }
+      
+      // Escape to clear
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClear?.();
+        return;
       }
     };
 
@@ -55,7 +45,7 @@ export function KeyboardShortcuts() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [router]);
+  }, [onUpload, onDownload, onClear]);
 
   return null; // This component doesn't render anything
 }

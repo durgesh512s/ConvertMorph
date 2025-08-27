@@ -6,6 +6,9 @@ import { Scissors, Download, FileText, Zap, Info } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
+import { newJobId } from '@/lib/jobs/id'
+import { names } from '@/lib/names'
+import { track } from '@/lib/analytics/client'
 
 const metadata: Metadata = {
   title: 'PDF Split | ConvertMorph - Split PDF Pages',
@@ -42,6 +45,15 @@ export default function PDFSplitPage() {
     }))
     setUploadedFiles(newFiles.slice(0, 1)) // Only allow one file for splitting
     setSplitFiles([])
+    
+    // Track file uploads
+    files.slice(0, 1).forEach(file => {
+      track('file_upload', {
+        tool: 'split',
+        sizeMb: Math.round(file.size / (1024 * 1024) * 100) / 100,
+        pages: 0 // PDF page count would need to be extracted
+      })
+    })
   }
 
   const handleFileRemove = (fileId: string) => {
@@ -51,7 +63,18 @@ export default function PDFSplitPage() {
   const handleSplit = async () => {
     if (uploadedFiles.length === 0) return
 
+    // Generate job ID for tracking
+    const jobId = newJobId('split')
+
     setIsProcessing(true)
+    
+    // Track job start
+    track('job_start', {
+      tool: 'split',
+      jobId,
+      splitMode,
+      pageRanges: splitMode === 'ranges' ? pageRanges : undefined
+    })
     
     try {
       // Import pdf-lib dynamically to avoid SSR issues
@@ -172,8 +195,25 @@ export default function PDFSplitPage() {
       }
       
       setSplitFiles(splits)
+      
+      // Track successful completion
+      track('job_success', {
+        tool: 'split',
+        jobId,
+        splitMode,
+        splitCount: splits.length,
+        totalPages: splits.reduce((sum, s) => sum + s.pageCount, 0)
+      })
+      
     } catch (error) {
       console.error('Error splitting PDF:', error)
+      
+      // Track error
+      track('job_error', {
+        tool: 'split',
+        jobId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      })
       // Fallback to simulation if pdf-lib fails
       const file = uploadedFiles[0]
       const totalPages = Math.floor(Math.random() * 50) + 10 // Simulate 10-60 pages
@@ -368,7 +408,7 @@ export default function PDFSplitPage() {
               uploadedFiles={uploadedFiles}
               accept={{ 'application/pdf': ['.pdf'] }}
               maxFiles={1}
-              maxSize={25 * 1024 * 1024} // 25MB
+              maxSize={100 * 1024 * 1024} // 100MB
             />
             
             {uploadedFiles.length > 0 && (
@@ -440,7 +480,13 @@ export default function PDFSplitPage() {
                         name: file.name,
                         url: file.downloadUrl
                       }))
-                      await downloadFilesAsZip(files, 'split-pdfs.zip')
+                      // Use names helper for ZIP filename with user ranges
+                      const originalName = uploadedFiles[0]?.name || 'document.pdf'
+                      const userRanges = splitMode === 'ranges' ? pageRanges : 
+                                       splitFiles.map(f => f.pageRange).join(',')
+                      const zipName = names.splitZip(originalName, userRanges)
+                      
+                      await downloadFilesAsZip(files, zipName)
                       toast.success('ZIP file downloaded successfully!')
                     } catch (error) {
                       console.error('Error downloading ZIP:', error)

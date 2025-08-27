@@ -40,7 +40,7 @@ export function Dropzone({
     'image/png': ['.png'],
   },
   maxFiles = 10,
-  maxSize = 25 * 1024 * 1024, // 25MB
+  maxSize = 100 * 1024 * 1024, // 100MB
   disabled = false,
   className,
 }: DropzoneProps) {
@@ -56,7 +56,7 @@ export function Dropzone({
     [onFilesAdded]
   );
 
-  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, fileRejections, open } = useDropzone({
     onDrop,
     accept,
     maxFiles,
@@ -64,7 +64,15 @@ export function Dropzone({
     disabled,
     onDragEnter: () => setDragActive(true),
     onDragLeave: () => setDragActive(false),
+    noClick: true, // We'll handle clicks manually for better accessibility
   });
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      open();
+    }
+  };
 
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
@@ -89,9 +97,14 @@ export function Dropzone({
       {/* Dropzone */}
       <Card
         {...getRootProps()}
+        role="button"
+        tabIndex={0}
+        aria-label="Upload files"
+        onKeyDown={handleKeyDown}
+        onClick={open}
         className={cn(
           'border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer transition-colors',
-          'hover:border-gray-400 hover:bg-gray-50',
+          'hover:border-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
           isDragActive && 'border-blue-500 bg-blue-50',
           disabled && 'cursor-not-allowed opacity-50'
         )}

@@ -18,6 +18,8 @@ import {
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { Progress } from '@/components/Progress'
 import { useAnalytics } from '@/hooks/useAnalytics'
+import { newJobId } from '@/lib/jobs/id'
+import { names } from '@/lib/names'
 
 interface PageNumberSettings {
   position: 'header' | 'footer'
@@ -198,9 +200,26 @@ export function PDFPageNumClient() {
       return
     }
     
+    const jobId = newJobId('pagenum')
+    const startTime = Date.now()
+    const originalSizeMb = file.size / (1024 * 1024)
+    
     setIsProcessing(true)
     setProgress(0)
     setError(null)
+    
+    // Track job start
+    track('job_start', {
+      jobId,
+      tool: 'pagenum',
+      fileCount: 1,
+      position: pageNumSettings.position,
+      alignment: pageNumSettings.alignment,
+      format: pageNumSettings.format,
+      startNumber: pageNumSettings.startNumber,
+      fontSize: pageNumSettings.fontSize,
+      originalSizeMb
+    })
     
     try {
       // Import pdf-lib dynamically to avoid SSR issues
@@ -251,38 +270,58 @@ export function PDFPageNumClient() {
       
       // Generate the PDF bytes
       const pdfBytes = await pdfDoc.save()
+      const resultSizeMb = pdfBytes.length / (1024 * 1024)
       
       setProgress(100)
+      
+      // Use names helper for filename
+      const filename = names.pagenum(file.name)
       
       // Create download link
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' })
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `numbered_${file.name}`
+      link.download = filename
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
       
+      const durationMs = Date.now() - startTime
+      
       toast.success('Page numbers added and PDF downloaded successfully!')
       
-      track('pdf_pagenum_success', {
-        page_count: totalPages,
+      // Track successful completion
+      track('job_success', {
+        jobId,
+        tool: 'pagenum',
+        durationMs,
+        pageCount: totalPages,
         position: pageNumSettings.position,
         alignment: pageNumSettings.alignment,
         format: pageNumSettings.format,
-        start_number: pageNumSettings.startNumber,
-        file_size: pdfBytes.length
+        startNumber: pageNumSettings.startNumber,
+        originalSizeMb,
+        resultSizeMb
       })
       
     } catch (error) {
       console.error('Error adding page numbers:', error)
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const durationMs = Date.now() - startTime
+      
       setError(errorMessage)
       toast.error('Failed to add page numbers to PDF')
-      track('pdf_pagenum_error', {
-        error: errorMessage
+      
+      // Track error
+      track('job_error', {
+        jobId,
+        tool: 'pagenum',
+        error: errorMessage,
+        durationMs,
+        position: pageNumSettings.position,
+        format: pageNumSettings.format
       })
     } finally {
       setIsProcessing(false)
@@ -326,7 +365,7 @@ export function PDFPageNumClient() {
           uploadedFiles={uploadedFiles}
           accept={{ 'application/pdf': ['.pdf'] }}
           maxFiles={1}
-          maxSize={25 * 1024 * 1024} // 25MB
+          maxSize={100 * 1024 * 1024} // 100MB
         />
       )}
 
