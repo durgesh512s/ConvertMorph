@@ -12,8 +12,6 @@ import {
   FileText,
   PenTool,
   Type,
-  Undo,
-  Redo,
   Save,
   Plus
 } from 'lucide-react'
@@ -796,6 +794,7 @@ export function PDFSignClient() {
                                 </div>
                               )}
                               {element.type === 'signature' && (
+                                // eslint-disable-next-line @next/next/no-img-element
                                 <img 
                                   src={element.content} 
                                   alt="Signature" 

@@ -1,5 +1,5 @@
 'use client'
-import React, { useLayoutEffect, useRef, useState } from 'react'
+import React, { useLayoutEffect, useRef, useState, useCallback } from 'react'
 import { cn } from '@/lib/utils'
 
 type Tab = { key: string; label: string }
@@ -13,13 +13,29 @@ export default function CategoryTabs({ tabs, active, setActive }: {
   const btnRefs = useRef<(HTMLButtonElement|null)[]>([])
   const [style, setStyle] = useState<{left:number;width:number;top?:number;height?:number}>({ left:0, width:0 })
 
+  // FDRIFT-1: Use offset metrics (no rect math)
+  const measure = useCallback(() => {
+    const i = Math.max(0, tabs.findIndex(t => t.key === active))
+    const btn = btnRefs.current[i]
+    const rail = railRef.current
+    if(!btn || !rail) return
+
+    // Calculate position relative to the rail's content area
+    // btn.offsetLeft is relative to the rail's content box (excluding padding)
+    const left = btn.offsetLeft
+    const width = btn.offsetWidth
+
+    // Do NOT clamp unless absolutely needed; clamping near the right edge causes the pill to stop early.
+    setStyle({ left, width, top: 4, height: rail.clientHeight - 8 })
+  }, [tabs, active])
+
   // FDRIFT-2: Helper to re-measure after auto-scroll completes
   const afterScroll = (fn: () => void) => {
     // Two RAFs + a short timeout let layout settle across browsers
     requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(fn, 16)))
   }
 
-  const scrollIntoViewIfNeeded = (btn: HTMLButtonElement, rail: HTMLDivElement) => {
+  const scrollIntoViewIfNeeded = useCallback((btn: HTMLButtonElement, rail: HTMLDivElement) => {
     const bLeft = btn.offsetLeft
     const bRight = bLeft + btn.offsetWidth
     const viewLeft = rail.scrollLeft
@@ -31,34 +47,14 @@ export default function CategoryTabs({ tabs, active, setActive }: {
       return
     }
     measure()
-  }
-
-  // FDRIFT-1: Use offset metrics (no rect math)
-  const measure = () => {
-    const i = Math.max(0, tabs.findIndex(t => t.key === active))
-    const btn = btnRefs.current[i]
-    const rail = railRef.current
-    if(!btn || !rail) return
-
-    const cs = getComputedStyle(rail)
-    const padL = parseFloat(cs.paddingLeft || '0')
-    const padR = parseFloat(cs.paddingRight || '0')
-
-    // Calculate position relative to the rail's content area
-    // btn.offsetLeft is relative to the rail's content box (excluding padding)
-    const left = btn.offsetLeft
-    const width = btn.offsetWidth
-
-    // Do NOT clamp unless absolutely needed; clamping near the right edge causes the pill to stop early.
-    setStyle({ left, width, top: 4, height: rail.clientHeight - 8 })
-  }
+  }, [measure])
 
   useLayoutEffect(() => {
     const i = Math.max(0, tabs.findIndex(t => t.key === active))
     const btn = btnRefs.current[i]
     const rail = railRef.current
     if(btn && rail) scrollIntoViewIfNeeded(btn, rail)
-  }, [active])
+  }, [active, tabs, scrollIntoViewIfNeeded])
 
   useLayoutEffect(() => {
     const ro = new ResizeObserver(measure)
@@ -74,7 +70,7 @@ export default function CategoryTabs({ tabs, active, setActive }: {
       window.removeEventListener('orientationchange', measure)
       rail?.removeEventListener('scroll', measure)
     }
-  }, [tabs.map(t=>t.key).join('|')])
+  }, [measure])
 
   return (
     // GLASS-1: OUTER SHELL with overflow-hidden to clip blur, ring instead of border+shadow

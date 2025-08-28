@@ -9,9 +9,16 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Convert Images to PDF: JPG, PNG to PDF Online Free',
     description: 'Convert JPG, PNG, and other images to PDF online for free. Combine multiple images into one PDF or create separate PDFs. No software required.',
+    images: ['/og/blog/convert-images-to-pdf.png'],
     type: 'article',
     publishedTime: '2024-01-25T10:00:00.000Z',
     authors: ['ConvertMorph Team'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Convert Images to PDF: JPG, PNG to PDF Online Free',
+    description: 'Convert JPG, PNG, and other images to PDF online for free. Combine multiple images into one PDF or create separate PDFs. No software required.',
+    images: ['/og/blog/convert-images-to-pdf.png'],
   },
   alternates: {
     canonical: '/blog/convert-images-to-pdf',
@@ -66,7 +73,7 @@ export default function ImagesToPDFGuide() {
             
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 my-6">
               <div className="flex items-start space-x-3">
-                <Image className="w-6 h-6 text-blue-600 mt-1" />
+                <Image className="w-6 h-6 text-blue-600 mt-1" aria-label="Image icon" />
                 <div>
                   <h4 className="font-semibold text-blue-900 mb-2">Simple Conversion Process:</h4>
                   <ol className="text-blue-800 space-y-2">

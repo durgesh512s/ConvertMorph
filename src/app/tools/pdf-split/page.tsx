@@ -258,13 +258,6 @@ export default function PDFSplitPage() {
     }
   }
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
@@ -624,7 +617,7 @@ export default function PDFSplitPage() {
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
                     You can split PDF files up to 100MB in size. All processing happens in your browser, 
-                    so larger files may take longer to process depending on your device's capabilities.
+                    so larger files may take longer to process depending on your device&apos;s capabilities.
                   </p>
                 </div>
                 

@@ -20,8 +20,7 @@ export class FileValidator {
 
   async validateFile(
     buffer: Buffer,
-    originalName: string,
-    declaredMimeType: string
+    originalName: string
   ): Promise<FileValidationResult> {
     // Check file size
     if (buffer.length > this.maxSizeBytes) {
@@ -87,7 +86,7 @@ export class FileValidator {
       // Additional PDF validation could be added here
       // For now, we'll do basic validation
       return { isValid: true };
-    } catch (error) {
+    } catch {
       return {
         isValid: false,
         error: 'PDF validation failed',
@@ -119,7 +118,7 @@ export class FileValidator {
     const results = [];
 
     for (const file of files) {
-      const validation = await this.validateFile(file.buffer, file.name, file.type);
+      const validation = await this.validateFile(file.buffer, file.name);
       results.push({
         ...validation,
         filename: file.name,

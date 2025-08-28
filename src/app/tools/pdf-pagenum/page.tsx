@@ -181,7 +181,7 @@ export default function PDFPageNumPage() {
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300 text-sm">
                       Upload your PDF file, choose the position (header or footer), select the number format, 
-                      set the starting number, and click "Add Page Numbers". The tool will process your PDF 
+                      set the starting number, and click &quot;Add Page Numbers&quot;. The tool will process your PDF
                       and add page numbers to all pages.
                     </p>
                   </div>

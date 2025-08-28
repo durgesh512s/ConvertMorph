@@ -227,7 +227,7 @@ export default function ImagesToPDFPage() {
       }
       
       const durationMs = Date.now() - startTime
-      const totalResultSize = results.reduce((sum, result) => {
+      const totalResultSize = results.reduce((sum) => {
         // Estimate PDF size (actual size would require blob.size but that's async)
         return sum + (totalOriginalSize / uploadedFiles.length)
       }, 0)
@@ -282,13 +282,6 @@ export default function ImagesToPDFPage() {
     }
   }
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-100 dark:from-gray-900 dark:to-gray-800">

@@ -127,6 +127,7 @@ function SortablePage({ page, index, onRotate, isProcessing }: SortablePageProps
 
             {/* Thumbnail */}
             <div className="aspect-[3/4] bg-gray-100 rounded overflow-hidden mb-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={page.thumbnail}
                 alt={`Page ${page.pageNumber}`}

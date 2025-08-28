@@ -1,5 +1,5 @@
 // Worker thread for heavy PDF processing operations
-import { parentPort, workerData } from 'worker_threads';
+import { parentPort } from 'worker_threads';
 import { PDFDocument } from 'pdf-lib';
 import sharp from 'sharp';
 import * as fs from 'fs/promises';
@@ -87,21 +87,19 @@ async function compressPdf(filePath: string, quality: 'light' | 'medium' | 'stro
     
     sendProgress(jobId, 30);
     
-    // Quality settings
-    const qualitySettings = {
-      light: { dpi: 150, quality: 85 },
-      medium: { dpi: 120, quality: 70 },
-      strong: { dpi: 96, quality: 55 }
-    };
+    // Quality settings (for future use)
+    // const qualitySettings = {
+    //   light: { dpi: 150, quality: 85 },
+    //   medium: { dpi: 120, quality: 70 },
+    //   strong: { dpi: 96, quality: 55 }
+    // };
     
-    const settings = qualitySettings[quality];
     const pages = pdfDoc.getPages();
     
     sendProgress(jobId, 50);
     
     // Process images in the PDF
     for (let i = 0; i < pages.length; i++) {
-      const page = pages[i];
       // Note: This is a simplified version. In a real implementation,
       // you would need to extract and recompress embedded images
       sendProgress(jobId, 50 + (i / pages.length) * 40);

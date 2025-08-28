@@ -150,7 +150,7 @@ export default function PDFToImagesGuide() {
 
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 my-8">
               <div className="flex items-start space-x-3">
-                <Image className="w-6 h-6 text-purple-600 mt-1" />
+                <Image className="w-6 h-6 text-purple-600 mt-1" aria-label="Image icon" />
                 <div>
                   <h4 className="font-semibold text-purple-900 mb-2">Batch Processing:</h4>
                   <p className="text-purple-800 text-sm">

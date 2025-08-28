@@ -115,7 +115,7 @@ export function PDFPageNumClient() {
   }, [])
 
   // Convert number to different formats
-  const formatPageNumber = (pageNum: number, format: string): string => {
+  const formatPageNumber = useCallback((pageNum: number, format: string): string => {
     switch (format) {
       case 'arabic':
         return pageNum.toString()
@@ -130,7 +130,7 @@ export function PDFPageNumClient() {
       default:
         return pageNum.toString()
     }
-  }
+  }, [])
 
   // Convert number to Roman numerals
   const toRoman = (num: number): string => {
@@ -327,7 +327,7 @@ export function PDFPageNumClient() {
       setIsProcessing(false)
       setProgress(0)
     }
-  }, [file, pageNumSettings, track])
+  }, [file, pageNumSettings, track, formatPageNumber])
 
   // Reset function
   const handleReset = useCallback(() => {

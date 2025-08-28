@@ -1,7 +1,5 @@
-import { PDFDocument, PDFPage, rgb } from 'pdf-lib';
-import sharp from 'sharp';
+import { PDFDocument } from 'pdf-lib';
 import * as pdfjsLib from 'pdfjs-dist';
-import { createCanvas } from 'canvas';
 import { CompressionLevel, ImagesToPdfOptions, PdfToImagesOptions } from '../validation/schemas';
 import { TempFile, tempStorage } from '../storage/temp';
 import path from 'path';
@@ -246,21 +244,9 @@ export class PDFProcessor {
       const pdfBuffer = await tempStorage.readFile(file.path);
       const pdf = await PDFDocument.load(pdfBuffer);
 
-      // Compression settings based on level
-      const settings = {
-        light: { quality: 85, maxWidth: 1200 },
-        medium: { quality: 75, maxWidth: 1000 },
-        strong: { quality: 60, maxWidth: 800 },
-      };
-
-      const { quality, maxWidth } = settings[level];
-
       // Process embedded images
-      const pages = pdf.getPages();
-      for (const page of pages) {
-        // This is a simplified compression approach
-        // In a real implementation, you'd need to extract and recompress images
-      }
+      // This is a simplified compression approach
+      // In a real implementation, you'd need to extract and recompress images
 
       const compressedBytes = await pdf.save({
         useObjectStreams: true,

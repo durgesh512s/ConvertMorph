@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'PDF Watermark — ConvertMorph',
     description: 'Add watermarks to PDF files. Insert text or image watermarks with custom positioning. Fast, private, free forever.',
-    images: ['/og/og-watermark.png'],
+    images: ['/og/pdf-watermark.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PDF Watermark — ConvertMorph',
     description: 'Add watermarks to PDF files. Insert text or image watermarks with custom positioning. Fast, private, free forever.',
-    images: ['/og/og-watermark.png'],
+    images: ['/og/pdf-watermark.png'],
   },
 }
 

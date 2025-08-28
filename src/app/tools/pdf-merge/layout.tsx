@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Merge PDF — ConvertMorph',
     description: 'Combine multiple PDF files into one document. Drag, drop, reorder pages and merge PDFs instantly. Fast, private, free forever.',
-    images: [absoluteUrl('/og/og-merge.png')],
+    images: [absoluteUrl('/og/pdf-merge.png')],
     type: 'website',
     url: absoluteUrl('/tools/pdf-merge'),
   },
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Merge PDF — ConvertMorph',
     description: 'Combine multiple PDF files into one document. Drag, drop, reorder pages and merge PDFs instantly. Fast, private, free forever.',
-    images: [absoluteUrl('/og/og-merge.png')],
+    images: [absoluteUrl('/og/pdf-merge.png')],
   },
 }
 

@@ -54,7 +54,7 @@ export async function downloadFilesAsZip(files: FileForZip[], zipName: string = 
 /**
  * Creates a ZIP file from multiple Blob objects
  */
-export async function createZipFromBlobs(files: { name: string; blob: Blob }[], zipName: string = 'files.zip'): Promise<Blob> {
+export async function createZipFromBlobs(files: { name: string; blob: Blob }[]): Promise<Blob> {
   try {
     const JSZip = (await import('jszip')).default
     const zip = new JSZip()

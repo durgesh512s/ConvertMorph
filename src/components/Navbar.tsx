@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, X, ChevronDown, Archive, GitMerge, Scissors, Image as ImageIcon, Download, Move3D, Type, Hash, PenTool } from 'lucide-react';
+import { Menu, X, ChevronDown, Archive, GitMerge, Scissors, Image as ImageIcon, Download, Move3D, Type, Hash } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PWAInstall } from './PWAInstall';

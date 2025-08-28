@@ -4,7 +4,6 @@ import path from 'path';
 import os from 'os';
 import { randomUUID } from 'crypto';
 import archiver from 'archiver';
-import { Readable } from 'stream';
 
 export interface TempFile {
   id: string;

@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'PDF Sign — ConvertMorph',
     description: 'Add digital signatures to PDF documents. Sign with text, drawing, or upload signature images. Fast, private, free forever.',
-    images: ['/og/og-sign.png'],
+    images: ['/og/pdf-sign.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PDF Sign — ConvertMorph',
     description: 'Add digital signatures to PDF documents. Sign with text, drawing, or upload signature images. Fast, private, free forever.',
-    images: ['/og/og-sign.png'],
+    images: ['/og/pdf-sign.png'],
   },
 }
 

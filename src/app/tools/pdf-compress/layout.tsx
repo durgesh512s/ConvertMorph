@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Compress PDF — ConvertMorph',
     description: 'Reduce PDF file size instantly. Choose compression level to balance quality and file size. Fast, private, free forever.',
-    images: [absoluteUrl('/og/og-compress.png')],
+    images: [absoluteUrl('/og/pdf-compress.png')],
     type: 'website',
     url: absoluteUrl('/tools/pdf-compress'),
   },
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Compress PDF — ConvertMorph',
     description: 'Reduce PDF file size instantly. Choose compression level to balance quality and file size. Fast, private, free forever.',
-    images: [absoluteUrl('/og/og-compress.png')],
+    images: [absoluteUrl('/og/pdf-compress.png')],
   },
 }
 

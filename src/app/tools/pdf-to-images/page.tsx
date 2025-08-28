@@ -158,13 +158,6 @@ export default function PDFToImagesPage() {
     return false
   }
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-rose-100 dark:from-gray-900 dark:to-gray-800">
@@ -372,7 +365,7 @@ export default function PDFToImagesPage() {
                   <div key={index} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center">
-                        <Image className="h-5 w-5 text-blue-500 mr-2" />
+                        <Image className="h-5 w-5 text-blue-500 mr-2" aria-label="Image file icon" />
                         <span className="text-sm font-medium text-gray-900 dark:text-white">
                           Page {image.pageNumber}
                         </span>
@@ -383,7 +376,7 @@ export default function PDFToImagesPage() {
                     </div>
                     
                     <div className="bg-gray-100 dark:bg-gray-700 rounded-lg h-24 mb-3 flex items-center justify-center">
-                      <Image className="h-8 w-8 text-gray-400" />
+                      <Image className="h-8 w-8 text-gray-400" aria-label="Image preview placeholder" />
                     </div>
                     
                     <p className="text-sm font-medium text-gray-900 dark:text-white mb-2 truncate">
@@ -427,7 +420,7 @@ export default function PDFToImagesPage() {
           <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="bg-red-100 dark:bg-red-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                <Image className="h-6 w-6 text-red-600 dark:text-red-400" />
+                <Image className="h-6 w-6 text-red-600 dark:text-red-400" aria-label="High-quality output icon" />
               </div>
               <h3 className="font-medium text-gray-900 dark:text-white mb-2">High-quality Output</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300">

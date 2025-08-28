@@ -22,7 +22,7 @@ export default function ContactPage() {
               Contact Us
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Have questions about our PDF tools? Need support? We're here to help!
+              Have questions about our PDF tools? Need support? We&apos;re here to help!
             </p>
           </div>
 

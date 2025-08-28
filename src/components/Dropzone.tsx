@@ -44,7 +44,7 @@ export function Dropzone({
   disabled = false,
   className,
 }: DropzoneProps) {
-  const [dragActive, setDragActive] = useState(false);
+  const [, setDragActive] = useState(false);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {

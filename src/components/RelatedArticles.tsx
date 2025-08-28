@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Clock, User } from 'lucide-react';
+import { ArrowRight, Clock } from 'lucide-react';
 
 interface Article {
   title: string;

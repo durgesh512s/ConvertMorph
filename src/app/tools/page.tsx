@@ -2,9 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import ToolCard from '@/components/ToolCard';
-import { Input } from '@/components/ui/input';
 import CategoryTabs from '@/components/CategoryTabs';
-import { cn } from '@/lib/utils';
 import { 
   Archive, 
   GitMerge, 
@@ -237,7 +235,6 @@ export default function ToolsPage() {
   }, []);
 
   const jsonLd = useMemo(() => {
-    
     return {
       "@context": "https://schema.org",
       "@type": "ItemList",
@@ -265,7 +262,7 @@ export default function ToolsPage() {
           }
         }))
     };
-  }, [allTools]);
+  }, [allTools, baseUrl]);
 
   // Filter tools based on search and category
   const filteredTools = useMemo(() => {
