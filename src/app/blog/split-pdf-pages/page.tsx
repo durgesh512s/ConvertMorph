@@ -1,269 +1,409 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft, FileText, Scissors, Download } from 'lucide-react';
+import { ArrowLeft, FileText, Clock, Scissors } from 'lucide-react';
+import { buildPostMetadata, articleJsonLd, faqJsonLd, breadcrumbsJsonLd, BlogPostMetadata } from '@/lib/seo';
+import JsonLd from '@/components/JsonLd';
+import { BlogTOC } from '@/components/BlogTOC';
+import { ToolCTA } from '@/components/RelatedCTA';
+import { RelatedPosts } from '@/components/ReadNext';
+import '@/styles/blog.css';
 
-export const metadata: Metadata = {
-  title: 'How to Split PDF Pages: Extract & Separate PDF Files Online | ConvertMorph',
-  description: 'Learn how to split PDF files by pages, extract specific pages, or separate large PDFs into smaller documents. Free online PDF splitter tool.',
-  keywords: 'split PDF, extract PDF pages, separate PDF, PDF splitter, divide PDF pages',
-  openGraph: {
-    title: 'How to Split PDF Pages: Extract & Separate PDF Files Online',
-    description: 'Learn how to split PDF files by pages, extract specific pages, or separate large PDFs into smaller documents. Free online PDF splitter tool.',
-    type: 'article',
-    publishedTime: '2024-01-30T10:00:00.000Z',
-    authors: ['ConvertMorph Team'],
-  },
-  alternates: {
-    canonical: '/blog/split-pdf-pages',
-  },
+// Blog post metadata
+const postData: BlogPostMetadata = {
+  title: 'How to Split PDF Pages: Extract & Separate PDF Files Online',
+  excerpt: 'Learn how to split PDF files by pages, extract specific pages, or separate large PDFs into smaller documents. Complete guide with step-by-step instructions.',
+  slug: 'split-pdf-pages',
+  focusKeyword: 'split PDF pages',
+  secondaryKeywords: [
+    'extract pages from PDF',
+    'split large PDF',
+    'save selected pages as PDF',
+    'PDF page splitter',
+    'separate PDF documents',
+    'divide PDF by pages'
+  ],
+  author: 'ConvertMorph Team',
+  datePublished: '2024-01-30T10:00:00.000Z',
+  dateModified: '2024-01-30T10:00:00.000Z',
+  readingTime: '8 min read'
 };
+
+export const metadata: Metadata = buildPostMetadata(postData);
+
+// Table of contents data
+const headings = [
+  { id: 'why-split-pdf-files', text: 'Why Split PDF Files?', level: 2 },
+  { id: 'how-it-works-on-convertmorph', text: 'How it Works on ConvertMorph', level: 2 },
+  { id: 'page-range-formats', text: 'Page Range Formats and Examples', level: 2 },
+  { id: 'splitting-scenarios', text: 'Common PDF Splitting Scenarios', level: 2 },
+  { id: 'advanced-techniques', text: 'Advanced Splitting Techniques', level: 2 },
+  { id: 'best-practices', text: 'Best Practices for PDF Splitting', level: 2 },
+  { id: 'troubleshooting', text: 'Troubleshooting Common Issues', level: 2 },
+  { id: 'faq', text: 'Frequently Asked Questions', level: 2 }
+];
+
+// FAQ data
+const faqs = [
+  {
+    question: 'How do I split PDF pages without losing quality?',
+    answer: 'Use ConvertMorph\'s PDF splitter which preserves original formatting, fonts, and image quality. The tool extracts pages without recompression, maintaining the exact quality of your original document.'
+  },
+  {
+    question: 'Can I split password-protected PDF files?',
+    answer: 'Yes, but you\'ll need to enter the password first to unlock the PDF before splitting. ConvertMorph processes files securely in your browser without storing passwords or documents on servers.'
+  },
+  {
+    question: 'What\'s the maximum file size for splitting PDFs?',
+    answer: 'ConvertMorph can handle large PDF files up to 100MB. For larger files, consider splitting them into smaller chunks first or using the batch processing feature for multiple documents.'
+  },
+  {
+    question: 'How do I extract specific pages from a PDF?',
+    answer: 'Enter the page numbers you want to extract using formats like \'1,3,5\' for individual pages or \'1-5,10-15\' for ranges. The tool will create separate PDF files for each selection.'
+  },
+  {
+    question: 'Is it free to split PDF pages online?',
+    answer: 'Yes, ConvertMorph\'s PDF splitter is completely free with no registration required. You can split unlimited PDF files without watermarks or restrictions.'
+  },
+  {
+    question: 'Can I split PDF files on mobile devices?',
+    answer: 'Absolutely! ConvertMorph works on all devices including smartphones and tablets. The responsive interface makes it easy to split PDF pages on any screen size.'
+  }
+];
+
+// Breadcrumbs data
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Blog', url: '/blog' },
+  { name: 'Split PDF Pages', url: '/blog/split-pdf-pages' }
+];
 
 export default function SplitPDFGuide() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <Link 
-          href="/blog" 
-          className="inline-flex items-center text-primary hover:text-primary/80 mb-8 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Blog
-        </Link>
+    <>
+      {/* JSON-LD Structured Data */}
+      <JsonLd data={articleJsonLd(postData)} />
+      <JsonLd data={faqJsonLd(faqs)} />
+      <JsonLd data={breadcrumbsJsonLd(breadcrumbs)} />
 
-        <article className="bg-white rounded-xl shadow-sm border p-8">
-          <header className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              How to Split PDF Pages: Extract & Separate PDF Files Online
-            </h1>
-            <div className="flex items-center text-gray-600 text-sm mb-6">
-              <time dateTime="2024-01-30">January 30, 2024</time>
-              <span className="mx-2">•</span>
-              <span>6 min read</span>
-              <span className="mx-2">•</span>
-              <span>PDF Tools</span>
-            </div>
-            <p className="text-xl text-gray-700 leading-relaxed">
-              Need to extract specific pages from a PDF or split a large document into smaller files? 
-              Learn how to split PDF pages efficiently with our comprehensive guide.
-            </p>
-          </header>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="container mx-auto px-4 py-8">
+          {/* Breadcrumbs */}
+          <nav className="mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+              {breadcrumbs.map((crumb, index) => (
+                <li key={crumb.url} className="flex items-center">
+                  {index > 0 && <span className="mx-2">/</span>}
+                  {index === breadcrumbs.length - 1 ? (
+                    <span className="text-gray-900 dark:text-white font-medium">{crumb.name}</span>
+                  ) : (
+                    <Link href={crumb.url} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                      {crumb.name}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
 
-          <div className="prose prose-lg max-w-none">
-            <h2>Why Split PDF Files?</h2>
-            <p>
-              Splitting PDF files is useful in many situations:
-            </p>
-            <ul>
-              <li><strong>Extract important pages:</strong> Pull out specific pages you need</li>
-              <li><strong>Reduce file size:</strong> Create smaller, more manageable documents</li>
-              <li><strong>Share selectively:</strong> Send only relevant pages to recipients</li>
-              <li><strong>Organize content:</strong> Separate chapters or sections into individual files</li>
-              <li><strong>Email limitations:</strong> Break large files to meet attachment size limits</li>
-              <li><strong>Storage efficiency:</strong> Archive only necessary pages</li>
-            </ul>
+          <Link 
+            href="/blog" 
+            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-8 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Blog
+          </Link>
 
-            <h2>How to Split PDFs with ConvertMorph</h2>
-            
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 my-6">
-              <div className="flex items-start space-x-3">
-                <Scissors className="w-6 h-6 text-blue-600 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-blue-900 mb-2">Easy Splitting Process:</h4>
-                  <ol className="text-blue-800 space-y-2">
-                    <li>1. Visit ConvertMorph PDF Split tool</li>
-                    <li>2. Upload your PDF file</li>
-                    <li>3. Specify page ranges (e.g., 1-3, 5, 7-9)</li>
-                    <li>4. Preview your selections</li>
-                    <li>5. Download individual PDF files or ZIP archive</li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-
-            <h2>Page Range Formats</h2>
-            
-            <div className="grid md:grid-cols-2 gap-6 my-8">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                <h4 className="font-semibold text-green-900 mb-3">Single Pages</h4>
-                <div className="space-y-2 text-green-800 text-sm">
-                  <p><code className="bg-green-100 px-2 py-1 rounded">1</code> - Extract page 1 only</p>
-                  <p><code className="bg-green-100 px-2 py-1 rounded">5</code> - Extract page 5 only</p>
-                  <p><code className="bg-green-100 px-2 py-1 rounded">1,3,5</code> - Extract pages 1, 3, and 5</p>
-                </div>
-              </div>
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h4 className="font-semibold text-blue-900 mb-3">Page Ranges</h4>
-                <div className="space-y-2 text-blue-800 text-sm">
-                  <p><code className="bg-blue-100 px-2 py-1 rounded">1-5</code> - Extract pages 1 through 5</p>
-                  <p><code className="bg-blue-100 px-2 py-1 rounded">10-15</code> - Extract pages 10 through 15</p>
-                  <p><code className="bg-blue-100 px-2 py-1 rounded">1-3,7-9</code> - Extract pages 1-3 and 7-9</p>
-                </div>
-              </div>
-            </div>
-
-            <h2>Common Splitting Scenarios</h2>
-            
-            <h3>Extract Specific Chapters</h3>
-            <p>
-              For books, reports, or manuals with distinct chapters:
-            </p>
-            <ul>
-              <li>Identify chapter start and end pages</li>
-              <li>Use range format: &quot;1-10, 11-25, 26-40&quot;</li>
-              <li>Create separate files for each chapter</li>
-              <li>Maintain logical document structure</li>
-            </ul>
-
-            <h3>Remove Unwanted Pages</h3>
-            <p>
-              To exclude specific pages from a document:
-            </p>
-            <ul>
-              <li>Identify pages to keep (not remove)</li>
-              <li>Specify ranges excluding unwanted pages</li>
-              <li>Example: For 20-page doc, remove pages 5-8: &quot;1-4, 9-20&quot;</li>
-            </ul>
-
-            <h3>Create Document Excerpts</h3>
-            <p>
-              Extract key pages for presentations or summaries:
-            </p>
-            <ul>
-              <li>Select most important pages</li>
-              <li>Maintain logical flow</li>
-              <li>Consider page dependencies</li>
-              <li>Add cover page if needed</li>
-            </ul>
-
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 my-8">
-              <div className="flex items-start space-x-3">
-                <Download className="w-6 h-6 text-yellow-600 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-yellow-900 mb-2">Download Options:</h4>
-                  <p className="text-yellow-800 text-sm">
-                    ConvertMorph provides multiple download options: individual PDF files for each 
-                    range or a convenient ZIP archive containing all split documents.
+          <div className="grid lg:grid-cols-4 gap-4 lg:gap-8 max-w-7xl mx-auto">
+            {/* Main Content */}
+            <div className="lg:col-span-3 order-2 lg:order-1">
+              <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8">
+                <header className="mb-6 lg:mb-8">
+                  <h1 id="main-title" className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 lg:mb-4 leading-tight">
+                    Split PDF Pages Online: Complete Guide 2024
+                  </h1>
+                  
+                  <div className="flex items-center text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 lg:mb-6 flex-wrap gap-2 sm:gap-4">
+                    <time dateTime={postData.datePublished}>January 30, 2024</time>
+                    <div className="flex items-center">
+                      <Clock className="w-4 h-4 mr-1" />
+                      {postData.readingTime}
+                    </div>
+                    <span className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs font-medium">
+                      PDF Tools
+                    </span>
+                  </div>
+                  
+                  <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                    Need to <strong>split PDF pages</strong> or extract specific sections from large documents? 
+                    Whether you want to <strong>extract pages from PDF</strong> files, <strong>split large PDF</strong> documents 
+                    into manageable chunks, or <strong>save selected pages as PDF</strong> files, this comprehensive guide 
+                    covers everything you need to know about PDF page splitting.
                   </p>
+                </header>
+
+                {/* Tool CTA - Early placement */}
+                <ToolCTA toolSlug="pdf-split" variant="compact" className="mb-6 lg:mb-8" />
+
+                <div className="blog-prose">
+                  <h2 id="why-split-pdf-files">Why Split PDF Files?</h2>
+                  <p>
+                    <strong>PDF page splitter</strong> tools are essential for document management. Here's when you need to <strong>divide PDF by pages</strong>:
+                  </p>
+                  <ul>
+                    <li><strong>Extract important sections:</strong> Pull out specific chapters, pages, or content from lengthy reports</li>
+                    <li><strong>Reduce file size:</strong> Create smaller, more manageable documents for easier sharing</li>
+                    <li><strong>Share selectively:</strong> Send only relevant pages to recipients without exposing entire documents</li>
+                    <li><strong>Organize content:</strong> Separate chapters, sections, or topics into individual files</li>
+                    <li><strong>Email limitations:</strong> Break large files to meet attachment size limits (typically 25MB)</li>
+                    <li><strong>Storage efficiency:</strong> Archive only necessary pages to save storage space</li>
+                  </ul>
+
+                  <h2 id="how-it-works-on-convertmorph">How it Works on ConvertMorph</h2>
+                  <p>
+                    Our <strong>PDF page splitter</strong> makes it easy to <strong>extract pages from PDF</strong> files with precision. 
+                    Here's the simple process:
+                  </p>
+                  
+                  <div className="steps">
+                    <div className="step">
+                      <div className="step-number">1</div>
+                      <div className="step-content">
+                        <h4>Upload Your PDF</h4>
+                        <p>Drag and drop your PDF file or click to browse. Files are processed securely in your browser with no registration required.</p>
+                      </div>
+                    </div>
+                    <div className="step">
+                      <div className="step-number">2</div>
+                      <div className="step-content">
+                        <h4>Select Pages to Extract</h4>
+                        <p>Specify which pages to extract using individual numbers (1,3,5) or ranges (1-5,10-15). Preview your selections before processing.</p>
+                      </div>
+                    </div>
+                    <div className="step">
+                      <div className="step-number">3</div>
+                      <div className="step-content">
+                        <h4>Download Split PDFs</h4>
+                        <p>Get your extracted pages as individual PDF files or a convenient ZIP archive. All files maintain original quality.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="callout callout-success">
+                    <h4>Try ConvertMorph PDF Splitter</h4>
+                    <p>
+                      Split your PDFs now with our free online tool. Extract specific pages or separate large documents 
+                      into smaller files instantly.
+                    </p>
+                    <Link 
+                      href="/tools/pdf-split" 
+                      className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors mt-3"
+                    >
+                      <Scissors className="w-4 h-4 mr-2" />
+                      Split PDF Pages Now
+                    </Link>
+                  </div>
+
+                  <h2 id="page-range-formats">Page Range Formats and Examples</h2>
+                  <p>
+                    Master these formats to <strong>split PDF pages</strong> efficiently:
+                  </p>
+                  
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Format</th>
+                        <th>Result</th>
+                        <th>Use Case</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>1</code></td>
+                        <td>Page 1 only</td>
+                        <td>Single page extraction</td>
+                      </tr>
+                      <tr>
+                        <td><code>1-5</code></td>
+                        <td>Pages 1 through 5</td>
+                        <td>Continuous sections</td>
+                      </tr>
+                      <tr>
+                        <td><code>1,3,5</code></td>
+                        <td>Pages 1, 3, and 5</td>
+                        <td>Scattered pages</td>
+                      </tr>
+                      <tr>
+                        <td><code>1-3,7-9</code></td>
+                        <td>Pages 1-3 and 7-9</td>
+                        <td>Multiple sections</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div className="callout callout-info">
+                    <h4>Advanced Examples</h4>
+                    <ul>
+                      <li><strong>Extract chapters:</strong> <code>1-10, 11-25, 26-40, 41-55</code></li>
+                      <li><strong>Remove middle pages:</strong> <code>1-5, 15-20</code> (excludes pages 6-14)</li>
+                      <li><strong>Get summary pages:</strong> <code>1, 5, 10, 15, 20</code> (every 5th page)</li>
+                      <li><strong>Split by sections:</strong> <code>1-2, 3-8, 9-12, 13-20</code></li>
+                    </ul>
+                  </div>
+
+                  <h2 id="splitting-scenarios">Common PDF Splitting Scenarios</h2>
+                  
+                  <h3>Academic and Research Documents</h3>
+                  <p><strong>Split large PDF</strong> research papers or textbooks:</p>
+                  <ul>
+                    <li>Extract specific chapters for focused study sessions</li>
+                    <li><strong>Save selected pages as PDF</strong> for citations and references</li>
+                    <li>Create reading assignments from larger textbooks</li>
+                    <li>Separate methodology from results sections for analysis</li>
+                  </ul>
+
+                  <h3>Business and Professional Use</h3>
+                  <p><strong>Divide PDF by pages</strong> for business efficiency:</p>
+                  <ul>
+                    <li>Extract executive summaries from lengthy reports</li>
+                    <li><strong>Separate PDF documents</strong> by department or team</li>
+                    <li>Create client-specific document packages</li>
+                    <li>Split contracts into individual sections for review</li>
+                  </ul>
+
+                  <h3>Legal and Compliance</h3>
+                  <p><strong>Extract pages from PDF</strong> legal documents:</p>
+                  <ul>
+                    <li>Separate exhibits from main legal documents</li>
+                    <li>Create redacted versions by excluding sensitive pages</li>
+                    <li><strong>Split PDF pages</strong> for different case files</li>
+                    <li>Extract signature pages for processing workflows</li>
+                  </ul>
+
+                  <h2 id="advanced-techniques">Advanced Splitting Techniques</h2>
+                  
+                  <h3>Batch Processing Multiple PDFs</h3>
+                  <p>When you need to <strong>split PDF pages</strong> from multiple documents:</p>
+                  <ul>
+                    <li><strong>Identify patterns:</strong> Look for common page structures across documents</li>
+                    <li><strong>Use consistent naming:</strong> Apply logical file naming conventions</li>
+                    <li><strong>Process similar documents together:</strong> Group by type or structure</li>
+                    <li><strong>Verify results:</strong> Check each split document for completeness</li>
+                  </ul>
+
+                  <h3>Quality Preservation Tips</h3>
+                  <p>Ensure your <strong>PDF page splitter</strong> maintains document integrity:</p>
+                  <ul>
+                    <li><strong>Preserve formatting:</strong> Choose tools that maintain original layout</li>
+                    <li><strong>Check fonts and images:</strong> Verify visual elements remain intact</li>
+                    <li><strong>Test hyperlinks:</strong> Ensure internal links still function</li>
+                    <li><strong>Maintain bookmarks:</strong> Keep navigation elements when relevant</li>
+                  </ul>
+
+                  <h2 id="best-practices">Best Practices for PDF Splitting</h2>
+                  
+                  <h3>Planning Your Splits</h3>
+                  <p>Before you <strong>divide PDF by pages</strong>:</p>
+                  <ul>
+                    <li><strong>Review the entire document:</strong> Understand content structure and flow</li>
+                    <li><strong>Identify logical break points:</strong> Find natural section divisions</li>
+                    <li><strong>Consider page dependencies:</strong> Ensure split documents make sense independently</li>
+                    <li><strong>Plan file naming:</strong> Use descriptive, consistent names for organization</li>
+                  </ul>
+
+                  <h3>Maintaining Document Integrity</h3>
+                  <p>When you <strong>save selected pages as PDF</strong>:</p>
+                  <ul>
+                    <li><strong>Include context pages:</strong> Add relevant introductory or summary pages</li>
+                    <li><strong>Preserve page numbering:</strong> Consider how splits affect navigation</li>
+                    <li><strong>Maintain visual consistency:</strong> Ensure split documents look professional</li>
+                    <li><strong>Test readability:</strong> Verify split documents are self-contained</li>
+                  </ul>
+
+                  <h2 id="troubleshooting">Troubleshooting Common Issues</h2>
+                  
+                  <h3>Invalid Page Range Errors</h3>
+                  <p>If your <strong>PDF page splitter</strong> shows errors:</p>
+                  <ul>
+                    <li><strong>Check page numbers exist:</strong> Count total pages in your document</li>
+                    <li><strong>Verify format syntax:</strong> Use hyphens for ranges (1-5), commas for lists (1,3,5)</li>
+                    <li><strong>Avoid overlapping ranges:</strong> Don't duplicate pages in selections</li>
+                    <li><strong>Consider page numbering:</strong> Some PDFs have different numbering systems</li>
+                  </ul>
+
+                  <h3>Large File Processing</h3>
+                  <p>When you <strong>split large PDF</strong> files:</p>
+                  <ul>
+                    <li><strong>Check file size limits:</strong> Most tools handle up to 100MB</li>
+                    <li><strong>Split in chunks first:</strong> Break very large files into sections</li>
+                    <li><strong>Allow processing time:</strong> Large files take longer to process</li>
+                    <li><strong>Ensure stable connection:</strong> Avoid interruptions during processing</li>
+                  </ul>
+
+                  <h2 id="faq">Frequently Asked Questions</h2>
+                  <div className="faq-section" data-testid="faq">
+                    {faqs.map((faq, index) => (
+                      <div key={index} className="faq-item">
+                        <div className="faq-question">
+                          {faq.question}
+                        </div>
+                        <div className="faq-answer">
+                          {faq.answer}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h2>Conclusion</h2>
+                  <p>
+                    <strong>Splitting PDF pages</strong> is an essential skill for efficient document management. Whether you need to 
+                    <strong>extract pages from PDF</strong> files for specific purposes, <strong>split large PDF</strong> documents 
+                    into manageable sections, or <strong>save selected pages as PDF</strong> files for sharing, the right 
+                    <strong>PDF page splitter</strong> makes the process simple and secure.
+                  </p>
+                  <p>
+                    ConvertMorph provides a powerful, free solution that works directly in your browser, ensuring your documents 
+                    remain private while delivering professional results. With support for complex page ranges, batch processing, 
+                    and mobile devices, it's the perfect tool for all your PDF splitting needs.
+                  </p>
+
+                  {/* Final CTA */}
+                  <ToolCTA toolSlug="pdf-split" variant="featured" className="mt-6 lg:mt-8" />
+                </div>
+              </article>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1 order-1 lg:order-2">
+              <div className="space-y-4 lg:space-y-8">
+                {/* Table of Contents - Hidden on mobile, shown on desktop */}
+                <div className="hidden lg:block">
+                  <BlogTOC headings={headings} className="sticky top-24" />
+                </div>
+                
+                {/* Related Posts - Hidden on mobile, shown on desktop */}
+                <div className="hidden lg:block">
+                  <RelatedPosts 
+                    currentSlug="split-pdf-pages" 
+                    count={2} 
+                    variant="list" 
+                  />
                 </div>
               </div>
             </div>
 
-            <h2>Best Practices for PDF Splitting</h2>
-            <ul>
-              <li><strong>Plan your splits:</strong> Identify logical break points before starting</li>
-              <li><strong>Check page numbers:</strong> Verify page ranges match your intentions</li>
-              <li><strong>Maintain context:</strong> Ensure split documents make sense independently</li>
-              <li><strong>Name files clearly:</strong> Use descriptive names for split documents</li>
-              <li><strong>Test results:</strong> Open and review split files before sharing</li>
-              <li><strong>Keep originals:</strong> Always maintain a copy of the original document</li>
-            </ul>
-
-            <h2>Advanced Splitting Techniques</h2>
-            
-            <h3>Batch Processing</h3>
-            <p>
-              For multiple documents with similar structures:
-            </p>
-            <ul>
-              <li>Identify common page patterns</li>
-              <li>Use consistent naming conventions</li>
-              <li>Process similar documents together</li>
-              <li>Automate repetitive splits when possible</li>
-            </ul>
-
-            <h3>Quality Preservation</h3>
-            <p>
-              Maintain document quality during splitting:
-            </p>
-            <ul>
-              <li>Use tools that preserve original formatting</li>
-              <li>Check for font and image integrity</li>
-              <li>Verify hyperlinks still work</li>
-              <li>Ensure bookmarks are preserved when relevant</li>
-            </ul>
-
-            <h2>Alternative Splitting Methods</h2>
-            
-            <h3>Desktop Software</h3>
-            <p>
-              Professional PDF editors offer advanced splitting features:
-            </p>
-            <ul>
-              <li><strong>Adobe Acrobat Pro:</strong> Advanced page extraction and organization</li>
-              <li><strong>PDFtk:</strong> Command-line tool for batch operations</li>
-              <li><strong>PDF-XChange Editor:</strong> Visual page selection interface</li>
-            </ul>
-
-            <h3>Online Alternatives</h3>
-            <p>
-              Other web-based PDF splitters:
-            </p>
-            <ul>
-              <li>Browser-based tools with drag-and-drop interfaces</li>
-              <li>Cloud-based services with storage integration</li>
-              <li>Mobile-optimized splitting applications</li>
-            </ul>
-
-            <h2>Security Considerations</h2>
-            <p>
-              When splitting sensitive documents:
-            </p>
-            <ul>
-              <li>Use tools that process files locally (like ConvertMorph)</li>
-              <li>Avoid uploading confidential documents to unknown servers</li>
-              <li>Check if split PDFs maintain original security settings</li>
-              <li>Consider password protection for sensitive split documents</li>
-              <li>Verify that unwanted pages are completely removed</li>
-            </ul>
-
-            <h2>Troubleshooting Common Issues</h2>
-            
-            <h3>Invalid Page Ranges</h3>
-            <p>
-              If you encounter page range errors:
-            </p>
-            <ul>
-              <li>Check that page numbers exist in the document</li>
-              <li>Verify range format (use hyphens for ranges, commas for lists)</li>
-              <li>Ensure no overlapping ranges</li>
-              <li>Count pages accurately (some PDFs have different numbering)</li>
-            </ul>
-
-            <h3>Large File Handling</h3>
-            <p>
-              For very large PDF files:
-            </p>
-            <ul>
-              <li>Split into smaller chunks first</li>
-              <li>Use tools designed for large file processing</li>
-              <li>Consider file size limits of your chosen tool</li>
-              <li>Allow extra time for processing</li>
-            </ul>
-
-            <h2>Conclusion</h2>
-            <p>
-              PDF splitting is an essential skill for document management and organization. 
-              Whether you need to extract specific pages, create smaller files, or organize 
-              content more effectively, ConvertMorph provides a secure and efficient solution 
-              that works directly in your browser.
-            </p>
-
-            <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 mt-8">
-              <h4 className="font-semibold text-primary mb-2">Ready to split your PDF?</h4>
-              <p className="text-gray-700 mb-4">
-                Extract specific pages or split large PDFs into manageable documents with ConvertMorph.
-              </p>
-              <Link 
-                href="/tools/pdf-split" 
-                className="inline-flex items-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
-              >
-                <FileText className="w-4 h-4 mr-2" />
-                Split PDF Now
-              </Link>
+            {/* Mobile Related Posts - Shown only on mobile, after main content */}
+            <div className="lg:hidden order-3 col-span-full">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6">
+                <RelatedPosts 
+                  currentSlug="split-pdf-pages" 
+                  count={2} 
+                  variant="grid" 
+                />
+              </div>
             </div>
           </div>
-        </article>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

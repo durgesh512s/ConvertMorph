@@ -1,5 +1,5 @@
-import fsBlog from 'fs'
-import { createCanvas as createCanvasBlog } from 'canvas'
+const fsBlog = require('fs')
+const { createCanvas: createCanvasBlog } = require('canvas')
 
 // Blog posts with their frontmatter data
 const blogPosts = [

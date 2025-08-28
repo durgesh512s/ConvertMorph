@@ -1,309 +1,446 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft, FileText, Image, Camera } from 'lucide-react';
+import { ArrowLeft, FileText, Clock, Image } from 'lucide-react';
+import { buildPostMetadata, articleJsonLd, faqJsonLd, breadcrumbsJsonLd, BlogPostMetadata } from '@/lib/seo';
+import JsonLd from '@/components/JsonLd';
+import { BlogTOC } from '@/components/BlogTOC';
+import { ToolCTA } from '@/components/RelatedCTA';
+import { RelatedPosts } from '@/components/ReadNext';
+import '@/styles/blog.css';
 
-export const metadata: Metadata = {
-  title: 'Convert PDF to Images: Extract Pages as JPG/PNG Online | ConvertMorph',
-  description: 'Convert PDF pages to high-quality JPG or PNG images online. Extract all pages or specific pages from PDF documents. Free and secure conversion.',
-  keywords: 'PDF to JPG, PDF to PNG, convert PDF to images, extract PDF pages, PDF to image converter',
-  openGraph: {
-    title: 'Convert PDF to Images: Extract Pages as JPG/PNG Online',
-    description: 'Convert PDF pages to high-quality JPG or PNG images online. Extract all pages or specific pages from PDF documents. Free and secure conversion.',
-    type: 'article',
-    publishedTime: '2024-02-05T10:00:00.000Z',
-    authors: ['ConvertMorph Team'],
-  },
-  alternates: {
-    canonical: '/blog/convert-pdf-to-images',
-  },
+// Blog post metadata
+const postData: BlogPostMetadata = {
+  title: 'Convert PDF to Images: Extract Pages as JPG/PNG Online',
+  excerpt: 'Convert PDF pages to high-quality JPG or PNG images online. Extract all pages or specific pages from PDF documents. Complete guide with step-by-step instructions.',
+  slug: 'convert-pdf-to-images',
+  focusKeyword: 'PDF to images',
+  secondaryKeywords: [
+    'pdf to jpg',
+    'export pdf pages as images',
+    'convert pdf to png',
+    'save pdf as images',
+    'PDF to image converter',
+    'extract images from PDF'
+  ],
+  author: 'ConvertMorph Team',
+  datePublished: '2024-02-05T10:00:00.000Z',
+  dateModified: '2024-02-05T10:00:00.000Z',
+  readingTime: '7 min read'
 };
+
+export const metadata: Metadata = buildPostMetadata(postData);
+
+// Table of contents data
+const headings = [
+  { id: 'why-convert-pdf-to-images', text: 'Why Convert PDF to Images?', level: 2 },
+  { id: 'how-it-works-on-convertmorph', text: 'How it Works on ConvertMorph', level: 2 },
+  { id: 'output-formats', text: 'Output Format Options', level: 2 },
+  { id: 'quality-settings', text: 'Quality Settings Guide', level: 2 },
+  { id: 'common-use-cases', text: 'Common Use Cases', level: 2 },
+  { id: 'optimization-tips', text: 'Optimization Tips', level: 2 },
+  { id: 'troubleshooting', text: 'Troubleshooting Common Issues', level: 2 },
+  { id: 'faq', text: 'Frequently Asked Questions', level: 2 }
+];
+
+// FAQ data
+const faqs = [
+  {
+    question: 'Can I convert specific pages from PDF to images?',
+    answer: 'Yes! ConvertMorph allows you to select specific pages or convert all pages from your PDF to images. You can choose individual pages or page ranges to extract exactly what you need.'
+  },
+  {
+    question: 'What image formats can I convert PDF to?',
+    answer: 'ConvertMorph supports conversion to JPG and PNG formats. JPG is best for photos and complex images with smaller file sizes, while PNG is ideal for text, diagrams, and images requiring transparency.'
+  },
+  {
+    question: 'What resolution should I choose for PDF to image conversion?',
+    answer: 'Choose 72-150 DPI for web use and digital display, 300 DPI for standard printing, and 600+ DPI for high-quality printing or detailed work. Higher DPI creates larger files but better quality.'
+  },
+  {
+    question: 'Will converting PDF to images maintain the original quality?',
+    answer: 'Yes, when using appropriate settings. PNG format maintains perfect quality with lossless compression, while JPG offers adjustable quality levels. Choose higher DPI settings for better quality.'
+  },
+  {
+    question: 'Can I convert password-protected PDFs to images?',
+    answer: 'You\'ll need to enter the password first to unlock the PDF before conversion. ConvertMorph processes files securely in your browser without storing passwords or documents.'
+  },
+  {
+    question: 'Is there a limit on PDF file size for conversion?',
+    answer: 'ConvertMorph can handle PDF files up to 100MB. For larger files, consider splitting the PDF first or converting specific pages rather than the entire document.'
+  }
+];
+
+// Breadcrumbs data
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Blog', url: '/blog' },
+  { name: 'Convert PDF to Images', url: '/blog/convert-pdf-to-images' }
+];
 
 export default function PDFToImagesGuide() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <Link 
-          href="/blog" 
-          className="inline-flex items-center text-primary hover:text-primary/80 mb-8 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Blog
-        </Link>
+    <>
+      {/* JSON-LD Structured Data */}
+      <JsonLd data={articleJsonLd(postData)} />
+      <JsonLd data={faqJsonLd(faqs)} />
+      <JsonLd data={breadcrumbsJsonLd(breadcrumbs)} />
 
-        <article className="bg-white rounded-xl shadow-sm border p-8">
-          <header className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Convert PDF to Images: Extract Pages as JPG/PNG Online
-            </h1>
-            <div className="flex items-center text-gray-600 text-sm mb-6">
-              <time dateTime="2024-02-05">February 5, 2024</time>
-              <span className="mx-2">•</span>
-              <span>7 min read</span>
-              <span className="mx-2">•</span>
-              <span>PDF Tools</span>
-            </div>
-            <p className="text-xl text-gray-700 leading-relaxed">
-              Transform your PDF documents into high-quality images. Learn how to convert PDF pages 
-              to JPG or PNG format for presentations, web use, or image editing.
-            </p>
-          </header>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="container mx-auto px-4 py-8">
+          {/* Breadcrumbs */}
+          <nav className="mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+              {breadcrumbs.map((crumb, index) => (
+                <li key={crumb.url} className="flex items-center">
+                  {index > 0 && <span className="mx-2">/</span>}
+                  {index === breadcrumbs.length - 1 ? (
+                    <span className="text-gray-900 dark:text-white font-medium">{crumb.name}</span>
+                  ) : (
+                    <Link href={crumb.url} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                      {crumb.name}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
 
-          <div className="prose prose-lg max-w-none">
-            <h2>Why Convert PDF to Images?</h2>
-            <p>
-              Converting PDF pages to images serves many practical purposes:
-            </p>
-            <ul>
-              <li><strong>Web publishing:</strong> Display PDF content on websites and blogs</li>
-              <li><strong>Social media sharing:</strong> Share document pages on social platforms</li>
-              <li><strong>Presentations:</strong> Include PDF pages in PowerPoint or Keynote</li>
-              <li><strong>Image editing:</strong> Edit PDF content in photo editing software</li>
-              <li><strong>Thumbnails:</strong> Create preview images for document libraries</li>
-              <li><strong>Compatibility:</strong> Use PDF content in applications that only support images</li>
-            </ul>
+          <Link 
+            href="/blog" 
+            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-8 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Blog
+          </Link>
 
-            <h2>How to Convert PDF to Images with ConvertMorph</h2>
-            
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 my-6">
-              <div className="flex items-start space-x-3">
-                <Camera className="w-6 h-6 text-blue-600 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-blue-900 mb-2">Simple Conversion Process:</h4>
-                  <ol className="text-blue-800 space-y-2">
-                    <li>1. Visit ConvertMorph PDF to Images tool</li>
-                    <li>2. Upload your PDF file</li>
-                    <li>3. Choose output format (JPG or PNG)</li>
-                    <li>4. Select quality settings</li>
-                    <li>5. Download individual images or ZIP archive</li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-
-            <h2>Output Format Options</h2>
-            
-            <div className="grid md:grid-cols-2 gap-6 my-8">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                <h4 className="font-semibold text-green-900 mb-3">JPG Format</h4>
-                <div className="text-green-800 text-sm space-y-2">
-                  <p><strong>Best for:</strong> Photos, complex images, smaller file sizes</p>
-                  <p><strong>Compression:</strong> Lossy compression with adjustable quality</p>
-                  <p><strong>File size:</strong> Smaller files, faster loading</p>
-                  <p><strong>Transparency:</strong> No transparency support</p>
-                </div>
-              </div>
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h4 className="font-semibold text-blue-900 mb-3">PNG Format</h4>
-                <div className="text-blue-800 text-sm space-y-2">
-                  <p><strong>Best for:</strong> Text, diagrams, images with transparency</p>
-                  <p><strong>Compression:</strong> Lossless compression, perfect quality</p>
-                  <p><strong>File size:</strong> Larger files, better quality</p>
-                  <p><strong>Transparency:</strong> Full transparency support</p>
-                </div>
-              </div>
-            </div>
-
-            <h2>Quality Settings Guide</h2>
-            
-            <h3>Resolution Options</h3>
-            <ul>
-              <li><strong>72 DPI:</strong> Web display, email sharing, quick previews</li>
-              <li><strong>150 DPI:</strong> Standard quality, balanced size and clarity</li>
-              <li><strong>300 DPI:</strong> High quality, printing, professional use</li>
-              <li><strong>600 DPI:</strong> Maximum quality, large prints, detailed work</li>
-            </ul>
-
-            <h3>Choosing the Right Quality</h3>
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 my-6">
-              <h4 className="font-semibold text-yellow-900 mb-2">Quality vs. File Size Trade-off:</h4>
-              <p className="text-yellow-800 text-sm">
-                Higher DPI settings produce better quality images but result in larger file sizes. 
-                Choose based on your intended use: 72-150 DPI for web, 300+ DPI for print.
-              </p>
-            </div>
-
-            <h2>Common Use Cases</h2>
-            
-            <h3>Web and Digital Publishing</h3>
-            <ul>
-              <li><strong>Blog posts:</strong> Include document pages in articles</li>
-              <li><strong>Website galleries:</strong> Display document previews</li>
-              <li><strong>Online portfolios:</strong> Showcase work samples</li>
-              <li><strong>E-learning:</strong> Create visual course materials</li>
-            </ul>
-
-            <h3>Marketing and Presentations</h3>
-            <ul>
-              <li><strong>Social media:</strong> Share infographics and documents</li>
-              <li><strong>Email campaigns:</strong> Include document snippets</li>
-              <li><strong>Slide decks:</strong> Incorporate PDF content into presentations</li>
-              <li><strong>Print materials:</strong> Use PDF pages in brochures and flyers</li>
-            </ul>
-
-            <h3>Design and Development</h3>
-            <ul>
-              <li><strong>Mockups:</strong> Create design mockups from documents</li>
-              <li><strong>Image editing:</strong> Edit PDF content in Photoshop or GIMP</li>
-              <li><strong>App development:</strong> Use document images in mobile apps</li>
-              <li><strong>Thumbnails:</strong> Generate preview images for file systems</li>
-            </ul>
-
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 my-8">
-              <div className="flex items-start space-x-3">
-                <Image className="w-6 h-6 text-purple-600 mt-1" aria-label="Image icon" />
-                <div>
-                  <h4 className="font-semibold text-purple-900 mb-2">Batch Processing:</h4>
-                  <p className="text-purple-800 text-sm">
-                    ConvertMorph converts all pages of your PDF simultaneously, saving you time 
-                    when working with multi-page documents. Download all images as a convenient ZIP file.
+          <div className="grid lg:grid-cols-4 gap-4 lg:gap-8 max-w-7xl mx-auto">
+            {/* Main Content */}
+            <div className="lg:col-span-3 order-2 lg:order-1">
+              <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8">
+                <header className="mb-8">
+                  <h1 id="main-title" className="text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+                    Convert PDF to Images: Extract Pages as JPG/PNG Online
+                  </h1>
+                  
+                  <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-6 flex-wrap gap-4">
+                    <time dateTime={postData.datePublished}>February 5, 2024</time>
+                    <div className="flex items-center">
+                      <Clock className="w-4 h-4 mr-1" />
+                      {postData.readingTime}
+                    </div>
+                    <span className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs font-medium">
+                      PDF Tools
+                    </span>
+                  </div>
+                  
+                  <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                    Need to <strong>convert PDF to images</strong> for web use, presentations, or editing? Whether you want to 
+                    <strong>PDF to JPG</strong>, <strong>convert PDF to PNG</strong>, or <strong>save PDF as images</strong>, 
+                    this comprehensive guide shows you how to <strong>export PDF pages as images</strong> with professional quality.
                   </p>
+                </header>
+
+                {/* Tool CTA - Early placement */}
+                <ToolCTA toolSlug="pdf-to-images" variant="compact" className="mb-8" />
+
+                <div className="blog-prose">
+                  <h2 id="why-convert-pdf-to-images">Why Convert PDF to Images?</h2>
+                  <p>
+                    A <strong>PDF to image converter</strong> is essential for modern digital workflows. Here's why you need to <strong>convert PDF to images</strong>:
+                  </p>
+                  <ul>
+                    <li><strong>Web publishing:</strong> Display PDF content on websites and blogs without plugins</li>
+                    <li><strong>Social media sharing:</strong> Share document pages on platforms that don't support PDFs</li>
+                    <li><strong>Presentations:</strong> Include PDF pages in PowerPoint, Keynote, or Google Slides</li>
+                    <li><strong>Image editing:</strong> Edit PDF content in Photoshop, GIMP, or other image editors</li>
+                    <li><strong>Thumbnails:</strong> Create preview images for document libraries and galleries</li>
+                    <li><strong>Compatibility:</strong> Use PDF content in applications that only support image formats</li>
+                  </ul>
+
+                  <h2 id="how-it-works-on-convertmorph">How it Works on ConvertMorph</h2>
+                  <p>
+                    Our <strong>PDF to image converter</strong> makes it simple to <strong>export PDF pages as images</strong>. 
+                    Here's the straightforward process:
+                  </p>
+                  
+                  <div className="steps">
+                    <div className="step">
+                      <div className="step-number">1</div>
+                      <div className="step-content">
+                        <h4>Upload Your PDF</h4>
+                        <p>Drag and drop your PDF file or click to browse. Support for multi-page documents with instant preview.</p>
+                      </div>
+                    </div>
+                    <div className="step">
+                      <div className="step-number">2</div>
+                      <div className="step-content">
+                        <h4>Choose Format & Quality</h4>
+                        <p>Select JPG or PNG format and set your preferred DPI (72-600). Preview quality settings before conversion.</p>
+                      </div>
+                    </div>
+                    <div className="step">
+                      <div className="step-number">3</div>
+                      <div className="step-content">
+                        <h4>Download Images</h4>
+                        <p>Get individual image files or a convenient ZIP archive. All processing happens securely in your browser.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="callout callout-success">
+                    <h4>Try ConvertMorph PDF to Images Converter</h4>
+                    <p>
+                      Transform your PDF pages into high-quality images now. Free, fast, and secure conversion 
+                      with no registration required.
+                    </p>
+                    <Link 
+                      href="/tools/pdf-to-images" 
+                      className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors mt-3"
+                    >
+                      <Image className="w-4 h-4 mr-2" />
+                      Convert PDF to Images Now
+                    </Link>
+                  </div>
+
+                  <h2 id="output-formats">Output Format Options</h2>
+                  <p>
+                    Choose the right format when you <strong>convert PDF to images</strong> based on your specific needs:
+                  </p>
+                  
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Format</th>
+                        <th>Best For</th>
+                        <th>File Size</th>
+                        <th>Quality</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>JPG</td>
+                        <td>Photos, complex images, web use</td>
+                        <td>Smaller</td>
+                        <td>Good (lossy compression)</td>
+                      </tr>
+                      <tr>
+                        <td>PNG</td>
+                        <td>Text, diagrams, transparency needed</td>
+                        <td>Larger</td>
+                        <td>Perfect (lossless compression)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div className="callout callout-info">
+                    <h4>Format Selection Guide</h4>
+                    <ul>
+                      <li><strong>PDF to JPG:</strong> Perfect for photographs, complex graphics, and when file size matters</li>
+                      <li><strong>Convert PDF to PNG:</strong> Ideal for text documents, diagrams, and when quality is paramount</li>
+                      <li><strong>Transparency needs:</strong> Only PNG supports transparent backgrounds</li>
+                    </ul>
+                  </div>
+
+                  <h2 id="quality-settings">Quality Settings Guide</h2>
+                  
+                  <h3>Resolution (DPI) Options</h3>
+                  <p>Choose the right DPI when you <strong>save PDF as images</strong>:</p>
+                  <ul>
+                    <li><strong>72 DPI:</strong> Web display, email sharing, quick previews, social media</li>
+                    <li><strong>150 DPI:</strong> Standard quality, balanced size and clarity, presentations</li>
+                    <li><strong>300 DPI:</strong> High quality, professional printing, detailed work</li>
+                    <li><strong>600 DPI:</strong> Maximum quality, large format printing, archival purposes</li>
+                  </ul>
+
+                  <h3>Quality vs. File Size Trade-off</h3>
+                  <div className="grid md:grid-cols-2 gap-6 my-6">
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
+                      <h4 className="font-semibold text-green-900 dark:text-green-100 mb-3">For Web Use</h4>
+                      <ul className="text-green-800 dark:text-green-200 text-sm space-y-1">
+                        <li>Use 72-150 DPI for optimal loading speed</li>
+                        <li>Choose JPG for faster page loads</li>
+                        <li>Consider image compression after conversion</li>
+                      </ul>
+                    </div>
+                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+                      <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-3">For Print Use</h4>
+                      <ul className="text-blue-800 dark:text-blue-200 text-sm space-y-1">
+                        <li>Use 300+ DPI for professional printing</li>
+                        <li>Choose PNG for text-heavy documents</li>
+                        <li>Test print quality with sample pages</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <h2 id="common-use-cases">Common Use Cases</h2>
+                  <p>
+                    Here are the most popular scenarios where you need to <strong>convert PDF to images</strong>:
+                  </p>
+                  
+                  <h3>Web Development & Design</h3>
+                  <ul>
+                    <li><strong>Website galleries:</strong> Display document previews without requiring PDF viewers</li>
+                    <li><strong>Blog illustrations:</strong> Use PDF pages as visual content in articles</li>
+                    <li><strong>Portfolio showcases:</strong> Present design work or documents as image galleries</li>
+                    <li><strong>E-commerce:</strong> Show product catalogs, manuals, or certificates as images</li>
+                  </ul>
+
+                  <h3>Social Media & Marketing</h3>
+                  <ul>
+                    <li><strong>Instagram posts:</strong> Share infographics, quotes, or document snippets</li>
+                    <li><strong>LinkedIn articles:</strong> Include charts, reports, or presentation slides</li>
+                    <li><strong>Email campaigns:</strong> Embed document previews in newsletters</li>
+                    <li><strong>Social proof:</strong> Share certificates, testimonials, or case studies</li>
+                  </ul>
+
+                  <h3>Educational & Professional</h3>
+                  <ul>
+                    <li><strong>Online courses:</strong> Create lesson materials from PDF textbooks</li>
+                    <li><strong>Presentations:</strong> Include PDF content in PowerPoint or Google Slides</li>
+                    <li><strong>Research papers:</strong> Extract figures, charts, or diagrams for analysis</li>
+                    <li><strong>Documentation:</strong> Create visual guides from technical manuals</li>
+                  </ul>
+
+                  <h2 id="optimization-tips">Optimization Tips</h2>
+                  <p>
+                    Get the best results when you <strong>extract images from PDF</strong> with these professional tips:
+                  </p>
+
+                  <h3>Choose the Right Settings</h3>
+                  <div className="callout callout-warning">
+                    <h4>Quality vs. Performance Balance</h4>
+                    <ul>
+                      <li><strong>Web use:</strong> 72-150 DPI, JPG format for faster loading</li>
+                      <li><strong>Print use:</strong> 300+ DPI, PNG format for crisp text</li>
+                      <li><strong>Archive use:</strong> 600 DPI, PNG format for maximum quality</li>
+                      <li><strong>Social media:</strong> 150 DPI, JPG format, optimized dimensions</li>
+                    </ul>
+                  </div>
+
+                  <h3>File Management Best Practices</h3>
+                  <ul>
+                    <li><strong>Naming convention:</strong> Use descriptive filenames like "report-page-1.jpg"</li>
+                    <li><strong>Batch processing:</strong> Convert multiple PDFs at once for efficiency</li>
+                    <li><strong>Organization:</strong> Create folders by project or document type</li>
+                    <li><strong>Backup:</strong> Keep original PDFs alongside converted images</li>
+                  </ul>
+
+                  <h3>Quality Enhancement Tips</h3>
+                  <ul>
+                    <li><strong>Source quality:</strong> Start with high-resolution PDFs for best results</li>
+                    <li><strong>Color mode:</strong> Use RGB for digital, CMYK for print applications</li>
+                    <li><strong>Compression:</strong> Adjust JPG quality based on content complexity</li>
+                    <li><strong>Post-processing:</strong> Consider image editing for specific requirements</li>
+                  </ul>
+
+                  <h2 id="troubleshooting">Troubleshooting Common Issues</h2>
+                  <p>
+                    Solve common problems when you <strong>save PDF as images</strong>:
+                  </p>
+
+                  <h3>Image Quality Issues</h3>
+                  <div className="grid md:grid-cols-2 gap-6 my-6">
+                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+                      <h4 className="font-semibold text-red-900 dark:text-red-100 mb-3">Problem: Blurry Images</h4>
+                      <ul className="text-red-800 dark:text-red-200 text-sm space-y-1">
+                        <li>Increase DPI setting (try 300+)</li>
+                        <li>Use PNG format for text documents</li>
+                        <li>Check source PDF quality</li>
+                        <li>Avoid upscaling small PDFs</li>
+                      </ul>
+                    </div>
+                    <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
+                      <h4 className="font-semibold text-orange-900 dark:text-orange-100 mb-3">Problem: Large File Sizes</h4>
+                      <ul className="text-orange-800 dark:text-orange-200 text-sm space-y-1">
+                        <li>Reduce DPI for web use (72-150)</li>
+                        <li>Use JPG format with compression</li>
+                        <li>Convert specific pages only</li>
+                        <li>Optimize images after conversion</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <h3>Conversion Failures</h3>
+                  <ul>
+                    <li><strong>Password protection:</strong> Unlock PDF before conversion</li>
+                    <li><strong>Corrupted files:</strong> Try repairing PDF or use different source</li>
+                    <li><strong>Large files:</strong> Split PDF into smaller sections first</li>
+                    <li><strong>Browser issues:</strong> Clear cache, try different browser, or restart</li>
+                  </ul>
+
+                  <h3>Format-Specific Issues</h3>
+                  <ul>
+                    <li><strong>JPG artifacts:</strong> Increase quality setting or switch to PNG</li>
+                    <li><strong>PNG file size:</strong> Use JPG for photos, PNG only for text/diagrams</li>
+                    <li><strong>Color accuracy:</strong> Check color profile settings in source PDF</li>
+                    <li><strong>Transparency loss:</strong> Only PNG supports transparent backgrounds</li>
+                  </ul>
+
+                  {/* Tool CTA - Mid-content */}
+                  <ToolCTA toolSlug="pdf-to-images" variant="featured" className="my-8" />
+
+                  <h2 id="faq">Frequently Asked Questions</h2>
+                  <div className="faq-section">
+                    {faqs.map((faq, index) => (
+                      <div key={index} className="faq-item">
+                        <h3 className="faq-question">{faq.question}</h3>
+                        <div className="faq-answer">
+                          <p>{faq.answer}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="callout callout-success">
+                    <h4>Ready to Convert Your PDFs?</h4>
+                    <p>
+                      Transform your PDF documents into high-quality images with ConvertMorph's free online converter. 
+                      No registration required, secure processing, and professional results every time.
+                    </p>
+                    <Link 
+                      href="/tools/pdf-to-images" 
+                      className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors mt-4 font-medium"
+                    >
+                      <Image className="w-5 h-5 mr-2" />
+                      Start Converting Now
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1 order-1 lg:order-2">
+              <div className="space-y-4 lg:space-y-8">
+                {/* Table of Contents - Hidden on mobile, shown on desktop */}
+                <div className="hidden lg:block">
+                  <BlogTOC headings={headings} className="sticky top-24" />
+                </div>
+                
+                {/* Related Posts - Hidden on mobile, shown on desktop */}
+                <div className="hidden lg:block">
+                  <RelatedPosts 
+                    currentSlug="convert-pdf-to-images" 
+                    count={2} 
+                    variant="list" 
+                  />
                 </div>
               </div>
             </div>
 
-            <h2>Optimization Tips</h2>
-            
-            <h3>For Web Use</h3>
-            <ul>
-              <li>Use JPG format for faster loading</li>
-              <li>Choose 72-150 DPI for optimal web performance</li>
-              <li>Consider image compression after conversion</li>
-              <li>Use responsive image techniques for different screen sizes</li>
-            </ul>
-
-            <h3>For Print Use</h3>
-            <ul>
-              <li>Use PNG format for text-heavy documents</li>
-              <li>Choose 300+ DPI for professional printing</li>
-              <li>Maintain original aspect ratios</li>
-              <li>Test print quality with sample pages</li>
-            </ul>
-
-            <h3>For Editing</h3>
-            <ul>
-              <li>Use PNG format to preserve quality</li>
-              <li>Choose highest DPI available</li>
-              <li>Keep original files as backups</li>
-              <li>Work with layers when possible</li>
-            </ul>
-
-            <h2>Alternative Conversion Methods</h2>
-            
-            <h3>Desktop Software</h3>
-            <p>
-              Professional software offers advanced conversion features:
-            </p>
-            <ul>
-              <li><strong>Adobe Acrobat Pro:</strong> Export with custom settings and batch processing</li>
-              <li><strong>GIMP:</strong> Open PDFs directly and export as images</li>
-              <li><strong>Photoshop:</strong> Import PDF pages with full editing capabilities</li>
-              <li><strong>ImageMagick:</strong> Command-line tool for batch conversions</li>
-            </ul>
-
-            <h3>Online Alternatives</h3>
-            <p>
-              Other web-based PDF to image converters:
-            </p>
-            <ul>
-              <li>Cloud-based services with API integration</li>
-              <li>Browser extensions for quick conversions</li>
-              <li>Mobile apps for on-the-go conversion</li>
-            </ul>
-
-            <h2>Technical Considerations</h2>
-            
-            <h3>Color Profiles</h3>
-            <p>
-              Understanding color management:
-            </p>
-            <ul>
-              <li><strong>RGB:</strong> Best for digital display and web use</li>
-              <li><strong>CMYK:</strong> Required for professional printing</li>
-              <li><strong>Grayscale:</strong> For black and white documents</li>
-            </ul>
-
-            <h3>File Size Management</h3>
-            <p>
-              Balancing quality and file size:
-            </p>
-            <ul>
-              <li>Higher DPI = larger files but better quality</li>
-              <li>JPG compression reduces file size but may affect quality</li>
-              <li>PNG maintains quality but creates larger files</li>
-              <li>Consider your storage and bandwidth limitations</li>
-            </ul>
-
-            <h2>Security and Privacy</h2>
-            <p>
-              When converting sensitive documents:
-            </p>
-            <ul>
-              <li>Use tools that process files locally (like ConvertMorph)</li>
-              <li>Avoid uploading confidential documents to unknown servers</li>
-              <li>Check if converted images contain metadata</li>
-              <li>Consider watermarking sensitive images</li>
-              <li>Securely delete temporary files after conversion</li>
-            </ul>
-
-            <h2>Troubleshooting Common Issues</h2>
-            
-            <h3>Poor Image Quality</h3>
-            <p>
-              If your converted images look blurry or pixelated:
-            </p>
-            <ul>
-              <li>Increase the DPI setting</li>
-              <li>Try PNG format instead of JPG</li>
-              <li>Check the original PDF quality</li>
-              <li>Ensure the PDF contains vector graphics, not scanned images</li>
-            </ul>
-
-            <h3>Large File Sizes</h3>
-            <p>
-              If converted images are too large:
-            </p>
-            <ul>
-              <li>Reduce the DPI setting</li>
-              <li>Use JPG format with compression</li>
-              <li>Convert only necessary pages</li>
-              <li>Post-process images with compression tools</li>
-            </ul>
-
-            <h3>Missing Content</h3>
-            <p>
-              If some PDF content does not appear in images:
-            </p>
-            <ul>
-              <li>Check for hidden layers in the PDF</li>
-              <li>Ensure all fonts are embedded</li>
-              <li>Try different conversion tools</li>
-              <li>Verify PDF is not password-protected</li>
-            </ul>
-
-            <h2>Conclusion</h2>
-            <p>
-              Converting PDF to images opens up numerous possibilities for using your document 
-              content across different platforms and applications. Whether you need images for 
-              web publishing, presentations, or editing, ConvertMorph provides a reliable and 
-              secure solution that maintains the quality of your original documents.
-            </p>
-
-            <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 mt-8">
-              <h4 className="font-semibold text-primary mb-2">Ready to convert your PDF?</h4>
-              <p className="text-gray-700 mb-4">
-                Transform your PDF pages into high-quality JPG or PNG images with ConvertMorph.
-              </p>
-              <Link 
-                href="/tools/pdf-to-images" 
-                className="inline-flex items-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
-              >
-                <FileText className="w-4 h-4 mr-2" />
-                Convert PDF to Images
-              </Link>
+            {/* Mobile Related Posts - Shown only on mobile, after main content */}
+            <div className="lg:hidden order-3 col-span-full">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6">
+                <RelatedPosts 
+                  currentSlug="convert-pdf-to-images" 
+                  count={2} 
+                  variant="grid" 
+                />
+              </div>
             </div>
           </div>
-        </article>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
