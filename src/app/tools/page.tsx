@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import ToolCard from '@/components/ToolCard';
 import { Input } from '@/components/ui/input';
 import CategoryTabs from '@/components/CategoryTabs';
@@ -228,8 +228,15 @@ export default function ToolsPage() {
   }, []);
 
   // Generate JSON-LD structured data
+  const [baseUrl, setBaseUrl] = useState('https://convertmorph.com');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setBaseUrl(window.location.origin);
+    }
+  }, []);
+
   const jsonLd = useMemo(() => {
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://convertmorph.com';
     
     return {
       "@context": "https://schema.org",

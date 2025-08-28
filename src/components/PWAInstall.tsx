@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
+import { useIsClient } from '@/hooks/useIsClient';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -16,8 +17,11 @@ interface BeforeInstallPromptEvent extends Event {
 export function PWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
+  const isClient = useIsClient();
 
   useEffect(() => {
+    if (!isClient) return;
+
     // Register service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js')
@@ -41,7 +45,7 @@ export function PWAInstall() {
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
-  }, []);
+  }, [isClient]);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
@@ -55,7 +59,7 @@ export function PWAInstall() {
     }
   };
 
-  if (!isInstallable) return null;
+  if (!isClient || !isInstallable) return null;
 
   return (
     <Button

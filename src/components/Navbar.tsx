@@ -10,6 +10,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PWAInstall } from './PWAInstall';
 import { ThemeToggle } from './ThemeToggle';
+import { useIsClient } from '@/hooks/useIsClient';
 import Logo from './Logo';
 
 const pdfTools = [
@@ -98,10 +99,12 @@ export function Navbar() {
   const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
   const [recentlyUsedSlugs, setRecentlyUsedSlugs] = useState<string[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const isClient = useIsClient();
 
   useEffect(() => {
+    if (!isClient) return;
     setRecentlyUsedSlugs(getRecentlyUsedTools());
-  }, []);
+  }, [isClient]);
 
   // Click outside handler
   useEffect(() => {
@@ -126,6 +129,7 @@ export function Navbar() {
     .filter(Boolean) as typeof pdfTools;
 
   const handleToolClick = (toolHref: string) => {
+    if (!isClient) return;
     const toolSlug = toolHref.split('/').pop();
     if (toolSlug) {
       addToRecentlyUsed(toolSlug);
@@ -185,7 +189,7 @@ export function Navbar() {
                     </div>
 
                     {/* Recently Used Section */}
-                    {recentlyUsedTools.length > 0 && (
+                    {isClient && recentlyUsedTools.length > 0 && (
                       <div className="mb-6">
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Recently Used</h3>
                         <div className="flex space-x-3">
