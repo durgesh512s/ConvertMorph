@@ -86,12 +86,12 @@ export default function MergePDFGuide() {
       <JsonLd data={breadcrumbsJsonLd(breadcrumbs)} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="container mx-auto px-4 py-8">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
           {/* Breadcrumbs */}
-          <nav className="mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+          <nav className="mb-4 sm:mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 overflow-x-auto">
               {breadcrumbs.map((crumb, index) => (
-                <li key={crumb.url} className="flex items-center">
+                <li key={crumb.url} className="flex items-center whitespace-nowrap">
                   {index > 0 && <span className="mx-2">/</span>}
                   {index === breadcrumbs.length - 1 ? (
                     <span className="text-gray-900 dark:text-white font-medium">{crumb.name}</span>
@@ -107,18 +107,18 @@ export default function MergePDFGuide() {
 
           <Link 
             href="/blog" 
-            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-8 transition-colors"
+            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-6 sm:mb-8 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
 
-          <div className="grid lg:grid-cols-4 gap-4 lg:gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
             {/* Main Content */}
-            <div className="lg:col-span-3 order-2 lg:order-1">
-              <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8">
+            <div className="lg:col-span-3 order-2 lg:order-1 w-full min-w-0">
+              <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8 w-full overflow-hidden">
                 <header className="mb-6 lg:mb-8">
-                  <h1 id="main-title" className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 lg:mb-4 leading-tight">
+                  <h1 id="main-title" className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-white mb-3 lg:mb-4 leading-tight break-words">
                     Merge PDF Files Online: Complete Guide 2024
                   </h1>
                   
@@ -321,7 +321,7 @@ export default function MergePDFGuide() {
             </div>
 
             {/* Sidebar */}
-            <div className="lg:col-span-1 order-1 lg:order-2">
+            <div className="lg:col-span-1 order-1 lg:order-2 w-full min-w-0">
               <div className="space-y-4 lg:space-y-8">
                 {/* Table of Contents - Hidden on mobile, shown on desktop */}
                 <div className="hidden lg:block">
@@ -340,8 +340,8 @@ export default function MergePDFGuide() {
             </div>
 
             {/* Mobile Related Posts - Shown only on mobile, after main content */}
-            <div className="lg:hidden order-3 col-span-full">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6">
+            <div className="lg:hidden order-3 w-full">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6 w-full overflow-hidden">
                 <RelatedPosts 
                   currentSlug="merge-pdf-files-online" 
                   count={2} 

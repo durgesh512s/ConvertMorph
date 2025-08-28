@@ -86,10 +86,10 @@ export default function PDFToImagesGuide() {
       <JsonLd data={breadcrumbsJsonLd(breadcrumbs)} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="container mx-auto px-4 py-8">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
           {/* Breadcrumbs */}
-          <nav className="mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+          <nav className="mb-4 sm:mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 overflow-x-auto whitespace-nowrap">
               {breadcrumbs.map((crumb, index) => (
                 <li key={crumb.url} className="flex items-center">
                   {index > 0 && <span className="mx-2">/</span>}
@@ -107,22 +107,22 @@ export default function PDFToImagesGuide() {
 
           <Link 
             href="/blog" 
-            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-8 transition-colors"
+            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-6 sm:mb-8 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
 
-          <div className="grid lg:grid-cols-4 gap-4 lg:gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
             {/* Main Content */}
-            <div className="lg:col-span-3 order-2 lg:order-1">
-              <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8">
-                <header className="mb-8">
-                  <h1 id="main-title" className="text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+            <div className="lg:col-span-3 order-2 lg:order-1 w-full min-w-0">
+              <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8 w-full overflow-hidden">
+                <header className="mb-6 lg:mb-8">
+                  <h1 id="main-title" className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-white mb-3 lg:mb-4 leading-tight break-words">
                     Convert PDF to Images: Extract Pages as JPG/PNG Online
                   </h1>
                   
-                  <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-6 flex-wrap gap-4">
+                  <div className="flex items-center text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 lg:mb-6 flex-wrap gap-2 sm:gap-4">
                     <time dateTime={postData.datePublished}>February 5, 2024</time>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />
@@ -133,7 +133,7 @@ export default function PDFToImagesGuide() {
                     </span>
                   </div>
                   
-                  <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
                     Need to <strong>convert PDF to images</strong> for web use, presentations, or editing? Whether you want to 
                     <strong>PDF to JPG</strong>, <strong>convert PDF to PNG</strong>, or <strong>save PDF as images</strong>, 
                     this comprehensive guide shows you how to <strong>export PDF pages as images</strong> with professional quality.
@@ -141,7 +141,7 @@ export default function PDFToImagesGuide() {
                 </header>
 
                 {/* Tool CTA - Early placement */}
-                <ToolCTA toolSlug="pdf-to-images" variant="compact" className="mb-8" />
+                <ToolCTA toolSlug="pdf-to-images" variant="compact" className="mb-6 lg:mb-8" />
 
                 <div className="blog-prose">
                   <h2 id="why-convert-pdf-to-images">Why Convert PDF to Images?</h2>
@@ -410,7 +410,7 @@ export default function PDFToImagesGuide() {
             </div>
 
             {/* Sidebar */}
-            <div className="lg:col-span-1 order-1 lg:order-2">
+            <div className="lg:col-span-1 order-1 lg:order-2 w-full">
               <div className="space-y-4 lg:space-y-8">
                 {/* Table of Contents - Hidden on mobile, shown on desktop */}
                 <div className="hidden lg:block">
@@ -429,7 +429,7 @@ export default function PDFToImagesGuide() {
             </div>
 
             {/* Mobile Related Posts - Shown only on mobile, after main content */}
-            <div className="lg:hidden order-3 col-span-full">
+            <div className="lg:hidden order-3 col-span-full w-full">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6">
                 <RelatedPosts 
                   currentSlug="convert-pdf-to-images" 
