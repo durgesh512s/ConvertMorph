@@ -25,6 +25,7 @@ import {
   closestCenter, 
   KeyboardSensor, 
   PointerSensor, 
+  TouchSensor,
   useSensor, 
   useSensors,
   DragEndEvent
@@ -99,14 +100,18 @@ function SortablePage({ page, index, onRotate, isProcessing }: SortablePageProps
       style={style}
       className={`relative group ${isDragging ? 'z-50' : ''}`}
     >
-      <Card className="overflow-hidden border-2 border-dashed border-transparent hover:border-blue-300 transition-colors">
+      <Card className={`overflow-hidden border-2 border-dashed transition-colors ${
+        isDragging 
+          ? 'border-blue-500 shadow-lg' 
+          : 'border-transparent hover:border-blue-300'
+      }`}>
         <CardContent className="p-3">
           <div className="relative">
             {/* Drag Handle */}
             <div
               {...attributes}
               {...listeners}
-              className="absolute top-1 left-1 z-10 p-1 bg-white/90 rounded cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-1 left-1 z-10 p-2 bg-white/90 rounded cursor-grab active:cursor-grabbing opacity-100 transition-opacity"
               aria-label={`Drag page ${page.pageNumber}`}
             >
               <GripVertical className="w-4 h-4 text-gray-600" />
@@ -185,9 +190,19 @@ export function PDFOrganizeClient() {
   
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Drag and drop sensors
+  // Drag and drop sensors with both mouse and touch support
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 3, // Reduced distance for better mouse responsiveness
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 5,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -560,64 +575,70 @@ export function PDFOrganizeClient() {
       {pages.length > 0 && (
         <Card>
           <CardContent className="p-4">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="space-y-4">
+              {/* File Info */}
               <div className="flex items-center space-x-2">
                 <FileText className="w-5 h-5 text-blue-600" />
-                <span className="font-medium">{file?.name}</span>
+                <span className="font-medium text-sm sm:text-base truncate">{file?.name}</span>
                 <Badge variant="secondary">{pages.length} pages</Badge>
               </div>
               
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={undo}
-                  disabled={!canUndo || isProcessing}
-                  className="flex items-center space-x-1"
-                >
-                  <Undo className="w-4 h-4" />
-                  <span>Undo</span>
-                </Button>
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-2">
+                {/* First row - Undo/Redo/Help */}
+                <div className="flex gap-2 flex-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={undo}
+                    disabled={!canUndo || isProcessing}
+                    className="flex items-center space-x-1 flex-1 sm:flex-none"
+                  >
+                    <Undo className="w-4 h-4" />
+                    <span className="hidden sm:inline">Undo</span>
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={redo}
+                    disabled={!canRedo || isProcessing}
+                    className="flex items-center space-x-1 flex-1 sm:flex-none"
+                  >
+                    <Redo className="w-4 h-4" />
+                    <span className="hidden sm:inline">Redo</span>
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
+                    className="flex items-center space-x-1 flex-1 sm:flex-none"
+                  >
+                    <Keyboard className="w-4 h-4" />
+                    <span className="hidden sm:inline">Help</span>
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleReset}
+                    disabled={isProcessing}
+                    className="flex items-center space-x-1 flex-1 sm:flex-none"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span className="hidden sm:inline">Reset</span>
+                  </Button>
+                </div>
                 
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={redo}
-                  disabled={!canRedo || isProcessing}
-                  className="flex items-center space-x-1"
-                >
-                  <Redo className="w-4 h-4" />
-                  <span>Redo</span>
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
-                  className="flex items-center space-x-1"
-                >
-                  <Keyboard className="w-4 h-4" />
-                  <span>Help</span>
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleReset}
-                  disabled={isProcessing}
-                  className="flex items-center space-x-1"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <span>Reset</span>
-                </Button>
-                
+                {/* Download Button */}
                 <Button
                   onClick={handleProcess}
                   disabled={isProcessing || pages.length === 0}
-                  className="flex items-center space-x-2"
+                  className="flex items-center justify-center space-x-2 w-full sm:w-auto"
                 >
                   <Download className="w-4 h-4" />
-                  <span>Download Organized PDF</span>
+                  <span className="text-sm sm:text-base">Download Organized PDF</span>
                 </Button>
               </div>
             </div>

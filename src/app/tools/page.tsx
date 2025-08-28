@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import ToolCard from '@/components/ToolCard';
 import { Input } from '@/components/ui/input';
-import { CategoryTabs } from '@/components/CategoryTabs';
+import CategoryTabs from '@/components/CategoryTabs';
 import { cn } from '@/lib/utils';
 import { 
   Archive, 

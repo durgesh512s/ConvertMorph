@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { absoluteUrl } from '@/lib/url'
 
 export const metadata: Metadata = {
   title: 'Compress PDF — ConvertMorph',
@@ -6,13 +7,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Compress PDF — ConvertMorph',
     description: 'Reduce PDF file size instantly. Choose compression level to balance quality and file size. Fast, private, free forever.',
-    images: ['/og/og-compress.png'],
+    images: [absoluteUrl('/og/og-compress.png')],
+    type: 'website',
+    url: absoluteUrl('/tools/pdf-compress'),
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Compress PDF — ConvertMorph',
     description: 'Reduce PDF file size instantly. Choose compression level to balance quality and file size. Fast, private, free forever.',
-    images: ['/og/og-compress.png'],
+    images: [absoluteUrl('/og/og-compress.png')],
   },
 }
 

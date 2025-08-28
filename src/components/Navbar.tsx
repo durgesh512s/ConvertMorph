@@ -152,10 +152,10 @@ export function Navbar() {
               <button
                 onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
                 className={cn(
-                  'flex items-center space-x-1 text-sm font-medium transition-colors hover:text-blue-600',
+                  'flex items-center space-x-1 text-sm font-medium transition-colors hover:text-blue-600 dark:hover:text-blue-400',
                   pathname.startsWith('/tools')
-                    ? 'text-blue-600'
-                    : 'text-gray-700'
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-gray-700 dark:text-gray-300'
                 )}
               >
                 <span>Tools</span>
@@ -170,7 +170,7 @@ export function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.15, ease: "easeOut" }}
-                    className="absolute top-full left-0 mt-2 w-[600px] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-[80vh] overflow-y-auto"
+                    className="absolute top-full left-0 mt-2 w-[600px] max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-[80vh] overflow-y-auto"
                   >
                   <div className="p-6">
                     {/* CTA Button */}
@@ -212,7 +212,7 @@ export function Navbar() {
                     )}
 
                     {/* 2-Column Grid */}
-                    <div className="grid grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                       {/* Column 1: PDF Tools */}
                       <div>
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">PDF Tools</h3>
@@ -289,10 +289,10 @@ export function Navbar() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  'relative text-sm font-medium transition-colors hover:text-blue-600 after:absolute after:w-0 after:h-[2px] after:bg-blue-600 after:left-0 after:-bottom-1 after:transition-all hover:after:w-full',
+                  'relative text-sm font-medium transition-colors hover:text-blue-600 dark:hover:text-blue-400 after:absolute after:w-0 after:h-[2px] after:bg-blue-600 dark:after:bg-blue-400 after:left-0 after:-bottom-1 after:transition-all hover:after:w-full',
                   pathname === item.href
-                    ? 'text-blue-600 after:w-full'
-                    : 'text-gray-700'
+                    ? 'text-blue-600 dark:text-blue-400 after:w-full'
+                    : 'text-gray-700 dark:text-gray-300'
                 )}
               >
                 {item.name}
@@ -303,7 +303,9 @@ export function Navbar() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeToggle />
+            <PWAInstall />
             <Button
               variant="ghost"
               size="sm"
@@ -323,7 +325,7 @@ export function Navbar() {
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
             {/* Tools Section */}
             <div className="mb-4">
               <Link
@@ -331,8 +333,8 @@ export function Navbar() {
                 className={cn(
                   'block px-3 py-2 text-base font-medium rounded-md transition-colors',
                   pathname.startsWith('/tools')
-                    ? 'text-blue-600 bg-blue-50'
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                    ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                 )}
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -345,7 +347,7 @@ export function Navbar() {
                     <Link
                       key={tool.name}
                       href={tool.href}
-                      className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors"
+                      className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <Icon className="h-4 w-4" />
@@ -363,8 +365,8 @@ export function Navbar() {
                 className={cn(
                   'block px-3 py-2 text-base font-medium rounded-md transition-colors',
                   pathname === item.href
-                    ? 'text-blue-600 bg-blue-50'
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                    ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                 )}
                 onClick={() => setMobileMenuOpen(false)}
               >

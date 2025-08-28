@@ -123,3 +123,36 @@
     scroll-padding-top: 4rem; /* Account for sticky header height */
   }
 }
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+  
+  /* GLASS-4: iOS/WebKit rounding quirks fix - avoid 1px hairline around corners */
+  .glass-clip {
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+  
+  /* Tabs rail scrollbar gutter for stable layout */
+  .tabs-rail {
+    scrollbar-gutter: stable both-edges;
+    scroll-snap-type: x proximity;
+  }
+  
+  /* MFIX-2: Enable scroll snapping for clean tab positioning */
+  .tabs-rail button {
+    scroll-snap-align: center;
+  }
+  
+  /* iOS safe area breathing room for full-bleed layouts */
+  @supports (padding: max(0px)) {
+    .tabs-rail {
+      padding-right: max(0.5rem, env(safe-area-inset-right));
+    }
+  }
+}

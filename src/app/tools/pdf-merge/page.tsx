@@ -172,25 +172,25 @@ export default function PDFMergePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-8 sm:py-16">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-8 sm:mb-12">
             <div className="flex justify-center mb-4">
               <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
-                <GitMerge className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <GitMerge className="h-6 w-6 sm:h-8 sm:w-8 text-green-600 dark:text-green-400" />
               </div>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               PDF Merge
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
               Combine multiple PDF files into a single document. Preserve page order and bookmarks. All processing happens in your browser for maximum privacy.
             </p>
           </div>
 
           {/* Upload Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
             <Dropzone
               onFilesAdded={handleFilesAdded}
               onFileRemove={handleFileRemove}
@@ -203,11 +203,11 @@ export default function PDFMergePage() {
 
           {/* Processing Section */}
           {uploadedFiles.length >= 2 && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
                 Merge PDFs
               </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 sm:mb-6">
                 Ready to merge {uploadedFiles.length} PDF files
               </p>
               
@@ -224,7 +224,7 @@ export default function PDFMergePage() {
               <Button 
                 onClick={handleMerge}
                 disabled={isProcessing || uploadedFiles.length < 2}
-                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400"
+                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-sm sm:text-base"
                 size="lg"
               >
                 {isProcessing ? 'Merging...' : `Merge ${uploadedFiles.length} PDFs`}
@@ -234,22 +234,22 @@ export default function PDFMergePage() {
 
           {/* Result Section */}
           {result && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                 {result.success ? (
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mr-2" />
                 ) : (
-                  <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
+                  <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-red-600 mr-2" />
                 )}
                 <span>{result.success ? 'Merge Complete' : 'Merge Failed'}</span>
               </h3>
               
               {result.success ? (
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <div>
-                      <p className="font-medium text-green-900 dark:text-green-100">{result.filename}</p>
-                      <p className="text-sm text-green-700 dark:text-green-300">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 bg-green-50 dark:bg-green-900/20 rounded-lg space-y-3 sm:space-y-0">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-sm sm:text-base text-green-900 dark:text-green-100 break-words">{result.filename}</p>
+                      <p className="text-xs sm:text-sm text-green-700 dark:text-green-300">
                         {result.originalSize && result.newSize && (
                           <>Original: {formatFileSize(result.originalSize)} → Final: {formatFileSize(result.newSize)}</>
                         )}
@@ -258,23 +258,23 @@ export default function PDFMergePage() {
                     <a
                       href={result.downloadUrl}
                       download={result.filename}
-                      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center"
+                      className="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm sm:text-base flex-shrink-0"
                     >
-                      <Download className="h-4 w-4 mr-2" />
+                      <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                       Download
                     </a>
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                  <p className="text-red-900 dark:text-red-100">{result.error}</p>
+                <div className="p-3 sm:p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                  <p className="text-sm sm:text-base text-red-900 dark:text-red-100">{result.error}</p>
                 </div>
               )}
             </div>
           )}
 
           {/* Features */}
-          <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <div className="text-center">
               <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                 <GitMerge className="h-6 w-6 text-green-600 dark:text-green-400" />
@@ -317,11 +317,11 @@ export default function PDFMergePage() {
           </div>
 
           {/* FAQ Section */}
-          <div className="mt-16">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+          <div className="mt-12 sm:mt-16">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 text-center">
               Frequently Asked Questions
             </h2>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-2">

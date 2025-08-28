@@ -631,16 +631,16 @@ export function PDFSignClient() {
 
       {/* PDF Viewer & Editor */}
       {file && pdfPages.length > 0 && (
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-4 lg:gap-6">
           {/* PDF Preview */}
           <div className="lg:col-span-2">
             <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                   <div className="flex items-center space-x-3">
                     <FileText className="w-6 h-6 text-blue-600" />
                     <div>
-                      <h3 className="font-medium">{file.name}</h3>
+                      <h3 className="font-medium text-sm sm:text-base truncate">{file.name}</h3>
                       <p className="text-sm text-gray-500">
                         Page {currentPage + 1} of {pdfPages.length}
                       </p>
@@ -652,7 +652,7 @@ export function PDFSignClient() {
                     size="sm"
                     onClick={handleReset}
                     disabled={isProcessing}
-                    className="flex items-center space-x-1"
+                    className="flex items-center space-x-1 w-full sm:w-auto"
                   >
                     <Trash2 className="w-4 h-4" />
                     <span>Reset</span>
@@ -667,10 +667,12 @@ export function PDFSignClient() {
                       size="sm"
                       onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
                       disabled={currentPage === 0}
+                      className="px-2 sm:px-3"
                     >
-                      Previous
+                      <span className="hidden sm:inline">Previous</span>
+                      <span className="sm:hidden">Prev</span>
                     </Button>
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-600 px-2">
                       {currentPage + 1} / {pdfPages.length}
                     </span>
                     <Button
@@ -678,8 +680,10 @@ export function PDFSignClient() {
                       size="sm"
                       onClick={() => setCurrentPage(Math.min(pdfPages.length - 1, currentPage + 1))}
                       disabled={currentPage === pdfPages.length - 1}
+                      className="px-2 sm:px-3"
                     >
-                      Next
+                      <span className="hidden sm:inline">Next</span>
+                      <span className="sm:hidden">Next</span>
                     </Button>
                   </div>
                 )}

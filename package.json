@@ -18,6 +18,10 @@
     "check:adsense": "node scripts/check-adsense.js",
     "generate:og": "node scripts/generate-og-images.js",
     "add:og-metadata": "node scripts/add-og-metadata.js",
+    "tunnel": "lt --port 3000 --print-requests",
+    "dev:tunnel": "concurrently \"next dev\" \"lt --port 3000 --print-requests\"",
+    "og:set": "node scripts/set-site-url.js",
+    "og:validators": "node scripts/validators.js",
     "prelaunch": "npm run build && npm run test && npm run lhci && echo '✓ Prelaunch checks complete'"
   },
   "dependencies": {
@@ -68,7 +72,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/which": "^3.0.4",
+    "concurrently": "^9.1.0",
     "cypress": "^15.0.0",
+    "localtunnel": "^2.0.2",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
     "tailwindcss": "^4",

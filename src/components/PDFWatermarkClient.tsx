@@ -313,12 +313,12 @@ export function PDFWatermarkClient() {
       {/* File Info & Settings */}
       {file && (
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-6">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div className="flex items-center space-x-3">
                 <FileText className="w-6 h-6 text-blue-600" />
                 <div>
-                  <h3 className="font-medium">{file.name}</h3>
+                  <h3 className="font-medium text-sm sm:text-base truncate">{file.name}</h3>
                   <p className="text-sm text-gray-500">
                     {(file.size / (1024 * 1024)).toFixed(2)} MB
                   </p>
@@ -330,7 +330,7 @@ export function PDFWatermarkClient() {
                 size="sm"
                 onClick={handleReset}
                 disabled={isProcessing}
-                className="flex items-center space-x-1"
+                className="flex items-center space-x-1 w-full sm:w-auto"
               >
                 <Trash2 className="w-4 h-4" />
                 <span>Reset</span>
@@ -338,7 +338,7 @@ export function PDFWatermarkClient() {
             </div>
 
             {/* Watermark Settings */}
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
               {/* Text Input */}
               <div className="space-y-2">
                 <Label htmlFor="watermark-text" className="flex items-center gap-2">
@@ -364,7 +364,7 @@ export function PDFWatermarkClient() {
                   value={watermarkSettings.position}
                   onChange={(e) => updateWatermarkSetting('position', e.target.value as WatermarkSettings['position'])}
                   disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {POSITION_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -424,7 +424,7 @@ export function PDFWatermarkClient() {
                   value={watermarkSettings.color}
                   onChange={(e) => updateWatermarkSetting('color', e.target.value)}
                   disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {COLOR_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -456,7 +456,7 @@ export function PDFWatermarkClient() {
             </div>
 
             {/* Action Button */}
-            <div className="mt-8 flex flex-col space-y-4">
+            <div className="mt-6 sm:mt-8 flex flex-col space-y-4">
               <Button
                 onClick={handleProcess}
                 disabled={isProcessing || !watermarkSettings.text.trim()}
@@ -471,7 +471,7 @@ export function PDFWatermarkClient() {
                 ) : (
                   <>
                     <Download className="w-4 h-4 mr-2" />
-                    Add Watermark & Download
+                    <span className="text-sm sm:text-base">Add Watermark & Download</span>
                   </>
                 )}
               </Button>
@@ -483,7 +483,7 @@ export function PDFWatermarkClient() {
 
               {/* Error Display */}
               {error && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div className="p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
                   <p className="text-red-700 text-sm">{error}</p>
                 </div>
               )}

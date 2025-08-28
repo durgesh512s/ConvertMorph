@@ -90,7 +90,7 @@ export default function PDFOrganizePage() {
       />
       
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 dark:from-gray-900 dark:to-gray-800">
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-8 sm:py-16">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-12">
@@ -99,20 +99,20 @@ export default function PDFOrganizePage() {
                   <Move3D className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 PDF Organize
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
                 Reorder and rotate PDF pages with visual drag-and-drop interface. Organize your documents with thumbnail previews and powerful editing tools. All processing happens in your browser for maximum privacy.
               </p>
             </div>
 
             {/* How It Works */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-8">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
                 How to Organize Your PDF
               </h2>
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div className="text-center">
                   <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                     <Download className="h-6 w-6 text-blue-600 dark:text-blue-400" />
@@ -146,13 +146,13 @@ export default function PDFOrganizePage() {
             </div>
 
             {/* Main Tool */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-8">
               <PDFOrganizeClient />
             </div>
 
             {/* Features */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 text-center">
                 <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                   <Eye className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
@@ -162,7 +162,7 @@ export default function PDFOrganizePage() {
                 </p>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 text-center">
                 <div className="bg-purple-100 dark:bg-purple-900 p-3 rounded-full w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                   <GripVertical className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                 </div>
@@ -172,7 +172,7 @@ export default function PDFOrganizePage() {
                 </p>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 text-center">
                 <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                   <RotateCw className="h-6 w-6 text-green-600 dark:text-green-400" />
                 </div>
@@ -182,7 +182,7 @@ export default function PDFOrganizePage() {
                 </p>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 text-center">
                 <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                   <Undo className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                 </div>
@@ -194,9 +194,9 @@ export default function PDFOrganizePage() {
             </div>
 
             {/* Advanced Features */}
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                   <Keyboard className="h-5 w-5 mr-2 text-blue-600" />
                   Keyboard Shortcuts
                 </h3>
@@ -228,8 +228,8 @@ export default function PDFOrganizePage() {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
                   <Zap className="h-5 w-5 mr-2 text-green-600" />
                   Performance Features
                 </h3>
@@ -255,14 +255,14 @@ export default function PDFOrganizePage() {
             </div>
 
             {/* Privacy & Security */}
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg shadow-lg p-6 mb-12">
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg shadow-lg p-4 sm:p-6 mb-8 sm:mb-12">
               <div className="text-center">
                 <div className="flex justify-center mb-4">
                   <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
                     <Shield className="h-8 w-8 text-green-600 dark:text-green-400" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-4">
                   Privacy First
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
@@ -273,11 +273,11 @@ export default function PDFOrganizePage() {
             </div>
 
             {/* FAQ Section */}
-            <div className="mt-16">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+            <div className="mt-8 sm:mt-16">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 text-center">
                 Frequently Asked Questions
               </h3>
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
                 <div className="space-y-4">
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white mb-2">

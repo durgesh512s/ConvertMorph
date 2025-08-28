@@ -103,24 +103,24 @@ export function Dropzone({
         onKeyDown={handleKeyDown}
         onClick={open}
         className={cn(
-          'border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer transition-colors',
-          'hover:border-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-          isDragActive && 'border-blue-500 bg-blue-50',
+          'border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 sm:p-6 md:p-8 text-center cursor-pointer transition-colors',
+          'hover:border-gray-400 hover:bg-gray-50 dark:hover:border-gray-500 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+          isDragActive && 'border-blue-500 bg-blue-50 dark:bg-blue-900/20',
           disabled && 'cursor-not-allowed opacity-50'
         )}
       >
         <input {...getInputProps()} />
-        <div className="flex flex-col items-center space-y-4">
-          <Upload className="h-12 w-12 text-gray-400" />
+        <div className="flex flex-col items-center space-y-3 sm:space-y-4">
+          <Upload className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-gray-400" />
           <div>
-            <p className="text-lg font-medium text-gray-900">
+            <p className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">
               {isDragActive ? 'Drop files here' : 'Drag & drop files here'}
             </p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               or click to select files
             </p>
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-gray-400 space-y-1">
             <p>Supports: PDF, JPG, PNG</p>
             <p>Max size: {formatFileSize(maxSize)} per file</p>
             <p>Max files: {maxFiles}</p>
@@ -152,40 +152,40 @@ export function Dropzone({
       {/* Uploaded Files */}
       {uploadedFiles.length > 0 && (
         <div className="space-y-2">
-          <h3 className="text-sm font-medium text-gray-900">
+          <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
             Files ({uploadedFiles.length})
           </h3>
           {uploadedFiles.map((file) => (
             <Card key={file.id} className="p-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3 flex-1 min-w-0">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+                <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
                   {getFileIcon(file.type)}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                       {file.name}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       {formatFileSize(file.size)}
                     </p>
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-between sm:justify-end space-x-2">
                   {file.status === 'uploading' && file.progress !== undefined && (
-                    <div className="w-20">
+                    <div className="w-16 sm:w-20 flex-shrink-0">
                       <Progress value={file.progress} className="h-2" />
                     </div>
                   )}
                   
                   {file.status === 'error' && (
-                    <AlertCircle className="h-4 w-4 text-red-500" />
+                    <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
                   )}
                   
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => onFileRemove(file.id)}
-                    className="h-8 w-8 p-0"
+                    className="h-8 w-8 p-0 flex-shrink-0"
                   >
                     <X className="h-4 w-4" />
                   </Button>

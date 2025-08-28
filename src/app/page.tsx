@@ -118,49 +118,49 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white dark:from-blue-950/40 dark:to-gray-950 py-20">
+      <section className="bg-gradient-to-b from-blue-50 to-white dark:from-blue-950/40 dark:to-gray-950 py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left Content */}
             <div className="text-center lg:text-left">
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">
                 Fast, private file tools —{' '}
                 <span className="text-blue-600 dark:text-blue-400">free forever</span>
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">
                 Convert, compress, and organize documents in your browser. 
                 Your files stay on your device.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
-                <Button asChild size="lg" className="text-lg px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-8 sm:mb-12">
+                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-blue-600 hover:bg-blue-700">
                   <Link href="/tools">Open Tools</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="text-lg px-8 py-4 rounded-xl border-blue-600 text-blue-600 hover:bg-blue-50">
+                <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-blue-600 text-blue-600 hover:bg-blue-50">
                   <Link href="/about">Install App</Link>
                 </Button>
               </div>
               
               {/* Trust Badges */}
-              <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-sm text-gray-600 dark:text-gray-400">
-                <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-green-600 dark:text-green-400" />
+              <div className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-3 sm:gap-6 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex items-center justify-center lg:justify-start gap-2">
+                  <Shield className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 dark:text-green-400 flex-shrink-0" />
                   <span>No uploads (local when possible)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Globe className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <div className="flex items-center justify-center lg:justify-start gap-2">
+                  <Globe className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                   <span>Secure (HTTPS)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                <div className="flex items-center justify-center lg:justify-start gap-2">
+                  <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-orange-600 dark:text-orange-400 flex-shrink-0" />
                   <span>Auto-delete (≤ 1h)</span>
                 </div>
               </div>
             </div>
 
             {/* Right Illustration */}
-            <div className="flex justify-center lg:justify-end">
+            <div className="flex justify-center lg:justify-end mt-8 lg:mt-0">
               <div className="relative">
-                <svg width="400" height="300" viewBox="0 0 400 300" className="w-full max-w-md">
+                <svg width="400" height="300" viewBox="0 0 400 300" className="w-full max-w-sm sm:max-w-md">
                   {/* File Stack */}
                   <g transform="translate(50, 50)">
                     {/* Bottom file */}
@@ -203,18 +203,18 @@ export default function Home() {
       </section>
 
       {/* Tools Section */}
-      <section className="py-20 dark:bg-gray-950">
+      <section className="py-12 sm:py-16 lg:py-20 dark:bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               PDF Tools for Every Need
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
               Professional-grade PDF tools that work entirely in your browser
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {tools.map((tool) => {
               const Icon = tool.icon;
               return (
@@ -240,7 +240,7 @@ export default function Home() {
             })}
           </div>
 
-          <div className="text-center mt-12 hidden md:block">
+          <div className="text-center mt-8 sm:mt-12">
             <Button asChild variant="outline" size="sm" className="border-blue-600 text-blue-600 hover:bg-blue-50">
               <Link href="/tools">View All Tools →</Link>
             </Button>
@@ -249,18 +249,18 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="bg-gray-50 dark:bg-gray-900 py-20">
+      <section className="bg-gray-50 dark:bg-gray-900 py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Why Choose ConvertMorph?
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
               Built with privacy, speed, and simplicity in mind
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature) => {
               const Icon = feature.icon;
               return (

@@ -94,7 +94,7 @@ export default function PDFSignPage() {
       />
       
       <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 dark:from-gray-900 dark:to-gray-800">
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-8 sm:py-16">
           <div className="max-w-4xl mx-auto">
             {/* Header */}
             <div className="text-center mb-12">
@@ -103,21 +103,21 @@ export default function PDFSignPage() {
                   <PenTool className="h-8 w-8 text-rose-600 dark:text-rose-400" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 PDF Fill & Sign
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                 Add signatures and text to your PDF documents. Draw or type signatures, fill forms, 
                 and position elements exactly where you need them. All processing happens in your browser for maximum privacy.
               </p>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-8">
               <PDFSignClient />
             </div>
 
             {/* Features */}
-            <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               <div className="text-center">
                 <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                   <svg className="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,12 +168,12 @@ export default function PDFSignPage() {
             </div>
 
             {/* FAQ Section */}
-            <div className="mt-16">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+            <div className="mt-8 sm:mt-16">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 text-center">
                 Frequently Asked Questions
               </h2>
               
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
