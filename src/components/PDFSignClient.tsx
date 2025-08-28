@@ -205,8 +205,25 @@ export function PDFSignClient() {
     setElements(prev => prev.filter(el => el.id !== elementId))
   }
 
-  // Drag and drop handlers
-  const handleMouseDown = (e: React.MouseEvent, elementId: string) => {
+  // Drag and drop handlers - Support both mouse and touch events
+  const getPointerPosition = (e: React.MouseEvent | React.TouchEvent | MouseEvent | TouchEvent) => {
+    if ('touches' in e) {
+      // Touch event
+      const touch = e.touches[0] || e.changedTouches[0]
+      return {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+      }
+    } else {
+      // Mouse event
+      return {
+        clientX: e.clientX,
+        clientY: e.clientY
+      }
+    }
+  }
+
+  const handlePointerDown = (e: React.MouseEvent | React.TouchEvent, elementId: string) => {
     e.preventDefault()
     e.stopPropagation()
     
@@ -214,6 +231,7 @@ export function PDFSignClient() {
     if (!element || !pdfContainerRef.current) return
     
     const rect = pdfContainerRef.current.getBoundingClientRect()
+    const { clientX, clientY } = getPointerPosition(e)
     
     // Calculate scale factor for current display
     const canvas = pdfContainerRef.current.querySelector('canvas')
@@ -227,18 +245,27 @@ export function PDFSignClient() {
     const displayX = element.x * scaleX
     const displayY = element.y * scaleY
     
-    // Calculate offset from mouse to element's top-left corner in display coordinates
-    const offsetX = e.clientX - rect.left - displayX
-    const offsetY = e.clientY - rect.top - displayY
+    // Calculate offset from pointer to element's top-left corner in display coordinates
+    const offsetX = clientX - rect.left - displayX
+    const offsetY = clientY - rect.top - displayY
     
     setDraggedElement(elementId)
     setDragOffset({ x: offsetX, y: offsetY })
   }
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent, elementId: string) => {
+    handlePointerDown(e, elementId)
+  }
+
+  const handleTouchStart = (e: React.TouchEvent, elementId: string) => {
+    handlePointerDown(e, elementId)
+  }
+
+  const handlePointerMove = useCallback((e: MouseEvent | TouchEvent) => {
     if (!draggedElement || !pdfContainerRef.current) return
     
     const rect = pdfContainerRef.current.getBoundingClientRect()
+    const { clientX, clientY } = getPointerPosition(e)
     
     // Get current page dimensions for boundary checking
     const currentPageData = pdfPages[currentPage]
@@ -252,8 +279,8 @@ export function PDFSignClient() {
     const scaleY = canvas.offsetHeight / currentPageData.height
     
     // Calculate new position in display coordinates
-    const displayX = e.clientX - rect.left - dragOffset.x
-    const displayY = e.clientY - rect.top - dragOffset.y
+    const displayX = clientX - rect.left - dragOffset.x
+    const displayY = clientY - rect.top - dragOffset.y
     
     // Convert to actual PDF coordinates
     const actualX = displayX / scaleX
@@ -278,7 +305,16 @@ export function PDFSignClient() {
     })
   }, [draggedElement, dragOffset, pdfPages, currentPage])
 
-  const handleMouseUp = useCallback(() => {
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    handlePointerMove(e)
+  }, [handlePointerMove])
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    e.preventDefault() // Prevent scrolling while dragging
+    handlePointerMove(e)
+  }, [handlePointerMove])
+
+  const handlePointerUp = useCallback(() => {
     setDraggedElement(null)
     setDragOffset({ x: 0, y: 0 })
     setResizingElement(null)
@@ -286,8 +322,16 @@ export function PDFSignClient() {
     setInitialSize({ width: 0, height: 0 })
   }, [])
 
-  // Resize handlers
-  const handleResizeStart = (e: React.MouseEvent, elementId: string, handle: string) => {
+  const handleMouseUp = useCallback(() => {
+    handlePointerUp()
+  }, [handlePointerUp])
+
+  const handleTouchEnd = useCallback(() => {
+    handlePointerUp()
+  }, [handlePointerUp])
+
+  // Resize handlers - Support both mouse and touch events
+  const handleResizePointerStart = (e: React.MouseEvent | React.TouchEvent, elementId: string, handle: string) => {
     e.preventDefault()
     e.stopPropagation()
     
@@ -299,13 +343,22 @@ export function PDFSignClient() {
     setInitialSize({ width: element.width, height: element.height })
   }
 
-  const handleResizeMove = useCallback((e: MouseEvent) => {
+  const handleResizeStart = (e: React.MouseEvent, elementId: string, handle: string) => {
+    handleResizePointerStart(e, elementId, handle)
+  }
+
+  const handleResizeTouchStart = (e: React.TouchEvent, elementId: string, handle: string) => {
+    handleResizePointerStart(e, elementId, handle)
+  }
+
+  const handleResizePointerMove = useCallback((e: MouseEvent | TouchEvent) => {
     if (!resizingElement || !resizeHandle || !pdfContainerRef.current) return
     
     const element = elements.find(el => el.id === resizingElement)
     if (!element) return
     
     const rect = pdfContainerRef.current.getBoundingClientRect()
+    const { clientX, clientY } = getPointerPosition(e)
     const currentPageData = pdfPages[currentPage]
     if (!currentPageData) return
     
@@ -315,25 +368,25 @@ export function PDFSignClient() {
     const scaleX = canvas.offsetWidth / currentPageData.width
     const scaleY = canvas.offsetHeight / currentPageData.height
     
-    // Calculate mouse position relative to element's top-left corner
-    const mouseX = (e.clientX - rect.left) / scaleX
-    const mouseY = (e.clientY - rect.top) / scaleY
+    // Calculate pointer position relative to element's top-left corner
+    const pointerX = (clientX - rect.left) / scaleX
+    const pointerY = (clientY - rect.top) / scaleY
     
     let newWidth = element.width
     let newHeight = element.height
     
     // Calculate new dimensions based on resize handle
     if (resizeHandle.includes('right')) {
-      newWidth = Math.max(20, mouseX - element.x)
+      newWidth = Math.max(20, pointerX - element.x)
     }
     if (resizeHandle.includes('bottom')) {
-      newHeight = Math.max(20, mouseY - element.y)
+      newHeight = Math.max(20, pointerY - element.y)
     }
     if (resizeHandle.includes('left')) {
-      newWidth = Math.max(20, element.x + element.width - mouseX)
+      newWidth = Math.max(20, element.x + element.width - pointerX)
     }
     if (resizeHandle.includes('top')) {
-      newHeight = Math.max(20, element.y + element.height - mouseY)
+      newHeight = Math.max(20, element.y + element.height - pointerY)
     }
     
     // Maintain aspect ratio for corner handles
@@ -368,6 +421,40 @@ export function PDFSignClient() {
     })
   }, [resizingElement, resizeHandle, initialSize, pdfPages, currentPage, elements])
 
+  const handleResizeMove = useCallback((e: MouseEvent) => {
+    handleResizePointerMove(e)
+  }, [handleResizePointerMove])
+
+  const handleResizeTouchMove = useCallback((e: TouchEvent) => {
+    e.preventDefault() // Prevent scrolling while resizing
+    handleResizePointerMove(e)
+  }, [handleResizePointerMove])
+
+  // Add global touch event listeners for dragging and resizing
+  useEffect(() => {
+    if (draggedElement) {
+      document.addEventListener('touchmove', handleTouchMove, { passive: false })
+      document.addEventListener('touchend', handleTouchEnd)
+      
+      return () => {
+        document.removeEventListener('touchmove', handleTouchMove)
+        document.removeEventListener('touchend', handleTouchEnd)
+      }
+    }
+  }, [draggedElement, handleTouchMove, handleTouchEnd])
+
+  useEffect(() => {
+    if (resizingElement) {
+      document.addEventListener('touchmove', handleResizeTouchMove, { passive: false })
+      document.addEventListener('touchend', handleTouchEnd)
+      
+      return () => {
+        document.removeEventListener('touchmove', handleResizeTouchMove)
+        document.removeEventListener('touchend', handleTouchEnd)
+      }
+    }
+  }, [resizingElement, handleResizeTouchMove, handleTouchEnd])
+
   // Add global mouse event listeners for dragging and resizing
   useEffect(() => {
     if (draggedElement) {
@@ -393,8 +480,31 @@ export function PDFSignClient() {
     }
   }, [resizingElement, handleResizeMove, handleMouseUp])
 
-  // Handle canvas drawing
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  // Handle canvas drawing (mouse and touch events)
+  const getEventPosition = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    const canvas = signatureCanvasRef.current
+    if (!canvas) return { x: 0, y: 0 }
+    
+    const rect = canvas.getBoundingClientRect()
+    
+    if ('touches' in e) {
+      // Touch event
+      const touch = e.touches[0] || e.changedTouches[0]
+      return {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      }
+    } else {
+      // Mouse event
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      }
+    }
+  }
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault()
     setIsDrawing(true)
     const canvas = signatureCanvasRef.current
     if (!canvas) return
@@ -402,9 +512,7 @@ export function PDFSignClient() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     
-    const rect = canvas.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    const { x, y } = getEventPosition(e)
     
     ctx.beginPath()
     ctx.moveTo(x, y)
@@ -413,7 +521,8 @@ export function PDFSignClient() {
     ctx.strokeStyle = '#000000'
   }
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault()
     if (!isDrawing) return
     
     const canvas = signatureCanvasRef.current
@@ -422,15 +531,14 @@ export function PDFSignClient() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     
-    const rect = canvas.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    const { x, y } = getEventPosition(e)
     
     ctx.lineTo(x, y)
     ctx.stroke()
   }
 
-  const stopDrawing = () => {
+  const stopDrawing = (e?: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (e) e.preventDefault()
     setIsDrawing(false)
   }
 
@@ -729,7 +837,7 @@ export function PDFSignClient() {
                           return (
                             <div
                               key={element.id}
-                              className={`absolute border-2 bg-opacity-50 group select-none ${
+                              className={`absolute border-2 bg-opacity-50 group select-none touch-manipulation ${
                                 draggedElement === element.id 
                                   ? 'border-rose-500 bg-rose-50 cursor-grabbing' 
                                   : 'border-blue-500 bg-blue-50 cursor-grab hover:border-rose-500 hover:bg-rose-50'
@@ -741,48 +849,57 @@ export function PDFSignClient() {
                                 height: `${displayHeight}px`,
                               }}
                               onMouseDown={(e) => handleMouseDown(e, element.id)}
+                              onTouchStart={(e) => handleTouchStart(e, element.id)}
                               onDoubleClick={() => removeElement(element.id)}
                             >
                               <div className="absolute -top-6 left-0 bg-blue-600 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                                 {element.type === 'signature' ? '✍️ Signature' : '📝 Text'} - Drag to move, resize handles to resize, double-click to remove
                               </div>
                               
-                              {/* Resize Handles */}
+                              {/* Resize Handles - Larger for mobile touch */}
                               <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                {/* Corner handles */}
+                                {/* Corner handles - Larger for mobile */}
                                 <div
-                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-nw-resize -top-1 -left-1"
+                                  className="absolute w-4 h-4 sm:w-3 sm:h-3 bg-blue-600 border border-white rounded-sm cursor-nw-resize -top-2 -left-2 sm:-top-1 sm:-left-1 touch-manipulation"
                                   onMouseDown={(e) => handleResizeStart(e, element.id, 'corner-top-left')}
+                                  onTouchStart={(e) => handleResizeTouchStart(e, element.id, 'corner-top-left')}
                                 />
                                 <div
-                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-ne-resize -top-1 -right-1"
+                                  className="absolute w-4 h-4 sm:w-3 sm:h-3 bg-blue-600 border border-white rounded-sm cursor-ne-resize -top-2 -right-2 sm:-top-1 sm:-right-1 touch-manipulation"
                                   onMouseDown={(e) => handleResizeStart(e, element.id, 'corner-top-right')}
+                                  onTouchStart={(e) => handleResizeTouchStart(e, element.id, 'corner-top-right')}
                                 />
                                 <div
-                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-sw-resize -bottom-1 -left-1"
+                                  className="absolute w-4 h-4 sm:w-3 sm:h-3 bg-blue-600 border border-white rounded-sm cursor-sw-resize -bottom-2 -left-2 sm:-bottom-1 sm:-left-1 touch-manipulation"
                                   onMouseDown={(e) => handleResizeStart(e, element.id, 'corner-bottom-left')}
+                                  onTouchStart={(e) => handleResizeTouchStart(e, element.id, 'corner-bottom-left')}
                                 />
                                 <div
-                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-se-resize -bottom-1 -right-1"
+                                  className="absolute w-4 h-4 sm:w-3 sm:h-3 bg-blue-600 border border-white rounded-sm cursor-se-resize -bottom-2 -right-2 sm:-bottom-1 sm:-right-1 touch-manipulation"
                                   onMouseDown={(e) => handleResizeStart(e, element.id, 'corner-bottom-right')}
+                                  onTouchStart={(e) => handleResizeTouchStart(e, element.id, 'corner-bottom-right')}
                                 />
                                 
-                                {/* Edge handles */}
+                                {/* Edge handles - Larger for mobile */}
                                 <div
-                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-n-resize -top-1 left-1/2 transform -translate-x-1/2"
+                                  className="absolute w-4 h-4 sm:w-3 sm:h-3 bg-blue-600 border border-white rounded-sm cursor-n-resize -top-2 sm:-top-1 left-1/2 transform -translate-x-1/2 touch-manipulation"
                                   onMouseDown={(e) => handleResizeStart(e, element.id, 'top')}
+                                  onTouchStart={(e) => handleResizeTouchStart(e, element.id, 'top')}
                                 />
                                 <div
-                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-s-resize -bottom-1 left-1/2 transform -translate-x-1/2"
+                                  className="absolute w-4 h-4 sm:w-3 sm:h-3 bg-blue-600 border border-white rounded-sm cursor-s-resize -bottom-2 sm:-bottom-1 left-1/2 transform -translate-x-1/2 touch-manipulation"
                                   onMouseDown={(e) => handleResizeStart(e, element.id, 'bottom')}
+                                  onTouchStart={(e) => handleResizeTouchStart(e, element.id, 'bottom')}
                                 />
                                 <div
-                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-w-resize -left-1 top-1/2 transform -translate-y-1/2"
+                                  className="absolute w-4 h-4 sm:w-3 sm:h-3 bg-blue-600 border border-white rounded-sm cursor-w-resize -left-2 sm:-left-1 top-1/2 transform -translate-y-1/2 touch-manipulation"
                                   onMouseDown={(e) => handleResizeStart(e, element.id, 'left')}
+                                  onTouchStart={(e) => handleResizeTouchStart(e, element.id, 'left')}
                                 />
                                 <div
-                                  className="absolute w-3 h-3 bg-blue-600 border border-white rounded-sm cursor-e-resize -right-1 top-1/2 transform -translate-y-1/2"
+                                  className="absolute w-4 h-4 sm:w-3 sm:h-3 bg-blue-600 border border-white rounded-sm cursor-e-resize -right-2 sm:-right-1 top-1/2 transform -translate-y-1/2 touch-manipulation"
                                   onMouseDown={(e) => handleResizeStart(e, element.id, 'right')}
+                                  onTouchStart={(e) => handleResizeTouchStart(e, element.id, 'right')}
                                 />
                               </div>
                               {element.type === 'text' && (
@@ -892,15 +1009,15 @@ export function PDFSignClient() {
               </Card>
             </div>
 
-            {/* Elements List */}
+            {/* Added Items List */}
             {elements.length > 0 && (
               <Card>
                 <CardContent className="p-3 sm:p-4">
-                  <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Elements ({elements.length})</h3>
+                  <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Added Items ({elements.length})</h3>
                   <div className="space-y-2 max-h-32 sm:max-h-40 overflow-y-auto">
                     {elements.map(element => (
-                      <div key={element.id} className="flex items-center justify-between p-2 bg-gray-50 rounded text-xs sm:text-sm">
-                        <span className="truncate">
+                      <div key={element.id} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded text-xs sm:text-sm">
+                        <span className="truncate text-gray-900 dark:text-gray-100">
                           {element.type === 'signature' ? '✍️ Signature' : '📝 Text'} 
                           {element.pageIndex !== currentPage && ` (Page ${element.pageIndex + 1})`}
                         </span>
@@ -908,7 +1025,7 @@ export function PDFSignClient() {
                           size="sm"
                           variant="ghost"
                           onClick={() => removeElement(element.id)}
-                          className="p-1 h-auto"
+                          className="p-1 h-auto hover:bg-gray-200 dark:hover:bg-gray-600"
                         >
                           <Trash2 className="w-3 h-3" />
                         </Button>
@@ -971,11 +1088,14 @@ export function PDFSignClient() {
                   ref={signatureCanvasRef}
                   width={400}
                   height={200}
-                  className="w-full h-auto cursor-crosshair"
+                  className="w-full h-auto cursor-crosshair touch-none"
                   onMouseDown={startDrawing}
                   onMouseMove={draw}
                   onMouseUp={stopDrawing}
                   onMouseLeave={stopDrawing}
+                  onTouchStart={startDrawing}
+                  onTouchMove={draw}
+                  onTouchEnd={stopDrawing}
                 />
               </div>
               <div className="flex space-x-2">
@@ -1013,14 +1133,26 @@ export function PDFSignClient() {
                 </div>
                 <div>
                   <Label>Font Size: {fontSize}px</Label>
-                  <input
-                    type="range"
-                    min="12"
-                    max="48"
-                    value={fontSize}
-                    onChange={(e) => setFontSize(parseInt(e.target.value))}
-                    className="w-full"
-                  />
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="range"
+                      min="12"
+                      max="48"
+                      value={fontSize}
+                      onChange={(e) => setFontSize(parseInt(e.target.value))}
+                      className="flex-1"
+                    />
+                    {/* Mobile: Size input text box - Always visible for better UX */}
+                    <Input
+                      type="number"
+                      min="12"
+                      max="48"
+                      value={fontSize}
+                      onChange={(e) => setFontSize(parseInt(e.target.value) || 16)}
+                      className="w-16 text-xs"
+                      placeholder="Size"
+                    />
+                  </div>
                 </div>
               </div>
               <div className="flex space-x-2 mt-4">

@@ -115,21 +115,21 @@ export function PDFWatermarkClient() {
     
     switch (position) {
       case 'top-left':
-        return { x: margin, y: pageHeight - margin - textHeight / 2 }
+        return { x: margin, y: pageHeight - margin - textHeight }
       case 'top-center':
-        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight - margin - textHeight / 2 }
+        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight - margin - textHeight }
       case 'top-right':
-        return { x: pageWidth - margin - textWidth, y: pageHeight - margin - textHeight / 2 }
+        return { x: pageWidth - margin - textWidth, y: pageHeight - margin - textHeight }
       case 'center':
-        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 + textHeight / 4 }
+        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 - textHeight / 2 }
       case 'bottom-left':
-        return { x: margin, y: margin + textHeight / 2 }
+        return { x: margin, y: margin }
       case 'bottom-center':
-        return { x: pageWidth / 2 - textWidth / 2, y: margin + textHeight / 2 }
+        return { x: pageWidth / 2 - textWidth / 2, y: margin }
       case 'bottom-right':
-        return { x: pageWidth - margin - textWidth, y: margin + textHeight / 2 }
+        return { x: pageWidth - margin - textWidth, y: margin }
       default:
-        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 + textHeight / 4 }
+        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 - textHeight / 2 }
     }
   }
 
