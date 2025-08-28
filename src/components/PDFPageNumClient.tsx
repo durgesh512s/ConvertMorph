@@ -374,11 +374,11 @@ export function PDFPageNumClient() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-3">
-                <FileText className="w-6 h-6 text-blue-600" />
-                <div>
-                  <h3 className="font-medium">{file.name}</h3>
-                  <p className="text-sm text-gray-500">
+              <div className="flex items-center space-x-3 min-w-0 flex-1">
+                <FileText className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-medium truncate text-sm sm:text-base" title={file.name}>{file.name}</h3>
+                  <p className="text-xs sm:text-sm text-gray-500">
                     {(file.size / (1024 * 1024)).toFixed(2)} MB
                   </p>
                 </div>
@@ -397,10 +397,10 @@ export function PDFPageNumClient() {
             </div>
 
             {/* Page Number Settings */}
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
               {/* Position */}
               <div className="space-y-2">
-                <Label className="flex items-center gap-2">
+                <Label className="flex items-center gap-2 text-sm sm:text-base">
                   <Hash className="w-4 h-4" />
                   Position
                 </Label>
@@ -408,7 +408,7 @@ export function PDFPageNumClient() {
                   value={pageNumSettings.position}
                   onChange={(e) => updatePageNumSetting('position', e.target.value as PageNumberSettings['position'])}
                   disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {POSITION_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -420,8 +420,8 @@ export function PDFPageNumClient() {
 
               {/* Alignment */}
               <div className="space-y-2">
-                <Label>Alignment</Label>
-                <div className="flex space-x-2">
+                <Label className="text-sm sm:text-base">Alignment</Label>
+                <div className="flex space-x-1 sm:space-x-2">
                   {ALIGNMENT_OPTIONS.map((option) => {
                     const Icon = option.icon
                     return (
@@ -431,10 +431,10 @@ export function PDFPageNumClient() {
                         size="sm"
                         onClick={() => updatePageNumSetting('alignment', option.value as PageNumberSettings['alignment'])}
                         disabled={isProcessing}
-                        className="flex items-center space-x-1"
+                        className="flex items-center space-x-1 flex-1 sm:flex-none px-2 sm:px-3"
                       >
                         <Icon className="w-4 h-4" />
-                        <span className="hidden sm:inline">{option.label}</span>
+                        <span className="hidden sm:inline text-xs sm:text-sm">{option.label}</span>
                       </Button>
                     )
                   })}
@@ -443,12 +443,12 @@ export function PDFPageNumClient() {
 
               {/* Format */}
               <div className="space-y-2">
-                <Label>Number Format</Label>
+                <Label className="text-sm sm:text-base">Number Format</Label>
                 <select
                   value={pageNumSettings.format}
                   onChange={(e) => updatePageNumSetting('format', e.target.value as PageNumberSettings['format'])}
                   disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {FORMAT_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -460,7 +460,7 @@ export function PDFPageNumClient() {
 
               {/* Start Number */}
               <div className="space-y-2">
-                <Label htmlFor="start-number">Start Number</Label>
+                <Label htmlFor="start-number" className="text-sm sm:text-base">Start Number</Label>
                 <Input
                   id="start-number"
                   type="number"
@@ -468,38 +468,41 @@ export function PDFPageNumClient() {
                   value={pageNumSettings.startNumber}
                   onChange={(e) => updatePageNumSetting('startNumber', parseInt(e.target.value) || 1)}
                   disabled={isProcessing}
+                  className="text-sm sm:text-base"
                 />
               </div>
 
               {/* Prefix */}
               <div className="space-y-2">
-                <Label htmlFor="prefix">Prefix (optional)</Label>
+                <Label htmlFor="prefix" className="text-sm sm:text-base">Prefix (optional)</Label>
                 <Input
                   id="prefix"
                   value={pageNumSettings.prefix}
                   onChange={(e) => updatePageNumSetting('prefix', e.target.value)}
                   placeholder="e.g., Page "
                   disabled={isProcessing}
+                  className="text-sm sm:text-base"
                 />
               </div>
 
               {/* Suffix */}
               <div className="space-y-2">
-                <Label htmlFor="suffix">Suffix (optional)</Label>
+                <Label htmlFor="suffix" className="text-sm sm:text-base">Suffix (optional)</Label>
                 <Input
                   id="suffix"
                   value={pageNumSettings.suffix}
                   onChange={(e) => updatePageNumSetting('suffix', e.target.value)}
                   placeholder="e.g., /10"
                   disabled={isProcessing}
+                  className="text-sm sm:text-base"
                 />
               </div>
 
               {/* Font Size */}
               <div className="space-y-2">
-                <Label className="flex items-center justify-between">
+                <Label className="flex items-center justify-between text-sm sm:text-base">
                   <span>Font Size</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs sm:text-sm text-gray-500">
                     {pageNumSettings.fontSize}px
                   </span>
                 </Label>
@@ -511,15 +514,15 @@ export function PDFPageNumClient() {
                   value={pageNumSettings.fontSize}
                   onChange={(e) => updatePageNumSetting('fontSize', parseInt(e.target.value))}
                   disabled={isProcessing}
-                  className="w-full"
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
               {/* Margin */}
               <div className="space-y-2">
-                <Label className="flex items-center justify-between">
+                <Label className="flex items-center justify-between text-sm sm:text-base">
                   <span>Margin</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs sm:text-sm text-gray-500">
                     {pageNumSettings.margin}px
                   </span>
                 </Label>
@@ -531,7 +534,7 @@ export function PDFPageNumClient() {
                   value={pageNumSettings.margin}
                   onChange={(e) => updatePageNumSetting('margin', parseInt(e.target.value))}
                   disabled={isProcessing}
-                  className="w-full"
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
             </div>

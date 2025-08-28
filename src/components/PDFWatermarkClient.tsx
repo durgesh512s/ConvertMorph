@@ -315,11 +315,11 @@ export function PDFWatermarkClient() {
         <Card>
           <CardContent className="p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-              <div className="flex items-center space-x-3">
-                <FileText className="w-6 h-6 text-blue-600" />
-                <div>
-                  <h3 className="font-medium text-sm sm:text-base truncate">{file.name}</h3>
-                  <p className="text-sm text-gray-500">
+              <div className="flex items-center space-x-3 min-w-0 flex-1">
+                <FileText className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-medium text-sm sm:text-base truncate" title={file.name}>{file.name}</h3>
+                  <p className="text-xs sm:text-sm text-gray-500">
                     {(file.size / (1024 * 1024)).toFixed(2)} MB
                   </p>
                 </div>
@@ -340,8 +340,8 @@ export function PDFWatermarkClient() {
             {/* Watermark Settings */}
             <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
               {/* Text Input */}
-              <div className="space-y-2">
-                <Label htmlFor="watermark-text" className="flex items-center gap-2">
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="watermark-text" className="flex items-center gap-2 text-sm sm:text-base">
                   <Type className="w-4 h-4" />
                   Watermark Text
                 </Label>
@@ -351,12 +351,13 @@ export function PDFWatermarkClient() {
                   onChange={(e) => updateWatermarkSetting('text', e.target.value)}
                   placeholder="Enter watermark text"
                   disabled={isProcessing}
+                  className="text-sm sm:text-base"
                 />
               </div>
 
               {/* Position */}
               <div className="space-y-2">
-                <Label className="flex items-center gap-2">
+                <Label className="flex items-center gap-2 text-sm sm:text-base">
                   <Move className="w-4 h-4" />
                   Position
                 </Label>
@@ -364,7 +365,7 @@ export function PDFWatermarkClient() {
                   value={watermarkSettings.position}
                   onChange={(e) => updateWatermarkSetting('position', e.target.value as WatermarkSettings['position'])}
                   disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {POSITION_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -374,11 +375,31 @@ export function PDFWatermarkClient() {
                 </select>
               </div>
 
+              {/* Color */}
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-sm sm:text-base">
+                  <Palette className="w-4 h-4" />
+                  Color
+                </Label>
+                <select
+                  value={watermarkSettings.color}
+                  onChange={(e) => updateWatermarkSetting('color', e.target.value)}
+                  disabled={isProcessing}
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {COLOR_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {/* Opacity */}
               <div className="space-y-2">
-                <Label className="flex items-center justify-between">
+                <Label className="flex items-center justify-between text-sm sm:text-base">
                   <span>Opacity</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs sm:text-sm text-gray-500">
                     {Math.round(watermarkSettings.opacity * 100)}%
                   </span>
                 </Label>
@@ -390,15 +411,15 @@ export function PDFWatermarkClient() {
                   value={watermarkSettings.opacity}
                   onChange={(e) => updateWatermarkSetting('opacity', parseFloat(e.target.value))}
                   disabled={isProcessing}
-                  className="w-full"
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
               {/* Font Size */}
               <div className="space-y-2">
-                <Label className="flex items-center justify-between">
+                <Label className="flex items-center justify-between text-sm sm:text-base">
                   <span>Font Size</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs sm:text-sm text-gray-500">
                     {watermarkSettings.fontSize}px
                   </span>
                 </Label>
@@ -410,35 +431,15 @@ export function PDFWatermarkClient() {
                   value={watermarkSettings.fontSize}
                   onChange={(e) => updateWatermarkSetting('fontSize', parseInt(e.target.value))}
                   disabled={isProcessing}
-                  className="w-full"
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
-              {/* Color */}
-              <div className="space-y-2">
-                <Label className="flex items-center gap-2">
-                  <Palette className="w-4 h-4" />
-                  Color
-                </Label>
-                <select
-                  value={watermarkSettings.color}
-                  onChange={(e) => updateWatermarkSetting('color', e.target.value)}
-                  disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {COLOR_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               {/* Rotation */}
-              <div className="space-y-2">
-                <Label className="flex items-center justify-between">
+              <div className="space-y-2 md:col-span-2">
+                <Label className="flex items-center justify-between text-sm sm:text-base">
                   <span>Rotation</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs sm:text-sm text-gray-500">
                     {watermarkSettings.rotation}°
                   </span>
                 </Label>
@@ -450,7 +451,7 @@ export function PDFWatermarkClient() {
                   value={watermarkSettings.rotation}
                   onChange={(e) => updateWatermarkSetting('rotation', parseInt(e.target.value))}
                   disabled={isProcessing}
-                  className="w-full"
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
             </div>

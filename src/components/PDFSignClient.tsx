@@ -629,17 +629,17 @@ export function PDFSignClient() {
 
       {/* PDF Viewer & Editor */}
       {file && pdfPages.length > 0 && (
-        <div className="grid lg:grid-cols-3 gap-4 lg:gap-6">
+        <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-6">
           {/* PDF Preview */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 order-2 lg:order-1">
             <Card>
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-                  <div className="flex items-center space-x-3">
-                    <FileText className="w-6 h-6 text-blue-600" />
-                    <div>
+              <CardContent className="p-3 sm:p-4 lg:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4">
+                  <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+                    <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 flex-shrink-0" />
+                    <div className="min-w-0">
                       <h3 className="font-medium text-sm sm:text-base truncate">{file.name}</h3>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs sm:text-sm text-gray-500">
                         Page {currentPage + 1} of {pdfPages.length}
                       </p>
                     </div>
@@ -650,7 +650,7 @@ export function PDFSignClient() {
                     size="sm"
                     onClick={handleReset}
                     disabled={isProcessing}
-                    className="flex items-center space-x-1 w-full sm:w-auto"
+                    className="flex items-center space-x-1 w-full sm:w-auto flex-shrink-0"
                   >
                     <Trash2 className="w-4 h-4" />
                     <span>Reset</span>
@@ -659,18 +659,18 @@ export function PDFSignClient() {
 
                 {/* Page Navigation */}
                 {pdfPages.length > 1 && (
-                  <div className="flex items-center justify-center space-x-2 mb-4">
+                  <div className="flex items-center justify-center space-x-2 mb-3 sm:mb-4">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
                       disabled={currentPage === 0}
-                      className="px-2 sm:px-3"
+                      className="px-2 sm:px-3 text-xs sm:text-sm"
                     >
                       <span className="hidden sm:inline">Previous</span>
                       <span className="sm:hidden">Prev</span>
                     </Button>
-                    <span className="text-sm text-gray-600 px-2">
+                    <span className="text-xs sm:text-sm text-gray-600 px-2 whitespace-nowrap">
                       {currentPage + 1} / {pdfPages.length}
                     </span>
                     <Button
@@ -678,7 +678,7 @@ export function PDFSignClient() {
                       size="sm"
                       onClick={() => setCurrentPage(Math.min(pdfPages.length - 1, currentPage + 1))}
                       disabled={currentPage === pdfPages.length - 1}
-                      className="px-2 sm:px-3"
+                      className="px-2 sm:px-3 text-xs sm:text-sm"
                     >
                       <span className="hidden sm:inline">Next</span>
                       <span className="sm:hidden">Next</span>
@@ -690,7 +690,7 @@ export function PDFSignClient() {
                 <div 
                   ref={pdfContainerRef}
                   className="relative border border-gray-300 rounded-lg overflow-hidden bg-white"
-                  style={{ maxHeight: '600px', overflow: 'auto' }}
+                  style={{ maxHeight: '70vh', overflow: 'auto' }}
                 >
                   {pdfPages[currentPage] && (
                     <div className="relative">
@@ -813,50 +813,94 @@ export function PDFSignClient() {
           </div>
 
           {/* Tools Panel */}
-          <div className="space-y-4">
-            {/* Add Signature */}
-            <Card>
-              <CardContent className="p-4">
-                <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <PenTool className="w-4 h-4" />
-                  Add Signature
-                </h3>
-                <Button
-                  onClick={() => setShowSignaturePad(true)}
-                  className="w-full bg-rose-600 hover:bg-rose-700 text-white"
-                >
-                  <PenTool className="w-4 h-4 mr-2" />
-                  Draw Signature
-                </Button>
-              </CardContent>
-            </Card>
+          <div className="space-y-3 sm:space-y-4 order-1 lg:order-2">
+            {/* Mobile: Horizontal layout for signature and text buttons */}
+            <div className="grid grid-cols-2 gap-3 lg:hidden">
+              <Card>
+                <CardContent className="p-3">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm">
+                    <PenTool className="w-4 h-4" />
+                    <span className="hidden sm:inline">Add Signature</span>
+                    <span className="sm:hidden">Signature</span>
+                  </h3>
+                  <Button
+                    onClick={() => setShowSignaturePad(true)}
+                    className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm"
+                    size="sm"
+                  >
+                    <PenTool className="w-4 h-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Draw Signature</span>
+                    <span className="sm:hidden">Draw</span>
+                  </Button>
+                </CardContent>
+              </Card>
 
-            {/* Add Text */}
-            <Card>
-              <CardContent className="p-4">
-                <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <Type className="w-4 h-4" />
-                  Add Text
-                </h3>
-                <Button
-                  onClick={() => setShowTextInput(true)}
-                  className="w-full bg-rose-600 hover:bg-rose-700 text-white"
-                >
-                  <Type className="w-4 h-4 mr-2" />
-                  Add Text
-                </Button>
-              </CardContent>
-            </Card>
+              <Card>
+                <CardContent className="p-3">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm">
+                    <Type className="w-4 h-4" />
+                    <span className="hidden sm:inline">Add Text</span>
+                    <span className="sm:hidden">Text</span>
+                  </h3>
+                  <Button
+                    onClick={() => setShowTextInput(true)}
+                    className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm"
+                    size="sm"
+                  >
+                    <Type className="w-4 h-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Add Text</span>
+                    <span className="sm:hidden">Add</span>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Desktop: Vertical layout */}
+            <div className="hidden lg:block space-y-4">
+              {/* Add Signature */}
+              <Card>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <PenTool className="w-4 h-4" />
+                    Add Signature
+                  </h3>
+                  <Button
+                    onClick={() => setShowSignaturePad(true)}
+                    className="w-full bg-rose-600 hover:bg-rose-700 text-white"
+                  >
+                    <PenTool className="w-4 h-4 mr-2" />
+                    Draw Signature
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Add Text */}
+              <Card>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <Type className="w-4 h-4" />
+                    Add Text
+                  </h3>
+                  <Button
+                    onClick={() => setShowTextInput(true)}
+                    className="w-full bg-rose-600 hover:bg-rose-700 text-white"
+                  >
+                    <Type className="w-4 h-4 mr-2" />
+                    Add Text
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Elements List */}
             {elements.length > 0 && (
               <Card>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold mb-3">Elements ({elements.length})</h3>
-                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                <CardContent className="p-3 sm:p-4">
+                  <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Elements ({elements.length})</h3>
+                  <div className="space-y-2 max-h-32 sm:max-h-40 overflow-y-auto">
                     {elements.map(element => (
-                      <div key={element.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                        <span className="text-sm">
+                      <div key={element.id} className="flex items-center justify-between p-2 bg-gray-50 rounded text-xs sm:text-sm">
+                        <span className="truncate">
                           {element.type === 'signature' ? '✍️ Signature' : '📝 Text'} 
                           {element.pageIndex !== currentPage && ` (Page ${element.pageIndex + 1})`}
                         </span>
@@ -864,6 +908,7 @@ export function PDFSignClient() {
                           size="sm"
                           variant="ghost"
                           onClick={() => removeElement(element.id)}
+                          className="p-1 h-auto"
                         >
                           <Trash2 className="w-3 h-3" />
                         </Button>
@@ -876,22 +921,24 @@ export function PDFSignClient() {
 
             {/* Download */}
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 sm:p-4">
                 <Button
                   onClick={handleProcess}
                   disabled={isProcessing || elements.length === 0}
-                  className="w-full bg-rose-600 hover:bg-rose-700 disabled:bg-gray-400 text-white"
+                  className="w-full bg-rose-600 hover:bg-rose-700 disabled:bg-gray-400 text-white text-sm sm:text-base"
                   size="lg"
                 >
                   {isProcessing ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                      Processing...
+                      <span className="hidden sm:inline">Processing...</span>
+                      <span className="sm:hidden">Processing...</span>
                     </>
                   ) : (
                     <>
                       <Download className="w-4 h-4 mr-2" />
-                      Download Signed PDF
+                      <span className="hidden sm:inline">Download Signed PDF</span>
+                      <span className="sm:hidden">Download PDF</span>
                     </>
                   )}
                 </Button>
@@ -903,8 +950,8 @@ export function PDFSignClient() {
 
                 {/* Error Display */}
                 {error && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg mt-2">
-                    <p className="text-red-700 text-sm">{error}</p>
+                  <div className="p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg mt-2">
+                    <p className="text-red-700 text-xs sm:text-sm">{error}</p>
                   </div>
                 )}
               </CardContent>
