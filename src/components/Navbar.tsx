@@ -98,10 +98,12 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
   const [recentlyUsedSlugs, setRecentlyUsedSlugs] = useState<string[]>([]);
+  const [mounted, setMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isClient = useIsClient();
 
   useEffect(() => {
+    setMounted(true);
     if (!isClient) return;
     setRecentlyUsedSlugs(getRecentlyUsedTools());
   }, [isClient]);
@@ -139,7 +141,10 @@ export function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-700">
+    <nav className={cn(
+      "sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700",
+      mounted ? "backdrop-blur bg-white/80 dark:bg-gray-900/80" : "bg-white dark:bg-gray-900"
+    )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
