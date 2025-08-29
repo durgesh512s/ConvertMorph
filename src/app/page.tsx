@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ContentAd } from '@/components/AdSense';
 import { 
   Archive, 
   GitMerge, 
@@ -502,6 +503,13 @@ export default function Home() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Content Ad */}
+      <section className="py-8 bg-white dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ContentAd />
         </div>
       </section>
 
