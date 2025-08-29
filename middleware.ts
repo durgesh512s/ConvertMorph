@@ -21,7 +21,10 @@ export function middleware(req: NextRequest) {
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.headers.set('X-Content-Type-Options', 'nosniff');
   res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  // Only set X-Robots-Tag for non-production environments
+  if (process.env.NODE_ENV !== 'production') {
+    res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  }
   
   return res;
 }

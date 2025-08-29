@@ -91,6 +91,7 @@ export default function PDFMergePage() {
       // Process each uploaded file
       for (let i = 0; i < uploadedFiles.length; i++) {
         const uploadedFile = uploadedFiles[i];
+        if (!uploadedFile) continue;
         
         // Load the PDF
         const arrayBuffer = await uploadedFile.file.arrayBuffer();

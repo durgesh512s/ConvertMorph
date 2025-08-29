@@ -136,8 +136,12 @@ export function useHeadingsFromContent(content: string): Heading[] {
     let match;
 
     while ((match = headingRegex.exec(content)) !== null) {
-      const level = match[1].length;
-      const text = match[2].trim();
+      const levelStr = match[1]
+      const textStr = match[2]
+      if (!levelStr || !textStr) continue
+      
+      const level = levelStr.length;
+      const text = textStr.trim();
       const id = text
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, '')

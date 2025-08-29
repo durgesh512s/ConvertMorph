@@ -132,6 +132,8 @@ async function mergePdfs(filePaths: string[], jobId: string) {
     
     for (let i = 0; i < filePaths.length; i++) {
       const filePath = filePaths[i];
+      if (!filePath) continue;
+      
       const pdfBytes = await fs.readFile(filePath);
       const pdf = await PDFDocument.load(pdfBytes);
       const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
@@ -145,7 +147,11 @@ async function mergePdfs(filePaths: string[], jobId: string) {
     sendProgress(jobId, 95);
     
     // Write merged file
-    const outputPath = path.join(path.dirname(filePaths[0]), 'merged.pdf');
+    const firstFilePath = filePaths[0];
+    if (!firstFilePath) {
+      throw new Error('No valid file paths provided for merge');
+    }
+    const outputPath = path.join(path.dirname(firstFilePath), 'merged.pdf');
     await fs.writeFile(outputPath, mergedBytes);
     
     sendProgress(jobId, 100);
@@ -169,10 +175,19 @@ async function splitPdf(filePath: string, ranges: string, jobId: string) {
     // Parse ranges (e.g., "1-3,5,7-9")
     const pageRanges = ranges.split(',').map(range => {
       if (range.includes('-')) {
-        const [start, end] = range.split('-').map(n => parseInt(n.trim()));
+        const parts = range.split('-');
+        const startStr = parts[0];
+        const endStr = parts[1];
+        if (!startStr || !endStr) return [];
+        
+        const start = parseInt(startStr.trim());
+        const end = parseInt(endStr.trim());
+        if (isNaN(start) || isNaN(end)) return [];
+        
         return Array.from({ length: end - start + 1 }, (_, i) => start + i - 1);
       } else {
-        return [parseInt(range.trim()) - 1];
+        const pageNum = parseInt(range.trim());
+        return isNaN(pageNum) ? [] : [pageNum - 1];
       }
     }).flat();
     
@@ -182,7 +197,7 @@ async function splitPdf(filePath: string, ranges: string, jobId: string) {
     
     for (let i = 0; i < pageRanges.length; i++) {
       const pageIndex = pageRanges[i];
-      if (pageIndex >= 0 && pageIndex < totalPages) {
+      if (pageIndex !== undefined && pageIndex >= 0 && pageIndex < totalPages) {
         const newPdf = await PDFDocument.create();
         const [copiedPage] = await newPdf.copyPages(pdfDoc, [pageIndex]);
         newPdf.addPage(copiedPage);
@@ -214,6 +229,8 @@ async function imagesToPdf(imagePaths: string[], mode: 'single' | 'multiple', jo
       
       for (let i = 0; i < imagePaths.length; i++) {
         const imagePath = imagePaths[i];
+        if (!imagePath) continue;
+        
         const imageBytes = await fs.readFile(imagePath);
         
         let image;
@@ -235,7 +252,11 @@ async function imagesToPdf(imagePaths: string[], mode: 'single' | 'multiple', jo
       }
       
       const pdfBytes = await pdfDoc.save();
-      const outputPath = path.join(path.dirname(imagePaths[0]), 'images.pdf');
+      const firstImagePath = imagePaths[0];
+      if (!firstImagePath) {
+        throw new Error('No valid image paths provided');
+      }
+      const outputPath = path.join(path.dirname(firstImagePath), 'images.pdf');
       await fs.writeFile(outputPath, pdfBytes);
       
       sendProgress(jobId, 100);
@@ -246,6 +267,8 @@ async function imagesToPdf(imagePaths: string[], mode: 'single' | 'multiple', jo
       
       for (let i = 0; i < imagePaths.length; i++) {
         const imagePath = imagePaths[i];
+        if (!imagePath) continue;
+        
         const pdfDoc = await PDFDocument.create();
         const imageBytes = await fs.readFile(imagePath);
         

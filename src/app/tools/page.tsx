@@ -292,7 +292,10 @@ export default function ToolsPage() {
       if (!grouped[tool.categoryId]) {
         grouped[tool.categoryId] = [];
       }
-      grouped[tool.categoryId].push(tool);
+      const categoryTools = grouped[tool.categoryId];
+      if (categoryTools) {
+        categoryTools.push(tool);
+      }
     });
     return grouped;
   }, [filteredTools]);

@@ -210,6 +210,9 @@ export function PDFSignClient() {
     if ('touches' in e) {
       // Touch event
       const touch = e.touches[0] || e.changedTouches[0]
+      if (!touch) {
+        return { clientX: 0, clientY: 0 }
+      }
       return {
         clientX: touch.clientX,
         clientY: touch.clientY
@@ -441,6 +444,10 @@ export function PDFSignClient() {
         document.removeEventListener('touchend', handleTouchEnd)
       }
     }
+    
+    return () => {
+      // Cleanup function for when draggedElement is null
+    }
   }, [draggedElement, handleTouchMove, handleTouchEnd])
 
   useEffect(() => {
@@ -452,6 +459,10 @@ export function PDFSignClient() {
         document.removeEventListener('touchmove', handleResizeTouchMove)
         document.removeEventListener('touchend', handleTouchEnd)
       }
+    }
+    
+    return () => {
+      // Cleanup function for when resizingElement is null
     }
   }, [resizingElement, handleResizeTouchMove, handleTouchEnd])
 
@@ -466,6 +477,10 @@ export function PDFSignClient() {
         document.removeEventListener('mouseup', handleMouseUp)
       }
     }
+    
+    return () => {
+      // Cleanup function for when draggedElement is null
+    }
   }, [draggedElement, handleMouseMove, handleMouseUp])
 
   useEffect(() => {
@@ -477,6 +492,10 @@ export function PDFSignClient() {
         document.removeEventListener('mousemove', handleResizeMove)
         document.removeEventListener('mouseup', handleMouseUp)
       }
+    }
+    
+    return () => {
+      // Cleanup function for when resizingElement is null
     }
   }, [resizingElement, handleResizeMove, handleMouseUp])
 
@@ -490,6 +509,9 @@ export function PDFSignClient() {
     if ('touches' in e) {
       // Touch event
       const touch = e.touches[0] || e.changedTouches[0]
+      if (!touch) {
+        return { x: 0, y: 0 }
+      }
       return {
         x: touch.clientX - rect.left,
         y: touch.clientY - rect.top
@@ -588,7 +610,10 @@ export function PDFSignClient() {
       // Process each element
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i]
+        if (!element) continue
+        
         const page = pages[element.pageIndex]
+        if (!page) continue
         
         // CRITICAL: Convert from scaled canvas coordinates (1.5x) back to original PDF coordinates (1x)
         // The preview canvas is rendered at 1.5x scale, but element coordinates are stored in that scaled system
@@ -601,7 +626,11 @@ export function PDFSignClient() {
         
         if (element.type === 'signature') {
           // Convert base64 image to bytes
-          const imageBytes = Uint8Array.from(atob(element.content.split(',')[1]), c => c.charCodeAt(0))
+          const contentParts = element.content.split(',')
+          const base64Data = contentParts[1]
+          if (!base64Data) continue
+          
+          const imageBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0))
           const image = await pdfDoc.embedPng(imageBytes)
           
           // Get the page dimensions from the original PDF page

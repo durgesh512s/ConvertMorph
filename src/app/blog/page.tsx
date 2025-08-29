@@ -62,6 +62,12 @@ const blogPosts = [
 ];
 
 export default function BlogPage() {
+  const featuredPost = blogPosts[0];
+  
+  if (!featuredPost) {
+    return <div>No blog posts available</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-950 dark:to-blue-950/40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -87,24 +93,24 @@ export default function BlogPage() {
                 <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                   <div className="flex items-center space-x-1">
                     <Calendar className="h-4 w-4" />
-                    <span>{new Date(blogPosts[0].date).toLocaleDateString()}</span>
+                    <span>{new Date(featuredPost.date).toLocaleDateString()}</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Clock className="h-4 w-4" />
-                    <span>{blogPosts[0].readTime}</span>
+                    <span>{featuredPost.readTime}</span>
                   </div>
                 </div>
               </div>
               <CardTitle className="text-3xl mb-2 dark:text-white">
-                {blogPosts[0].title}
+                {featuredPost.title}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6 text-lg">
-                {blogPosts[0].excerpt}
+                {featuredPost.excerpt}
               </p>
               <Link 
-                href={`/blog/${blogPosts[0].slug}`}
+                href={`/blog/${featuredPost.slug}`}
                 className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
                 Read Full Guide

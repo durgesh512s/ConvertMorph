@@ -77,7 +77,11 @@ export default function PDFToImagesPage() {
       // Simulate extracted images (in real implementation, this would process the actual PDF)
       const mockPageCount = Math.floor(Math.random() * 10) + 1 // 1-10 pages
       const results: ConvertedImage[] = []
-      const originalName = uploadedFiles[0].name
+      const firstFile = uploadedFiles[0]
+      if (!firstFile) {
+        throw new Error('No file available for conversion')
+      }
+      const originalName = firstFile.name
       
       for (let i = 1; i <= mockPageCount; i++) {
         if (extractMode === 'all' || isPageInRange(i, pageRange)) {
@@ -87,7 +91,7 @@ export default function PDFToImagesPage() {
           results.push({
             name: filename,
             pageNumber: i,
-            downloadUrl: URL.createObjectURL(uploadedFiles[0].file), // Placeholder
+            downloadUrl: URL.createObjectURL(firstFile.file), // Placeholder
             size: `${Math.floor(Math.random() * 500 + 100)} KB`
           })
         }
@@ -123,14 +127,18 @@ export default function PDFToImagesPage() {
       
       // Fallback - still show some results for demo
       const results: ConvertedImage[] = []
-      const originalName = uploadedFiles[0].name
+      const firstFile = uploadedFiles[0]
+      if (!firstFile) {
+        return
+      }
+      const originalName = firstFile.name
       
       for (let i = 1; i <= 3; i++) {
         const filename = names.pdfToImages(originalName, i, imageFormat.toLowerCase() as 'png' | 'jpg')
         results.push({
           name: filename,
           pageNumber: i,
-          downloadUrl: URL.createObjectURL(uploadedFiles[0].file),
+          downloadUrl: URL.createObjectURL(firstFile.file),
           size: `${Math.floor(Math.random() * 500 + 100)} KB`
         })
       }
@@ -148,10 +156,19 @@ export default function PDFToImagesPage() {
     
     for (const r of ranges) {
       if (r.includes('-')) {
-        const [start, end] = r.split('-').map(n => parseInt(n.trim()))
+        const parts = r.split('-')
+        const startStr = parts[0]
+        const endStr = parts[1]
+        if (!startStr || !endStr) continue
+        
+        const start = parseInt(startStr.trim())
+        const end = parseInt(endStr.trim())
+        if (isNaN(start) || isNaN(end)) continue
+        
         if (pageNum >= start && pageNum <= end) return true
       } else {
-        if (pageNum === parseInt(r)) return true
+        const pageNumber = parseInt(r)
+        if (!isNaN(pageNumber) && pageNum === pageNumber) return true
       }
     }
     

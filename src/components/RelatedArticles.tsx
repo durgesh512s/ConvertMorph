@@ -159,7 +159,11 @@ const defaultArticles: Record<string, Article[]> = {
 };
 
 export function RelatedArticles({ toolName, articles }: RelatedArticlesProps) {
-  const displayArticles = articles || defaultArticles[toolName] || defaultArticles.default;
+  const displayArticles = articles || defaultArticles[toolName] || defaultArticles.default || [];
+
+  if (!displayArticles || displayArticles.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mt-16">

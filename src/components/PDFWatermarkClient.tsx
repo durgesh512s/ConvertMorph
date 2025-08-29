@@ -178,11 +178,19 @@ export function PDFWatermarkClient() {
       // Convert hex color to RGB
       const hexToRgb = (hex: string) => {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-        return result ? {
-          r: parseInt(result[1], 16) / 255,
-          g: parseInt(result[2], 16) / 255,
-          b: parseInt(result[3], 16) / 255
-        } : { r: 0.4, g: 0.4, b: 0.4 }
+        if (result) {
+          const r = result[1]
+          const g = result[2]
+          const b = result[3]
+          if (r && g && b) {
+            return {
+              r: parseInt(r, 16) / 255,
+              g: parseInt(g, 16) / 255,
+              b: parseInt(b, 16) / 255
+            }
+          }
+        }
+        return { r: 0.4, g: 0.4, b: 0.4 }
       }
       
       const color = hexToRgb(watermarkSettings.color)
@@ -190,6 +198,8 @@ export function PDFWatermarkClient() {
       // Add watermark to each page
       for (let i = 0; i < totalPages; i++) {
         const page = pages[i]
+        if (!page) continue
+        
         const { width, height } = page.getSize()
         
         // Calculate position

@@ -373,18 +373,24 @@ export function PDFOrganizeClient() {
   const undo = useCallback(() => {
     if (historyIndex > 0) {
       const newIndex = historyIndex - 1
-      setPages([...history[newIndex].pages])
-      setHistoryIndex(newIndex)
-      track('pdf_organize_undo')
+      const historyState = history[newIndex]
+      if (historyState) {
+        setPages([...historyState.pages])
+        setHistoryIndex(newIndex)
+        track('pdf_organize_undo')
+      }
     }
   }, [history, historyIndex, track])
 
   const redo = useCallback(() => {
     if (historyIndex < history.length - 1) {
       const newIndex = historyIndex + 1
-      setPages([...history[newIndex].pages])
-      setHistoryIndex(newIndex)
-      track('pdf_organize_redo')
+      const historyState = history[newIndex]
+      if (historyState) {
+        setPages([...historyState.pages])
+        setHistoryIndex(newIndex)
+        track('pdf_organize_redo')
+      }
     }
   }, [history, historyIndex, track])
 
@@ -427,10 +433,14 @@ export function PDFOrganizeClient() {
       // Copy pages in the new order with rotations
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i]
+        if (!page) continue
+        
         const originalPageIndex = page.pageNumber - 1
         
         // Copy the page from original PDF
-        const [copiedPage] = await newPdf.copyPages(originalPdf, [originalPageIndex])
+        const copiedPages = await newPdf.copyPages(originalPdf, [originalPageIndex])
+        const copiedPage = copiedPages[0]
+        if (!copiedPage) continue
         
         // Apply rotation if needed
         if (page.rotation !== 0) {

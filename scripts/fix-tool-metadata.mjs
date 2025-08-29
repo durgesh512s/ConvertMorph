@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Tool metadata mapping
 const toolMetadata = {
@@ -73,14 +77,14 @@ export default function ${toolName.split('-').map(word =>
 
   const layoutPath = path.join(__dirname, '..', 'src', 'app', 'tools', toolName, 'layout.tsx');
   fs.writeFileSync(layoutPath, layoutContent);
-  console.log(`✅ Created layout file: ${layoutPath}`);
+  log(`✅ Created layout file: ${layoutPath}`);
 }
 
 function fixPageFile(toolName) {
   const pagePath = path.join(__dirname, '..', 'src', 'app', 'tools', toolName, 'page.tsx');
   
   if (!fs.existsSync(pagePath)) {
-    console.log(`❌ Page file not found: ${pagePath}`);
+    log(`❌ Page file not found: ${pagePath}`);
     return;
   }
 
@@ -103,18 +107,18 @@ function fixPageFile(toolName) {
   }
   
   fs.writeFileSync(pagePath, content);
-  console.log(`✅ Fixed page file: ${pagePath}`);
+  log(`✅ Fixed page file: ${pagePath}`);
 }
 
 function main() {
-  console.log('🔧 Fixing tool metadata issues...\n');
+  log('🔧 Fixing tool metadata issues...\n');
   
   for (const toolName of toolsToFix) {
-    console.log(`📝 Processing ${toolName}...`);
+    log(`📝 Processing ${toolName}...`);
     
     const metadata = toolMetadata[toolName];
     if (!metadata) {
-      console.log(`❌ No metadata found for ${toolName}`);
+      log(`❌ No metadata found for ${toolName}`);
       continue;
     }
     
@@ -123,11 +127,10 @@ function main() {
     
     // Fix page file
     fixPageFile(toolName);
-    
-    console.log(`✅ Completed ${toolName}\n`);
+    log(`✅ Completed ${toolName}\n`);
   }
   
-  console.log('🎉 All tools fixed successfully!');
+  log('🎉 All tools fixed successfully!');
 }
 
 main();

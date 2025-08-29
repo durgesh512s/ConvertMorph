@@ -18,15 +18,25 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "cypress/**",
+      "public/**",
+      "*.config.*",
     ],
   },
   {
     rules: {
       "react/no-unescaped-entities": "warn",
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": ["warn", { 
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_" 
+      }],
+      "@typescript-eslint/no-explicit-any": "warn",
       "jsx-a11y/alt-text": "warn",
       "@next/next/no-img-element": "warn",
       "react-hooks/exhaustive-deps": "warn",
+      "prefer-const": "error",
+      "no-var": "error",
+      "no-console": ["warn", { "allow": ["warn", "error"] }],
     },
   },
 ];

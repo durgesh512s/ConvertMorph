@@ -7,7 +7,15 @@ import path from 'path';
 // Configure PDF.js worker
 if (typeof window === 'undefined') {
   // Server-side configuration
-  pdfjsLib.GlobalWorkerOptions.workerSrc = require.resolve('pdfjs-dist/build/pdf.worker.js');
+  try {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = require.resolve('pdfjs-dist/build/pdf.worker.js');
+  } catch {
+    console.warn('PDF.js worker not found, using fallback');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+  }
+} else {
+  // Client-side configuration
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
 }
 
 export interface ProcessingResult {
@@ -80,13 +88,20 @@ export class PDFProcessor {
 
       for (let i = 0; i < pageRanges.length; i++) {
         const range = pageRanges[i];
+        if (!range || range.length === 0) continue;
+        
         const newPdf = await PDFDocument.create();
         const pages = await newPdf.copyPages(pdf, range);
         
         pages.forEach((page) => newPdf.addPage(page));
         
         const pdfBytes = await newPdf.save();
-        const fileName = `split_${i + 1}_pages_${range[0] + 1}-${range[range.length - 1] + 1}.pdf`;
+        const firstPage = range[0];
+        const lastPage = range[range.length - 1];
+        
+        if (firstPage === undefined || lastPage === undefined) continue;
+        
+        const fileName = `split_${i + 1}_pages_${firstPage + 1}-${lastPage + 1}.pdf`;
         
         const resultFile = await tempStorage.saveFile(
           this.jobId,
@@ -156,6 +171,8 @@ export class PDFProcessor {
         // Create separate PDF for each image
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
+          if (!file) continue;
+          
           const pdf = await PDFDocument.create();
           const imageBuffer = await tempStorage.readFile(file.path);
           
@@ -282,7 +299,17 @@ export class PDFProcessor {
 
     for (const part of parts) {
       if (part.includes('-')) {
-        const [start, end] = part.split('-').map(n => parseInt(n.trim()) - 1);
+        const splitParts = part.split('-');
+        const startStr = splitParts[0];
+        const endStr = splitParts[1];
+        
+        if (!startStr || !endStr) continue;
+        
+        const start = parseInt(startStr.trim()) - 1;
+        const end = parseInt(endStr.trim()) - 1;
+        
+        if (isNaN(start) || isNaN(end)) continue;
+        
         const range: number[] = [];
         for (let i = Math.max(0, start); i <= Math.min(totalPages - 1, end); i++) {
           range.push(i);
@@ -290,7 +317,7 @@ export class PDFProcessor {
         if (range.length > 0) result.push(range);
       } else {
         const pageNum = parseInt(part) - 1;
-        if (pageNum >= 0 && pageNum < totalPages) {
+        if (!isNaN(pageNum) && pageNum >= 0 && pageNum < totalPages) {
           result.push([pageNum]);
         }
       }

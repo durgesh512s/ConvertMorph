@@ -260,10 +260,14 @@ export default function ImagesToPDFPage() {
       
       if (conversionMode === 'single') {
         const filename = names.imgToPdf(true, uploadedFiles.length)
+        const firstFile = uploadedFiles[0]
+        if (!firstFile) {
+          throw new Error('No files available for conversion')
+        }
         results = [{
           name: filename,
           pageCount: uploadedFiles.length,
-          downloadUrl: URL.createObjectURL(uploadedFiles[0].file)
+          downloadUrl: URL.createObjectURL(firstFile.file)
         }]
       } else {
         results = uploadedFiles.map(file => {

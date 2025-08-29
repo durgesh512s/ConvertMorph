@@ -139,9 +139,13 @@ export function PDFPageNumClient() {
     let result = ''
     
     for (let i = 0; i < values.length; i++) {
-      while (num >= values[i]) {
-        result += symbols[i]
-        num -= values[i]
+      const value = values[i]
+      const symbol = symbols[i]
+      if (value !== undefined && symbol !== undefined) {
+        while (num >= value) {
+          result += symbol
+          num -= value
+        }
       }
     }
     return result
@@ -238,6 +242,8 @@ export function PDFPageNumClient() {
       // Add page numbers to each page
       for (let i = 0; i < totalPages; i++) {
         const page = pages[i]
+        if (!page) continue
+        
         const { width, height } = page.getSize()
         
         // Calculate page number

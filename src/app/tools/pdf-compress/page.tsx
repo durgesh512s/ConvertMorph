@@ -254,6 +254,7 @@ export default function PDFCompressPage() {
     const queueNext = () => {
       if (idx >= uploadedFiles.length) return
       const uf = uploadedFiles[idx++]
+      if (!uf) return
       const p = runOne(uf).then(() => queueNext())
       inFlight.push(p)
     }

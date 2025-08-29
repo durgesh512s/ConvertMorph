@@ -71,6 +71,9 @@ export default function PDFSplitPage() {
       const { PDFDocument } = await import('pdf-lib')
       
       const file = uploadedFiles[0]
+      if (!file) {
+        throw new Error('No file selected for splitting')
+      }
       
       // Load the PDF
       const arrayBuffer = await file.file.arrayBuffer()
@@ -88,8 +91,11 @@ export default function PDFSplitPage() {
           
           if (range.includes('-')) {
             const parts = range.split('-')
-            startPage = parseInt(parts[0]) - 1 // Convert to 0-based index
-            endPage = parseInt(parts[1]) - 1
+            const firstPart = parts[0]
+            const secondPart = parts[1]
+            if (!firstPart || !secondPart) continue
+            startPage = parseInt(firstPart) - 1 // Convert to 0-based index
+            endPage = parseInt(secondPart) - 1
           } else {
             startPage = endPage = parseInt(range) - 1 // Single page
           }
@@ -205,6 +211,11 @@ export default function PDFSplitPage() {
       })
       // Fallback to simulation if pdf-lib fails
       const file = uploadedFiles[0]
+      if (!file) {
+        toast.error('No file available for splitting')
+        return
+      }
+      
       const totalPages = Math.floor(Math.random() * 50) + 10 // Simulate 10-60 pages
       
       let splits: SplitFile[] = []
@@ -212,9 +223,15 @@ export default function PDFSplitPage() {
       if (splitMode === 'ranges' && pageRanges) {
         const ranges = pageRanges.split(',').map(r => r.trim())
         splits = ranges.map((range) => {
-          const pageCount = range.includes('-') 
-            ? parseInt(range.split('-')[1]) - parseInt(range.split('-')[0]) + 1
-            : 1
+          let pageCount = 1
+          if (range.includes('-')) {
+            const parts = range.split('-')
+            const firstPart = parts[0]
+            const secondPart = parts[1]
+            if (firstPart && secondPart) {
+              pageCount = parseInt(secondPart) - parseInt(firstPart) + 1
+            }
+          }
           
           return {
             name: `${file.name.replace('.pdf', '')}_pages_${range}.pdf`,

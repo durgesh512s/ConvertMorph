@@ -1,14 +1,6 @@
 import type { NextConfig } from "next";
 
-// Extend NextConfig to include allowedDevOrigins for newer Next.js versions
-interface ExtendedNextConfig extends NextConfig {
-  allowedDevOrigins?: string[];
-}
-
-const nextConfig: ExtendedNextConfig = {
-  // Allow cross-origin requests from specific IP addresses during development
-  allowedDevOrigins: ['192.168.29.150'],
-  
+const nextConfig: NextConfig = {
   async headers() {
     return [
       {
@@ -21,6 +13,16 @@ const nextConfig: ExtendedNextConfig = {
         ],
       },
     ];
+  },
+  
+  // Enable experimental features for better performance
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-slot'],
+  },
+  
+  // Optimize images
+  images: {
+    formats: ['image/webp', 'image/avif'],
   },
 };
 
