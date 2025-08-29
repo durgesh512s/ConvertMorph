@@ -52,6 +52,8 @@ export function AdSense({
 
       return () => clearTimeout(timer);
     }
+    
+    return undefined;
   }, []);
 
   // Don't render anything if ad failed to load or AdSense is not available
