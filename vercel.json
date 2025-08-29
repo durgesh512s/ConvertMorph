@@ -3,7 +3,7 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "installCommand": "npm ci",
-  "devCommand": "npm run dev",
+  "devCommand": "next",
   "env": {
     "NODE_ENV": "production"
   },
