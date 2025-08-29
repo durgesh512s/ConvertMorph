@@ -66,10 +66,11 @@ export function PWAInstall() {
       onClick={handleInstallClick}
       variant="outline"
       size="sm"
-      className="gap-2"
+      className="gap-1 sm:gap-2 px-2 sm:px-3"
     >
-      <Download className="h-4 w-4" />
-      Install App
+      <Download className="h-4 w-4 flex-shrink-0" />
+      <span className="hidden sm:inline">Install App</span>
+      <span className="inline sm:hidden">Install</span>
     </Button>
   );
 }
