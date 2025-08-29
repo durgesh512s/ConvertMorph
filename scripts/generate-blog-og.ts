@@ -1,5 +1,5 @@
-import fsBlog from 'fs'
-import { createCanvas as createCanvasBlog } from 'canvas'
+import fs from 'fs';
+import { createCanvas } from 'canvas';
 
 // Blog posts with their frontmatter data
 const blogPosts = [
@@ -28,18 +28,43 @@ const blogPosts = [
     title: 'Split PDF Pages: Easy Online Tool',
     excerpt: 'Learn how to extract specific pages or split PDF documents into separate files.'
   },
+  { 
+    slug: 'organize-pdf-pages', 
+    title: 'Organize PDF Pages: Reorder and Rearrange',
+    excerpt: 'Learn how to organize, reorder, and rearrange PDF pages with our free online tool.'
+  },
+  { 
+    slug: 'add-watermark-to-pdf', 
+    title: 'Add Watermark to PDF: Complete Guide',
+    excerpt: 'Protect and brand your PDF documents with text or image watermarks using our free tool.'
+  },
+  { 
+    slug: 'sign-pdf-documents', 
+    title: 'Sign PDF Documents: Digital Signature Guide',
+    excerpt: 'Add secure digital signatures to your PDF documents with our easy-to-use signing tool.'
+  },
+  { 
+    slug: 'add-page-numbers-to-pdf', 
+    title: 'Add Page Numbers to PDF: Professional Formatting',
+    excerpt: 'Add professional page numbering to your PDF documents with customizable positioning and styles.'
+  },
+  { 
+    slug: 'convertmorph-free-pdf-tools', 
+    title: 'ConvertMorph - Free Online PDF Tools for Document Processing',
+    excerpt: 'Discover ConvertMorph\'s comprehensive suite of free online PDF tools for secure document processing.'
+  },
 ]
 
 const BLOG_WIDTH = 1200, BLOG_HEIGHT = 630
 
 // Ensure blog og directory exists
 const blogOgDir = './public/og/blog'
-if (!fsBlog.existsSync(blogOgDir)) {
-  fsBlog.mkdirSync(blogOgDir, { recursive: true })
+if (!fs.existsSync(blogOgDir)) {
+  fs.mkdirSync(blogOgDir, { recursive: true })
 }
 
 for (const post of blogPosts) {
-  const canvas = createCanvasBlog(BLOG_WIDTH, BLOG_HEIGHT)
+  const canvas = createCanvas(BLOG_WIDTH, BLOG_HEIGHT)
   const ctx = canvas.getContext('2d')
   
   // Create gradient background (blue→cyan)
@@ -121,7 +146,7 @@ for (const post of blogPosts) {
   
   // Save the image
   const buffer = canvas.toBuffer('image/png')
-  fsBlog.writeFileSync(`${blogOgDir}/${post.slug}.png`, buffer)
+  fs.writeFileSync(`${blogOgDir}/${post.slug}.png`, buffer)
   console.log(`✅ Generated blog OG image for ${post.title}`)
 }
 

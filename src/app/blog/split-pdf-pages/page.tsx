@@ -343,12 +343,12 @@ export default function SplitPDFGuide() {
                   <div className="faq-section" data-testid="faq">
                     {faqs.map((faq, index) => (
                       <div key={index} className="faq-item">
-                        <div className="faq-question">
+                        <h3 className="faq-question">
                           {faq.question}
-                        </div>
-                        <div className="faq-answer">
+                        </h3>
+                        <p className="faq-answer">
                           {faq.answer}
-                        </div>
+                        </p>
                       </div>
                     ))}
                   </div>

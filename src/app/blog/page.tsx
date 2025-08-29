@@ -20,6 +20,14 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    title: 'ConvertMorph - Free Online PDF Tools for Document Processing',
+    excerpt: 'Discover ConvertMorph\'s comprehensive suite of free online PDF tools. Process, edit, and manage your PDF documents securely with our browser-based tools.',
+    date: '2024-01-18',
+    readTime: '10 min read',
+    slug: 'convertmorph-free-pdf-tools',
+    category: 'Platform Guide',
+  },
+  {
     title: 'How to Compress PDF Files: Complete Guide 2024',
     excerpt: 'Learn how to compress PDF files effectively. Reduce file size while maintaining quality with our step-by-step guide and free online tools.',
     date: '2024-01-15',
@@ -57,6 +65,38 @@ const blogPosts = [
     date: '2024-02-05',
     readTime: '7 min read',
     slug: 'convert-pdf-to-images',
+    category: 'PDF Tools',
+  },
+  {
+    title: 'Organize PDF Pages: Reorder and Rearrange Documents',
+    excerpt: 'Learn how to organize, reorder, and rearrange PDF pages with our free online tool. Perfect for restructuring documents and improving readability.',
+    date: '2024-02-10',
+    readTime: '6 min read',
+    slug: 'organize-pdf-pages',
+    category: 'PDF Tools',
+  },
+  {
+    title: 'Add Watermark to PDF: Complete Protection Guide',
+    excerpt: 'Protect and brand your PDF documents with text or image watermarks. Learn how to add professional watermarks using our free online tool.',
+    date: '2024-02-15',
+    readTime: '7 min read',
+    slug: 'add-watermark-to-pdf',
+    category: 'PDF Tools',
+  },
+  {
+    title: 'Sign PDF Documents: Digital Signature Guide',
+    excerpt: 'Add secure digital signatures to your PDF documents with our easy-to-use signing tool. Learn about digital signature security and best practices.',
+    date: '2024-02-20',
+    readTime: '8 min read',
+    slug: 'sign-pdf-documents',
+    category: 'PDF Tools',
+  },
+  {
+    title: 'Add Page Numbers to PDF: Professional Formatting',
+    excerpt: 'Add professional page numbering to your PDF documents with customizable positioning and styles. Perfect for reports, books, and formal documents.',
+    date: '2024-02-25',
+    readTime: '5 min read',
+    slug: 'add-page-numbers-to-pdf',
     category: 'PDF Tools',
   },
 ];

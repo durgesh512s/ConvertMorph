@@ -4,7 +4,6 @@ import { ArrowLeft, FileText, Clock, Image } from 'lucide-react';
 import { buildPostMetadata, articleJsonLd, faqJsonLd, breadcrumbsJsonLd, BlogPostMetadata } from '@/lib/seo';
 import JsonLd from '@/components/JsonLd';
 import { BlogTOC } from '@/components/BlogTOC';
-import { ToolCTA } from '@/components/RelatedCTA';
 import { RelatedPosts } from '@/components/ReadNext';
 import '@/styles/blog.css';
 
@@ -135,13 +134,37 @@ export default function PDFToImagesGuide() {
                   
                   <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
                     Need to <strong>convert PDF to images</strong> for web use, presentations, or editing? Whether you want to 
-                    <strong>PDF to JPG</strong>, <strong>convert PDF to PNG</strong>, or <strong>save PDF as images</strong>, 
+                    <strong> PDF to JPG</strong>, <strong>convert PDF to PNG</strong>, or <strong>save PDF as images</strong>, 
                     this comprehensive guide shows you how to <strong>export PDF pages as images</strong> with professional quality.
                   </p>
                 </header>
 
                 {/* Tool CTA - Early placement */}
-                <ToolCTA toolSlug="pdf-to-images" variant="compact" className="mb-6 lg:mb-8" />
+                <div className="mb-6 lg:mb-8">
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                          <Image className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                          PDF to Images
+                        </h3>
+                        <p className="text-gray-700 dark:text-gray-300 mb-4">
+                          Convert PDF pages to high-quality JPG or PNG images with customizable settings.
+                        </p>
+                        <Link
+                          href="/tools/pdf-to-images"
+                          className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                        >
+                          Try Now
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <div className="blog-prose">
                   <h2 id="why-convert-pdf-to-images">Why Convert PDF to Images?</h2>
@@ -377,7 +400,48 @@ export default function PDFToImagesGuide() {
                   </ul>
 
                   {/* Tool CTA - Mid-content */}
-                  <ToolCTA toolSlug="pdf-to-images" variant="featured" className="my-8" />
+                  <div className="my-8">
+                    <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-xl p-8 shadow-lg">
+                      <div className="flex items-start justify-between mb-6">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center text-white">
+                            <Image className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-bold text-white">PDF to Images</h3>
+                            <p className="text-white/90">Convert PDF pages to high-quality JPG or PNG images with customizable settings.</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <ul className="space-y-2 mb-6">
+                        <li className="flex items-center text-sm text-white font-medium">
+                          <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 shadow-sm" />
+                          High-resolution output
+                        </li>
+                        <li className="flex items-center text-sm text-white font-medium">
+                          <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 shadow-sm" />
+                          Multiple image formats
+                        </li>
+                        <li className="flex items-center text-sm text-white font-medium">
+                          <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 shadow-sm" />
+                          Page selection
+                        </li>
+                        <li className="flex items-center text-sm text-white font-medium">
+                          <div className="w-1.5 h-1.5 bg-white rounded-full mr-3 shadow-sm" />
+                          Quality control
+                        </li>
+                      </ul>
+
+                      <Link
+                        href="/tools/pdf-to-images"
+                        className="inline-flex items-center px-6 py-3 bg-white/90 hover:bg-white text-blue-600 hover:text-blue-700 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                      >
+                        <span className="text-blue-600 hover:text-blue-700 font-semibold">Get Started Free</span>
+                        <Image className="w-4 h-4 ml-2 text-blue-600 hover:text-blue-700" />
+                      </Link>
+                    </div>
+                  </div>
 
                   <h2 id="faq">Frequently Asked Questions</h2>
                   <div className="faq-section">
@@ -429,8 +493,8 @@ export default function PDFToImagesGuide() {
             </div>
 
             {/* Mobile Related Posts - Shown only on mobile, after main content */}
-            <div className="lg:hidden order-3 col-span-full w-full">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6">
+            <div className="lg:hidden order-3 w-full">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6 w-full overflow-hidden">
                 <RelatedPosts 
                   currentSlug="convert-pdf-to-images" 
                   count={2} 

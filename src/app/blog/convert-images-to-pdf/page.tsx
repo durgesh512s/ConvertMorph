@@ -356,12 +356,12 @@ export default function ImagesToPDFGuide() {
                   <div className="faq-section" data-testid="faq">
                     {faqs.map((faq, index) => (
                       <div key={index} className="faq-item">
-                        <div className="faq-question">
+                        <h3 className="faq-question">
                           {faq.question}
-                        </div>
-                        <div className="faq-answer">
+                        </h3>
+                        <p className="faq-answer">
                           {faq.answer}
-                        </div>
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -404,7 +404,7 @@ export default function ImagesToPDFGuide() {
             </div>
 
             {/* Mobile Related Posts - Shown only on mobile, after main content */}
-            <div className="lg:hidden order-3 col-span-full w-full">
+            <div className="lg:hidden order-3 w-full">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6">
                 <RelatedPosts 
                   currentSlug="convert-images-to-pdf" 
