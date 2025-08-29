@@ -121,6 +121,7 @@
     @apply bg-background text-foreground;
   }
   html {
+    scroll-behavior: smooth;
     scroll-padding-top: 4rem; /* Account for sticky header height */
   }
 }

@@ -35,7 +35,6 @@ import {
   Search,
   BarChart3,
   PiggyBank,
-  Home,
   CreditCard
 } from 'lucide-react';
 
@@ -218,7 +217,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
-                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300">
+                <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all duration-300">
                   <Link href="/tools" className="flex items-center gap-2">
                     Explore All Tools
                     <ArrowRight className="h-5 w-5" />
@@ -523,13 +522,13 @@ export default function Home() {
               Start using our comprehensive digital toolkit today - completely free!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-white text-blue-600 hover:bg-gray-100 shadow-lg">
+              <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-white bg-transparent text-white hover:bg-white hover:text-blue-600 hover:border-white transition-all duration-300">
                 <Link href="/tools" className="flex items-center gap-2">
                   Start Using Tools
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-white text-white hover:bg-white hover:text-blue-600 transition-all duration-300">
+              <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-white bg-transparent text-white hover:bg-white hover:text-blue-600 hover:border-white transition-all duration-300">
                 <Link href="/about">
                   Learn More
                 </Link>
