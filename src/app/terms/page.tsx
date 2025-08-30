@@ -5,10 +5,15 @@ import { FileText, Shield, AlertTriangle, Scale } from 'lucide-react'
 export const metadata: Metadata = {
   title: 'Terms of Service | ConvertMorph - PDF Tools',
   description: 'Terms of Service for ConvertMorph. Learn about our service terms, user responsibilities, and legal agreements for using our PDF tools.',
+  keywords: 'terms of service, user agreement, legal terms, PDF tools terms, service agreement',
   openGraph: {
     title: 'Terms of Service | ConvertMorph',
     description: 'Terms of Service and user agreements for ConvertMorph PDF tools.',
     type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 }
 

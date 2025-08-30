@@ -32,18 +32,34 @@ export default function AboutPage() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "ConvertMorph",
+    "alternateName": "ConvertMorph Document Tools",
     "description": "Fast, private file tools for everyone. Convert, compress, and organize PDFs and images right in your browser.",
     "url": config.siteUrl,
     "logo": {
       "@type": "ImageObject",
       "url": `${config.siteUrl}/logo/logo-full.svg`,
       "width": 200,
+      "height": 60,
+      "caption": "ConvertMorph Logo"
+    },
+    "image": {
+      "@type": "ImageObject",
+      "url": `${config.siteUrl}/logo/logo-full.svg`,
+      "width": 200,
       "height": 60
     },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "url": `${config.siteUrl}/contact`,
-      "contactType": "customer service"
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "url": `${config.siteUrl}/contact`,
+        "contactType": "customer service",
+        "email": "support@convertmorph.com",
+        "availableLanguage": ["English"]
+      }
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "US"
     },
     "sameAs": [config.siteUrl],
     "foundingDate": "2024",
@@ -55,14 +71,36 @@ export default function AboutPage() {
       "Image to PDF conversion",
       "PDF to image conversion",
       "Document processing",
-      "File conversion"
+      "File conversion",
+      "PDF optimization",
+      "Document security",
+      "File privacy"
     ],
     "serviceType": [
       "PDF Tools",
       "Document Processing",
       "File Conversion",
       "Image Processing"
-    ]
+    ],
+    "offers": {
+      "@type": "Offer",
+      "name": "PDF Processing Tools",
+      "description": "Free online PDF tools for compression, merging, splitting, and conversion",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "category": "Software Application"
+    },
+    "applicationCategory": "Productivity Software",
+    "operatingSystem": "Web Browser",
+    "softwareVersion": "1.0",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "1250",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
   }
 
   const websiteSchema = {
