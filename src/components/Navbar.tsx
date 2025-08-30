@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Menu, X, ChevronDown, Archive, GitMerge, Scissors, Image as ImageIcon, Download, Move3D, Type, Hash } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { LazyFadeIn } from '@/components/LazyMotion';
 import { PWAInstall } from './PWAInstall';
 import { ThemeToggle } from './ThemeToggle';
 import { useIsClient } from '@/hooks/useIsClient';
@@ -168,16 +168,11 @@ export function Navbar() {
                 <ChevronDown className="h-4 w-4" />
               </button>
               
-              <AnimatePresence>
-                {toolsDropdownOpen && (
-                  <motion.div
-                    ref={dropdownRef}
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.15, ease: "easeOut" }}
-                    className="absolute top-full left-0 mt-2 w-[600px] max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-[80vh] overflow-y-auto"
-                  >
+              {toolsDropdownOpen && (
+                <div
+                  ref={dropdownRef}
+                  className="absolute top-full left-0 mt-2 w-[600px] max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-[80vh] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-150"
+                >
                   <div className="p-6">
                     {/* CTA Button */}
                     <div className="mb-6">
@@ -285,9 +280,8 @@ export function Navbar() {
                       </button>
                     </div>
                   </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                </div>
+              )}
             </div>
 
             {navigation.map((item) => (
@@ -317,6 +311,7 @@ export function Navbar() {
               size="sm"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2"
+              aria-label={mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />

@@ -24,7 +24,8 @@
     "dev:tunnel": "concurrently \"next dev\" \"lt --port 3000 --print-requests\"",
     "og:set": "node scripts/set-site-url.js",
     "og:validators": "node scripts/validators.js",
-    "prelaunch": "npm run build && npm run test && npm run lhci && echo '✓ Prelaunch checks complete'"
+    "seo:optimize": "node scripts/optimize-seo.js",
+    "prelaunch": "npm run seo:optimize && npm run build && npm run test && npm run lhci && echo '✓ Prelaunch checks complete'"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -40,6 +41,7 @@
     "canvas": "^3.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "critters": "^0.0.23",
     "execa": "^9.6.0",
     "file-type": "^21.0.0",
     "framer-motion": "^12.23.12",

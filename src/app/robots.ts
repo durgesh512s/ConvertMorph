@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.SITE_URL || 'http://localhost:3000'
+  const baseUrl = process.env.SITE_URL || 'https://convertmorph.com'
   
   return {
     rules: [
@@ -12,6 +12,8 @@ export default function robots(): MetadataRoute.Robots {
           '/api/',
           '/_next/',
           '/samples/',
+          '/og-debug/',
+          '/*.json$',
         ],
       },
       {
@@ -20,6 +22,18 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: 'ChatGPT-User',
+        disallow: '/',
+      },
+      {
+        userAgent: 'CCBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'anthropic-ai',
+        disallow: '/',
+      },
+      {
+        userAgent: 'Claude-Web',
         disallow: '/',
       },
     ],

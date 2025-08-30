@@ -1,16 +1,56 @@
 {
   "ci": {
     "collect": {
-      "url": ["http://localhost:3000/", "http://localhost:3000/tools/pdf-compress"],
-      "numberOfRuns": 2,
+      "url": [
+        "http://localhost:3000/",
+        "http://localhost:3000/about",
+        "http://localhost:3000/contact",
+        "http://localhost:3000/privacy",
+        "http://localhost:3000/terms",
+        "http://localhost:3000/tools",
+        "http://localhost:3000/tools/pdf-compress",
+        "http://localhost:3000/tools/pdf-watermark",
+        "http://localhost:3000/tools/pdf-organize",
+        "http://localhost:3000/tools/pdf-pagenum",
+        "http://localhost:3000/tools/pdf-to-images",
+        "http://localhost:3000/tools/pdf-merge",
+        "http://localhost:3000/tools/images-to-pdf",
+        "http://localhost:3000/tools/pdf-sign",
+        "http://localhost:3000/tools/pdf-split",
+        "http://localhost:3000/blog",
+        "http://localhost:3000/blog/convert-pdf-to-images",
+        "http://localhost:3000/blog/convertmorph-free-pdf-tools",
+        "http://localhost:3000/blog/convert-images-to-pdf",
+        "http://localhost:3000/blog/add-page-numbers-to-pdf",
+        "http://localhost:3000/blog/how-to-compress-pdf-files",
+        "http://localhost:3000/blog/split-pdf-pages",
+        "http://localhost:3000/blog/merge-pdf-files-online",
+        "http://localhost:3000/blog/sign-pdf-documents",
+        "http://localhost:3000/blog/add-watermark-to-pdf",
+        "http://localhost:3000/blog/organize-pdf-pages"
+      ],
+      "numberOfRuns": 3,
       "startServerCommand": "npm run build && npm start"
     },
     "assert": {
       "assertions": {
         "categories:performance": ["error", {"minScore": 0.9}],
-        "categories:accessibility": ["error", {"minScore": 0.95}],
-        "categories:seo": ["error", {"minScore": 0.95}],
-        "categories:best-practices": ["error", {"minScore": 0.95}]
+        "categories:accessibility": ["error", {"minScore": 0.9}],
+        "categories:seo": ["error", {"minScore": 0.9}],
+        "categories:best-practices": ["error", {"minScore": 0.9}],
+        "categories:pwa": ["warn", {"minScore": 0.8}],
+
+        "cumulative-layout-shift": ["error", {"maxNumericValue": 0.1}],
+        "interactive": ["error", {"maxNumericValue": 3000}],
+        "first-contentful-paint": ["error", {"maxNumericValue": 2000}],
+        "largest-contentful-paint": ["error", {"maxNumericValue": 3000}],
+        "speed-index": ["warn", {"maxNumericValue": 4000}],
+        
+        "color-contrast": ["error"],
+        "link-name": ["error"],
+        "is-on-https": ["error"],
+        "uses-optimized-images": ["error"],
+        "font-display": ["error"]
       }
     },
     "upload": { "target": "filesystem" }

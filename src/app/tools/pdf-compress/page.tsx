@@ -349,15 +349,18 @@ export default function PDFCompressPage() {
                       checked={compressionLevel === option.level}
                       onChange={() => setCompressionLevel(option.level)}
                       className="mr-2 flex-shrink-0"
+                      id={`compression-${option.level}`}
+                      name="compression-level"
+                      aria-label={`${option.name} compression level`}
                     />
-                    <h3 className="font-medium text-sm sm:text-base text-gray-900 dark:text-white">
+                    <label htmlFor={`compression-${option.level}`} className="font-medium text-sm sm:text-base text-gray-900 dark:text-white cursor-pointer">
                       {option.name}
-                    </h3>
+                    </label>
                   </div>
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2">
                     {option.description}
                   </p>
-                  <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                  <div className="flex justify-between text-xs text-gray-600 dark:text-gray-300">
                     <span>{option.dpi}</span>
                     <span>{option.reduction}</span>
                   </div>
