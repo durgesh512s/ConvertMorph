@@ -1,185 +1,106 @@
-import { useState, useCallback, useRef } from 'react';
-import { CompressionOptions, CompressionResult, CompressionProgress, WorkerMessage, WorkerResponse } from '@/workers/pdfCompressionWorker';
+"use client"
 
-export interface CompressionState {
-  isProcessing: boolean;
-  progress: Record<string, number>;
-  speed: Record<string, string>;
-  results: Record<string, CompressionResult>;
-  errors: Record<string, string>;
+import { useState, useCallback } from "react"
+// Dynamic import for client-side only PDF compression
+type CompressionLevel = "light" | "medium"
+
+interface CompressionResult {
+  success: boolean
+  compressedPdf?: Uint8Array
+  originalSize: number
+  compressedSize: number
+  compressionRatio: number
+  error?: string
 }
 
-export interface UseClientPDFCompressionReturn {
-  state: CompressionState;
-  compressFiles: (files: File[], options: CompressionOptions) => Promise<void>;
-  cancelCompression: () => void;
-  clearResults: () => void;
+interface CompressionState {
+  isProcessing: boolean
+  results: Record<string, CompressionResult>
+  errors: Record<string, string>
+  progress: Record<string, number>
+  speed: Record<string, string>
 }
 
-export function useClientPDFCompression(): UseClientPDFCompressionReturn {
+export function useClientPDFCompression() {
   const [state, setState] = useState<CompressionState>({
     isProcessing: false,
-    progress: {},
-    speed: {},
     results: {},
     errors: {},
-  });
+    progress: {},
+    speed: {},
+  })
 
-  const workersRef = useRef<Map<string, Worker>>(new Map());
-  const abortControllerRef = useRef<AbortController | null>(null);
+  const compressFiles = useCallback(async (files: File[], options: {
+    level: CompressionLevel,
+    removeMetadata?: boolean,
+    optimizeImages?: boolean,
+    subsetFonts?: boolean
+  }) => {
+    setState(prev => ({ ...prev, isProcessing: true, results: {}, errors: {}, progress: {}, speed: {} }))
 
-  const updateProgress = useCallback((fileId: string, progress: number, speed?: string) => {
-    setState(prev => ({
-      ...prev,
-      progress: { ...prev.progress, [fileId]: progress },
-      speed: speed ? { ...prev.speed, [fileId]: speed } : prev.speed,
-    }));
-  }, []);
+    // Dynamically import the PDF compressor to avoid SSR issues
+    const { compressPDF } = await import("@/lib/pdfClientCompressor")
 
-  const updateResult = useCallback((fileId: string, result: CompressionResult) => {
-    setState(prev => ({
-      ...prev,
-      results: { ...prev.results, [fileId]: result },
-    }));
-  }, []);
+    for (const file of files) {
+      const fileId = `${file.name}-${file.size}-${file.lastModified}`
 
-  const updateError = useCallback((fileId: string, error: string) => {
-    setState(prev => ({
-      ...prev,
-      errors: { ...prev.errors, [fileId]: error },
-    }));
-  }, []);
+      try {
+        // Update progress to 0%
+        setState(prev => ({
+          ...prev,
+          progress: { ...prev.progress, [fileId]: 0 }
+        }))
 
-  const createWorker = useCallback(() => {
-    // Create worker from the TypeScript file
-    // In production, this would be a compiled JS file
-    const workerCode = `
-      // Import the compression worker code
-      importScripts('/workers/pdfCompressionWorker.js');
-    `;
-    
-    const blob = new Blob([workerCode], { type: 'application/javascript' });
-    return new Worker(URL.createObjectURL(blob));
-  }, []);
+        const result = await compressPDF(file, options.level)
 
-  const compressFiles = useCallback(async (files: File[], options: CompressionOptions) => {
-    // Clear previous state
-    setState({
-      isProcessing: true,
-      progress: {},
-      speed: {},
-      results: {},
-      errors: {},
-    });
-
-    const abortController = new AbortController();
-    abortControllerRef.current = abortController;
-
-    try {
-      // Process files with limited concurrency
-      const maxConcurrency = 3;
-      const fileQueue = [...files];
-      const activePromises: Promise<void>[] = [];
-
-      const processFile = async (file: File): Promise<void> => {
-        if (abortController.signal.aborted) return;
-
-        const fileId = `${file.name}-${file.size}-${file.lastModified}`;
-        
-        return new Promise<void>((resolve, reject) => {
-          // For now, use direct compression without worker to avoid worker setup complexity
-          // In a production environment, you'd want to use the worker for better performance
-          compressFileDirectly(file, fileId, options)
-            .then(() => resolve())
-            .catch(reject);
-        });
-      };
-
-      const processNext = async (): Promise<void> => {
-        const file = fileQueue.shift();
-        if (!file) return;
-
-        const promise = processFile(file).finally(() => {
-          const index = activePromises.indexOf(promise);
-          if (index > -1) {
-            activePromises.splice(index, 1);
-          }
-          return processNext();
-        });
-
-        activePromises.push(promise);
-      };
-
-      // Start initial batch
-      for (let i = 0; i < Math.min(maxConcurrency, files.length); i++) {
-        processNext();
+        const arrayBuffer = await result.blob.arrayBuffer()
+        setState(prev => ({
+          ...prev,
+          results: {
+            ...prev.results,
+            [fileId]: {
+              success: true,
+              compressedPdf: new Uint8Array(arrayBuffer),
+              originalSize: result.originalSize,
+              compressedSize: result.compressedSize,
+              compressionRatio: result.ratio,
+            }
+          },
+          progress: { ...prev.progress, [fileId]: 100 }
+        }))
+      } catch (err: any) {
+        console.error("Compression failed:", err)
+        setState(prev => ({
+          ...prev,
+          errors: { ...prev.errors, [fileId]: err.message || "Unknown error" },
+          progress: { ...prev.progress, [fileId]: 0 }
+        }))
       }
-
-      // Wait for all files to complete
-      await Promise.allSettled(activePromises);
-
-    } catch (error) {
-      console.error('Compression failed:', error);
-    } finally {
-      setState(prev => ({ ...prev, isProcessing: false }));
-      abortControllerRef.current = null;
     }
-  }, [updateProgress, updateResult, updateError]);
 
-  const compressFileDirectly = async (file: File, fileId: string, options: CompressionOptions) => {
-    try {
-      // Dynamic import to avoid SSR issues
-      const { PDFCompressor } = await import('@/workers/pdfCompressionWorker');
-      
-      const startTime = Date.now();
-      updateProgress(fileId, 0, 'Starting...');
-
-      const compressor = new PDFCompressor((progress) => {
-        const elapsed = (Date.now() - startTime) / 1000;
-        const speed = elapsed > 0 ? `${(file.size * progress.progress / 100 / elapsed / 1024).toFixed(1)} KB/s` : '0.0 KB/s';
-        updateProgress(fileId, progress.progress, progress.message);
-      });
-
-      const arrayBuffer = await file.arrayBuffer();
-      const result = await compressor.compressPDF(arrayBuffer, options);
-
-      if (result.success) {
-        updateResult(fileId, result);
-        updateProgress(fileId, 100, 'Complete');
-      } else {
-        updateError(fileId, result.error || 'Compression failed');
-      }
-    } catch (error) {
-      updateError(fileId, error instanceof Error ? error.message : 'Unknown error');
-    }
-  };
+    setState(prev => ({ ...prev, isProcessing: false }))
+  }, [])
 
   const cancelCompression = useCallback(() => {
-    abortControllerRef.current?.abort();
-    
-    // Terminate all workers
-    workersRef.current.forEach(worker => {
-      worker.terminate();
-    });
-    workersRef.current.clear();
-
-    setState(prev => ({ ...prev, isProcessing: false }));
-  }, []);
+    // Since this is client-side, cancel is limited
+    // Future: we can use AbortController for better cancellation
+    setState(prev => ({ ...prev, isProcessing: false }))
+  }, [])
 
   const clearResults = useCallback(() => {
     setState({
       isProcessing: false,
-      progress: {},
-      speed: {},
       results: {},
       errors: {},
-    });
-  }, []);
+      progress: {},
+      speed: {},
+    })
+  }, [])
 
   return {
     state,
     compressFiles,
     cancelCompression,
     clearResults,
-  };
+  }
 }
