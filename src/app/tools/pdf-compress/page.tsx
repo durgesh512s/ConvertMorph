@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Archive, Download, FileText, Zap, Settings } from 'lucide-react'
+import { Archive, Download, FileText, Zap, Settings, AlertCircle } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { RelatedArticles } from '@/components/RelatedArticles'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
+import { useClientPDFCompression } from '@/hooks/useClientPDFCompression'
 
 interface ProcessedFile {
   name: string
@@ -139,12 +140,11 @@ async function fetchWithProgress(
 
 export default function PDFCompressPage() {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
-  const [isProcessing, setIsProcessing] = useState(false)
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([])
   const [compressionLevel, setCompressionLevel] = useState<'light' | 'medium' | 'strong'>('medium')
-  const [abortCtrl, setAbortCtrl] = useState<AbortController | null>(null)
-  const [fileProgress, setFileProgress] = useState<Record<string, number>>({}) // 0..100
-  const [fileSpeed, setFileSpeed] = useState<Record<string, string>>({}) // speed info
+  
+  // Use client-side compression hook
+  const { state: compressionState, compressFiles, cancelCompression, clearResults } = useClientPDFCompression()
 
   const handleFilesAdded = async (files: File[]) => {
     const mapped = await Promise.all(files.map(async file => {
@@ -181,92 +181,59 @@ export default function PDFCompressPage() {
     revokeProcessedUrls(processedFiles)
     setUploadedFiles([])
     setProcessedFiles([])
-    setFileProgress({})
-    setFileSpeed({})
+    clearResults()
   }
 
   const handleCompress = async () => {
     if (uploadedFiles.length === 0) return
-
-    const ctrl = new AbortController()
-    setAbortCtrl(ctrl)
-    setIsProcessing(true)
-    setProcessedFiles([])
-    setFileProgress({})
-    setFileSpeed({})
-
-    const concurrency = 3
-    let idx = 0
-    const results: ProcessedFile[] = []
-    const inFlight: Promise<void>[] = []
-
-    const runOne = async (uf: UploadedFile) => {
-      const fileId = uf.id
-      const onProgress = (pct: number, speed?: string) => {
-        setFileProgress(prev => ({ ...prev, [fileId]: pct }))
-        if (speed) {
-          setFileSpeed(prev => ({ ...prev, [fileId]: speed }))
-        }
-      }
-
-      // Start with immediate progress feedback
-      onProgress(0, '0.0 KB/s')
-
-      const fd = new FormData()
-      const safeName = uf.name.replace(/[^\w.\-()\s]/g, '_')
-      fd.append('file', new File([uf.file], safeName, { type: uf.file.type || 'application/pdf' }))
-      fd.append('level', compressionLevel)
-
-      try {
-        const { res, blob } = await fetchWithProgress('/api/compress', { method: 'POST', body: fd, signal: ctrl.signal }, onProgress, uf.file.size)
-
-        const ct = res.headers.get('Content-Type') || ''
-        if (!ct.toLowerCase().includes('pdf')) throw new Error('Server did not return a PDF')
-
-        const originalSize = parseInt(res.headers.get('X-Original-Bytes') || String(uf.size), 10)
-        const compressedSize = blob.size
-        const compressionRatio = Math.max(0, Math.round(((originalSize - compressedSize) / originalSize) * 100))
-
-        const url = URL.createObjectURL(blob)
-        results.push({
-          name: names.compress(safeName, compressionLevel),
-          originalSize,
-          compressedSize,
-          compressionRatio,
-          downloadUrl: url,
-        })
-      } catch (e: unknown) {
-        if (e && typeof e === 'object' && 'name' in e && e.name === 'AbortError') return
-        console.error('Compression error:', e)
-        toast.error(`Failed to compress ${safeName}`)
-        results.push({
-          name: names.compress(safeName, compressionLevel),
-          originalSize: uf.size,
-          compressedSize: uf.size,
-          compressionRatio: 0,
-          downloadUrl: URL.createObjectURL(uf.file),
-        })
-      } finally {
-        onProgress(100)
-      }
+    
+    // Check if Strong compression is selected and show warning
+    if (compressionLevel === 'strong') {
+      toast.error('Strong compression is coming soon! Please use Light or Medium compression for now.')
+      return
     }
-
-    const queueNext = () => {
-      if (idx >= uploadedFiles.length) return
-      const uf = uploadedFiles[idx++]
-      if (!uf) return
-      const p = runOne(uf).then(() => queueNext())
-      inFlight.push(p)
-    }
-
-    for (let i = 0; i < Math.min(concurrency, uploadedFiles.length); i++) queueNext()
 
     try {
-      await Promise.allSettled(inFlight)
-      if (!ctrl.signal.aborted) setProcessedFiles(results)
-    } finally {
-      setIsProcessing(false)
-      setAbortCtrl(null)
+      // Convert uploaded files to File objects
+      const files = uploadedFiles.map(uf => uf.file)
+      
+      // Start client-side compression
+      await compressFiles(files, {
+        level: compressionLevel,
+        removeMetadata: true,
+        optimizeImages: true,
+        subsetFonts: true,
+      })
+
+      // Convert compression results to processed files format
+      const results: ProcessedFile[] = []
+      Object.entries(compressionState.results).forEach(([fileId, result]) => {
+        if (result.success && result.compressedPdf) {
+          const originalFile = uploadedFiles.find(f => `${f.name}-${f.size}-${f.file.lastModified}` === fileId)
+          if (originalFile) {
+            const blob = new Blob([new Uint8Array(result.compressedPdf)], { type: 'application/pdf' })
+            const url = URL.createObjectURL(blob)
+            const safeName = originalFile.name.replace(/[^\w.\-()\s]/g, '_')
+            
+            results.push({
+              name: names.compress(safeName, compressionLevel),
+              originalSize: result.originalSize,
+              compressedSize: result.compressedSize,
+              compressionRatio: result.compressionRatio,
+              downloadUrl: url,
+            })
+          }
+        }
+      })
+      
+      setProcessedFiles(results)
+      
+      if (results.length > 0) {
+        toast.success(`Successfully compressed ${results.length} file${results.length > 1 ? 's' : ''}!`)
+      }
+    } catch (error) {
+      console.error('Compression failed:', error)
+      toast.error('Compression failed. Please try again.')
     }
   }
 
@@ -384,10 +351,10 @@ export default function PDFCompressPage() {
               <div className="mt-4 sm:mt-6">
                 <button
                   onClick={handleCompress}
-                  disabled={isProcessing}
+                  disabled={compressionState.isProcessing}
                   className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm sm:text-base"
                 >
-                  {isProcessing ? (
+                  {compressionState.isProcessing ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white mr-2"></div>
                       Compressing...
@@ -401,9 +368,9 @@ export default function PDFCompressPage() {
                 </button>
                 
                 {/* Cancel Button */}
-                {isProcessing && (
+                {compressionState.isProcessing && (
                   <button
-                    onClick={() => { abortCtrl?.abort(); toast.message('Cancelling…') }}
+                    onClick={() => { cancelCompression(); toast.message('Cancelling…') }}
                     className="mt-3 w-full bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium py-2 px-4 rounded-lg transition-colors duration-200 text-sm sm:text-base"
                   >
                     Cancel
@@ -414,7 +381,7 @@ export default function PDFCompressPage() {
           </div>
 
           {/* Progress Section - Show during compression */}
-          {isProcessing && uploadedFiles.length > 0 && (
+          {compressionState.isProcessing && uploadedFiles.length > 0 && (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
               <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center">
                 <Zap className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
@@ -422,39 +389,45 @@ export default function PDFCompressPage() {
               </h3>
               
               <div className="space-y-3 sm:space-y-4">
-                {uploadedFiles.map((file) => (
-                  <div key={file.id} className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 sm:p-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 space-y-2 sm:space-y-0">
-                      <div className="flex items-center min-w-0 flex-1">
-                        <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500 mr-2 sm:mr-3 flex-shrink-0" />
-                        <div className="min-w-0 flex-1">
-                          <p className="font-medium text-sm sm:text-base text-gray-900 dark:text-white truncate">{file.name}</p>
-                          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                            Size: {formatFileSize(file.size)}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-left sm:text-right flex-shrink-0">
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">
-                          {fileProgress[file.id] !== undefined ? `${fileProgress[file.id]}%` : 'Waiting...'}
-                        </div>
-                        {fileSpeed[file.id] && (
-                          <div className="text-xs text-gray-500 dark:text-gray-400">
-                            {fileSpeed[file.id]}
+                {uploadedFiles.map((file) => {
+                  const fileId = `${file.name}-${file.size}-${file.file.lastModified}`
+                  const progress = compressionState.progress[fileId] || 0
+                  const speed = compressionState.speed[fileId] || ''
+                  
+                  return (
+                    <div key={file.id} className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 sm:p-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 space-y-2 sm:space-y-0">
+                        <div className="flex items-center min-w-0 flex-1">
+                          <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500 mr-2 sm:mr-3 flex-shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <p className="font-medium text-sm sm:text-base text-gray-900 dark:text-white truncate">{file.name}</p>
+                            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                              Size: {formatFileSize(file.size)}
+                            </p>
                           </div>
-                        )}
+                        </div>
+                        <div className="text-left sm:text-right flex-shrink-0">
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                            {progress > 0 ? `${progress}%` : 'Waiting...'}
+                          </div>
+                          {speed && (
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              {speed}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* Progress Bar */}
+                      <div className="w-full bg-gray-200 dark:bg-gray-600 rounded h-2 overflow-hidden">
+                        <div
+                          className="h-2 bg-blue-500 dark:bg-blue-400 transition-all duration-300"
+                          style={{ width: `${progress}%` }}
+                        />
                       </div>
                     </div>
-                    
-                    {/* Progress Bar */}
-                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded h-2 overflow-hidden">
-                      <div
-                        className="h-2 bg-blue-500 dark:bg-blue-400 transition-all duration-300"
-                        style={{ width: `${fileProgress[file.id] || 0}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           )}
@@ -502,15 +475,6 @@ export default function PDFCompressPage() {
                       </a>
                     </div>
                     
-                    {/* Progress Bar */}
-                    {isProcessing && fileProgress[uploadedFiles[index]?.id || ''] !== undefined && (
-                      <div className="w-full bg-gray-200 dark:bg-gray-600 rounded h-2 mt-3 overflow-hidden">
-                        <div
-                          className="h-2 bg-green-500 dark:bg-green-400 transition-all"
-                          style={{ width: `${fileProgress[uploadedFiles[index]?.id || ''] || 0}%` }}
-                        />
-                      </div>
-                    )}
                     
                     {/* Compression Stats */}
                     <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mt-3">
