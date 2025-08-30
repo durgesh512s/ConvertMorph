@@ -16,21 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'pdf-sign'
   ]
 
-  // Future Tools (for SEO preparation)
-  const futureTools = [
-    // Image Tools
-    'image-compress',
-    'background-remover',
-    'image-converter',
-    // Text Tools
-    'plagiarism-checker',
-    'word-counter',
-    'text-formatter',
-    // Finance Tools
-    'tax-calculator',
-    'loan-calculator',
-    'investment-calculator'
-  ]
+  // Note: Only include tools that actually exist to avoid 404 errors
   
   return [
     {
@@ -52,27 +38,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     })),
-    // Future Tools (lower priority until implemented)
-    ...futureTools.map(tool => ({
-      url: `${baseUrl}/tools/${tool}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    })),
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,
     },
+    // All Blog Posts
     {
-      url: `${baseUrl}/blog/convert-images-to-pdf`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/blog/convert-pdf-to-images`,
+      url: `${baseUrl}/blog/convertmorph-free-pdf-tools`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.6,
@@ -90,7 +64,43 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
+      url: `${baseUrl}/blog/convert-images-to-pdf`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
       url: `${baseUrl}/blog/split-pdf-pages`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/blog/convert-pdf-to-images`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/blog/organize-pdf-pages`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/blog/add-watermark-to-pdf`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/blog/sign-pdf-documents`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/blog/add-page-numbers-to-pdf`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.6,
