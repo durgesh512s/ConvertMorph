@@ -1,124 +1,129 @@
-const CACHE_NAME = 'cm-static-v2';
-const CSS_CACHE_NAME = 'cm-css-v2';
+const CACHE_VERSION = "v3";
+const STATIC_CACHE = `cm-static-${CACHE_VERSION}`;
+const CSS_CACHE = `cm-css-${CACHE_VERSION}`;
+const HTML_CACHE = `cm-html-${CACHE_VERSION}`;
 
-// Get build ID from URL or default
-const getBuildId = () => {
-  try {
-    const url = new URL(self.location);
-    return url.searchParams.get('buildId') || Date.now().toString();
-  } catch {
-    return Date.now().toString();
-  }
-};
+// -------- Helpers -------- //
+const shouldBypass = (url) =>
+  url.includes("/download") || url.includes("jobId=");
 
-const BUILD_ID = getBuildId();
+const isCSSRequest = (request) =>
+  request.url.includes(".css") ||
+  request.headers.get("accept")?.includes("text/css") ||
+  request.destination === "style";
 
-self.addEventListener('install', (event) => {
-  self.skipWaiting();
-  
-  // Clear old caches on install
+const isHTMLRequest = (request) =>
+  request.mode === "navigate" ||
+  (request.headers.get("accept")?.includes("text/html") &&
+    request.destination === "document");
+
+const isStaticAsset = (url) =>
+  url.includes("/_next/static/") ||
+  url.includes("/static/") ||
+  /\.(js|png|jpg|jpeg|gif|ico|svg|webp|woff|woff2|ttf|eot)$/.test(url);
+
+// -------- Install -------- //
+self.addEventListener("install", (event) => {
+  self.skipWaiting(); // activate immediately
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName.startsWith('cm-') && cacheName !== CACHE_NAME && cacheName !== CSS_CACHE_NAME) {
-            return caches.delete(cacheName);
+    caches.keys().then((names) =>
+      Promise.all(
+        names.map((name) => {
+          if (name.startsWith("cm-") && name !== STATIC_CACHE) {
+            return caches.delete(name);
           }
         })
-      );
-    })
+      )
+    )
   );
 });
 
-self.addEventListener('activate', (event) => {
+// -------- Activate -------- //
+self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
-const shouldBypass = (url) => url.includes('/download') || url.includes('jobId=');
+// -------- Fetch -------- //
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
 
-const isCSSRequest = (request) => {
-  return request.url.includes('.css') || 
-         request.headers.get('accept')?.includes('text/css') ||
-         request.destination === 'style';
-};
-
-const isStaticAsset = (url) => {
-  return url.includes('/_next/static/') || 
-         url.includes('/static/') ||
-         /\.(js|css|png|jpg|jpeg|gif|ico|svg|webp|woff|woff2|ttf|eot)$/.test(url);
-};
-
-self.addEventListener('fetch', (event) => {
   const url = event.request.url;
-  
-  if (shouldBypass(url)) return; // let network handle, no caching
-  
-  // Handle CSS files with network-first strategy for cache busting
-  // NEW (stale-while-revalidate for CSS)
-if (event.request.method === 'GET' && isCSSRequest(event.request)) {
-  event.respondWith((async () => {
-    const cache = await caches.open(CSS_CACHE_NAME);
-    const cachedResponse = await cache.match(event.request);
 
-    const fetchPromise = fetch(event.request)
-      .then((networkResponse) => {
-        if (networkResponse.ok) {
-          cache.put(event.request, networkResponse.clone());
+  if (shouldBypass(url)) return; // don’t cache downloads, jobs etc.
+
+  // HTML → Network First (always latest UI)
+  if (isHTMLRequest(event.request)) {
+    event.respondWith(
+      fetch(event.request)
+        .then((resp) => {
+          const copy = resp.clone();
+          caches.open(HTML_CACHE).then((cache) => cache.put(event.request, copy));
+          return resp;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // CSS → Network First with cache fallback
+  if (isCSSRequest(event.request)) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CSS_CACHE);
+        const cachedResponse = await cache.match(event.request);
+
+        try {
+          const networkResponse = await fetch(event.request);
+          if (networkResponse.ok) {
+            cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        } catch {
+          return cachedResponse;
         }
-        return networkResponse;
-      })
-      .catch(() => cachedResponse);
+      })()
+    );
+    return;
+  }
 
-    return cachedResponse || fetchPromise;
-  })());
-  return;
-}
-  
-  // Handle other static assets with cache-first strategy
-  if (event.request.method === 'GET' && isStaticAsset(url)) {
-    event.respondWith((async () => {
-      const cache = await caches.open(CACHE_NAME);
-      
-      // For Next.js hashed assets, use cache-first
-      if (url.includes('/_next/static/')) {
+  // Static assets → Cache First
+  if (isStaticAsset(url)) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(STATIC_CACHE);
         const cached = await cache.match(event.request);
         if (cached) return cached;
-      }
-      
-      try {
-        const resp = await fetch(event.request);
-        if (resp.ok) {
-          cache.put(event.request, resp.clone());
+
+        try {
+          const resp = await fetch(event.request);
+          if (resp.ok) cache.put(event.request, resp.clone());
+          return resp;
+        } catch {
+          return new Response("Asset not found", { status: 404 });
         }
-        return resp;
-      } catch (error) {
-        const cached = await cache.match(event.request);
-        return cached || new Response('Asset not found', { status: 404 });
-      }
-    })());
+      })()
+    );
+    return;
   }
 });
 
-// Handle messages from main thread for cache management
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'CLEAR_CSS_CACHE') {
+// -------- Messaging API -------- //
+self.addEventListener("message", (event) => {
+  if (!event.data) return;
+
+  if (event.data.type === "CLEAR_CSS_CACHE") {
     event.waitUntil(
-      caches.delete(CSS_CACHE_NAME).then(() => {
+      caches.delete(CSS_CACHE).then(() => {
         event.ports[0].postMessage({ success: true });
       })
     );
   }
-  
-  if (event.data && event.data.type === 'UPDATE_BUILD_ID') {
-    // Force update of cached resources with new build ID
+
+  if (event.data.type === "CLEAR_ALL_CACHES") {
     event.waitUntil(
-      caches.keys().then(cacheNames => {
-        return Promise.all(
-          cacheNames.filter(name => name.startsWith('cm-')).map(name => caches.delete(name))
-        );
-      }).then(() => {
-        event.ports[0].postMessage({ success: true });
-      })
+      caches.keys().then((names) =>
+        Promise.all(names.map((name) => caches.delete(name)))
+      )
     );
   }
 });
