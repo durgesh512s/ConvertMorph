@@ -54,39 +54,25 @@ self.addEventListener('fetch', (event) => {
   if (shouldBypass(url)) return; // let network handle, no caching
   
   // Handle CSS files with network-first strategy for cache busting
-  if (event.request.method === 'GET' && isCSSRequest(event.request)) {
-    event.respondWith((async () => {
-      try {
-        // Always try network first for CSS to get latest version
-        const networkResponse = await fetch(event.request);
-        
+  // NEW (stale-while-revalidate for CSS)
+if (event.request.method === 'GET' && isCSSRequest(event.request)) {
+  event.respondWith((async () => {
+    const cache = await caches.open(CSS_CACHE_NAME);
+    const cachedResponse = await cache.match(event.request);
+
+    const fetchPromise = fetch(event.request)
+      .then((networkResponse) => {
         if (networkResponse.ok) {
-          const cache = await caches.open(CSS_CACHE_NAME);
-          // Store with build ID in cache key for versioning
-          const cacheKey = new Request(`${event.request.url}?buildId=${BUILD_ID}`);
-          cache.put(cacheKey, networkResponse.clone());
-          return networkResponse;
+          cache.put(event.request, networkResponse.clone());
         }
-        
-        // Fallback to cache if network fails
-        const cache = await caches.open(CSS_CACHE_NAME);
-        const cached = await cache.match(event.request);
-        return cached || networkResponse;
-        
-      } catch (error) {
-        // Network failed, try cache
-        const cache = await caches.open(CSS_CACHE_NAME);
-        const cached = await cache.match(event.request);
-        if (cached) return cached;
-        
-        // Return a basic CSS response to prevent broken styling
-        return new Response('/* CSS loading failed */', {
-          headers: { 'Content-Type': 'text/css' }
-        });
-      }
-    })());
-    return;
-  }
+        return networkResponse;
+      })
+      .catch(() => cachedResponse);
+
+    return cachedResponse || fetchPromise;
+  })());
+  return;
+}
   
   // Handle other static assets with cache-first strategy
   if (event.request.method === 'GET' && isStaticAsset(url)) {
