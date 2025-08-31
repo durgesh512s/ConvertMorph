@@ -62,7 +62,7 @@ export default function AboutPage() {
       "addressCountry": "US"
     },
     "sameAs": [config.siteUrl],
-    "foundingDate": "2024",
+    "foundingDate": "2025",
     "slogan": "Fast, private file tools for everyone",
     "knowsAbout": [
       "PDF compression",
@@ -367,7 +367,7 @@ export default function AboutPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 mb-12 md:mb-16">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4 text-center px-4">Our Story</h2>
             <p className="text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto px-4">
-              Started in 2024 by engineers obsessed with speed and privacy, ConvertMorph makes professional-grade PDF tools accessible to everyone—right in the browser.
+              Started in 2025 by engineers obsessed with speed and privacy, ConvertMorph makes professional-grade PDF tools accessible to everyone—right in the browser.
             </p>
           </div>
 

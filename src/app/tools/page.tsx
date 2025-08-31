@@ -121,9 +121,9 @@ const toolCategories = {
         title: 'Image Compress',
         description: 'Reduce image file sizes while maintaining visual quality.',
         icon: Archive,
-        href: '#',
-        accentColor: '#3b82f6',
-        comingSoon: true,
+        href: '/tools/image-compress',
+        accentColor: '#8b5cf6',
+        comingSoon: false,
       },
       {
         title: 'Image Resize',

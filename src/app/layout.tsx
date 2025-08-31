@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { LazyFooter } from "@/components/LazyFooter";
@@ -8,6 +9,7 @@ import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { LazyHeaderAd } from "@/components/LazyAdSense";
 import { VercelAnalytics } from '@/components/VercelAnalytics';
 import { PerformanceMonitor } from '@/components/PerformanceMonitor';
+import { ProgressBar } from '@/components/ProgressBar';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -89,29 +91,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
-        {/* Preload critical fonts */}
-        <link
-          rel="preload"
-          href="/_next/static/media/inter-latin-400-normal.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/_next/static/media/inter-latin-600-normal.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/_next/static/media/inter-latin-700-normal.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -134,6 +113,9 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
+        <Suspense fallback={null}>
+          <ProgressBar />
+        </Suspense>
         <div className="flex min-h-screen flex-col">
           <Navbar />
           <LazyHeaderAd />

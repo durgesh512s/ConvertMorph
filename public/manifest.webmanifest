@@ -9,7 +9,10 @@
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "en",
-  "categories": ["productivity", "utilities"],
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -82,5 +85,6 @@
       "form_factor": "narrow",
       "label": "ConvertMorph Mobile Interface"
     }
-  ]
+  ],
+  "version": "aca26fb4"
 }

@@ -22,8 +22,8 @@ const postData: BlogPostMetadata = {
     'e-signature PDF'
   ],
   author: 'ConvertMorph Team',
-  datePublished: '2024-01-16T10:00:00.000Z',
-  dateModified: '2024-01-16T10:00:00.000Z',
+  datePublished: '2025-01-16T10:00:00.000Z',
+  dateModified: '2025-01-16T10:00:00.000Z',
   readingTime: '9 min read'
 };
 
@@ -122,7 +122,7 @@ export default function SignPDFDocumentsGuide() {
                   </h1>
                   
                   <div className="flex items-center text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 lg:mb-6 flex-wrap gap-2 sm:gap-4">
-                    <time dateTime={postData.datePublished}>January 16, 2024</time>
+                    <time dateTime={postData.datePublished}>January 16, 2025</time>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />
                       {postData.readingTime}

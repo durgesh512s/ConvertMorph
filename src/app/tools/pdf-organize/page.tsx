@@ -13,6 +13,7 @@ import {
   Shield
 } from 'lucide-react'
 import { PDFOrganizeClient } from '@/components/PDFOrganizeClient'
+import { RelatedArticles } from '@/components/RelatedArticles'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -315,6 +316,9 @@ export default function PDFOrganizePage() {
                 </div>
               </div>
             </div>
+
+            {/* Related Articles */}
+            <RelatedArticles toolName="pdf-organize" />
           </div>
         </div>
       </div>

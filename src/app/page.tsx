@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LazyContentAd } from '@/components/LazyAdSense';
 import { CSSFadeIn, CSSSlideUp, LazyFadeIn, LazySlideUp } from '@/components/LazyMotion';
+import { formatDate } from '@/lib/date-utils';
 import {
   Archive,
   GitMerge,
@@ -167,9 +168,9 @@ const stats = [
 // Featured blog posts for the blog preview section
 const featuredBlogPosts = [
   {
-    title: "How to Compress PDF Files: Complete Guide 2024",
+    title: "How to Compress PDF Files: Complete Guide 2025",
     excerpt: "Learn professional PDF compression techniques to reduce file size while maintaining quality.",
-    date: "2024-01-15",
+    date: "2025-01-15",
     readTime: "8 min read",
     slug: "how-to-compress-pdf-files",
     category: "PDF Tools"
@@ -177,7 +178,7 @@ const featuredBlogPosts = [
   {
     title: "Merge PDF Files Online: Free & Secure",
     excerpt: "Step-by-step guide to combining multiple PDF documents into one seamless file.",
-    date: "2024-01-20",
+    date: "2025-01-20",
     readTime: "6 min read",
     slug: "merge-pdf-files-online",
     category: "PDF Tools"
@@ -185,7 +186,7 @@ const featuredBlogPosts = [
   {
     title: "Convert Images to PDF: Complete Tutorial",
     excerpt: "Transform JPG, PNG, and other images into professional PDF documents instantly.",
-    date: "2024-01-25",
+    date: "2025-01-25",
     readTime: "7 min read",
     slug: "convert-images-to-pdf",
     category: "PDF Tools"
@@ -439,7 +440,7 @@ export default function Home() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                         <Calendar className="h-3 w-3" />
-                        <span>{new Date(post.date).toLocaleDateString()}</span>
+                        <span>{formatDate(post.date)}</span>
                       </div>
                       <Link 
                         href={`/blog/${post.slug}`}

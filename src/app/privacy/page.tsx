@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { getCurrentDate } from '@/lib/date-utils'
 import { Shield, Lock, Trash2, Eye } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -17,11 +18,7 @@ export const metadata: Metadata = {
 }
 
 export default function PrivacyPage() {
-  const today = new Date().toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  })
+  const today = getCurrentDate()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">

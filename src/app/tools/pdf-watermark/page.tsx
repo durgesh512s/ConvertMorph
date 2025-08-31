@@ -1,5 +1,6 @@
 import { Type } from 'lucide-react'
 import { PDFWatermarkClient } from '@/components/PDFWatermarkClient'
+import { RelatedArticles } from '@/components/RelatedArticles'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -230,6 +231,9 @@ export default function PDFWatermarkPage() {
                 </div>
               </div>
             </div>
+
+            {/* Related Articles */}
+            <RelatedArticles toolName="pdf-watermark" />
           </div>
         </div>
       </div>

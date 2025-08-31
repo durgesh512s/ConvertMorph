@@ -10,7 +10,7 @@ import '@/styles/blog.css';
 
 // Blog post metadata
 const postData: BlogPostMetadata = {
-  title: 'How to Compress PDF Files Online: Complete Guide 2024',
+  title: 'How to Compress PDF Files Online: Complete Guide 2025',
   excerpt: 'Learn how to compress PDF files effectively while maintaining quality. Step-by-step guide with free online tools, compression levels, and best practices.',
   slug: 'how-to-compress-pdf-files',
   focusKeyword: 'compress PDF online',
@@ -23,8 +23,8 @@ const postData: BlogPostMetadata = {
     'PDF file size reducer'
   ],
   author: 'ConvertMorph Team',
-  datePublished: '2024-01-15T10:00:00.000Z',
-  dateModified: '2024-01-20T15:30:00.000Z',
+  datePublished: '2025-01-15T10:00:00.000Z',
+  dateModified: '2025-01-20T15:30:00.000Z',
   readingTime: '8 min read'
 };
 
@@ -119,11 +119,11 @@ export default function CompressPDFGuide() {
               <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8 w-full overflow-hidden">
                 <header className="mb-6 lg:mb-8">
                   <h1 id="main-title" className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-white mb-3 lg:mb-4 leading-tight break-words">
-                    How to Compress PDF Files Online: Complete Guide 2024
+                    How to Compress PDF Files Online: Complete Guide 2025
                   </h1>
                   
                   <div className="flex items-center text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 lg:mb-6 flex-wrap gap-2 sm:gap-4">
-                    <time dateTime={postData.datePublished}>January 15, 2024</time>
+                    <time dateTime={postData.datePublished}>January 15, 2025</time>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />
                       {postData.readingTime}

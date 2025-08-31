@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
+import { RelatedArticles } from '@/components/RelatedArticles'
 
 interface ConvertedFile {
   name: string
@@ -624,6 +625,9 @@ export default function ImagesToPDFPage() {
               </div>
             </div>
           </div>
+
+          {/* Related Articles */}
+          <RelatedArticles toolName="images-to-pdf" />
         </div>
       </div>
     </div>

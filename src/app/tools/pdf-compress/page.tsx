@@ -265,6 +265,83 @@ export default function PDFCompressPage() {
             </div>
           )}
 
+          {/* Feature Highlights */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="bg-blue-100 dark:bg-blue-900/40 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                  <Archive className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Smart Compression</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Advanced algorithms reduce file size while preserving quality</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-green-100 dark:bg-green-900/40 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                  <Zap className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Lightning Fast</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Process multiple PDFs instantly in your browser</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-purple-100 dark:bg-purple-900/40 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                  <Settings className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Flexible Options</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Choose from light, medium, or strong compression levels</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-orange-100 dark:bg-orange-900/40 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                  <Download className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Instant Download</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Download compressed PDFs immediately after processing</p>
+              </div>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Frequently Asked Questions</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">How much can I compress my PDF files?</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Compression results vary by content type. Light compression typically reduces size by 20%, medium by 40%, and strong by up to 60%. Image-heavy PDFs compress more than text-only documents.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Will compression affect PDF quality?</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Our smart compression algorithms are designed to maintain visual quality while reducing file size. Light compression preserves maximum quality, while stronger levels provide smaller files with minimal quality loss.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Is my data secure during compression?</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Absolutely! All PDF compression happens entirely in your browser. Your files are never uploaded to our servers, ensuring complete privacy and security of your documents.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">What's the maximum file size I can compress?</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  You can compress PDF files up to 100MB each, with a maximum of 10 files per batch. This ensures optimal performance and prevents browser memory issues.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Can I compress password-protected PDFs?</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Currently, password-protected PDFs cannot be compressed. Please remove the password protection first, then compress the file and re-apply security if needed.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Which compression level should I choose?</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Choose Light for documents where quality is critical, Medium for general use with balanced size and quality, and Strong for maximum size reduction when quality is less important.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Related Articles */}
           <RelatedArticles toolName="pdf-compress" />
         </div>

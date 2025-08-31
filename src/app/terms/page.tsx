@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import { getCurrentDate } from '@/lib/date-utils'
 import { FileText, Shield, AlertTriangle, Scale } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -18,11 +19,7 @@ export const metadata: Metadata = {
 }
 
 export default function TermsPage() {
-  const today = new Date().toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  })
+  const today = getCurrentDate()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">

@@ -6,6 +6,7 @@ import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
+import { RelatedArticles } from '@/components/RelatedArticles'
 
 
 interface ConvertedImage {
@@ -542,6 +543,9 @@ export default function PDFToImagesPage() {
               </div>
             </div>
           </div>
+
+          {/* Related Articles */}
+          <RelatedArticles toolName="pdf-to-images" />
         </div>
       </div>
     </div>

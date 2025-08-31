@@ -16,144 +16,189 @@ interface RelatedArticlesProps {
   articles?: Article[];
 }
 
-// Default articles mapping for different tools
+// Default articles mapping for different tools - using actual existing blog articles
 const defaultArticles: Record<string, Article[]> = {
   'pdf-compress': [
     {
-      title: 'How to Compress PDF Files Online',
-      description: 'Learn the best practices for reducing PDF file sizes while maintaining quality.',
+      title: 'How to Compress PDF Files Online: Complete Guide 2025',
+      description: 'Learn how to compress PDF files effectively while maintaining quality. Step-by-step guide with free online tools, compression levels, and best practices.',
       href: '/blog/how-to-compress-pdf-files',
+      readTime: '8 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
       readTime: '5 min read',
-      category: 'Tutorial'
-    },
-    {
-      title: 'PDF Optimization Tips for Web',
-      description: 'Optimize your PDFs for faster web loading and better user experience.',
-      href: '/blog/pdf-optimization-tips',
-      readTime: '4 min read',
       category: 'Guide'
-    },
-    {
-      title: 'Understanding PDF Compression Levels',
-      description: 'Choose the right compression level for your specific needs and use cases.',
-      href: '/blog/pdf-compression-levels',
-      readTime: '3 min read',
-      category: 'Tutorial'
     }
   ],
   'pdf-merge': [
     {
-      title: 'Merge PDF Files Online',
-      description: 'Step-by-step guide to combining multiple PDF documents into one file.',
+      title: 'Merge PDF Files Online: Complete Guide',
+      description: 'Step-by-step guide to combining multiple PDF documents into one file using our free online tool.',
       href: '/blog/merge-pdf-files-online',
-      readTime: '4 min read',
-      category: 'Tutorial'
-    },
-    {
-      title: 'PDF Organization Best Practices',
-      description: 'Tips for organizing and managing your PDF documents effectively.',
-      href: '/blog/pdf-organization-tips',
       readTime: '6 min read',
-      category: 'Guide'
+      category: 'Tutorial'
     },
     {
-      title: 'Batch PDF Processing Tips',
-      description: 'Efficiently handle multiple PDF files with batch processing techniques.',
-      href: '/blog/batch-pdf-processing',
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
       readTime: '5 min read',
-      category: 'Tutorial'
+      category: 'Guide'
     }
   ],
   'pdf-split': [
     {
-      title: 'Split PDF Pages',
-      description: 'Learn how to extract specific pages or split large PDFs into smaller files.',
+      title: 'Split PDF Pages: Complete Guide',
+      description: 'Learn how to extract specific pages or split large PDFs into smaller files using our free online tool.',
       href: '/blog/split-pdf-pages',
-      readTime: '4 min read',
+      readTime: '5 min read',
       category: 'Tutorial'
     },
     {
-      title: 'PDF Page Management',
-      description: 'Master the art of managing PDF pages for better document organization.',
-      href: '/blog/pdf-page-management',
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
       readTime: '5 min read',
       category: 'Guide'
-    },
+    }
+  ],
+  'pdf-organize': [
     {
-      title: 'Working with Large PDF Files',
-      description: 'Best practices for handling and processing large PDF documents.',
-      href: '/blog/large-pdf-handling',
+      title: 'Organize PDF Pages: Complete Guide',
+      description: 'Learn how to reorder, rotate, and organize PDF pages efficiently with our free online tool.',
+      href: '/blog/organize-pdf-pages',
       readTime: '6 min read',
       category: 'Tutorial'
+    },
+    {
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
+      readTime: '5 min read',
+      category: 'Guide'
+    }
+  ],
+  'pdf-pagenum': [
+    {
+      title: 'Add Page Numbers to PDF: Complete Guide',
+      description: 'Learn how to add professional page numbers to your PDF documents with customizable positioning and formatting.',
+      href: '/blog/add-page-numbers-to-pdf',
+      readTime: '5 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
+      readTime: '5 min read',
+      category: 'Guide'
+    }
+  ],
+  'pdf-watermark': [
+    {
+      title: 'Add Watermark to PDF: Complete Guide',
+      description: 'Learn how to add text and image watermarks to your PDF documents for branding and security.',
+      href: '/blog/add-watermark-to-pdf',
+      readTime: '6 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
+      readTime: '5 min read',
+      category: 'Guide'
+    }
+  ],
+  'pdf-sign': [
+    {
+      title: 'Sign PDF Documents: Complete Guide',
+      description: 'Learn how to digitally sign PDF documents with our free online tool for secure document authentication.',
+      href: '/blog/sign-pdf-documents',
+      readTime: '7 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
+      readTime: '5 min read',
+      category: 'Guide'
     }
   ],
   'images-to-pdf': [
     {
-      title: 'Convert Images to PDF',
-      description: 'Transform your JPG, PNG images into professional PDF documents.',
+      title: 'Convert Images to PDF: Complete Guide',
+      description: 'Transform your JPG, PNG, and other image formats into professional PDF documents with our free online tool.',
       href: '/blog/convert-images-to-pdf',
-      readTime: '4 min read',
+      readTime: '5 min read',
       category: 'Tutorial'
     },
     {
-      title: 'Image Quality in PDF Conversion',
-      description: 'Maintain image quality when converting to PDF format.',
-      href: '/blog/image-quality-pdf',
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
       readTime: '5 min read',
       category: 'Guide'
-    },
-    {
-      title: 'Batch Image to PDF Conversion',
-      description: 'Convert multiple images to PDF efficiently with batch processing.',
-      href: '/blog/batch-image-pdf',
-      readTime: '4 min read',
-      category: 'Tutorial'
     }
   ],
   'pdf-to-images': [
     {
-      title: 'Convert PDF to Images',
-      description: 'Extract pages from PDF as high-quality image files.',
+      title: 'Convert PDF to Images: Complete Guide',
+      description: 'Extract pages from PDF as high-quality JPG, PNG, or other image formats with our free online tool.',
       href: '/blog/convert-pdf-to-images',
-      readTime: '4 min read',
+      readTime: '6 min read',
       category: 'Tutorial'
     },
     {
-      title: 'PDF to Image Quality Settings',
-      description: 'Choose the right image format and quality for your needs.',
-      href: '/blog/pdf-image-quality',
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
+      readTime: '5 min read',
+      category: 'Guide'
+    }
+  ],
+  'image-compress': [
+    {
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
       readTime: '5 min read',
       category: 'Guide'
     },
     {
-      title: 'Extracting Graphics from PDFs',
-      description: 'Advanced techniques for extracting images and graphics from PDFs.',
-      href: '/blog/extract-pdf-graphics',
-      readTime: '6 min read',
+      title: 'Convert Images to PDF: Complete Guide',
+      description: 'Transform your JPG, PNG, and other image formats into professional PDF documents with our free online tool.',
+      href: '/blog/convert-images-to-pdf',
+      readTime: '5 min read',
       category: 'Tutorial'
     }
   ],
   'default': [
     {
-      title: 'PDF Processing Best Practices',
-      description: 'Essential tips for working with PDF documents efficiently.',
-      href: '/blog/pdf-best-practices',
+      title: 'ConvertMorph: Free PDF Tools for Everyone',
+      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
+      href: '/blog/convertmorph-free-pdf-tools',
       readTime: '5 min read',
       category: 'Guide'
     },
     {
-      title: 'Digital Document Management',
-      description: 'Organize and manage your digital documents like a pro.',
-      href: '/blog/document-management',
-      readTime: '6 min read',
+      title: 'How to Compress PDF Files Online: Complete Guide 2025',
+      description: 'Learn how to compress PDF files effectively while maintaining quality. Step-by-step guide with free online tools, compression levels, and best practices.',
+      href: '/blog/how-to-compress-pdf-files',
+      readTime: '8 min read',
       category: 'Tutorial'
     },
     {
-      title: 'PDF Security and Privacy',
-      description: 'Keep your PDF documents secure and protect your privacy.',
-      href: '/blog/pdf-security',
-      readTime: '4 min read',
-      category: 'Guide'
+      title: 'Merge PDF Files Online: Complete Guide',
+      description: 'Step-by-step guide to combining multiple PDF documents into one file using our free online tool.',
+      href: '/blog/merge-pdf-files-online',
+      readTime: '6 min read',
+      category: 'Tutorial'
     }
   ]
 };

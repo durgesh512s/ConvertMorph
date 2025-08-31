@@ -9,6 +9,8 @@ export function base(name: string): string {
 export const names = {
   compress: (orig: string, quality: 'light' | 'medium' | 'strong') => 
     `${base(orig)}_compressed_${quality}.pdf`,
+  compressImage: (orig: string, quality: 'light' | 'medium' | 'strong', format: string) => 
+    `${base(orig)}_compressed_${quality}.${format}`,
   merge: () => 
     `${ts()}_merged.pdf`,
   splitZip: (orig: string, ranges: string) => 

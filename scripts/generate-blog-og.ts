@@ -1,5 +1,5 @@
-import fs from 'fs';
-import { createCanvas } from 'canvas';
+const fs = require('fs');
+const { createCanvas } = require('canvas');
 
 // Blog posts with their frontmatter data
 const blogPosts = [
@@ -52,6 +52,11 @@ const blogPosts = [
     slug: 'convertmorph-free-pdf-tools', 
     title: 'ConvertMorph - Free Online PDF Tools for Document Processing',
     excerpt: 'Discover ConvertMorph\'s comprehensive suite of free online PDF tools for secure document processing.'
+  },
+  { 
+    slug: 'compress-images-online', 
+    title: 'Compress Images Online: Reduce Image Size Without Quality Loss',
+    excerpt: 'Learn how to compress images online effectively while maintaining quality. Complete guide to reducing JPEG, PNG, WebP file sizes.'
   },
 ]
 

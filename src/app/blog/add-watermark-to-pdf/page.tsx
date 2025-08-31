@@ -22,8 +22,8 @@ const postData: BlogPostMetadata = {
     'image watermark PDF'
   ],
   author: 'ConvertMorph Team',
-  datePublished: '2024-01-15T10:00:00.000Z',
-  dateModified: '2024-01-15T10:00:00.000Z',
+  datePublished: '2025-01-15T10:00:00.000Z',
+  dateModified: '2025-01-15T10:00:00.000Z',
   readingTime: '8 min read'
 };
 
@@ -121,7 +121,7 @@ export default function AddWatermarkToPDFGuide() {
                   </h1>
                   
                   <div className="flex items-center text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 lg:mb-6 flex-wrap gap-2 sm:gap-4">
-                    <time dateTime={postData.datePublished}>January 15, 2024</time>
+                    <time dateTime={postData.datePublished}>January 15, 2025</time>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />
                       {postData.readingTime}
@@ -238,7 +238,7 @@ export default function AddWatermarkToPDFGuide() {
                   <h3>Text Watermarks</h3>
                   <p>Perfect for copyright notices and status indicators:</p>
                   <ul>
-                    <li><strong>Copyright notices:</strong> "© 2024 Company Name" or "All Rights Reserved"</li>
+                    <li><strong>Copyright notices:</strong> "© 2025 Company Name" or "All Rights Reserved"</li>
                     <li><strong>Status indicators:</strong> "DRAFT", "APPROVED", "CONFIDENTIAL", "INTERNAL USE"</li>
                     <li><strong>Custom text:</strong> Any text content with customizable font, size, color, and rotation</li>
                     <li><strong>Date stamps:</strong> Automatic date insertion for version control</li>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getCurrentYear } from '@/lib/date-utils';
 import Logo from './Logo';
 
 export function Footer() {
@@ -85,7 +86,7 @@ export function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
           <div className="text-center">
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              © {new Date().getFullYear()} ConvertMorph. All rights reserved.
+              © {getCurrentYear()} ConvertMorph. All rights reserved.
             </p>
           </div>
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import { formatDate } from '@/lib/date-utils';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -22,15 +23,23 @@ const blogPosts = [
   {
     title: 'ConvertMorph - Free Online PDF Tools for Document Processing',
     excerpt: 'Discover ConvertMorph\'s comprehensive suite of free online PDF tools. Process, edit, and manage your PDF documents securely with our browser-based tools.',
-    date: '2024-01-18',
+    date: '2025-01-18',
     readTime: '10 min read',
     slug: 'convertmorph-free-pdf-tools',
     category: 'Platform Guide',
   },
   {
-    title: 'How to Compress PDF Files: Complete Guide 2024',
+    title: 'Compress Images Online: Complete Guide to Reducing File Size',
+    excerpt: 'Learn how to compress images online effectively while maintaining quality. Complete guide to reducing JPEG, PNG, WebP file sizes.',
+    date: '2025-03-01',
+    readTime: '7 min read',
+    slug: 'compress-images-online',
+    category: 'Image Tools',
+  },
+  {
+    title: 'How to Compress PDF Files: Complete Guide 2025',
     excerpt: 'Learn how to compress PDF files effectively. Reduce file size while maintaining quality with our step-by-step guide and free online tools.',
-    date: '2024-01-15',
+    date: '2025-01-15',
     readTime: '8 min read',
     slug: 'how-to-compress-pdf-files',
     category: 'PDF Tools',
@@ -38,7 +47,7 @@ const blogPosts = [
   {
     title: 'How to Merge PDF Files Online: Free & Secure',
     excerpt: 'Learn how to merge multiple PDF files into one document online. Free, secure, and easy-to-use PDF merger tool with step-by-step guide.',
-    date: '2024-01-20',
+    date: '2025-01-20',
     readTime: '6 min read',
     slug: 'merge-pdf-files-online',
     category: 'PDF Tools',
@@ -46,7 +55,7 @@ const blogPosts = [
   {
     title: 'Convert Images to PDF: JPG, PNG to PDF Online Free',
     excerpt: 'Convert JPG, PNG, and other images to PDF online for free. Combine multiple images into one PDF or create separate PDFs. No software required.',
-    date: '2024-01-25',
+    date: '2025-01-25',
     readTime: '7 min read',
     slug: 'convert-images-to-pdf',
     category: 'PDF Tools',
@@ -54,7 +63,7 @@ const blogPosts = [
   {
     title: 'How to Split PDF Pages: Extract & Separate PDF Files Online',
     excerpt: 'Learn how to split PDF files by pages, extract specific pages, or separate large PDFs into smaller documents. Free online PDF splitter tool.',
-    date: '2024-01-30',
+    date: '2025-01-30',
     readTime: '6 min read',
     slug: 'split-pdf-pages',
     category: 'PDF Tools',
@@ -62,7 +71,7 @@ const blogPosts = [
   {
     title: 'Convert PDF to Images: Extract Pages as JPG/PNG Online',
     excerpt: 'Convert PDF pages to high-quality JPG or PNG images online. Extract all pages or specific pages from PDF documents. Free and secure conversion.',
-    date: '2024-02-05',
+    date: '2025-02-05',
     readTime: '7 min read',
     slug: 'convert-pdf-to-images',
     category: 'PDF Tools',
@@ -70,7 +79,7 @@ const blogPosts = [
   {
     title: 'Organize PDF Pages: Reorder and Rearrange Documents',
     excerpt: 'Learn how to organize, reorder, and rearrange PDF pages with our free online tool. Perfect for restructuring documents and improving readability.',
-    date: '2024-02-10',
+    date: '2025-02-10',
     readTime: '6 min read',
     slug: 'organize-pdf-pages',
     category: 'PDF Tools',
@@ -78,7 +87,7 @@ const blogPosts = [
   {
     title: 'Add Watermark to PDF: Complete Protection Guide',
     excerpt: 'Protect and brand your PDF documents with text or image watermarks. Learn how to add professional watermarks using our free online tool.',
-    date: '2024-02-15',
+    date: '2025-02-15',
     readTime: '7 min read',
     slug: 'add-watermark-to-pdf',
     category: 'PDF Tools',
@@ -86,7 +95,7 @@ const blogPosts = [
   {
     title: 'Sign PDF Documents: Digital Signature Guide',
     excerpt: 'Add secure digital signatures to your PDF documents with our easy-to-use signing tool. Learn about digital signature security and best practices.',
-    date: '2024-02-20',
+    date: '2025-02-20',
     readTime: '8 min read',
     slug: 'sign-pdf-documents',
     category: 'PDF Tools',
@@ -94,7 +103,7 @@ const blogPosts = [
   {
     title: 'Add Page Numbers to PDF: Professional Formatting',
     excerpt: 'Add professional page numbering to your PDF documents with customizable positioning and styles. Perfect for reports, books, and formal documents.',
-    date: '2024-02-25',
+    date: '2025-02-25',
     readTime: '5 min read',
     slug: 'add-page-numbers-to-pdf',
     category: 'PDF Tools',
@@ -133,7 +142,7 @@ export default function BlogPage() {
                 <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                   <div className="flex items-center space-x-1">
                     <Calendar className="h-4 w-4" />
-                    <span>{new Date(featuredPost.date).toLocaleDateString()}</span>
+                    <span>{formatDate(featuredPost.date)}</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Clock className="h-4 w-4" />
@@ -172,7 +181,7 @@ export default function BlogPage() {
                   <div className="flex items-center space-x-3 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center space-x-1">
                       <Calendar className="h-3 w-3" />
-                      <span>{new Date(post.date).toLocaleDateString()}</span>
+                      <span>{formatDate(post.date)}</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <Clock className="h-3 w-3" />

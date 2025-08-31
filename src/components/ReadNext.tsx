@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Clock, Calendar } from 'lucide-react';
+import { formatDate } from '@/lib/date-utils';
 import { cn } from '@/lib/utils';
 
 interface BlogPost {
@@ -23,13 +24,6 @@ export function ReadNext({ posts, className, variant = 'grid' }: ReadNextProps) 
     return null;
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
 
   if (variant === 'list') {
     return (
@@ -146,11 +140,11 @@ export function ReadNext({ posts, className, variant = 'grid' }: ReadNextProps) 
 // Predefined blog posts for common use cases
 export const blogPosts = {
   'compress-pdf': {
-    title: 'How to Compress PDF Files: Complete Guide 2024',
+    title: 'How to Compress PDF Files: Complete Guide 2025',
     excerpt: 'Learn how to compress PDF files effectively. Reduce file size while maintaining quality with our step-by-step guide and free online tools.',
     slug: 'how-to-compress-pdf-files',
     readingTime: '8 min read',
-    datePublished: '2024-01-15T10:00:00.000Z',
+    datePublished: '2025-01-15T10:00:00.000Z',
     category: 'Tutorial'
   },
   'merge-pdf': {
@@ -158,7 +152,7 @@ export const blogPosts = {
     excerpt: 'Step-by-step guide to combining multiple PDF documents into one file. Learn the best practices and tools for merging PDFs.',
     slug: 'merge-pdf-files-online',
     readingTime: '6 min read',
-    datePublished: '2024-01-20T10:00:00.000Z',
+    datePublished: '2025-01-20T10:00:00.000Z',
     category: 'Tutorial'
   },
   'split-pdf': {
@@ -166,7 +160,7 @@ export const blogPosts = {
     excerpt: 'Learn how to extract specific pages or split large PDFs into smaller files. Master PDF page management techniques.',
     slug: 'split-pdf-pages',
     readingTime: '5 min read',
-    datePublished: '2024-01-25T10:00:00.000Z',
+    datePublished: '2025-01-25T10:00:00.000Z',
     category: 'Tutorial'
   },
   'images-to-pdf': {
@@ -174,7 +168,7 @@ export const blogPosts = {
     excerpt: 'Transform your JPG, PNG images into professional PDF documents. Learn the best practices for image-to-PDF conversion.',
     slug: 'convert-images-to-pdf',
     readingTime: '7 min read',
-    datePublished: '2024-02-01T10:00:00.000Z',
+    datePublished: '2025-02-01T10:00:00.000Z',
     category: 'Tutorial'
   },
   'pdf-to-images': {
@@ -182,7 +176,7 @@ export const blogPosts = {
     excerpt: 'Extract pages from PDF files as high-quality JPG or PNG images. Complete guide to PDF-to-image conversion.',
     slug: 'convert-pdf-to-images',
     readingTime: '6 min read',
-    datePublished: '2024-02-05T10:00:00.000Z',
+    datePublished: '2025-02-05T10:00:00.000Z',
     category: 'Tutorial'
   }
 };

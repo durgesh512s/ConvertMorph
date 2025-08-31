@@ -1,27 +1,47 @@
+/** @type {import('next').NextConfig} */
 import type { NextConfig } from "next";
 
+// Generate build-time cache busting hash
+const buildId = process.env.VERCEL_GIT_COMMIT_SHA || 
+                process.env.GITHUB_SHA || 
+                Date.now().toString();
+
 const nextConfig: NextConfig = {
-  // Enable compression
+  reactStrictMode: true,
   compress: true,
 
-  // Optimize build output
+  // Enable ETags for better caching
+  generateEtags: true,
   poweredByHeader: false,
+
+  // Custom build ID for cache busting
+  generateBuildId: async () => {
+    return buildId;
+  },
 
   async headers() {
     return [
+      // Static assets - long cache with immutable
       {
-        source: '/_next/:path*',
+        source: '/_next/static/:path*',
         headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: process.env.NODE_ENV === 'development' ? '*' : 'same-origin',
-          },
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
         ],
       },
+      // Next.js chunks and assets
+      {
+        source: '/_next/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Public static files (images, fonts, etc.)
       {
         source: '/static/:path*',
         headers: [
@@ -31,9 +51,43 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Images and other assets in public folder
       {
-        source: '/:path*',
+        source: '/:path*\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot)',
         headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // API routes - no cache
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
+          },
+        ],
+      },
+      // HTML pages - short cache with revalidation
+      {
+        source: '/((?!api|_next|static).*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+          // Security headers for all routes
           {
             key: 'X-DNS-Prefetch-Control',
             value: 'on',
@@ -79,6 +133,11 @@ const nextConfig: NextConfig = {
               "upgrade-insecure-requests"
             ].join('; '),
           },
+          // Cache busting header with build ID
+          {
+            key: 'X-Build-ID',
+            value: buildId,
+          },
         ],
       },
     ];
@@ -111,8 +170,14 @@ const nextConfig: NextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // Webpack optimizations
+  // Handle pdf.worker.js from /public and other webpack optimizations
   webpack: (config, { dev, isServer }) => {
+    // Handle PDF.js worker correctly
+    config.module.rules.push({
+      test: /pdf\.worker\.min\.js$/,
+      type: "asset/resource",
+    });
+
     // Optimize bundle splitting
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
@@ -180,9 +245,6 @@ const nextConfig: NextConfig = {
       config.optimization.usedExports = true;
       config.optimization.sideEffects = false;
     }
-
-    // Optimize for production - removed problematic alias
-    // framer-motion will be lazy loaded instead
 
     return config;
   },

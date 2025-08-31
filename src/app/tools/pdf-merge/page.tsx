@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dropzone, UploadedFile } from '@/components/Dropzone';
 import { Progress } from '@/components/ui/progress';
+import { RelatedArticles } from '@/components/RelatedArticles';
 import { GitMerge, Download, AlertCircle, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { newJobId } from '@/lib/jobs/id';
@@ -381,6 +382,9 @@ export default function PDFMergePage() {
               </div>
             </div>
           </div>
+
+          {/* Related Articles */}
+          <RelatedArticles toolName="pdf-merge" />
         </div>
       </div>
     </div>
