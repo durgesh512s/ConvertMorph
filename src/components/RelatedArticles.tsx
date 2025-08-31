@@ -178,6 +178,75 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     }
   ],
+  'image-resize': [
+    {
+      title: 'Resize Images Online: Complete Guide 2025',
+      description: 'Learn how to resize images effectively while maintaining quality. Step-by-step guide with Canvas API, aspect ratios, and format conversion.',
+      href: '/blog/resize-images-online',
+      readTime: '7 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'Crop Images Online: Complete Guide to Image Cropping',
+      description: 'Learn how to crop images online with precision using professional tools. Complete guide to aspect ratios, batch cropping, and format conversion.',
+      href: '/blog/crop-images-online',
+      readTime: '12 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'Convert Image Formats Online: Complete Guide to Image Format Conversion',
+      description: 'Convert images between JPEG, PNG, and WebP formats online for free. High-quality image format conversion with preview and batch processing.',
+      href: '/blog/convert-image-formats-online',
+      readTime: '9 min read',
+      category: 'Tutorial'
+    }
+  ],
+  'image-convert': [
+    {
+      title: 'Convert Image Formats Online: Complete Guide to Image Format Conversion',
+      description: 'Convert images between JPEG, PNG, and WebP formats online for free. High-quality image format conversion with preview and batch processing.',
+      href: '/blog/convert-image-formats-online',
+      readTime: '9 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'Crop Images Online: Complete Guide to Image Cropping',
+      description: 'Learn how to crop images online with precision using professional tools. Complete guide to aspect ratios, batch cropping, and format conversion.',
+      href: '/blog/crop-images-online',
+      readTime: '12 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'Resize Images Online: Complete Guide 2025',
+      description: 'Learn how to resize images effectively while maintaining quality. Step-by-step guide with Canvas API, aspect ratios, and format conversion.',
+      href: '/blog/resize-images-online',
+      readTime: '7 min read',
+      category: 'Tutorial'
+    }
+  ],
+  'image-crop': [
+    {
+      title: 'Crop Images Online: Complete Guide to Image Cropping',
+      description: 'Learn how to crop images online with precision using professional tools. Complete guide to aspect ratios, batch cropping, and format conversion.',
+      href: '/blog/crop-images-online',
+      readTime: '12 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'Resize Images Online: Complete Guide 2025',
+      description: 'Learn how to resize images effectively while maintaining quality. Step-by-step guide with Canvas API, aspect ratios, and format conversion.',
+      href: '/blog/resize-images-online',
+      readTime: '7 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'Convert Image Formats Online: Complete Guide to Image Format Conversion',
+      description: 'Convert images between JPEG, PNG, and WebP formats online for free. High-quality image format conversion with preview and batch processing.',
+      href: '/blog/convert-image-formats-online',
+      readTime: '9 min read',
+      category: 'Tutorial'
+    }
+  ],
   'default': [
     {
       title: 'ConvertMorph: Free PDF Tools for Everyone',
@@ -210,6 +279,14 @@ export function RelatedArticles({ toolName, articles }: RelatedArticlesProps) {
     return null;
   }
 
+  // Dynamic description based on tool type
+  const getDescription = (toolName: string) => {
+    if (toolName.includes('image')) {
+      return 'Learn more about image processing and optimization techniques';
+    }
+    return 'Learn more about PDF processing and document management';
+  };
+
   return (
     <div className="mt-16">
       <div className="text-center mb-8">
@@ -217,7 +294,7 @@ export function RelatedArticles({ toolName, articles }: RelatedArticlesProps) {
           Related Articles
         </h2>
         <p className="text-gray-600 dark:text-gray-300">
-          Learn more about PDF processing and document management
+          {getDescription(toolName)}
         </p>
       </div>
 

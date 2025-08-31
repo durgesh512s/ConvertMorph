@@ -74,8 +74,8 @@ const toolCategories = [
       { name: 'Background Remover', href: '/tools/background-remover' },
       { name: 'Image Compress', href: '/tools/image-compress' },
       { name: 'Image Resize', href: '/tools/image-resize' },
-      { name: 'Image Converter', href: '/tools/image-converter' },
-      { name: 'Image Cropper', href: '/tools/image-crop' }
+      { name: 'Image Converter', href: '/tools/image-convert' },
+      { name: 'Image Crop', href: '/tools/image-crop' }
     ]
   },
   {

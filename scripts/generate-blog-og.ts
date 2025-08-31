@@ -58,6 +58,21 @@ const blogPosts = [
     title: 'Compress Images Online: Reduce Image Size Without Quality Loss',
     excerpt: 'Learn how to compress images online effectively while maintaining quality. Complete guide to reducing JPEG, PNG, WebP file sizes.'
   },
+  { 
+    slug: 'resize-images-online', 
+    title: 'Resize Images Online: Free Image Resizer Tool',
+    excerpt: 'Resize images online for free with our powerful image resizer. Change image dimensions while maintaining quality for web, social media, and print.'
+  },
+  { 
+    slug: 'convert-image-formats-online', 
+    title: 'Convert Image Formats Online: Free Image Converter',
+    excerpt: 'Convert images between JPEG, PNG, WebP, and other formats online. Free image format converter with quality control and batch processing.'
+  },
+  { 
+    slug: 'crop-images-online', 
+    title: 'Crop Images Online: Complete Guide to Image Cropping',
+    excerpt: 'Learn how to crop images online with precision using professional tools. Complete guide to aspect ratios, batch cropping, and format conversion.'
+  },
 ]
 
 const BLOG_WIDTH = 1200, BLOG_HEIGHT = 630

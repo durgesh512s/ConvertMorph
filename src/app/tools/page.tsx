@@ -22,7 +22,8 @@ import {
   Calculator,
   Home,
   CreditCard,
-  PiggyBank
+  PiggyBank,
+  Crop
 } from 'lucide-react';
 
 // Tool categories and data
@@ -127,11 +128,27 @@ const toolCategories = {
       },
       {
         title: 'Image Resize',
-        description: 'Resize images to specific dimensions or percentages.',
+        description: 'Resize images to specific dimensions using Canvas API. Support for PNG, JPG, WebP with aspect ratio control.',
         icon: Minimize2,
-        href: '#',
+        href: '/tools/image-resize',
         accentColor: '#10b981',
-        comingSoon: true,
+        comingSoon: false,
+      },
+      {
+        title: 'Image Converter',
+        description: 'Convert images between JPEG, PNG, and WebP formats with quality control and preview functionality.',
+        icon: Copy,
+        href: '/tools/image-convert',
+        accentColor: '#f97316',
+        comingSoon: false,
+      },
+      {
+        title: 'Image Crop',
+        description: 'Crop images with precision using React Easy Crop. Support for multiple aspect ratios and formats.',
+        icon: Crop,
+        href: '/tools/image-crop',
+        accentColor: '#059669',
+        comingSoon: false,
       },
     ]
   },

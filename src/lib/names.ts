@@ -27,4 +27,8 @@ export const names = {
     `${base(orig)}_pagenum.pdf`,
   sign: (orig: string) => 
     `${base(orig)}_signed.pdf`,
+  resizeImage: (orig: string, width: number, height: number, format: string) => 
+    `${base(orig)}_resized_${width}x${height}.${format}`,
+  convertImage: (orig: string, fromFormat: string, toFormat: string) => 
+    `${base(orig)}_converted_${fromFormat}to${toFormat}.${toFormat === 'jpeg' ? 'jpg' : toFormat}`,
 } as const;
