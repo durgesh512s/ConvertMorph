@@ -195,12 +195,14 @@ export default function WordCounterPage() {
                         {stats ? formatNumber(stats.characters) : '0'}
                       </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">Characters</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">Including spaces</div>
                     </div>
                     <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                         {stats ? formatNumber(stats.charactersNoSpaces) : '0'}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">No Spaces</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Characters</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">Excluding spaces</div>
                     </div>
                     <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <div className="text-2xl font-bold text-green-600 dark:text-green-400">
@@ -339,6 +341,12 @@ export default function WordCounterPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mt-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Frequently Asked Questions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">What's the difference between character counts?</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  "Characters" includes all characters including spaces, punctuation, and line breaks. "Characters (excluding spaces)" counts only letters, numbers, and punctuation without spaces.
+                </p>
+              </div>
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-2">How accurate is the word count?</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
