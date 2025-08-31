@@ -23,7 +23,9 @@ import {
   Home,
   CreditCard,
   PiggyBank,
-  Crop
+  Crop,
+  FileText as WordCountIcon,
+  GitCompare
 } from 'lucide-react';
 
 // Tool categories and data
@@ -157,11 +159,27 @@ const toolCategories = {
     description: 'Advanced text processing and analysis utilities.',
     tools: [
       {
+        title: 'Word Counter',
+        description: 'Count words, characters, sentences, and paragraphs. Analyze readability and get detailed text statistics.',
+        icon: WordCountIcon,
+        href: '/tools/word-counter',
+        accentColor: '#3b82f6',
+        comingSoon: false,
+      },
+      {
+        title: 'Text Comparison',
+        description: 'Compare two texts side-by-side with detailed difference analysis and similarity scoring using LCS algorithm.',
+        icon: GitCompare,
+        href: '/tools/text-compare',
+        accentColor: '#10b981',
+        comingSoon: false,
+      },
+      {
         title: 'Grammar Checker',
         description: 'Check and correct grammar, spelling, and punctuation errors.',
         icon: CheckCircle,
         href: '#',
-        accentColor: '#10b981',
+        accentColor: '#f97316',
         comingSoon: true,
       },
       {
@@ -169,7 +187,7 @@ const toolCategories = {
         description: 'Rewrite text while maintaining original meaning and context.',
         icon: Copy,
         href: '#',
-        accentColor: '#3b82f6',
+        accentColor: '#8b5cf6',
         comingSoon: true,
       },
       {
@@ -177,7 +195,7 @@ const toolCategories = {
         description: 'Detect potential plagiarism and ensure content originality.',
         icon: FileText,
         href: '#',
-        accentColor: '#f97316',
+        accentColor: '#ef4444',
         comingSoon: true,
       },
     ]

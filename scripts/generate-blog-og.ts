@@ -73,6 +73,11 @@ const blogPosts = [
     title: 'Crop Images Online: Complete Guide to Image Cropping',
     excerpt: 'Learn how to crop images online with precision using professional tools. Complete guide to aspect ratios, batch cropping, and format conversion.'
   },
+  { 
+    slug: 'text-analysis-tools', 
+    title: 'Text Analysis Tools: Word Counter & Text Comparison Online Free',
+    excerpt: 'Comprehensive guide to text analysis tools including word counter, character counter, text comparison, and readability analysis. Free online tools for writers, students, and professionals.'
+  },
 ]
 
 const BLOG_WIDTH = 1200, BLOG_HEIGHT = 630

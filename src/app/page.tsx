@@ -89,7 +89,7 @@ const toolCategories = [
       { name: 'Grammar Checker', href: '/tools/grammar-checker' },
       { name: 'Paraphraser', href: '/tools/paraphraser' },
       { name: 'Plagiarism Checker', href: '/tools/plagiarism-checker' },
-      { name: 'Text Comparison', href: '/tools/text-comparison' },
+      { name: 'Text Comparison', href: '/tools/text-compare' },
       { name: 'Word Counter', href: '/tools/word-counter' }
     ]
   },

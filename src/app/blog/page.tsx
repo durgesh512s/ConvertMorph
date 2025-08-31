@@ -29,6 +29,14 @@ const blogPosts = [
     category: 'Platform Guide',
   },
   {
+    title: 'Text Analysis Tools: Word Counter & Text Comparison Online Free',
+    excerpt: 'Comprehensive text analysis tools for writers, students, and professionals. Count words, analyze readability, compare texts, and export detailed reports.',
+    date: '2025-03-20',
+    readTime: '8 min read',
+    slug: 'text-analysis-tools',
+    category: 'Text Tools',
+  },
+  {
     title: 'Crop Images Online: Complete Guide to Image Cropping',
     excerpt: 'Learn how to crop images online with precision using professional tools. Complete guide to aspect ratios, batch cropping, and format conversion.',
     date: '2025-03-15',
