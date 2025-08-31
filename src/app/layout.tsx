@@ -6,6 +6,8 @@ import { LazyFooter } from "@/components/LazyFooter";
 import { Toaster } from "@/components/ui/sonner";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { LazyHeaderAd } from "@/components/LazyAdSense";
+import { VercelAnalytics } from '@/components/VercelAnalytics';
+import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -140,6 +142,8 @@ export default function RootLayout({
         </div>
         <Toaster />
         <KeyboardShortcuts />
+        <VercelAnalytics />
+        <PerformanceMonitor />
       </body>
     </html>
   );
