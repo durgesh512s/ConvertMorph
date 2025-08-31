@@ -10,6 +10,7 @@ import { LazyHeaderAd } from "@/components/LazyAdSense";
 import { VercelAnalytics } from '@/components/VercelAnalytics';
 import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
+import { CacheBuster } from '@/components/CacheBuster';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -126,6 +127,7 @@ export default function RootLayout({
         <KeyboardShortcuts />
         <VercelAnalytics />
         <PerformanceMonitor />
+        <CacheBuster debug={process.env.NODE_ENV === 'development'} />
       </body>
     </html>
   );

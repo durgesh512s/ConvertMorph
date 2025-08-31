@@ -41,6 +41,87 @@ export const reloadStylesheets = (): void => {
   });
 };
 
+// Clear CSS cache via service worker
+export const clearCSSCache = async (): Promise<boolean> => {
+  if (typeof window === 'undefined' || !('serviceWorker' in navigator)) {
+    return false;
+  }
+
+  try {
+    const registration = await navigator.serviceWorker.ready;
+    if (registration.active) {
+      return new Promise((resolve) => {
+        const messageChannel = new MessageChannel();
+        messageChannel.port1.onmessage = (event) => {
+          resolve(event.data.success || false);
+        };
+        
+        registration.active!.postMessage(
+          { type: 'CLEAR_CSS_CACHE' },
+          [messageChannel.port2]
+        );
+      });
+    }
+    return false;
+  } catch (error) {
+    console.warn('Failed to clear CSS cache:', error);
+    return false;
+  }
+};
+
+// Update build ID in service worker
+export const updateServiceWorkerBuildId = async (): Promise<boolean> => {
+  if (typeof window === 'undefined' || !('serviceWorker' in navigator)) {
+    return false;
+  }
+
+  try {
+    const registration = await navigator.serviceWorker.ready;
+    if (registration.active) {
+      return new Promise((resolve) => {
+        const messageChannel = new MessageChannel();
+        messageChannel.port1.onmessage = (event) => {
+          resolve(event.data.success || false);
+        };
+        
+        registration.active!.postMessage(
+          { type: 'UPDATE_BUILD_ID', buildId: getCacheBustId() },
+          [messageChannel.port2]
+        );
+      });
+    }
+    return false;
+  } catch (error) {
+    console.warn('Failed to update service worker build ID:', error);
+    return false;
+  }
+};
+
+// Force refresh CSS and clear caches
+export const forceRefreshCSS = async (): Promise<void> => {
+  if (typeof window === 'undefined') return;
+
+  // Clear service worker CSS cache
+  await clearCSSCache();
+  
+  // Reload stylesheets with new cache bust parameters
+  reloadStylesheets();
+  
+  // Clear browser cache for CSS files
+  if ('caches' in window) {
+    try {
+      const cacheNames = await caches.keys();
+      await Promise.all(
+        cacheNames
+          .filter(name => name.includes('css') || name.includes('style'))
+          .map(name => caches.delete(name))
+      );
+    } catch (error) {
+      console.warn('Failed to clear browser CSS caches:', error);
+    }
+  }
+};
+
 // Get build information for debugging
 export const getBuildInfo = () => {
   return {
