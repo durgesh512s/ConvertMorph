@@ -10,19 +10,21 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: [
           '/api/',
-          '/_next/',
           '/samples/',
           '/og-debug/',
           '/og/',
           '/logo/',
           '/scripts/',
           '/docs/',
-          '/static/',
-          '/public/',
-          '/*.json$',
-          '/*.js$',
           '/*.ts$',
           '/*.map$',
+        ],
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: [
+          '/_next/static/*.js',
+          '/public/*.js',
         ],
       },
       {
@@ -47,6 +49,5 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
   }
 }
