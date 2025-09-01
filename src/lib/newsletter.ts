@@ -316,10 +316,12 @@ export class NewsletterAnalytics {
     for (let i = 6; i >= 0; i--) {
       const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000)
       const dateStr = date.toISOString().split('T')[0]
-      const count = subscribers.filter(sub => 
-        sub.timestamp.startsWith(dateStr)
-      ).length
-      subscriptionTrend.push({ date: dateStr, count })
+      if (dateStr) {
+        const count = subscribers.filter(sub => 
+          sub.timestamp && sub.timestamp.startsWith(dateStr)
+        ).length
+        subscriptionTrend.push({ date: dateStr, count })
+      }
     }
 
     return {

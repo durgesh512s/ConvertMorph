@@ -41,6 +41,7 @@ export default function Newsletter({
       }, 3000)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [state.isSuccess, state.error, state.email, setEmail])
 
   return (
