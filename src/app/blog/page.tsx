@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { formatDate } from '@/lib/date-utils';
+import Newsletter from '@/components/Newsletter';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -282,30 +283,7 @@ export default function BlogPage() {
         </div>
 
         {/* Newsletter Signup */}
-        <Card className="mt-16 bg-gradient-to-r from-blue-50/50 to-blue-50 dark:from-blue-950/20 dark:to-blue-900/20 border-blue-200/50 dark:border-blue-800/30">
-          <CardContent className="text-center py-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Stay Updated
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-              Get the latest PDF tips, tutorials, and tool updates delivered to your inbox. 
-              Join thousands of users who trust ConvertMorph for their document needs.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                Subscribe
-              </button>
-            </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
-              No spam, unsubscribe at any time.
-            </p>
-          </CardContent>
-        </Card>
+        <Newsletter className="mt-16" />
 
         {/* Categories */}
         <div className="mt-16">
