@@ -11,7 +11,7 @@ import '@/styles/blog.css';
 const postData: BlogPostMetadata = {
   title: 'ConvertMorph - Free Online Tools for PDF, Image, Text & Finance',
   excerpt: 'Discover ConvertMorph\'s comprehensive suite of free online tools. Process PDFs, edit images, analyze text, and calculate finances securely with our browser-based tools.',
-  slug: 'convertmorph-free-pdf-tools',
+  slug: 'convertmorph-free-online-tools',
   focusKeyword: 'ConvertMorph free online tools',
   secondaryKeywords: [
     'free PDF tools online',
@@ -23,7 +23,7 @@ const postData: BlogPostMetadata = {
     'secure file processing'
   ],
   author: 'ConvertMorph Team',
-  datePublished: '2025-01-18T10:00:00.000Z',
+  datePublished: '2025-08-01T10:00:00.000Z',
   dateModified: '2025-09-01T10:00:00.000Z',
   readingTime: '12 min read'
 };
@@ -77,7 +77,7 @@ const faqs = [
 const breadcrumbs = [
   { name: 'Home', url: '/' },
   { name: 'Blog', url: '/blog' },
-  { name: 'ConvertMorph Free Tools', url: '/blog/convertmorph-free-pdf-tools' }
+  { name: 'ConvertMorph Free Tools', url: '/blog/convertmorph-free-online-tools' }
 ];
 
 export default function ConvertMorphToolsPage() {
@@ -126,7 +126,7 @@ export default function ConvertMorphToolsPage() {
                   </h1>
                   
                   <div className="flex items-center text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 lg:mb-6 flex-wrap gap-2 sm:gap-4">
-                    <time dateTime={postData.datePublished}>January 18, 2025</time>
+                    <time dateTime={postData.datePublished}>August 1, 2025</time>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />
                       {postData.readingTime}
@@ -624,7 +624,7 @@ export default function ConvertMorphToolsPage() {
                 {/* Related Posts - Hidden on mobile, shown on desktop */}
                 <div className="hidden lg:block">
                   <RelatedPosts 
-                    currentSlug="convertmorph-free-pdf-tools" 
+                    currentSlug="convertmorph-free-online-tools" 
                     count={2} 
                     variant="list" 
                   />
@@ -636,7 +636,7 @@ export default function ConvertMorphToolsPage() {
             <div className="lg:hidden order-3 w-full">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6 w-full overflow-hidden">
                 <RelatedPosts 
-                  currentSlug="convertmorph-free-pdf-tools" 
+                  currentSlug="convertmorph-free-online-tools" 
                   count={2} 
                   variant="grid" 
                 />

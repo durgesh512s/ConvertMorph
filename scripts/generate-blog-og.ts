@@ -78,6 +78,31 @@ const blogPosts = [
     title: 'Text Analysis Tools: Word Counter & Text Comparison Online Free',
     excerpt: 'Comprehensive guide to text analysis tools including word counter, character counter, text comparison, and readability analysis. Free online tools for writers, students, and professionals.'
   },
+  { 
+    slug: 'emi-calculator-guide', 
+    title: 'EMI Calculator Guide: Calculate Loan EMI & Interest',
+    excerpt: 'Master EMI calculations with our comprehensive guide. Calculate loan EMI, understand interest rates, and plan your finances effectively.'
+  },
+  { 
+    slug: 'sip-calculator-guide', 
+    title: 'SIP Calculator Guide: Calculate SIP Returns & Investment Growth',
+    excerpt: 'Plan your SIP investments with our detailed guide. Calculate returns, understand compound growth, and achieve your financial goals.'
+  },
+  { 
+    slug: 'hra-calculator-guide', 
+    title: 'HRA Calculator Guide: Calculate House Rent Allowance Exemption',
+    excerpt: 'Maximize your HRA tax benefits with our comprehensive guide. Calculate exemptions, understand rules, and save on taxes.'
+  },
+  { 
+    slug: 'loan-calculator-guide', 
+    title: 'Loan Calculator Guide: Calculate EMI, Interest & Total Amount',
+    excerpt: 'Master loan calculations with our comprehensive guide. Learn how to calculate EMI, compare loan options, and make informed borrowing decisions.'
+  },
+  { 
+    slug: 'tax-calculator-guide', 
+    title: 'Tax Calculator Guide: Calculate Income Tax Old vs New Regime',
+    excerpt: 'Master income tax calculations with our comprehensive guide. Compare old vs new tax regime, understand tax slabs, and optimize your tax planning.'
+  },
 ]
 
 const BLOG_WIDTH = 1200, BLOG_HEIGHT = 630

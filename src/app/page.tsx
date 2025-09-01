@@ -168,19 +168,19 @@ const stats = [
 // Featured blog posts for the blog preview section
 const featuredBlogPosts = [
   {
+    title: "ConvertMorph: Free Online Tools for PDF, Image, Text & Finance",
+    excerpt: "Discover ConvertMorph's comprehensive suite of free online tools. Process PDFs, edit images, analyze text, and calculate finances securely with our browser-based tools.",
+    date: "2025-08-01",
+    readTime: "12 min read",
+    slug: "convertmorph-free-online-tools",
+    category: "Platform Overview"
+  },
+  {
     title: "How to Compress PDF Files: Complete Guide 2025",
     excerpt: "Learn professional PDF compression techniques to reduce file size while maintaining quality.",
     date: "2025-01-15",
     readTime: "8 min read",
     slug: "how-to-compress-pdf-files",
-    category: "PDF Tools"
-  },
-  {
-    title: "Merge PDF Files Online: Free & Secure",
-    excerpt: "Step-by-step guide to combining multiple PDF documents into one seamless file.",
-    date: "2025-01-20",
-    readTime: "6 min read",
-    slug: "merge-pdf-files-online",
     category: "PDF Tools"
   },
   {
@@ -406,10 +406,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyFadeIn className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-              Expert PDF Tips & Tutorials
+              Expert Tips & Tutorials
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Learn professional techniques and best practices for document processing
+              Learn professional techniques and best practices for PDF, image, text, and finance tools
             </p>
           </LazyFadeIn>
 

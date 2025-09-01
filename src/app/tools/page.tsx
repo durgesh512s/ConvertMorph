@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ToolCard from '@/components/ToolCard';
 import CategoryTabs from '@/components/CategoryTabs';
 import { 
@@ -208,33 +209,41 @@ const toolCategories = {
         title: 'Tax Calculator',
         description: 'Calculate income tax based on current tax slabs and deductions.',
         icon: Calculator,
-        href: '#',
+        href: '/tools/tax-calculator',
         accentColor: '#059669',
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         title: 'EMI Calculator',
         description: 'Calculate loan EMIs for home, car, and personal loans.',
         icon: Home,
-        href: '#',
+        href: '/tools/emi-calculator',
         accentColor: '#3b82f6',
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         title: 'SIP Calculator',
         description: 'Calculate returns on Systematic Investment Plans (SIP).',
         icon: PiggyBank,
-        href: '#',
+        href: '/tools/sip-calculator',
         accentColor: '#10b981',
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         title: 'HRA Calculator',
         description: 'Calculate House Rent Allowance exemption for tax savings.',
         icon: CreditCard,
-        href: '#',
+        href: '/tools/hra-calculator',
         accentColor: '#8b5cf6',
-        comingSoon: true,
+        comingSoon: false,
+      },
+      {
+        title: 'Loan Calculator',
+        description: 'Calculate loan EMI, total interest, and payment schedule for different types of loans.',
+        icon: CreditCard,
+        href: '/tools/loan-calculator',
+        accentColor: '#f97316',
+        comingSoon: false,
       },
     ]
   }
@@ -248,9 +257,19 @@ const TABS = [
   { key: 'finance', label: 'Finance' },
 ];
 
-export default function ToolsPage() {
+// Component that uses useSearchParams
+function ToolsContent() {
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
+
+  // Set initial category from URL parameters
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && TABS.some(tab => tab.key === categoryParam)) {
+      setActiveCategory(categoryParam);
+    }
+  }, [searchParams]);
 
 
   // Flatten all tools for search and filtering
@@ -515,5 +534,42 @@ export default function ToolsPage() {
         </div>
       </section>
     </>
+  );
+}
+
+// Loading component for Suspense fallback
+function ToolsLoading() {
+  return (
+    <section className="relative overflow-hidden">
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 via-white to-white dark:from-blue-950/40 dark:via-gray-950 dark:to-gray-950" />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            All Tools
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            Professional-grade tools for PDF, Image, Text, and Finance tasks. 
+            All tools work entirely in your browser for maximum privacy.
+          </p>
+        </div>
+        <div className="animate-pulse space-y-8">
+          <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Main export with Suspense boundary
+export default function ToolsPage() {
+  return (
+    <Suspense fallback={<ToolsLoading />}>
+      <ToolsContent />
+    </Suspense>
   );
 }

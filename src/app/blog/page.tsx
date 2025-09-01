@@ -21,12 +21,52 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
-    title: 'ConvertMorph - Free Online PDF Tools for Document Processing',
-    excerpt: 'Discover ConvertMorph\'s comprehensive suite of free online PDF tools. Process, edit, and manage your PDF documents securely with our browser-based tools.',
-    date: '2025-01-18',
-    readTime: '10 min read',
-    slug: 'convertmorph-free-pdf-tools',
+    title: 'ConvertMorph - Free Online Tools for PDF, Image, Text & Finance',
+    excerpt: 'Discover ConvertMorph\'s comprehensive suite of free online tools. Process PDFs, edit images, analyze text, and calculate finances securely with our browser-based tools.',
+    date: '2025-09-01',
+    readTime: '12 min read',
+    slug: 'convertmorph-free-online-tools',
     category: 'Platform Guide',
+  },
+  {
+    title: 'EMI Calculator Guide: Calculate Loan EMI & Interest',
+    excerpt: 'Master EMI calculations with our comprehensive guide. Calculate loan EMI, understand interest rates, and plan your finances effectively.',
+    date: '2025-08-01',
+    readTime: '7 min read',
+    slug: 'emi-calculator-guide',
+    category: 'Financial Tools',
+  },
+  {
+    title: 'SIP Calculator Guide: Calculate SIP Returns & Investment Growth',
+    excerpt: 'Plan your SIP investments with our detailed guide. Calculate returns, understand compound growth, and achieve your financial goals.',
+    date: '2025-08-01',
+    readTime: '8 min read',
+    slug: 'sip-calculator-guide',
+    category: 'Financial Tools',
+  },
+  {
+    title: 'HRA Calculator Guide: Calculate House Rent Allowance Exemption',
+    excerpt: 'Maximize your HRA tax benefits with our comprehensive guide. Calculate exemptions, understand rules, and save on taxes.',
+    date: '2025-08-01',
+    readTime: '6 min read',
+    slug: 'hra-calculator-guide',
+    category: 'Financial Tools',
+  },
+  {
+    title: 'Loan Calculator Guide: Calculate EMI, Interest & Total Amount',
+    excerpt: 'Master loan calculations with our comprehensive guide. Learn how to calculate EMI, compare loan options, and make informed borrowing decisions.',
+    date: '2025-08-01',
+    readTime: '8 min read',
+    slug: 'loan-calculator-guide',
+    category: 'Financial Tools',
+  },
+  {
+    title: 'Tax Calculator Guide: Calculate Income Tax Old vs New Regime',
+    excerpt: 'Master income tax calculations with our comprehensive guide. Compare old vs new tax regime, understand tax slabs, and optimize your tax planning.',
+    date: '2025-08-01',
+    readTime: '9 min read',
+    slug: 'tax-calculator-guide',
+    category: 'Financial Tools',
   },
   {
     title: 'Text Analysis Tools: Word Counter & Text Comparison Online Free',
@@ -273,12 +313,22 @@ export default function BlogPage() {
             Browse by Category
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {['PDF Compression', 'File Merging', 'Document Splitting', 'Format Conversion'].map((category) => (
-              <div key={category} className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center hover:shadow-md transition-shadow border dark:border-gray-700">
-                <h3 className="font-medium text-gray-900 dark:text-white mb-1">{category}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Coming Soon</p>
-              </div>
-            ))}
+            <Link href="/tools?category=pdf" className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center hover:shadow-md transition-shadow border dark:border-gray-700 group">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">PDF Tools</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">9 Tools Available</p>
+            </Link>
+            <Link href="/tools?category=image" className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center hover:shadow-md transition-shadow border dark:border-gray-700 group">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Image Tools</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">5 Tools Available</p>
+            </Link>
+            <Link href="/tools?category=text" className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center hover:shadow-md transition-shadow border dark:border-gray-700 group">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Text Tools</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">2 Tools Available</p>
+            </Link>
+            <Link href="/tools?category=finance" className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center hover:shadow-md transition-shadow border dark:border-gray-700 group">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Finance Tools</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">5 Tools Available</p>
+            </Link>
           </div>
         </div>
       </div>

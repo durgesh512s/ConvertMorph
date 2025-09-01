@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = process.env.SITE_URL || 'https://convertmorph.com'
-  
+
   return {
     rules: [
       {
@@ -13,7 +13,16 @@ export default function robots(): MetadataRoute.Robots {
           '/_next/',
           '/samples/',
           '/og-debug/',
+          '/og/',
+          '/logo/',
+          '/scripts/',
+          '/docs/',
+          '/static/',
+          '/public/',
           '/*.json$',
+          '/*.js$',
+          '/*.ts$',
+          '/*.map$',
         ],
       },
       {

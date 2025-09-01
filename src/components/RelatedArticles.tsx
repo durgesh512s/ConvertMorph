@@ -247,6 +247,153 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     }
   ],
+  'emi-calculator': [
+    {
+      title: 'EMI Calculator Guide: Calculate Your Loan EMI',
+      description: 'Complete guide to calculating EMI for home loans, car loans, and personal loans. Learn about factors affecting EMI and how to plan your finances.',
+      href: '/blog/emi-calculator-guide',
+      readTime: '8 min read',
+      category: 'Guide'
+    },
+    {
+      title: 'Loan Calculator Guide: Plan Your Loan EMI',
+      description: 'Comprehensive guide to loan calculations, interest rates, and payment schedules for different types of loans.',
+      href: '/blog/loan-calculator-guide',
+      readTime: '10 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'SIP Calculator Guide: Mutual Fund Investment Planning',
+      description: 'Learn how to calculate SIP returns and plan your mutual fund investments for long-term wealth creation.',
+      href: '/blog/sip-calculator-guide',
+      readTime: '7 min read',
+      category: 'Investment'
+    }
+  ],
+  'loan-calculator': [
+    {
+      title: 'Loan Calculator Guide: Plan Your Loan EMI',
+      description: 'Comprehensive guide to loan calculations, interest rates, and payment schedules for different types of loans.',
+      href: '/blog/loan-calculator-guide',
+      readTime: '10 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'EMI Calculator Guide: Calculate Your Loan EMI',
+      description: 'Complete guide to calculating EMI for home loans, car loans, and personal loans. Learn about factors affecting EMI and how to plan your finances.',
+      href: '/blog/emi-calculator-guide',
+      readTime: '8 min read',
+      category: 'Guide'
+    },
+    {
+      title: 'Tax Calculator Guide: Calculate Income Tax',
+      description: 'Step-by-step guide to calculating income tax, understanding tax slabs, and optimizing your tax planning.',
+      href: '/blog/tax-calculator-guide',
+      readTime: '9 min read',
+      category: 'Tax Planning'
+    }
+  ],
+  'sip-calculator': [
+    {
+      title: 'SIP Calculator Guide: Mutual Fund Investment Planning',
+      description: 'Learn how to calculate SIP returns and plan your mutual fund investments for long-term wealth creation.',
+      href: '/blog/sip-calculator-guide',
+      readTime: '7 min read',
+      category: 'Investment'
+    },
+    {
+      title: 'EMI Calculator Guide: Calculate Your Loan EMI',
+      description: 'Complete guide to calculating EMI for home loans, car loans, and personal loans. Learn about factors affecting EMI and how to plan your finances.',
+      href: '/blog/emi-calculator-guide',
+      readTime: '8 min read',
+      category: 'Guide'
+    },
+    {
+      title: 'Tax Calculator Guide: Calculate Income Tax',
+      description: 'Step-by-step guide to calculating income tax, understanding tax slabs, and optimizing your tax planning.',
+      href: '/blog/tax-calculator-guide',
+      readTime: '9 min read',
+      category: 'Tax Planning'
+    }
+  ],
+  'tax-calculator': [
+    {
+      title: 'Tax Calculator Guide: Calculate Income Tax',
+      description: 'Step-by-step guide to calculating income tax, understanding tax slabs, and optimizing your tax planning.',
+      href: '/blog/tax-calculator-guide',
+      readTime: '9 min read',
+      category: 'Tax Planning'
+    },
+    {
+      title: 'HRA Calculator Guide: House Rent Allowance Tax Benefits',
+      description: 'Learn how to calculate HRA exemption and maximize your tax savings on house rent allowance.',
+      href: '/blog/hra-calculator-guide',
+      readTime: '6 min read',
+      category: 'Tax Planning'
+    },
+    {
+      title: 'SIP Calculator Guide: Mutual Fund Investment Planning',
+      description: 'Learn how to calculate SIP returns and plan your mutual fund investments for long-term wealth creation.',
+      href: '/blog/sip-calculator-guide',
+      readTime: '7 min read',
+      category: 'Investment'
+    }
+  ],
+  'hra-calculator': [
+    {
+      title: 'HRA Calculator Guide: House Rent Allowance Tax Benefits',
+      description: 'Learn how to calculate HRA exemption and maximize your tax savings on house rent allowance.',
+      href: '/blog/hra-calculator-guide',
+      readTime: '6 min read',
+      category: 'Tax Planning'
+    },
+    {
+      title: 'Tax Calculator Guide: Calculate Income Tax',
+      description: 'Step-by-step guide to calculating income tax, understanding tax slabs, and optimizing your tax planning.',
+      href: '/blog/tax-calculator-guide',
+      readTime: '9 min read',
+      category: 'Tax Planning'
+    },
+    {
+      title: 'EMI Calculator Guide: Calculate Your Loan EMI',
+      description: 'Complete guide to calculating EMI for home loans, car loans, and personal loans. Learn about factors affecting EMI and how to plan your finances.',
+      href: '/blog/emi-calculator-guide',
+      readTime: '8 min read',
+      category: 'Guide'
+    }
+  ],
+  'text-compare': [
+    {
+      title: 'Text Analysis Tools: Compare and Analyze Text',
+      description: 'Comprehensive guide to text comparison, analysis, and processing tools for content creators and developers.',
+      href: '/blog/text-analysis-tools',
+      readTime: '8 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'ConvertMorph: Free Online Tools for Everyone',
+      description: 'Discover our comprehensive suite of free online tools for document processing, financial calculations, and more.',
+      href: '/blog/convertmorph-free-online-tools',
+      readTime: '5 min read',
+      category: 'Guide'
+    }
+  ],
+  'word-counter': [
+    {
+      title: 'Text Analysis Tools: Compare and Analyze Text',
+      description: 'Comprehensive guide to text comparison, analysis, and processing tools for content creators and developers.',
+      href: '/blog/text-analysis-tools',
+      readTime: '8 min read',
+      category: 'Tutorial'
+    },
+    {
+      title: 'ConvertMorph: Free Online Tools for Everyone',
+      description: 'Discover our comprehensive suite of free online tools for document processing, financial calculations, and more.',
+      href: '/blog/convertmorph-free-online-tools',
+      readTime: '5 min read',
+      category: 'Guide'
+    }
+  ],
   'default': [
     {
       title: 'ConvertMorph: Free PDF Tools for Everyone',
@@ -283,6 +430,12 @@ export function RelatedArticles({ toolName, articles }: RelatedArticlesProps) {
   const getDescription = (toolName: string) => {
     if (toolName.includes('image')) {
       return 'Learn more about image processing and optimization techniques';
+    }
+    if (toolName.includes('calculator') || ['emi-calculator', 'loan-calculator', 'sip-calculator', 'tax-calculator', 'hra-calculator'].includes(toolName)) {
+      return 'Learn more about financial planning and calculation strategies';
+    }
+    if (toolName.includes('text') || toolName.includes('word')) {
+      return 'Learn more about text analysis and processing tools';
     }
     return 'Learn more about PDF processing and document management';
   };

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, X, ChevronDown, Archive, GitMerge, Scissors, Image as ImageIcon, Download, Move3D, Type, Hash } from 'lucide-react';
+import { Menu, X, ChevronDown, Archive, GitMerge, Scissors, Image as ImageIcon, Download, Move3D, Type, Hash, PenTool, Minimize2, Copy, Crop, FileText as WordCountIcon, GitCompare, Calculator, Home, CreditCard, PiggyBank } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { LazyFadeIn } from '@/components/LazyMotion';
 import { PWAInstall } from './PWAInstall';
@@ -58,10 +58,83 @@ const pdfTools = [
   },
 ];
 
-const futureTools = [
-  { name: 'Image Tools', description: 'Coming soon', icon: ImageIcon, color: 'bg-gray-100 text-gray-400' },
-  { name: 'Text Tools', description: 'Coming soon', icon: Type, color: 'bg-gray-100 text-gray-400' },
-  { name: 'Finance Tools', description: 'Coming soon', icon: Hash, color: 'bg-gray-100 text-gray-400' },
+const imageTools = [
+  { 
+    name: 'Image Compress', 
+    href: '/tools/image-compress', 
+    icon: Minimize2,
+    description: 'Reduce image file size while maintaining quality',
+    color: 'bg-emerald-100 text-emerald-600'
+  },
+  { 
+    name: 'Image Converter', 
+    href: '/tools/image-converter', 
+    icon: Copy,
+    description: 'Convert between different image formats',
+    color: 'bg-teal-100 text-teal-600'
+  },
+  { 
+    name: 'Image Resizer', 
+    href: '/tools/image-resizer', 
+    icon: PenTool,
+    description: 'Resize images to specific dimensions',
+    color: 'bg-cyan-100 text-cyan-600'
+  },
+  { 
+    name: 'Image Cropper', 
+    href: '/tools/image-cropper', 
+    icon: Crop,
+    description: 'Crop and trim images to desired size',
+    color: 'bg-sky-100 text-sky-600'
+  },
+];
+
+const textTools = [
+  { 
+    name: 'Word Counter', 
+    href: '/tools/word-counter', 
+    icon: WordCountIcon,
+    description: 'Count words, characters, and paragraphs',
+    color: 'bg-amber-100 text-amber-600'
+  },
+  { 
+    name: 'Text Comparator', 
+    href: '/tools/text-comparator', 
+    icon: GitCompare,
+    description: 'Compare and find differences between texts',
+    color: 'bg-yellow-100 text-yellow-600'
+  },
+];
+
+const financeTools = [
+  { 
+    name: 'Loan Calculator', 
+    href: '/tools/loan-calculator', 
+    icon: Calculator,
+    description: 'Calculate loan EMI and interest',
+    color: 'bg-rose-100 text-rose-600'
+  },
+  { 
+    name: 'SIP Calculator', 
+    href: '/tools/sip-calculator', 
+    icon: PiggyBank,
+    description: 'Calculate SIP returns and investments',
+    color: 'bg-red-100 text-red-600'
+  },
+  { 
+    name: 'HRA Calculator', 
+    href: '/tools/hra-calculator', 
+    icon: Home,
+    description: 'Calculate House Rent Allowance exemption',
+    color: 'bg-pink-100 text-pink-600'
+  },
+  { 
+    name: 'EMI Calculator', 
+    href: '/tools/emi-calculator', 
+    icon: CreditCard,
+    description: 'Calculate Equated Monthly Installments',
+    color: 'bg-fuchsia-100 text-fuchsia-600'
+  },
 ];
 
 const navigation = [
@@ -125,10 +198,11 @@ export function Navbar() {
     };
   }, [toolsDropdownOpen]);
 
-  // Get recently used tools with full tool data
+  // Get recently used tools with full tool data from all categories
+  const allTools = [...pdfTools, ...imageTools, ...textTools, ...financeTools];
   const recentlyUsedTools = recentlyUsedSlugs
-    .map(slug => pdfTools.find(tool => tool.href.includes(slug)))
-    .filter(Boolean) as typeof pdfTools;
+    .map(slug => allTools.find(tool => tool.href.includes(slug)))
+    .filter(Boolean) as typeof allTools;
 
   const handleToolClick = (toolHref: string) => {
     if (!isClient) return;
@@ -171,7 +245,7 @@ export function Navbar() {
               {toolsDropdownOpen && (
                 <div
                   ref={dropdownRef}
-                  className="absolute top-full left-0 mt-2 w-[600px] max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-[80vh] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-150"
+                  className="absolute top-full right-0 mt-2 w-[800px] max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-[80vh] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-150"
                 >
                   <div className="p-6">
                     {/* CTA Button */}
@@ -212,63 +286,141 @@ export function Navbar() {
                       </div>
                     )}
 
-                    {/* 2-Column Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
+                    {/* 4-Column Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                       {/* Column 1: PDF Tools */}
                       <div>
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">PDF Tools</h3>
-                        <div className="space-y-3">
-                          {pdfTools.map((tool) => {
+                        <div className="space-y-2">
+                          {pdfTools.slice(0, 4).map((tool) => {
                             const Icon = tool.icon;
                             return (
                               <Link
                                 key={tool.name}
                                 href={tool.href}
-                                className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 group"
+                                className="flex items-start space-x-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 group"
                                 onClick={() => handleToolClick(tool.href)}
                               >
-                                <div className={cn("flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors group-hover:brightness-110", tool.color)}>
-                                  <Icon className="h-4 w-4" />
+                                <div className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors group-hover:brightness-110", tool.color)}>
+                                  <Icon className="h-3 w-3" />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                                  <p className="text-xs font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                                     {tool.name}
-                                  </p>
-                                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                    {tool.description}
                                   </p>
                                 </div>
                               </Link>
                             );
                           })}
+                          <Link
+                            href="/tools?category=pdf"
+                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 block"
+                            onClick={() => setToolsDropdownOpen(false)}
+                          >
+                            View all PDF tools →
+                          </Link>
                         </div>
                       </div>
 
-                      {/* Column 2: Future Categories */}
+                      {/* Column 2: Image Tools */}
                       <div>
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Coming Soon</h3>
-                        <div className="space-y-3">
-                          {futureTools.map((tool) => {
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Image Tools</h3>
+                        <div className="space-y-2">
+                          {imageTools.map((tool) => {
                             const Icon = tool.icon;
                             return (
-                              <div
+                              <Link
                                 key={tool.name}
-                                className="flex items-start space-x-3 p-3 rounded-lg opacity-60"
+                                href={tool.href}
+                                className="flex items-start space-x-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 group"
+                                onClick={() => handleToolClick(tool.href)}
                               >
-                                <div className={cn("flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center", tool.color)}>
-                                  <Icon className="h-4 w-4" />
+                                <div className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors group-hover:brightness-110", tool.color)}>
+                                  <Icon className="h-3 w-3" />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                  <p className="text-xs font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                                     {tool.name}
                                   </p>
-                                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                                    {tool.description}
-                                  </p>
                                 </div>
-                              </div>
+                              </Link>
                             );
                           })}
+                          <Link
+                            href="/tools?category=image"
+                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 block"
+                            onClick={() => setToolsDropdownOpen(false)}
+                          >
+                            View all Image tools →
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Column 3: Text Tools */}
+                      <div>
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Text Tools</h3>
+                        <div className="space-y-2">
+                          {textTools.map((tool) => {
+                            const Icon = tool.icon;
+                            return (
+                              <Link
+                                key={tool.name}
+                                href={tool.href}
+                                className="flex items-start space-x-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 group"
+                                onClick={() => handleToolClick(tool.href)}
+                              >
+                                <div className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors group-hover:brightness-110", tool.color)}>
+                                  <Icon className="h-3 w-3" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-xs font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                                    {tool.name}
+                                  </p>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                          <Link
+                            href="/tools?category=text"
+                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 block"
+                            onClick={() => setToolsDropdownOpen(false)}
+                          >
+                            View all Text tools →
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Column 4: Finance Tools */}
+                      <div>
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">Finance Tools</h3>
+                        <div className="space-y-2">
+                          {financeTools.map((tool) => {
+                            const Icon = tool.icon;
+                            return (
+                              <Link
+                                key={tool.name}
+                                href={tool.href}
+                                className="flex items-start space-x-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 group"
+                                onClick={() => handleToolClick(tool.href)}
+                              >
+                                <div className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors group-hover:brightness-110", tool.color)}>
+                                  <Icon className="h-3 w-3" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-xs font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                                    {tool.name}
+                                  </p>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                          <Link
+                            href="/tools?category=finance"
+                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 block"
+                            onClick={() => setToolsDropdownOpen(false)}
+                          >
+                            View all Finance tools →
+                          </Link>
                         </div>
                       </div>
                     </div>
