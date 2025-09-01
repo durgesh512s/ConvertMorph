@@ -10,7 +10,7 @@ import { LazyHeaderAd } from "@/components/LazyAdSense";
 import { VercelAnalytics } from '@/components/VercelAnalytics';
 import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
-import { CacheBuster } from '@/components/CacheBuster';
+import CacheBuster from '../CacheBuster';
 
 const inter = Inter({
   subsets: ["latin"],
