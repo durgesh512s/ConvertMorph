@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.SITE_URL || 'https://convertmorph.com'
 
-  // All Tools
+  // All Tools (verified against actual routes)
   const tools = [
     'pdf-compress',
     'pdf-merge',
@@ -27,29 +27,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'word-counter'
   ]
 
-  // All Blog Posts
+  // All Blog Posts (verified against actual blog directories)
   const blogPosts = [
-    'convertmorph-free-pdf-tools',
-    'how-to-compress-pdf-files',
-    'merge-pdf-files-online',
-    'convert-images-to-pdf',
-    'split-pdf-pages',
-    'convert-pdf-to-images',
-    'organize-pdf-pages',
-    'add-watermark-to-pdf',
-    'sign-pdf-documents',
     'add-page-numbers-to-pdf',
-    'emi-calculator-guide',
-    'sip-calculator-guide',
-    'hra-calculator-guide',
-    'loan-calculator-guide',
-    'tax-calculator-guide',
+    'add-watermark-to-pdf',
     'compress-images-online',
     'convert-image-formats-online',
+    'convert-images-to-pdf',
+    'convert-pdf-to-images',
+    'convertmorph-free-online-tools',
     'crop-images-online',
+    'emi-calculator-guide',
+    'how-to-compress-pdf-files',
+    'hra-calculator-guide',
+    'loan-calculator-guide',
+    'merge-pdf-files-online',
+    'organize-pdf-pages',
     'resize-images-online',
-    'text-analysis-tools',
-    'convertmorph-free-online-tools'
+    'sign-pdf-documents',
+    'sip-calculator-guide',
+    'split-pdf-pages',
+    'tax-calculator-guide',
+    'text-analysis-tools'
   ]
 
   return [

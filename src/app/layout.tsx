@@ -70,10 +70,6 @@ export const metadata: Metadata = {
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#0052CC' },
-    { media: '(prefers-color-scheme: dark)', color: '#0052CC' },
-  ],
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',

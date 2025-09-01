@@ -6,13 +6,25 @@ interface JsonLdProps {
 }
 
 function JsonLd({ data, id }: JsonLdProps) {
+  // Safely stringify the data with error handling
+  let jsonString: string;
+  
+  try {
+    // Remove any undefined values and circular references
+    const cleanData = JSON.parse(JSON.stringify(data));
+    jsonString = JSON.stringify(cleanData, null, 0);
+  } catch (error) {
+    console.warn('JsonLd: Failed to serialize data', error);
+    return null; // Don't render if serialization fails
+  }
+
   // Use the data as-is to prevent hydration mismatches
   return (
     <script 
       id={id}
       type="application/ld+json" 
       dangerouslySetInnerHTML={{ 
-        __html: JSON.stringify(data, null, 0) 
+        __html: jsonString
       }} 
     />
   );

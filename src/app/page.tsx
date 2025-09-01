@@ -52,15 +52,15 @@ const toolCategories = [
     gradient: 'from-blue-500 to-cyan-500',
     bgColor: 'bg-blue-50 dark:bg-blue-900/20',
     tools: [
-      { name: 'PDF Compress', href: '/tools/pdf-compress' },
-      { name: 'PDF Merge', href: '/tools/pdf-merge' },
-      { name: 'PDF Split', href: '/tools/pdf-split' },
-      { name: 'Images to PDF', href: '/tools/images-to-pdf' },
-      { name: 'PDF to Images', href: '/tools/pdf-to-images' },
-      { name: 'PDF Organize', href: '/tools/pdf-organize' },
-      { name: 'PDF Watermark', href: '/tools/pdf-watermark' },
-      { name: 'PDF Sign', href: '/tools/pdf-sign' },
-      { name: 'PDF Page Numbers', href: '/tools/pdf-pagenum' }
+      { name: 'PDF Compress', href: '/tools/pdf-compress', available: true },
+      { name: 'PDF Merge', href: '/tools/pdf-merge', available: true },
+      { name: 'PDF Split', href: '/tools/pdf-split', available: true },
+      { name: 'Images to PDF', href: '/tools/images-to-pdf', available: true },
+      { name: 'PDF to Images', href: '/tools/pdf-to-images', available: true },
+      { name: 'PDF Organize', href: '/tools/pdf-organize', available: true },
+      { name: 'PDF Watermark', href: '/tools/pdf-watermark', available: true },
+      { name: 'PDF Sign', href: '/tools/pdf-sign', available: true },
+      { name: 'PDF Page Numbers', href: '/tools/pdf-pagenum', available: true }
     ]
   },
   {
@@ -71,11 +71,11 @@ const toolCategories = [
     gradient: 'from-purple-500 to-pink-500',
     bgColor: 'bg-purple-50 dark:bg-purple-900/20',
     tools: [
-      { name: 'Background Remover', href: '/tools/background-remover' },
-      { name: 'Image Compress', href: '/tools/image-compress' },
-      { name: 'Image Resize', href: '/tools/image-resize' },
-      { name: 'Image Converter', href: '/tools/image-convert' },
-      { name: 'Image Crop', href: '/tools/image-crop' }
+      { name: 'Background Remover', href: '#', available: false },
+      { name: 'Image Compress', href: '/tools/image-compress', available: true },
+      { name: 'Image Resize', href: '/tools/image-resize', available: true },
+      { name: 'Image Converter', href: '/tools/image-convert', available: true },
+      { name: 'Image Crop', href: '/tools/image-crop', available: true }
     ]
   },
   {
@@ -86,11 +86,11 @@ const toolCategories = [
     gradient: 'from-green-500 to-emerald-500',
     bgColor: 'bg-green-50 dark:bg-green-900/20',
     tools: [
-      { name: 'Grammar Checker', href: '/tools/grammar-checker' },
-      { name: 'Paraphraser', href: '/tools/paraphraser' },
-      { name: 'Plagiarism Checker', href: '/tools/plagiarism-checker' },
-      { name: 'Text Comparison', href: '/tools/text-compare' },
-      { name: 'Word Counter', href: '/tools/word-counter' }
+      { name: 'Grammar Checker', href: '#', available: false },
+      { name: 'Paraphraser', href: '#', available: false },
+      { name: 'Plagiarism Checker', href: '#', available: false },
+      { name: 'Text Comparison', href: '/tools/text-compare', available: true },
+      { name: 'Word Counter', href: '/tools/word-counter', available: true }
     ]
   },
   {
@@ -101,11 +101,11 @@ const toolCategories = [
     gradient: 'from-orange-500 to-red-500',
     bgColor: 'bg-orange-50 dark:bg-orange-900/20',
     tools: [
-      { name: 'Tax Calculator', href: '/tools/tax-calculator' },
-      { name: 'EMI Calculator', href: '/tools/emi-calculator' },
-      { name: 'SIP Calculator', href: '/tools/sip-calculator' },
-      { name: 'HRA Calculator', href: '/tools/hra-calculator' },
-      { name: 'Loan Calculator', href: '/tools/loan-calculator' }
+      { name: 'Tax Calculator', href: '/tools/tax-calculator', available: true },
+      { name: 'EMI Calculator', href: '/tools/emi-calculator', available: true },
+      { name: 'SIP Calculator', href: '/tools/sip-calculator', available: true },
+      { name: 'HRA Calculator', href: '/tools/hra-calculator', available: true },
+      { name: 'Loan Calculator', href: '/tools/loan-calculator', available: true }
     ]
   }
 ];
@@ -376,15 +376,28 @@ export default function Home() {
               <CardContent className="p-6 sm:p-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {toolCategories[activeCategory]?.tools.map((tool, index) => (
-                    <div key={tool.name}>
-                      <Link
-                        href={tool.href}
-                        className="block p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                      >
-                        <span className="font-medium text-gray-900 dark:text-white">
-                          {tool.name}
-                        </span>
-                      </Link>
+                    <div key={tool.name} className="relative">
+                      {tool.available ? (
+                        <Link
+                          href={tool.href}
+                          className="block p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                        >
+                          <span className="font-medium text-gray-900 dark:text-white">
+                            {tool.name}
+                          </span>
+                        </Link>
+                      ) : (
+                        <div className="block p-4 rounded-lg bg-gray-100 dark:bg-gray-700 opacity-60 cursor-not-allowed relative">
+                          <div className="flex items-center justify-between">
+                            <span className="font-medium text-gray-500 dark:text-gray-400 pr-2">
+                              {tool.name}
+                            </span>
+                            <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
+                              Coming Soon
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
