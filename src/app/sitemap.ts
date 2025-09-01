@@ -1,9 +1,8 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // More robust URL detection for different environments
+  // Use production URL for sitemap - always use SITE_URL for production
   const baseUrl = process.env.SITE_URL || 
-                  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
                   process.env.NEXT_PUBLIC_SITE_URL || 
                   'https://convertmorph.com'
 
