@@ -5,7 +5,8 @@
   "installCommand": "npm ci",
   "devCommand": "next",
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "SITE_URL": "https://convertmorph.com"
   },
   "functions": {
     "src/app/api/**/*.ts": {
