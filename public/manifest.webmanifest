@@ -1,7 +1,7 @@
 {
-  "name": "ConvertMorph - Fast, Private PDF Tools",
+  "name": "ConvertMorph - Professional PDF, Image, Text & Finance Tools",
   "short_name": "ConvertMorph",
-  "description": "Fast, private PDF tools — free forever. Convert, compress, and organize PDFs in your browser.",
+  "description": "Transform documents instantly with ConvertMorph's comprehensive digital toolkit. Free PDF tools, image editors, text processors, and financial calculators. 100% browser-based, completely private, always free.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -11,7 +11,10 @@
   "lang": "en",
   "categories": [
     "productivity",
-    "utilities"
+    "utilities",
+    "business",
+    "finance",
+    "graphics"
   ],
   "icons": [
     {
@@ -30,6 +33,11 @@
       "src": "/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
     }
   ],
   "shortcuts": [
@@ -58,10 +66,34 @@
       ]
     },
     {
-      "name": "PDF Split",
-      "short_name": "Split",
-      "description": "Split PDF pages",
-      "url": "/tools/pdf-split",
+      "name": "Background Remover",
+      "short_name": "BG Remove",
+      "description": "Remove image backgrounds",
+      "url": "/tools/background-remover",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Grammar Checker",
+      "short_name": "Grammar",
+      "description": "Check and fix grammar",
+      "url": "/tools/grammar-checker",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Tax Calculator",
+      "short_name": "Tax Calc",
+      "description": "Calculate taxes",
+      "url": "/tools/tax-calculator",
       "icons": [
         {
           "src": "/android-chrome-192x192.png",
@@ -76,7 +108,7 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "ConvertMorph PDF Tools Dashboard"
+      "label": "ConvertMorph Digital Tools Dashboard"
     },
     {
       "src": "/screenshot-narrow.png",
