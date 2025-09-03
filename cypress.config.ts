@@ -2,7 +2,7 @@ import { defineConfig } from 'cypress'
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://convertmorph.com',
     viewportWidth: 1280,
     viewportHeight: 720,
     video: true,
@@ -11,6 +11,11 @@ export default defineConfig({
     requestTimeout: 10000,
     responseTimeout: 10000,
     pageLoadTimeout: 30000,
+    retries: {
+      runMode: 0,
+      openMode: 0
+    },
+    experimentalRunAllSpecs: true,
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
