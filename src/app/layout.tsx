@@ -90,10 +90,10 @@ export const metadata: Metadata = {
     siteName: "ConvertMorph",
     images: [
       {
-        url: 'https://convertmorph.com/og/pdf-compress.png',
+        url: 'https://convertmorph.com/og/homepage.png',
         width: 1200,
         height: 630,
-        alt: 'ConvertMorph - Professional Digital Tools for PDF, Image, Text & Finance',
+        alt: 'ConvertMorph - Transform Documents Instantly & Securely',
         type: 'image/png',
       },
     ],
@@ -106,8 +106,8 @@ export const metadata: Metadata = {
     description: "Transform documents instantly with our comprehensive digital toolkit. PDF tools, image editors, text processors, and financial calculators. 100% private & free.",
     images: [
       {
-        url: 'https://convertmorph.com/og/pdf-compress.png',
-        alt: 'ConvertMorph - Professional Digital Tools',
+        url: 'https://convertmorph.com/og/homepage.png',
+        alt: 'ConvertMorph - Transform Documents Instantly & Securely',
         width: 1200,
         height: 630,
       }

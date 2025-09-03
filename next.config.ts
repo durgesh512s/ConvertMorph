@@ -51,16 +51,30 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // Images and other assets in public folder
+  // Images and other assets in public folder
+  {
+    source: '/:path*\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot)',
+    headers: [
       {
-        source: '/:path*\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
+        key: 'Cache-Control',
+        value: 'public, max-age=31536000, immutable',
       },
+    ],
+  },
+  // OG images specific headers
+  {
+    source: '/og/:path*',
+    headers: [
+      {
+        key: 'Cache-Control',
+        value: 'public, max-age=31536000, immutable',
+      },
+      {
+        key: 'Content-Type',
+        value: 'image/png',
+      },
+    ],
+  },
       // API routes - no cache
       {
         source: '/api/:path*',
