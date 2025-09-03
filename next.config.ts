@@ -171,6 +171,18 @@ const nextConfig: NextConfig = {
         destination: 'https://convertmorph.com/:path*',
         permanent: true,
       },
+      // Redirect convert-morph.vercel.app to convertmorph.com
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'convert-morph.vercel.app',
+          },
+        ],
+        destination: 'https://convertmorph.com/:path*',
+        permanent: true,
+      },
       // Redirect HTTP to HTTPS (for non-www)
       {
         source: '/:path*',
