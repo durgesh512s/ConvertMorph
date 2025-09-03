@@ -143,6 +143,40 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  async redirects() {
+    return [
+      // Redirect www to non-www
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.convertmorph.com',
+          },
+        ],
+        destination: 'https://convertmorph.com/:path*',
+        permanent: true,
+      },
+      // Redirect HTTP to HTTPS (for non-www)
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'header',
+            key: 'x-forwarded-proto',
+            value: 'http',
+          },
+          {
+            type: 'host',
+            value: 'convertmorph.com',
+          },
+        ],
+        destination: 'https://convertmorph.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
+
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-slot', 'framer-motion'],
