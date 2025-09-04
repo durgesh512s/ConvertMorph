@@ -451,7 +451,9 @@ export default function RootLayout({
         <KeyboardShortcuts />
         
         {/* Analytics and Performance */}
-        <GoogleAnalytics />
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
         <VercelAnalytics />
         <PerformanceMonitor />
         <CacheBuster debug={process.env.NODE_ENV === 'development'} />
