@@ -1,443 +1,385 @@
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { Calculator, TrendingUp, DollarSign, Clock, Shield, Users } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import JsonLd from '@/components/JsonLd'
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowLeft, Calculator, Clock } from 'lucide-react';
+import { buildPostMetadata, articleJsonLd, faqJsonLd, breadcrumbsJsonLd, BlogPostMetadata } from '@/lib/seo';
+import JsonLd from '@/components/JsonLd';
+import { BlogTOC } from '@/components/BlogTOC';
+import { ToolCTA } from '@/components/RelatedCTA';
+import { RelatedPosts } from '@/components/ReadNext';
+import '@/styles/blog.css';
 
-export const metadata: Metadata = {
-  title: 'Loan Calculator Guide: Calculate EMI, Interest & Total Amount | ConvertMorph',
-  description: 'Use our free loan calculator to calculate EMI, total interest, and repayment amount for home loans, personal loans, car loans, and more. Get instant results with detailed breakdown.',
-  keywords: ['loan calculator', 'EMI calculator', 'home loan calculator', 'personal loan calculator', 'car loan calculator', 'loan EMI', 'interest calculator', 'loan repayment'],
-  authors: [{ name: 'ConvertMorph Team' }],
-  creator: 'ConvertMorph',
-  publisher: 'ConvertMorph',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL('https://convertmorph.com'),
-  alternates: {
-    canonical: '/blog/loan-calculator-guide',
-  },
-  openGraph: {
-    title: 'Loan Calculator Guide: Calculate EMI, Interest & Total Amount',
-    description: 'Use our free loan calculator to calculate EMI, total interest, and repayment amount for home loans, personal loans, car loans, and more. Get instant results with detailed breakdown.',
-    url: '/blog/loan-calculator-guide',
-    siteName: 'ConvertMorph',
-    images: [
-      {
-        url: '/og/blog/loan-calculator-guide.png',
-        width: 1200,
-        height: 630,
-        alt: 'Loan Calculator Guide - ConvertMorph',
-      },
-    ],
-    locale: 'en_US',
-    type: 'article',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Loan Calculator Guide: Calculate EMI, Interest & Total Amount',
-    description: 'Use our free loan calculator to calculate EMI, total interest, and repayment amount for home loans, personal loans, car loans, and more.',
-    images: ['/og/blog/loan-calculator-guide.png'],
-    creator: '@convertmorph',
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-}
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: 'Loan Calculator Guide: Calculate EMI, Interest & Total Amount',
-  description: 'Comprehensive guide on using loan calculators to calculate EMI, interest rates, and total repayment amounts for different types of loans.',
-  image: 'https://convertmorph.com/og/blog/loan-calculator-guide.png',
-  author: {
-    '@type': 'Organization',
-    name: 'ConvertMorph Team',
-    url: 'https://convertmorph.com',
-  },
-  publisher: {
-    '@type': 'Organization',
-    name: 'ConvertMorph',
-    logo: {
-      '@type': 'ImageObject',
-      url: 'https://convertmorph.com/logo/logo-mark.svg',
-    },
-  },
+// Blog post metadata
+const postData: BlogPostMetadata = {
+  title: 'Loan Calculator Guide: Calculate EMI, Interest & Total Amount',
+  excerpt: 'Master loan calculations with our comprehensive guide. Learn how to calculate EMI, compare loan options, and make informed borrowing decisions for home loans, personal loans, and more.',
+  slug: 'loan-calculator-guide',
+  focusKeyword: 'loan calculator',
+  secondaryKeywords: [
+    'EMI calculator',
+    'home loan calculator',
+    'personal loan calculator',
+    'car loan calculator',
+    'loan EMI',
+    'interest calculator'
+  ],
+  author: 'ConvertMorph Team',
   datePublished: '2025-08-01T10:00:00.000Z',
   dateModified: '2025-08-01T10:00:00.000Z',
-  mainEntityOfPage: {
-    '@type': 'WebPage',
-    '@id': 'https://convertmorph.com/blog/loan-calculator-guide',
+  readingTime: '8 min read'
+};
+
+export const metadata: Metadata = buildPostMetadata(postData);
+
+// Table of contents data
+const headings = [
+  { id: 'what-is-loan-calculator', text: 'What is a Loan Calculator?', level: 2 },
+  { id: 'how-loan-calculation-works', text: 'How Does Loan Calculation Work?', level: 2 },
+  { id: 'types-of-loans', text: 'Types of Loans You Can Calculate', level: 2 },
+  { id: 'how-to-use-calculator', text: 'How to Use ConvertMorph Loan Calculator', level: 2 },
+  { id: 'factors-affecting-emi', text: 'Factors Affecting Your Loan EMI', level: 2 },
+  { id: 'smart-loan-planning', text: 'Tips for Smart Loan Planning', level: 2 },
+  { id: 'faq', text: 'Frequently Asked Questions', level: 2 }
+];
+
+// FAQ data
+const faqs = [
+  {
+    question: 'How does a loan calculator work?',
+    answer: 'A loan calculator uses the loan amount, interest rate, and tenure to calculate your EMI using the formula: EMI = P × r × (1 + r)^n / ((1 + r)^n - 1), where P is principal, r is monthly interest rate, and n is number of months.'
   },
-}
+  {
+    question: 'What types of loans can I calculate?',
+    answer: 'You can calculate EMI for various loan types including home loans, personal loans, car loans, education loans, and business loans. Each loan type may have different interest rates and tenure options.'
+  },
+  {
+    question: 'What factors affect my loan EMI?',
+    answer: 'Your loan EMI is affected by three main factors: loan amount (principal), interest rate, and loan tenure. Higher loan amounts and interest rates increase EMI, while longer tenure reduces EMI but increases total interest paid.'
+  },
+  {
+    question: 'Should I choose a longer or shorter loan tenure?',
+    answer: 'Shorter tenure means higher EMI but lower total interest cost. Longer tenure means lower EMI but higher total interest cost. Choose based on your monthly budget and long-term financial goals.'
+  },
+  {
+    question: 'Can I prepay my loan to reduce interest?',
+    answer: 'Yes, most loans allow prepayment. You can make partial prepayments to reduce principal amount, which decreases future interest burden. Some lenders may charge prepayment penalties, so check terms before prepaying.'
+  },
+  {
+    question: 'What is the difference between fixed and floating interest rates?',
+    answer: 'Fixed interest rates remain constant throughout the loan tenure, providing EMI certainty. Floating rates change with market conditions, potentially offering savings when rates fall but increasing EMI when rates rise.'
+  }
+];
 
-const faqJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'How does a loan calculator work?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'A loan calculator uses the loan amount, interest rate, and tenure to calculate your EMI using the formula: EMI = P × r × (1 + r)^n / ((1 + r)^n - 1), where P is principal, r is monthly interest rate, and n is number of months.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What types of loans can I calculate?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'You can calculate EMI for various loan types including home loans, personal loans, car loans, education loans, and business loans. Each loan type may have different interest rates and tenure options.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What factors affect my loan EMI?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Your loan EMI is affected by three main factors: loan amount (principal), interest rate, and loan tenure. Higher loan amounts and interest rates increase EMI, while longer tenure reduces EMI but increases total interest paid.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Should I choose a longer or shorter loan tenure?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Shorter tenure means higher EMI but lower total interest cost. Longer tenure means lower EMI but higher total interest cost. Choose based on your monthly budget and long-term financial goals.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I prepay my loan to reduce interest?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, most loans allow prepayment. You can make partial prepayments to reduce principal amount, which decreases future interest burden. Some lenders may charge prepayment penalties, so check terms before prepaying.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What is the difference between fixed and floating interest rates?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Fixed interest rates remain constant throughout the loan tenure, providing EMI certainty. Floating rates change with market conditions, potentially offering savings when rates fall but increasing EMI when rates rise.',
-      },
-    },
-  ],
-}
+// Breadcrumbs data
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Blog', url: '/blog' },
+  { name: 'Loan Calculator Guide', url: '/blog/loan-calculator-guide' }
+];
 
-export default function LoanCalculatorGuidePage() {
+export default function LoanCalculatorGuide() {
   return (
     <>
-      <JsonLd data={jsonLd} />
-      <JsonLd data={faqJsonLd} />
-      
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mb-8">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <Link href="/blog" className="hover:text-primary">Blog</Link>
-            <span>/</span>
-            <span>Loan Calculator Guide</span>
-          </div>
-          
-          <div className="flex items-center gap-2 mb-4">
-            <Badge variant="secondary">Financial Tools</Badge>
-            <Badge variant="outline">Loan Planning</Badge>
-            <Badge variant="outline">EMI Calculator</Badge>
-          </div>
-          
-          <h1 className="text-4xl font-bold mb-4">
-            Loan Calculator Guide: Calculate EMI, Interest & Total Amount
-          </h1>
-          
-          <p className="text-xl text-muted-foreground mb-6">
-            Master loan calculations with our comprehensive guide. Learn how to calculate EMI, compare loan options, and make informed borrowing decisions for home loans, personal loans, and more.
-          </p>
-          
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>Published on August 1, 2025</span>
-            <span>•</span>
-            <span>8 min read</span>
-            <span>•</span>
-            <span>By ConvertMorph Team</span>
-          </div>
-        </div>
+      {/* JSON-LD Structured Data */}
+      <JsonLd data={articleJsonLd(postData)} />
+      <JsonLd data={faqJsonLd(faqs)} />
+      <JsonLd data={breadcrumbsJsonLd(breadcrumbs)} />
 
-        <div className="mb-8">
-          <Card className="bg-primary/5 border-primary/20">
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3 mb-3">
-                <Calculator className="h-6 w-6 text-primary" />
-                <h3 className="text-lg font-semibold">Try Our Loan Calculator</h3>
-              </div>
-              <p className="text-muted-foreground mb-4">
-                Calculate your loan EMI instantly with our free online loan calculator. Get detailed breakdown of principal, interest, and total amount.
-              </p>
-              <Link 
-                href="/tools/loan-calculator"
-                className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 font-medium transition-colors"
-              >
-                Calculate Loan EMI Now
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+          {/* Breadcrumbs */}
+          <nav className="mb-4 sm:mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 overflow-x-auto">
+              {breadcrumbs.map((crumb, index) => (
+                <li key={crumb.url} className="flex items-center whitespace-nowrap">
+                  {index > 0 && <span className="mx-2">/</span>}
+                  {index === breadcrumbs.length - 1 ? (
+                    <span className="text-gray-900 dark:text-white font-medium">{crumb.name}</span>
+                  ) : (
+                    <Link href={crumb.url} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                      {crumb.name}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
 
-        <div className="prose prose-gray dark:prose-invert max-w-none">
-          <h2>What is a Loan Calculator?</h2>
-          <p>
-            A loan calculator is a financial tool that helps you determine your Equated Monthly Installment (EMI), 
-            total interest payable, and total repayment amount for any loan. Whether you're planning to buy a home, 
-            car, or need personal financing, a loan calculator provides instant calculations to help you make 
-            informed financial decisions.
-          </p>
-
-          <h2>How Does Loan Calculation Work?</h2>
-          <p>
-            Loan EMI calculation uses a standard mathematical formula that considers three key factors:
-          </p>
-          <ul>
-            <li><strong>Principal Amount (P):</strong> The loan amount you borrow</li>
-            <li><strong>Interest Rate (r):</strong> Annual interest rate divided by 12 for monthly rate</li>
-            <li><strong>Tenure (n):</strong> Loan duration in months</li>
-          </ul>
-          
-          <p>
-            The EMI formula is: <strong>EMI = P × r × (1 + r)^n / ((1 + r)^n - 1)</strong>
-          </p>
-
-          <h2>Types of Loans You Can Calculate</h2>
-          
-          <div className="grid md:grid-cols-2 gap-6 not-prose my-8">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-blue-500" />
-                  Home Loans
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Calculate EMI for home loans with tenure up to 30 years. Compare different loan amounts and interest rates.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-green-500" />
-                  Personal Loans
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Calculate EMI for personal loans with flexible tenure options. Ideal for immediate financial needs.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-purple-500" />
-                  Car Loans
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Calculate auto loan EMI with competitive interest rates. Plan your vehicle purchase effectively.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-orange-500" />
-                  Education Loans
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Calculate education loan EMI with moratorium period consideration. Plan your educational expenses.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <h2>How to Use ConvertMorph Loan Calculator</h2>
-          <ol>
-            <li><strong>Enter Loan Amount:</strong> Input the principal amount you want to borrow</li>
-            <li><strong>Set Interest Rate:</strong> Enter the annual interest rate offered by your lender</li>
-            <li><strong>Choose Tenure:</strong> Select loan duration in years or months</li>
-            <li><strong>Select Loan Type:</strong> Choose from home, personal, car, education, or business loan</li>
-            <li><strong>Get Results:</strong> View EMI, total interest, and repayment amount instantly</li>
-            <li><strong>Analyze Breakdown:</strong> Review detailed payment schedule and interest breakdown</li>
-          </ol>
-
-          <h2>Factors Affecting Your Loan EMI</h2>
-          
-          <h3>1. Loan Amount (Principal)</h3>
-          <p>
-            Higher loan amounts result in higher EMIs. Consider borrowing only what you need and can comfortably repay.
-          </p>
-
-          <h3>2. Interest Rate</h3>
-          <p>
-            Interest rates vary based on loan type, lender, credit score, and market conditions. Even a 0.5% difference 
-            can significantly impact your total interest cost.
-          </p>
-
-          <h3>3. Loan Tenure</h3>
-          <p>
-            Longer tenure reduces EMI but increases total interest cost. Shorter tenure means higher EMI but lower 
-            overall interest burden.
-          </p>
-
-          <h3>4. Credit Score</h3>
-          <p>
-            Higher credit scores (750+) typically qualify for better interest rates, reducing your EMI and total cost.
-          </p>
-
-          <h2>Tips for Smart Loan Planning</h2>
-          
-          <h3>Compare Multiple Lenders</h3>
-          <p>
-            Use the loan calculator to compare offers from different lenders. Small differences in interest rates 
-            can save thousands over the loan tenure.
-          </p>
-
-          <h3>Consider Total Cost, Not Just EMI</h3>
-          <p>
-            While longer tenure reduces EMI, it increases total interest cost. Balance affordability with cost efficiency.
-          </p>
-
-          <h3>Plan for Prepayments</h3>
-          <p>
-            If possible, make partial prepayments to reduce principal amount. This significantly reduces future 
-            interest burden.
-          </p>
-
-          <h3>Maintain Good Credit Score</h3>
-          <p>
-            A good credit score helps you negotiate better interest rates, reducing your EMI and total loan cost.
-          </p>
-
-          <h2>Frequently Asked Questions</h2>
-          
-          <div className="space-y-6 not-prose">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">How does a loan calculator work?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  A loan calculator uses the loan amount, interest rate, and tenure to calculate your EMI using the formula: 
-                  EMI = P × r × (1 + r)^n / ((1 + r)^n - 1), where P is principal, r is monthly interest rate, and n is number of months.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">What types of loans can I calculate?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  You can calculate EMI for various loan types including home loans, personal loans, car loans, education loans, 
-                  and business loans. Each loan type may have different interest rates and tenure options.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">What factors affect my loan EMI?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Your loan EMI is affected by three main factors: loan amount (principal), interest rate, and loan tenure. 
-                  Higher loan amounts and interest rates increase EMI, while longer tenure reduces EMI but increases total interest paid.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Should I choose a longer or shorter loan tenure?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Shorter tenure means higher EMI but lower total interest cost. Longer tenure means lower EMI but higher total interest cost. 
-                  Choose based on your monthly budget and long-term financial goals.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Can I prepay my loan to reduce interest?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Yes, most loans allow prepayment. You can make partial prepayments to reduce principal amount, which decreases future 
-                  interest burden. Some lenders may charge prepayment penalties, so check terms before prepaying.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">What is the difference between fixed and floating interest rates?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Fixed interest rates remain constant throughout the loan tenure, providing EMI certainty. Floating rates change with 
-                  market conditions, potentially offering savings when rates fall but increasing EMI when rates rise.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <h2>Conclusion</h2>
-          <p>
-            A loan calculator is an essential tool for making informed borrowing decisions. By understanding how EMI calculations work 
-            and comparing different loan options, you can choose the most suitable loan for your financial situation. Use ConvertMorph's 
-            free loan calculator to plan your finances effectively and achieve your goals with confidence.
-          </p>
-        </div>
-
-        <Separator className="my-8" />
-        
-        <div className="text-center">
-          <h3 className="text-xl font-semibold mb-4">Ready to Calculate Your Loan EMI?</h3>
-          <p className="text-muted-foreground mb-6">
-            Use our free loan calculator to get instant EMI calculations and plan your finances better.
-          </p>
           <Link 
-            href="/tools/loan-calculator"
-            className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 font-medium transition-colors"
+            href="/blog" 
+            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-6 sm:mb-8 transition-colors"
           >
-            <Calculator className="mr-2 h-4 w-4" />
-            Calculate Loan EMI
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Blog
           </Link>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-3 order-2 lg:order-1 w-full min-w-0">
+              <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8 w-full overflow-hidden">
+                <header className="mb-6 lg:mb-8">
+                  <h1 id="main-title" className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-white mb-3 lg:mb-4 leading-tight break-words">
+                    Loan Calculator Guide: Calculate EMI, Interest & Total Amount
+                  </h1>
+                  
+                  <div className="flex items-center text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 lg:mb-6 flex-wrap gap-2 sm:gap-4">
+                    <time dateTime={postData.datePublished}>August 1, 2025</time>
+                    <div className="flex items-center">
+                      <Clock className="w-4 h-4 mr-1" />
+                      {postData.readingTime}
+                    </div>
+                    <span className="bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 px-2 py-1 rounded-full text-xs font-medium">
+                      Financial Tools
+                    </span>
+                  </div>
+                  
+                  <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                    Master loan calculations with our comprehensive guide. Learn how to calculate EMI, compare loan 
+                    options, and make informed borrowing decisions for home loans, personal loans, and more.
+                  </p>
+                </header>
+
+                <div className="blog-prose">
+                  <h2 id="what-is-loan-calculator">What is a Loan Calculator?</h2>
+                  <p>
+                    A loan calculator is a financial tool that helps you determine your Equated Monthly Installment (EMI), 
+                    total interest payable, and total repayment amount for any loan. Whether you're planning to buy a home, 
+                    car, or need personal financing, a loan calculator provides instant calculations to help you make 
+                    informed financial decisions.
+                  </p>
+                  <p>
+                    Understanding loan calculations is crucial for financial planning as it helps you:
+                  </p>
+                  <ul>
+                    <li><strong>Budget effectively:</strong> Know exactly how much you need to pay each month</li>
+                    <li><strong>Compare loan options:</strong> Evaluate different lenders and loan terms</li>
+                    <li><strong>Plan finances:</strong> Ensure you can afford the monthly payments</li>
+                    <li><strong>Calculate total cost:</strong> Understand the total amount you'll pay over the loan term</li>
+                    <li><strong>Make informed decisions:</strong> Choose the right loan amount and tenure</li>
+                  </ul>
+
+                  <h2 id="how-loan-calculation-works">How Does Loan Calculation Work?</h2>
+                  <p>
+                    Loan EMI calculation uses a standard mathematical formula that considers three key factors:
+                  </p>
+                  <ul>
+                    <li><strong>Principal Amount (P):</strong> The loan amount you borrow</li>
+                    <li><strong>Interest Rate (r):</strong> Annual interest rate divided by 12 for monthly rate</li>
+                    <li><strong>Tenure (n):</strong> Loan duration in months</li>
+                  </ul>
+                  
+                  <div className="callout callout-info">
+                    <h4>Loan EMI Formula</h4>
+                    <p><strong>EMI = P × r × (1 + r)^n / ((1 + r)^n - 1)</strong></p>
+                    <p>Where:</p>
+                    <ul>
+                      <li><strong>P</strong> = Principal loan amount</li>
+                      <li><strong>r</strong> = Monthly interest rate (Annual rate ÷ 12 ÷ 100)</li>
+                      <li><strong>n</strong> = Number of monthly installments (Years × 12)</li>
+                    </ul>
+                  </div>
+
+                  <p>
+                    For example, if you take a home loan of ₹30 lakhs at 9% annual interest for 20 years:
+                  </p>
+                  <ul>
+                    <li>P = ₹30,00,000</li>
+                    <li>r = 9 ÷ 12 ÷ 100 = 0.0075</li>
+                    <li>n = 20 × 12 = 240 months</li>
+                    <li>EMI = ₹26,992 (approximately)</li>
+                  </ul>
+
+                  <h2 id="types-of-loans">Types of Loans You Can Calculate</h2>
+                  <p>
+                    Different types of loans have varying EMI characteristics and typical terms:
+                  </p>
+                  <ul>
+                    <li><strong>Home Loans:</strong> Longest tenure (15-30 years), lowest interest rates (8-10%)</li>
+                    <li><strong>Personal Loans:</strong> Short tenure (1-5 years), higher interest rates (10-18%)</li>
+                    <li><strong>Car Loans:</strong> Medium tenure (3-7 years), moderate interest rates (7-12%)</li>
+                    <li><strong>Education Loans:</strong> Long tenure (5-15 years), competitive rates (8-12%)</li>
+                    <li><strong>Business Loans:</strong> Variable tenure (1-10 years), higher rates (10-20%)</li>
+                  </ul>
+
+                  <h2 id="how-to-use-calculator">How to Use ConvertMorph Loan Calculator</h2>
+                  <p>
+                    Our loan calculator provides instant, accurate calculations with detailed breakdowns. 
+                    Here's how to use it effectively:
+                  </p>
+                  
+                  <div className="steps">
+                    <div className="step">
+                      <div className="step-number">1</div>
+                      <div className="step-content">
+                        <h4>Enter Loan Details</h4>
+                        <p>Input your loan amount, interest rate, and tenure. The calculator accepts amounts from ₹10,000 to ₹10 crores.</p>
+                      </div>
+                    </div>
+                    <div className="step">
+                      <div className="step-number">2</div>
+                      <div className="step-content">
+                        <h4>Select Loan Type</h4>
+                        <p>Choose from home, personal, car, education, or business loan for accurate calculations.</p>
+                      </div>
+                    </div>
+                    <div className="step">
+                      <div className="step-number">3</div>
+                      <div className="step-content">
+                        <h4>Get Instant Results</h4>
+                        <p>View your monthly EMI, total interest payable, and total amount with a detailed breakdown.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="callout callout-success">
+                    <h4>Try ConvertMorph Loan Calculator</h4>
+                    <p>
+                      Calculate your loan EMI now with our free online tool. Get detailed breakdown 
+                      and compare different loan scenarios instantly.
+                    </p>
+                    <Link 
+                      href="/tools/loan-calculator" 
+                      className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors mt-3"
+                    >
+                      <Calculator className="w-4 h-4 mr-2" />
+                      Calculate Loan EMI Now
+                    </Link>
+                  </div>
+
+                  <h2 id="factors-affecting-emi">Factors Affecting Your Loan EMI</h2>
+                  <p>
+                    Several factors influence your EMI amount. Understanding these helps you optimize your loan terms:
+                  </p>
+                  
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Factor</th>
+                        <th>Impact on EMI</th>
+                        <th>Impact on Total Interest</th>
+                        <th>Recommendation</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Higher Loan Amount</td>
+                        <td>Increases EMI</td>
+                        <td>Increases total interest</td>
+                        <td>Borrow only what you need</td>
+                      </tr>
+                      <tr>
+                        <td>Higher Interest Rate</td>
+                        <td>Increases EMI</td>
+                        <td>Significantly increases total interest</td>
+                        <td>Shop for best rates, improve credit score</td>
+                      </tr>
+                      <tr>
+                        <td>Longer Tenure</td>
+                        <td>Decreases EMI</td>
+                        <td>Increases total interest</td>
+                        <td>Balance affordability with total cost</td>
+                      </tr>
+                      <tr>
+                        <td>Shorter Tenure</td>
+                        <td>Increases EMI</td>
+                        <td>Decreases total interest</td>
+                        <td>Choose if you can afford higher EMI</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <h2 id="smart-loan-planning">Tips for Smart Loan Planning</h2>
+                  <p>
+                    Maximize the benefits of loan planning with these proven strategies:
+                  </p>
+                  <ul>
+                    <li><strong>Compare multiple lenders:</strong> Interest rates can vary significantly between banks</li>
+                    <li><strong>Improve your credit score:</strong> Higher scores qualify for better interest rates</li>
+                    <li><strong>Choose optimal tenure:</strong> Balance monthly affordability with total interest cost</li>
+                    <li><strong>Consider prepayments:</strong> Extra payments reduce principal and total interest</li>
+                    <li><strong>Factor in processing fees:</strong> Include all charges in your total cost calculation</li>
+                    <li><strong>Maintain EMI-to-income ratio:</strong> Keep total EMIs under 40% of monthly income</li>
+                  </ul>
+
+                  <div className="callout callout-info">
+                    <h4>Pro Tip: Loan Planning</h4>
+                    <p>
+                      Use our loan calculator to compare different scenarios before applying for a loan. 
+                      Small changes in interest rate or tenure can significantly impact your total payment.
+                    </p>
+                  </div>
+
+                  <h2 id="faq">Frequently Asked Questions</h2>
+                  <div className="faq-section" data-testid="faq">
+                    {faqs.map((faq, index) => (
+                      <div key={index} className="faq-item">
+                        <div className="faq-question">
+                          {faq.question}
+                        </div>
+                        <div className="faq-answer">
+                          {faq.answer}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h2>Conclusion</h2>
+                  <p>
+                    A loan calculator is an essential tool for making informed borrowing decisions. By understanding how EMI calculations work 
+                    and comparing different loan options, you can choose the most suitable loan for your financial situation. Use ConvertMorph's 
+                    free loan calculator to plan your finances effectively and achieve your goals with confidence.
+                  </p>
+
+                  {/* Final CTA */}
+                  <div className="callout callout-success">
+                    <h4>Start Calculating Your Loan EMI</h4>
+                    <p>
+                      Ready to plan your loan? Use our loan calculator now to get instant results 
+                      and detailed payment schedules for better financial planning.
+                    </p>
+                    <Link 
+                      href="/tools/loan-calculator" 
+                      className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors mt-3"
+                    >
+                      <Calculator className="w-4 h-4 mr-2" />
+                      Calculate Loan EMI Now
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1 order-1 lg:order-2 w-full min-w-0">
+              <div className="space-y-4 lg:space-y-8">
+                {/* Table of Contents - Hidden on mobile, shown on desktop */}
+                <div className="hidden lg:block">
+                  <BlogTOC headings={headings} className="sticky top-24" />
+                </div>
+                
+                {/* Related Posts - Hidden on mobile, shown on desktop */}
+                <div className="hidden lg:block">
+                  <RelatedPosts 
+                    currentSlug="loan-calculator-guide" 
+                    count={2} 
+                    variant="list" 
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Related Posts - Shown only on mobile, after main content */}
+            <div className="lg:hidden order-3 w-full">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mt-6 w-full overflow-hidden">
+                <RelatedPosts 
+                  currentSlug="loan-calculator-guide" 
+                  count={2} 
+                  variant="grid" 
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
-  )
+  );
 }

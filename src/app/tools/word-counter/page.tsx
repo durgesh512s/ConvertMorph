@@ -388,32 +388,7 @@ export default function WordCounterPage() {
 
           {/* Related Articles */}
           <div className="mt-12 sm:mt-16">
-            <RelatedArticles
-              toolName="word-counter"
-              articles={[
-                {
-                  title: "Text Analysis Tools: Word Counter & Text Comparison",
-                  description: "Complete guide to text analysis tools for writers and professionals",
-                  href: "/blog/text-analysis-tools",
-                  readTime: "8 min read",
-                  category: "Text Tools"
-                },
-                {
-                  title: "Text Comparison Tool",
-                  description: "Compare two texts side-by-side with detailed difference analysis",
-                  href: "/tools/text-compare",
-                  readTime: "3 min read",
-                  category: "Text Tools"
-                },
-                {
-                  title: "PDF Text Extraction",
-                  description: "Extract and analyze text from PDF documents",
-                  href: "/tools/pdf-to-text",
-                  readTime: "5 min read",
-                  category: "PDF Tools"
-                }
-              ]}
-            />
+            <RelatedArticles toolName="word-counter" />
           </div>
         </div>
       </div>

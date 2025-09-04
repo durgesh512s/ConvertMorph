@@ -38,17 +38,21 @@ export function RelatedCTA({
   if (variant === 'compact') {
     return (
       <div className={cn(
-        'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4',
+        'bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-300 dark:border-blue-800 rounded-lg p-4',
         className
       )}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400">
+            <div className="flex-shrink-0 w-10 h-10 bg-blue-200 dark:bg-blue-900/50 rounded-lg flex items-center justify-center text-blue-700 dark:text-blue-400">
               {getIcon(toolSlug)}
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 dark:text-white">{title}</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300">{description}</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white" style={{ color: '#111827 !important' }}>
+                {title}
+              </h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300" style={{ color: '#374151 !important' }}>
+                {description}
+              </p>
             </div>
           </div>
           <Link

@@ -27,11 +27,11 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     },
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
-      readTime: '5 min read',
-      category: 'Guide'
+      title: 'Merge PDF Files Online: Complete Guide',
+      description: 'Step-by-step guide to combining multiple PDF documents into one file using our free online tool.',
+      href: '/blog/merge-pdf-files-online',
+      readTime: '6 min read',
+      category: 'Tutorial'
     }
   ],
   'pdf-merge': [
@@ -43,11 +43,11 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     },
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
+      title: 'Split PDF Pages: Complete Guide',
+      description: 'Learn how to extract specific pages or split large PDFs into smaller files using our free online tool.',
+      href: '/blog/split-pdf-pages',
       readTime: '5 min read',
-      category: 'Guide'
+      category: 'Tutorial'
     }
   ],
   'pdf-split': [
@@ -59,11 +59,11 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     },
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
-      readTime: '5 min read',
-      category: 'Guide'
+      title: 'How to Compress PDF Files Online: Complete Guide 2025',
+      description: 'Learn how to compress PDF files effectively while maintaining quality. Step-by-step guide with free online tools, compression levels, and best practices.',
+      href: '/blog/how-to-compress-pdf-files',
+      readTime: '8 min read',
+      category: 'Tutorial'
     }
   ],
   'pdf-organize': [
@@ -75,11 +75,11 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     },
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
+      title: 'Split PDF Pages: Complete Guide',
+      description: 'Learn how to extract specific pages or split large PDFs into smaller files using our free online tool.',
+      href: '/blog/split-pdf-pages',
       readTime: '5 min read',
-      category: 'Guide'
+      category: 'Tutorial'
     }
   ],
   'pdf-pagenum': [
@@ -91,11 +91,11 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     },
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
-      readTime: '5 min read',
-      category: 'Guide'
+      title: 'Add Watermark to PDF: Complete Guide',
+      description: 'Learn how to add text and image watermarks to your PDF documents for branding and security.',
+      href: '/blog/add-watermark-to-pdf',
+      readTime: '6 min read',
+      category: 'Tutorial'
     }
   ],
   'pdf-watermark': [
@@ -107,11 +107,11 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     },
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
+      title: 'Add Page Numbers to PDF: Complete Guide',
+      description: 'Learn how to add professional page numbers to your PDF documents with customizable positioning and formatting.',
+      href: '/blog/add-page-numbers-to-pdf',
       readTime: '5 min read',
-      category: 'Guide'
+      category: 'Tutorial'
     }
   ],
   'pdf-sign': [
@@ -123,11 +123,11 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     },
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
-      readTime: '5 min read',
-      category: 'Guide'
+      title: 'Add Watermark to PDF: Complete Guide',
+      description: 'Learn how to add text and image watermarks to your PDF documents for branding and security.',
+      href: '/blog/add-watermark-to-pdf',
+      readTime: '6 min read',
+      category: 'Tutorial'
     }
   ],
   'images-to-pdf': [
@@ -139,11 +139,11 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     },
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
-      readTime: '5 min read',
-      category: 'Guide'
+      title: 'Convert PDF to Images: Complete Guide',
+      description: 'Extract pages from PDF as high-quality JPG, PNG, or other image formats with our free online tool.',
+      href: '/blog/convert-pdf-to-images',
+      readTime: '6 min read',
+      category: 'Tutorial'
     }
   ],
   'pdf-to-images': [
@@ -155,20 +155,20 @@ const defaultArticles: Record<string, Article[]> = {
       category: 'Tutorial'
     },
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
+      title: 'Convert Images to PDF: Complete Guide',
+      description: 'Transform your JPG, PNG, and other image formats into professional PDF documents with our free online tool.',
+      href: '/blog/convert-images-to-pdf',
       readTime: '5 min read',
-      category: 'Guide'
+      category: 'Tutorial'
     }
   ],
   'image-compress': [
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
-      readTime: '5 min read',
-      category: 'Guide'
+      title: 'Compress Images Online: Complete Guide',
+      description: 'Learn how to compress images effectively while maintaining quality. Step-by-step guide with optimization techniques and format conversion.',
+      href: '/blog/compress-images-online',
+      readTime: '7 min read',
+      category: 'Tutorial'
     },
     {
       title: 'Convert Images to PDF: Complete Guide',
@@ -396,9 +396,9 @@ const defaultArticles: Record<string, Article[]> = {
   ],
   'default': [
     {
-      title: 'ConvertMorph: Free PDF Tools for Everyone',
-      description: 'Discover our comprehensive suite of free PDF tools for compression, merging, splitting, and more.',
-      href: '/blog/convertmorph-free-pdf-tools',
+      title: 'ConvertMorph: Free Online Tools for Everyone',
+      description: 'Discover our comprehensive suite of free online tools for document processing, financial calculations, and more.',
+      href: '/blog/convertmorph-free-online-tools',
       readTime: '5 min read',
       category: 'Guide'
     },
