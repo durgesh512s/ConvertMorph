@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { LazyHeaderAd } from "@/components/LazyAdSense";
 import { VercelAnalytics } from '@/components/VercelAnalytics';
+import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
@@ -450,6 +451,7 @@ export default function RootLayout({
         <KeyboardShortcuts />
         
         {/* Analytics and Performance */}
+        <GoogleAnalytics />
         <VercelAnalytics />
         <PerformanceMonitor />
         <CacheBuster debug={process.env.NODE_ENV === 'development'} />

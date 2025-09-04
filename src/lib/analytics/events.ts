@@ -1,3 +1,5 @@
+import { gtag } from '@/components/GoogleAnalytics';
+
 // Analytics event tracking - vendor agnostic, no PII collection
 export interface AnalyticsEvent {
   event: string;
@@ -51,11 +53,16 @@ export function trackEvent(event: string, properties: Record<string, string | nu
     return;
   }
 
+  const sanitizedProperties = sanitizeProperties(properties);
+  
   const analyticsEvent: AnalyticsEvent = {
     event,
-    properties: sanitizeProperties(properties),
+    properties: sanitizedProperties,
     timestamp: Date.now(),
   };
+
+  // Send to Google Analytics
+  gtag.event(event, sanitizedProperties);
 
   eventQueue.push(analyticsEvent);
 
@@ -73,10 +80,15 @@ export function trackFileEvent(
   toolName: string,
   properties: Partial<FileProcessingEvent['properties']> = {}
 ): void {
-  trackEvent(event, {
+  const eventProperties = {
     tool_name: toolName,
     ...properties,
-  });
+  };
+  
+  // Send to Google Analytics with specific file event tracking
+  gtag.fileEvent(event, toolName, properties);
+  
+  trackEvent(event, eventProperties);
 }
 
 /**
@@ -86,6 +98,11 @@ export function trackInteraction(
   event: UserInteractionEvent['event'],
   properties: Partial<UserInteractionEvent['properties']> = {}
 ): void {
+  // Send to Google Analytics with specific interaction tracking
+  if (event === 'tool_select' || event === 'pwa_install' || event === 'keyboard_shortcut') {
+    gtag.interaction(event, properties);
+  }
+  
   trackEvent(event, properties);
 }
 
@@ -93,6 +110,9 @@ export function trackInteraction(
  * Track page views automatically
  */
 export function trackPageView(path: string): void {
+  // Send to Google Analytics
+  gtag.pageView(path);
+  
   trackInteraction('page_view', { page_path: path });
 }
 
