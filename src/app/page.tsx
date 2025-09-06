@@ -196,6 +196,18 @@ const featuredBlogPosts = [
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState(0);
 
+  const scrollToToolkit = (categoryIndex: number) => {
+    setActiveCategory(categoryIndex);
+    // Scroll to the Professional Digital Toolkit section
+    const toolkitSection = document.getElementById('professional-toolkit');
+    if (toolkitSection) {
+      toolkitSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -280,7 +292,7 @@ export default function Home() {
                       <div
                         key={category.title}
                         className={`p-6 rounded-2xl ${category.bgColor} shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer`}
-                        onClick={() => setActiveCategory(index)}
+                        onClick={() => scrollToToolkit(index)}
                       >
                         <Icon className={`h-8 w-8 ${category.color} mb-2`} />
                         <h3 className="font-semibold text-gray-900 dark:text-white text-sm">
@@ -326,7 +338,7 @@ export default function Home() {
       </section>
 
       {/* Tool Categories Section */}
-      <section className="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900">
+      <section id="professional-toolkit" className="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyFadeIn className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
