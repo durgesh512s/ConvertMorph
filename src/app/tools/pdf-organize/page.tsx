@@ -273,8 +273,238 @@ export default function PDFOrganizePage() {
               </div>
             </div>
 
+            {/* How to Use Section */}
+            <div className="mt-16 sm:mt-20 bg-gradient-to-r from-slate-50 via-gray-50 to-zinc-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-3xl p-8 sm:p-12 border border-gray-200 dark:border-gray-600">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-slate-700 via-gray-800 to-zinc-700 dark:from-slate-300 dark:via-gray-200 dark:to-zinc-300 bg-clip-text text-transparent mb-4">
+                  Master PDF Organization
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                  Take complete control of your PDF documents with our intuitive visual interface. Reorder, rotate, and reorganize pages with professional precision.
+                </p>
+              </div>
+
+              {/* Interactive Workflow */}
+              <div className="mb-12">
+                <div className="relative">
+                  {/* Central Hub */}
+                  <div className="flex justify-center mb-8">
+                    <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full p-8 shadow-2xl">
+                      <Move3D className="h-16 w-16 text-white" />
+                    </div>
+                  </div>
+
+                  {/* Surrounding Actions */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {/* Upload */}
+                    <div className="relative">
+                      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-2 border-blue-200 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600 transition-all duration-300 group">
+                        <div className="text-center">
+                          <div className="bg-blue-100 dark:bg-blue-900 rounded-full p-4 w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <Download className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Upload & Preview</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            Upload your PDF and instantly see thumbnail previews of every page for easy identification.
+                          </p>
+                        </div>
+                      </div>
+                      {/* Connection Line */}
+                      <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-blue-300 to-purple-300"></div>
+                    </div>
+
+                    {/* Drag & Drop */}
+                    <div className="relative">
+                      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-2 border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 transition-all duration-300 group">
+                        <div className="text-center">
+                          <div className="bg-purple-100 dark:bg-purple-900 rounded-full p-4 w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <GripVertical className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                          </div>
+                          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Drag & Reorder</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            Simply drag page thumbnails to reorder them. Visual feedback shows exactly where pages will be placed.
+                          </p>
+                        </div>
+                      </div>
+                      {/* Connection Line */}
+                      <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-purple-300 to-green-300"></div>
+                    </div>
+
+                    {/* Rotate */}
+                    <div className="relative">
+                      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 group">
+                        <div className="text-center">
+                          <div className="bg-green-100 dark:bg-green-900 rounded-full p-4 w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <RotateCw className="h-8 w-8 text-green-600 dark:text-green-400" />
+                          </div>
+                          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Rotate Pages</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            Fix page orientation with one-click rotation. Rotate clockwise or counterclockwise in 90° increments.
+                          </p>
+                        </div>
+                      </div>
+                      {/* Connection Line */}
+                      <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-green-300 to-orange-300"></div>
+                    </div>
+
+                    {/* Download */}
+                    <div className="relative">
+                      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-2 border-orange-200 dark:border-orange-800 hover:border-orange-400 dark:hover:border-orange-600 transition-all duration-300 group">
+                        <div className="text-center">
+                          <div className="bg-orange-100 dark:bg-orange-900 rounded-full p-4 w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <Download className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+                          </div>
+                          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Export Result</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            Download your perfectly organized PDF with all changes applied and pages in the desired order.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Advanced Techniques */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
+                  <div className="flex items-center mb-6">
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full p-3 mr-4">
+                      <MousePointer className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Drag & Drop Mastery</h3>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-blue-100 dark:bg-blue-900 rounded-full p-2 mt-1">
+                        <span className="text-blue-600 dark:text-blue-400 font-bold text-sm">1</span>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Select & Grab</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          Click and hold any page thumbnail to start dragging. The page will lift with visual feedback.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-purple-100 dark:bg-purple-900 rounded-full p-2 mt-1">
+                        <span className="text-purple-600 dark:text-purple-400 font-bold text-sm">2</span>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Position Preview</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          As you drag, see exactly where the page will be inserted with visual drop indicators.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-green-100 dark:bg-green-900 rounded-full p-2 mt-1">
+                        <span className="text-green-600 dark:text-green-400 font-bold text-sm">3</span>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Drop & Confirm</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          Release to place the page in its new position. Changes are applied instantly.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
+                  <div className="flex items-center mb-6">
+                    <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-full p-3 mr-4">
+                      <RotateCw className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Rotation Controls</h3>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-green-100 dark:bg-green-900 rounded-full p-2 mt-1">
+                        <RotateCw className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Clockwise Rotation</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          Click the rotate right button to turn pages 90° clockwise. Perfect for landscape pages.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-blue-100 dark:bg-blue-900 rounded-full p-2 mt-1">
+                        <RotateCw className="h-4 w-4 text-blue-600 dark:text-blue-400 transform scale-x-[-1]" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Counter-Clockwise</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          Use the rotate left button for counter-clockwise rotation. Undo unwanted rotations easily.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-purple-100 dark:bg-purple-900 rounded-full p-2 mt-1">
+                        <Eye className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Live Preview</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          See rotation changes immediately in the thumbnail preview before downloading.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pro Tips */}
+              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-2xl p-8 border border-indigo-200 dark:border-indigo-800">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center flex items-center justify-center">
+                  <Zap className="h-6 w-6 mr-2 text-indigo-600" />
+                  Organization Pro Tips
+                </h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <Keyboard className="h-8 w-8 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Keyboard Shortcuts</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Use Ctrl+Z/Y for undo/redo, Ctrl+D to download, and ? for help. Speed up your workflow significantly.
+                    </p>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <Undo className="h-8 w-8 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Experiment Freely</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Full undo/redo support means you can experiment without fear. Try different arrangements easily.
+                    </p>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <Eye className="h-8 w-8 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Visual Feedback</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Real-time thumbnails and drop indicators make organization intuitive and error-free.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* FAQ Section */}
-            <div className="mt-8 sm:mt-16">
+            <div className="mt-12 sm:mt-16">
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 text-center">
                 Frequently Asked Questions
               </h3>

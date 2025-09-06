@@ -560,6 +560,164 @@ export default function ImagesToPDFPage() {
             </div>
           </div>
 
+          {/* How to Use Section */}
+          <div className="mt-16 sm:mt-20 bg-gradient-to-r from-amber-50 via-orange-50 to-red-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-2xl p-8 sm:p-12">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
+                Transform Images to PDF in Minutes
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Follow our streamlined process to convert your images into professional PDF documents with complete control over formatting and layout.
+              </p>
+            </div>
+
+            {/* Step-by-Step Process */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              <div className="relative group">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-l-4 border-amber-500">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="bg-amber-100 dark:bg-amber-900 p-3 rounded-full">
+                      <FileImage className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+                    </div>
+                    <span className="text-2xl font-bold text-amber-500">01</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    Upload Images
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Drag and drop your JPG, JPEG, or PNG images. Support for up to 20 images, 10MB each.
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative group">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-l-4 border-orange-500">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="bg-orange-100 dark:bg-orange-900 p-3 rounded-full">
+                      <Settings className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                    </div>
+                    <span className="text-2xl font-bold text-orange-500">02</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    Configure Settings
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Choose conversion mode, page size (A4/Letter/Auto), and orientation for optimal results.
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative group">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-l-4 border-red-500">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="bg-red-100 dark:bg-red-900 p-3 rounded-full">
+                      <Zap className="h-6 w-6 text-red-600 dark:text-red-400" />
+                    </div>
+                    <span className="text-2xl font-bold text-red-500">03</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    Convert Instantly
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Click convert and watch as your images transform into high-quality PDF documents in seconds.
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative group">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-l-4 border-pink-500">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="bg-pink-100 dark:bg-pink-900 p-3 rounded-full">
+                      <Download className="h-6 w-6 text-pink-600 dark:text-pink-400" />
+                    </div>
+                    <span className="text-2xl font-bold text-pink-500">04</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    Download PDFs
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Download individual PDFs or get all files in a convenient ZIP package for easy sharing.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Conversion Modes Explanation */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+                🎯 Choose Your Conversion Strategy
+              </h3>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <div className="flex items-center mb-3">
+                    <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">
+                      1
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Single PDF Mode</h4>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300 ml-11">
+                    Perfect for creating photo albums, presentations, or document compilations. All your images become pages in one cohesive PDF file.
+                  </p>
+                  <div className="ml-11 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                    <p className="text-sm text-blue-700 dark:text-blue-300">
+                      💡 <strong>Best for:</strong> Photo books, multi-page documents, presentations
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center mb-3">
+                    <div className="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">
+                      2
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Multiple PDFs Mode</h4>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-300 ml-11">
+                    Ideal when you need separate PDF files for each image. Great for individual documents, certificates, or when sharing specific images.
+                  </p>
+                  <div className="ml-11 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
+                    <p className="text-sm text-green-700 dark:text-green-300">
+                      💡 <strong>Best for:</strong> Individual documents, separate sharing, archival purposes
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Pro Tips Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-6 rounded-xl border border-yellow-200 dark:border-yellow-800">
+                <div className="flex items-center mb-3">
+                  <span className="text-2xl mr-2">📐</span>
+                  <h4 className="font-semibold text-gray-900 dark:text-white">Page Size Tips</h4>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Use <strong>Auto</strong> for best image quality, <strong>A4</strong> for standard documents, or <strong>Letter</strong> for US printing.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center mb-3">
+                  <span className="text-2xl mr-2">🔄</span>
+                  <h4 className="font-semibold text-gray-900 dark:text-white">Orientation Guide</h4>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <strong>Auto</strong> detects the best fit, <strong>Portrait</strong> for tall images, <strong>Landscape</strong> for wide photos.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-800">
+                <div className="flex items-center mb-3">
+                  <span className="text-2xl mr-2">⚡</span>
+                  <h4 className="font-semibold text-gray-900 dark:text-white">Quality Optimization</h4>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Images maintain original quality while being optimized for PDF format. No compression loss!
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <div className="mt-12 sm:mt-16">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 text-center">

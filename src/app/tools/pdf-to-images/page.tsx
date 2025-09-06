@@ -478,6 +478,207 @@ export default function PDFToImagesPage() {
             </div>
           </div>
 
+          {/* How to Use Section */}
+          <div className="mt-16 sm:mt-20 bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-3xl p-8 sm:p-12">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+                Extract PDF Pages as Images
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Transform your PDF documents into high-quality images with precision control over format, resolution, and page selection.
+              </p>
+            </div>
+
+            {/* Visual Process Flow */}
+            <div className="mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Step 1 */}
+                <div className="text-center">
+                  <div className="relative">
+                    <div className="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+                      <FileText className="h-12 w-12 text-white mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-white mb-2">Upload PDF</h3>
+                      <p className="text-cyan-100 text-sm">
+                        Drop your PDF file or click to browse. Up to 100MB supported.
+                      </p>
+                    </div>
+                    <div className="absolute -top-2 -right-2 bg-cyan-400 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
+                      1
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="text-center">
+                  <div className="relative">
+                    <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+                      <Settings className="h-12 w-12 text-white mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-white mb-2">Configure</h3>
+                      <p className="text-blue-100 text-sm">
+                        Choose format, resolution, quality, and page range settings.
+                      </p>
+                    </div>
+                    <div className="absolute -top-2 -right-2 bg-blue-400 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
+                      2
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="text-center">
+                  <div className="relative">
+                    <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+                      <Zap className="h-12 w-12 text-white mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-white mb-2">Extract</h3>
+                      <p className="text-indigo-100 text-sm">
+                        Process your PDF and extract pages as high-quality images.
+                      </p>
+                    </div>
+                    <div className="absolute -top-2 -right-2 bg-indigo-400 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
+                      3
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step 4 */}
+                <div className="text-center">
+                  <div className="relative">
+                    <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+                      <Download className="h-12 w-12 text-white mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-white mb-2">Download</h3>
+                      <p className="text-purple-100 text-sm">
+                        Get individual images or download all as a ZIP archive.
+                      </p>
+                    </div>
+                    <div className="absolute -top-2 -right-2 bg-purple-400 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
+                      4
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Format & Quality Guide */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
+                <div className="flex items-center mb-6">
+                  <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-full p-3 mr-4">
+                    <Image className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Format Selection Guide</h3>
+                </div>
+                
+                <div className="space-y-6">
+                  <div className="border-l-4 border-green-500 pl-4">
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">🖼️ PNG Format</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
+                      Perfect for documents with text, diagrams, and graphics requiring crisp edges.
+                    </p>
+                    <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
+                      <p className="text-green-700 dark:text-green-300 text-xs">
+                        <strong>Best for:</strong> Text documents, presentations, technical drawings, logos
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="border-l-4 border-blue-500 pl-4">
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">📸 JPG Format</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
+                      Ideal for photos and images where smaller file size is important.
+                    </p>
+                    <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                      <p className="text-blue-700 dark:text-blue-300 text-xs">
+                        <strong>Best for:</strong> Photo albums, magazines, brochures, web sharing
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
+                <div className="flex items-center mb-6">
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-full p-3 mr-4">
+                    <Settings className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Resolution Guide</h3>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-white">72 DPI</span>
+                      <p className="text-xs text-gray-600 dark:text-gray-300">Web & Screen</p>
+                    </div>
+                    <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">Small files</span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-white">150 DPI</span>
+                      <p className="text-xs text-gray-600 dark:text-gray-300">Standard Quality</p>
+                    </div>
+                    <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-1 rounded">Recommended</span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-white">300 DPI</span>
+                      <p className="text-xs text-gray-600 dark:text-gray-300">High Quality Print</p>
+                    </div>
+                    <span className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-1 rounded">Large files</span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-white">600 DPI</span>
+                      <p className="text-xs text-gray-600 dark:text-gray-300">Professional Print</p>
+                    </div>
+                    <span className="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded">Very large</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Advanced Tips */}
+            <div className="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+                🎯 Pro Extraction Tips
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">📄</span>
+                  </div>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Page Range Syntax</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Use "1-5" for ranges, "1,3,5" for specific pages, or "1-3,7-9" for mixed selections.
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">⚡</span>
+                  </div>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Optimize File Size</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Use JPG at 80-90% quality for photos, PNG for text. Lower DPI for web use.
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">🎨</span>
+                  </div>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Quality Balance</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    150 DPI PNG for documents, 300 DPI JPG for photos, 600 DPI for professional printing.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <div className="mt-12 sm:mt-16">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 text-center">

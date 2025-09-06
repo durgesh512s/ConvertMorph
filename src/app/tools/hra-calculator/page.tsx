@@ -303,6 +303,218 @@ export default function HRACalculatorPage() {
         </Card>
       </div>
 
+      {/* How to Use Section */}
+      <div className="mt-8 sm:mt-12 mb-8">
+        <div className="bg-gradient-to-br from-gray-700 via-gray-600 to-slate-700 rounded-2xl p-8 sm:p-12 text-white shadow-2xl">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
+              <Home className="h-8 w-8 text-white" />
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Complete HRA Exemption Guide</h2>
+            <p className="text-xl text-gray-200 max-w-3xl mx-auto">
+              Master House Rent Allowance calculations with our comprehensive guide for maximum tax savings and compliance
+            </p>
+          </div>
+
+          {/* HRA Calculation Process */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">🏠 HRA Exemption Process</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <Receipt className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2">Gather Documents</h4>
+                <p className="text-gray-200 text-sm">
+                  Collect rent receipts, rental agreement, landlord's PAN card, and salary slips showing HRA component.
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <Calculator className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2">Calculate Exemption</h4>
+                <p className="text-gray-200 text-sm">
+                  Use our calculator to determine the minimum of three values: actual HRA, percentage of basic salary, and rent minus 10% of basic.
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2">Submit Declaration</h4>
+                <p className="text-gray-200 text-sm">
+                  Submit HRA declaration form to your employer along with required documents for tax exemption processing.
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <IndianRupee className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2">Enjoy Tax Savings</h4>
+                <p className="text-gray-200 text-sm">
+                  Benefit from reduced taxable income and lower tax liability through proper HRA exemption claims.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* HRA Exemption Rules */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">📋 HRA Exemption Rules</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-xl p-6 border border-white/20">
+                <div className="flex items-center mb-4">
+                  <div className="bg-blue-500/30 rounded-lg p-2 mr-3">
+                    <Building className="h-6 w-6 text-white" />
+                  </div>
+                  <h4 className="font-semibold text-lg">Metro Cities</h4>
+                </div>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li>• <strong>Cities:</strong> Mumbai, Delhi, Kolkata, Chennai</li>
+                  <li>• <strong>Exemption Rate:</strong> 50% of basic salary</li>
+                  <li>• <strong>Higher Limit:</strong> Better for high-salary employees</li>
+                  <li>• <strong>Cost Factor:</strong> Accounts for higher living costs</li>
+                  <li>• <strong>Documentation:</strong> Same requirements as non-metro</li>
+                </ul>
+              </div>
+              <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl p-6 border border-white/20">
+                <div className="flex items-center mb-4">
+                  <div className="bg-green-500/30 rounded-lg p-2 mr-3">
+                    <MapPin className="h-6 w-6 text-white" />
+                  </div>
+                  <h4 className="font-semibold text-lg">Non-Metro Cities</h4>
+                </div>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li>• <strong>Cities:</strong> All cities except the four metros</li>
+                  <li>• <strong>Exemption Rate:</strong> 40% of basic salary</li>
+                  <li>• <strong>Lower Limit:</strong> Reflects lower living costs</li>
+                  <li>• <strong>Tier-2/3 Cities:</strong> Includes all other urban areas</li>
+                  <li>• <strong>Same Benefits:</strong> Equal documentation requirements</li>
+                </ul>
+              </div>
+              <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-white/20">
+                <div className="flex items-center mb-4">
+                  <div className="bg-purple-500/30 rounded-lg p-2 mr-3">
+                    <Receipt className="h-6 w-6 text-white" />
+                  </div>
+                  <h4 className="font-semibold text-lg">Calculation Method</h4>
+                </div>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li>• <strong>Actual HRA:</strong> Amount received from employer</li>
+                  <li>• <strong>Percentage Rule:</strong> 50%/40% of basic salary</li>
+                  <li>• <strong>Rent Formula:</strong> Rent paid - 10% of basic salary</li>
+                  <li>• <strong>Minimum Rule:</strong> Lowest of the three amounts</li>
+                  <li>• <strong>Monthly Basis:</strong> Calculate for each month separately</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* HRA Documentation & Compliance */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">📄 Documentation & Compliance</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <h4 className="font-semibold text-lg mb-4 flex items-center">
+                  <span className="bg-blue-500/30 rounded-lg p-2 mr-3 text-sm">DOCS</span>
+                  Required Documents
+                </h4>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li><strong>Rent Receipts:</strong> Monthly receipts with revenue stamp (if rent {'>'}₹3,000)</li>
+                  <li><strong>Rental Agreement:</strong> Registered lease deed or rental agreement</li>
+                  <li><strong>Landlord's PAN:</strong> Required if annual rent exceeds ₹1 lakh</li>
+                  <li><strong>Salary Slips:</strong> Showing HRA component breakdown</li>
+                  <li><strong>Declaration Form:</strong> HRA exemption claim form from employer</li>
+                </ul>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <h4 className="font-semibold text-lg mb-4 flex items-center">
+                  <span className="bg-green-500/30 rounded-lg p-2 mr-3 text-sm">TIPS</span>
+                  Compliance Guidelines
+                </h4>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li><strong>Genuine Rent:</strong> Ensure actual rent payment to avoid scrutiny</li>
+                  <li><strong>Bank Transfers:</strong> Pay rent through bank for better records</li>
+                  <li><strong>Annual Limits:</strong> Monitor ₹1 lakh threshold for PAN requirement</li>
+                  <li><strong>Family Property:</strong> Cannot claim HRA for spouse/parent's property</li>
+                  <li><strong>Record Keeping:</strong> Maintain all documents for 6 years</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* HRA Calculation Formula */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">🧮 HRA Calculation Formula</h3>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20">
+              <div className="text-center mb-6">
+                <div className="bg-white/20 rounded-lg p-6 inline-block">
+                  <div className="text-2xl font-bold mb-2">HRA Exemption = Minimum of Three Values</div>
+                  <div className="text-sm text-gray-200">Standard HRA Calculation Method</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="bg-blue-500/30 rounded-lg p-4 mb-3">
+                    <div className="text-xl font-bold">Actual HRA</div>
+                  </div>
+                  <h5 className="font-semibold mb-2">HRA Received</h5>
+                  <p className="text-gray-200 text-sm">Amount of HRA received from employer as per salary structure</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-green-500/30 rounded-lg p-4 mb-3">
+                    <div className="text-xl font-bold">50% / 40%</div>
+                  </div>
+                  <h5 className="font-semibold mb-2">Percentage of Basic</h5>
+                  <p className="text-gray-200 text-sm">50% of basic salary for metro, 40% for non-metro cities</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-purple-500/30 rounded-lg p-4 mb-3">
+                    <div className="text-xl font-bold">Rent - 10%</div>
+                  </div>
+                  <h5 className="font-semibold mb-2">Rent Minus 10%</h5>
+                  <p className="text-gray-200 text-sm">Rent paid minus 10% of basic salary (if positive)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Professional HRA Tips */}
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">💡 Professional HRA Tips</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <h4 className="font-semibold text-lg mb-4 flex items-center">
+                  <span className="bg-blue-500/30 rounded-lg p-2 mr-3 text-sm">MAXIMIZE</span>
+                  Optimization Strategies
+                </h4>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li><strong>Salary Structure:</strong> Negotiate higher HRA component in salary</li>
+                  <li><strong>Rent Planning:</strong> Ensure rent exceeds 10% of basic salary</li>
+                  <li><strong>City Selection:</strong> Consider metro vs non-metro impact</li>
+                  <li><strong>Joint Ownership:</strong> Spouse can claim HRA for different property</li>
+                  <li><strong>Timing:</strong> Plan rent payments for maximum exemption</li>
+                </ul>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <h4 className="font-semibold text-lg mb-4 flex items-center">
+                  <span className="bg-red-500/30 rounded-lg p-2 mr-3 text-sm">AVOID</span>
+                  Common Mistakes
+                </h4>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li><strong>Fake Receipts:</strong> Never submit false rent receipts</li>
+                  <li><strong>Family Property:</strong> Cannot claim for own/family property</li>
+                  <li><strong>Cash Payments:</strong> Avoid large cash rent payments</li>
+                  <li><strong>Missing PAN:</strong> Forgetting landlord's PAN for high rent</li>
+                  <li><strong>Poor Records:</strong> Not maintaining proper documentation</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* FAQ Section */}
       <Card className="mt-8">
         <CardHeader>

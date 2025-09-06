@@ -418,6 +418,171 @@ export default function TextComparePage() {
             </div>
           </div>
 
+          {/* How to Use Section */}
+          <div className="mt-16 sm:mt-20">
+            <div className="bg-gradient-to-br from-gray-700 via-gray-600 to-slate-700 rounded-2xl p-8 sm:p-12 text-white shadow-2xl">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
+                  <GitCompare className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Professional Text Comparison Guide</h2>
+                <p className="text-xl text-gray-200 max-w-3xl mx-auto">
+                  Master advanced text comparison with side-by-side analysis, similarity scoring, and detailed difference tracking
+                </p>
+              </div>
+
+              {/* Comparison Workflow */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">🔍 Comparison Workflow</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <FileText className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Input Texts</h4>
+                    <p className="text-gray-200 text-sm">
+                      Paste your original and modified texts into the side-by-side text areas for instant comparison.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Settings className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Configure Options</h4>
+                    <p className="text-gray-200 text-sm">
+                      Choose comparison method (lines/words/characters) and toggle case, whitespace, and punctuation sensitivity.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <BarChart3 className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Analyze Results</h4>
+                    <p className="text-gray-200 text-sm">
+                      View real-time similarity scores, detailed statistics, and color-coded difference visualization.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Download className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Export Report</h4>
+                    <p className="text-gray-200 text-sm">
+                      Download comprehensive comparison reports in TXT, JSON, or HTML formats for documentation.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Comparison Methods */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">⚙️ Comparison Methods</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-green-500/30 rounded-lg p-2 mr-3">
+                        <FileText className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-semibold text-lg">Line Comparison</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• <strong>Best for:</strong> Code files, structured documents</li>
+                      <li>• <strong>Accuracy:</strong> High for line-based changes</li>
+                      <li>• <strong>Use case:</strong> Version control, code reviews</li>
+                      <li>• <strong>Output:</strong> Line-by-line difference tracking</li>
+                      <li>• <strong>Performance:</strong> Fast for large documents</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-blue-500/30 rounded-lg p-2 mr-3">
+                        <Eye className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-semibold text-lg">Word Comparison</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• <strong>Best for:</strong> Articles, essays, documents</li>
+                      <li>• <strong>Accuracy:</strong> Balanced granularity</li>
+                      <li>• <strong>Use case:</strong> Content editing, proofreading</li>
+                      <li>• <strong>Output:</strong> Word-level change detection</li>
+                      <li>• <strong>Performance:</strong> Good for medium texts</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-purple-500/30 rounded-lg p-2 mr-3">
+                        <GitCompare className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-semibold text-lg">Character Comparison</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• <strong>Best for:</strong> Precise text analysis</li>
+                      <li>• <strong>Accuracy:</strong> Maximum granularity</li>
+                      <li>• <strong>Use case:</strong> Legal documents, contracts</li>
+                      <li>• <strong>Output:</strong> Character-level differences</li>
+                      <li>• <strong>Performance:</strong> Intensive for large texts</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Professional Applications */}
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">🎯 Professional Applications</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-yellow-500/30 rounded-lg p-2 mr-3 text-sm">DEV</span>
+                      Software Development
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>Code Reviews:</strong> Compare code versions and track changes</li>
+                      <li><strong>Bug Fixes:</strong> Identify exact modifications in patches</li>
+                      <li><strong>Documentation:</strong> Track updates in technical docs</li>
+                      <li><strong>Configuration:</strong> Compare config files and settings</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-green-500/30 rounded-lg p-2 mr-3 text-sm">EDIT</span>
+                      Content & Writing
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>Proofreading:</strong> Track editorial changes and revisions</li>
+                      <li><strong>Plagiarism Check:</strong> Compare texts for similarity</li>
+                      <li><strong>Version Control:</strong> Monitor document evolution</li>
+                      <li><strong>Collaboration:</strong> Review team member contributions</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-blue-500/30 rounded-lg p-2 mr-3 text-sm">LEGAL</span>
+                      Legal & Compliance
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>Contracts:</strong> Compare contract versions and amendments</li>
+                      <li><strong>Compliance:</strong> Track regulatory document changes</li>
+                      <li><strong>Auditing:</strong> Document revision history</li>
+                      <li><strong>Quality Control:</strong> Ensure document accuracy</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-purple-500/30 rounded-lg p-2 mr-3 text-sm">EDU</span>
+                      Education & Research
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>Academic Papers:</strong> Track research document changes</li>
+                      <li><strong>Student Work:</strong> Compare assignment versions</li>
+                      <li><strong>Peer Review:</strong> Analyze collaborative edits</li>
+                      <li><strong>Citations:</strong> Verify reference accuracy</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mt-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Frequently Asked Questions</h2>

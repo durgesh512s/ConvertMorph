@@ -419,6 +419,218 @@ export default function LoanCalculatorPage() {
         </Card>
       )}
 
+      {/* How to Use Section */}
+      <div className="mt-8 sm:mt-12 mb-8">
+        <div className="bg-gradient-to-br from-gray-700 via-gray-600 to-slate-700 rounded-2xl p-8 sm:p-12 text-white shadow-2xl">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
+              <CreditCard className="h-8 w-8 text-white" />
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Complete Loan Planning Guide</h2>
+            <p className="text-xl text-gray-200 max-w-3xl mx-auto">
+              Master loan calculations and planning with our comprehensive guide for smart borrowing and financial management
+            </p>
+          </div>
+
+          {/* Loan Planning Process */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">💳 Loan Planning Process</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <Calculator className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2">Calculate Affordability</h4>
+                <p className="text-gray-200 text-sm">
+                  Determine your loan eligibility based on income, expenses, and desired EMI using our calculator.
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <Percent className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2">Compare Interest Rates</h4>
+                <p className="text-gray-200 text-sm">
+                  Research and compare interest rates from different lenders to find the best deal for your loan type.
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2">Choose Optimal Tenure</h4>
+                <p className="text-gray-200 text-sm">
+                  Balance between affordable EMI and total interest cost by selecting the right loan tenure.
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <DollarSign className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="font-semibold text-lg mb-2">Plan Repayment Strategy</h4>
+                <p className="text-gray-200 text-sm">
+                  Develop a repayment plan including prepayment options to minimize total interest cost.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Loan Types & Features */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">🏦 Loan Types & Features</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-xl p-6 border border-white/20">
+                <div className="flex items-center mb-4">
+                  <div className="bg-blue-500/30 rounded-lg p-2 mr-3">
+                    <CreditCard className="h-6 w-6 text-white" />
+                  </div>
+                  <h4 className="font-semibold text-lg">Home Loans</h4>
+                </div>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li>• <strong>Interest Rate:</strong> 8.5-9.5% per annum</li>
+                  <li>• <strong>Tenure:</strong> 15-30 years maximum</li>
+                  <li>• <strong>Loan Amount:</strong> Up to 80-90% of property value</li>
+                  <li>• <strong>Tax Benefits:</strong> Principal and interest deductions</li>
+                  <li>• <strong>Processing Fee:</strong> 0.5-1% of loan amount</li>
+                </ul>
+              </div>
+              <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl p-6 border border-white/20">
+                <div className="flex items-center mb-4">
+                  <div className="bg-green-500/30 rounded-lg p-2 mr-3">
+                    <DollarSign className="h-6 w-6 text-white" />
+                  </div>
+                  <h4 className="font-semibold text-lg">Personal Loans</h4>
+                </div>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li>• <strong>Interest Rate:</strong> 10-18% per annum</li>
+                  <li>• <strong>Tenure:</strong> 1-5 years typically</li>
+                  <li>• <strong>Loan Amount:</strong> Based on income and credit score</li>
+                  <li>• <strong>No Collateral:</strong> Unsecured loan type</li>
+                  <li>• <strong>Quick Approval:</strong> Minimal documentation required</li>
+                </ul>
+              </div>
+              <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-white/20">
+                <div className="flex items-center mb-4">
+                  <div className="bg-purple-500/30 rounded-lg p-2 mr-3">
+                    <BarChart3 className="h-6 w-6 text-white" />
+                  </div>
+                  <h4 className="font-semibold text-lg">Car Loans</h4>
+                </div>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li>• <strong>Interest Rate:</strong> 7-12% per annum</li>
+                  <li>• <strong>Tenure:</strong> 3-7 years maximum</li>
+                  <li>• <strong>Loan Amount:</strong> Up to 85-90% of car value</li>
+                  <li>• <strong>Secured Loan:</strong> Car acts as collateral</li>
+                  <li>• <strong>Insurance:</strong> Comprehensive insurance mandatory</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* EMI Optimization Strategies */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">📊 EMI Optimization Strategies</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <h4 className="font-semibold text-lg mb-4 flex items-center">
+                  <span className="bg-green-500/30 rounded-lg p-2 mr-3 text-sm">REDUCE</span>
+                  EMI Reduction Techniques
+                </h4>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li><strong>Longer Tenure:</strong> Extend loan period to reduce monthly EMI</li>
+                  <li><strong>Higher Down Payment:</strong> Reduce principal amount borrowed</li>
+                  <li><strong>Rate Negotiation:</strong> Negotiate better rates with good credit score</li>
+                  <li><strong>Balance Transfer:</strong> Switch to lender with lower interest rates</li>
+                  <li><strong>Co-applicant:</strong> Add co-borrower to improve eligibility</li>
+                </ul>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <h4 className="font-semibold text-lg mb-4 flex items-center">
+                  <span className="bg-blue-500/30 rounded-lg p-2 mr-3 text-sm">SAVE</span>
+                  Interest Saving Methods
+                </h4>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li><strong>Prepayment:</strong> Make extra payments towards principal</li>
+                  <li><strong>Shorter Tenure:</strong> Choose shorter period despite higher EMI</li>
+                  <li><strong>Step-up EMI:</strong> Increase EMI annually with income growth</li>
+                  <li><strong>Bi-weekly Payments:</strong> Pay half EMI every two weeks</li>
+                  <li><strong>Lump Sum Payments:</strong> Use bonuses for principal reduction</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Loan Calculation Formula */}
+          <div className="mb-16">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">🧮 EMI Calculation Formula</h3>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20">
+              <div className="text-center mb-6">
+                <div className="bg-white/20 rounded-lg p-6 inline-block">
+                  <div className="text-2xl font-bold mb-2">EMI = P × r × (1 + r)ⁿ / ((1 + r)ⁿ - 1)</div>
+                  <div className="text-sm text-gray-200">Standard EMI Calculation Formula</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="bg-blue-500/30 rounded-lg p-4 mb-3">
+                    <div className="text-xl font-bold">P</div>
+                  </div>
+                  <h5 className="font-semibold mb-2">Principal Amount</h5>
+                  <p className="text-gray-200 text-sm">The total loan amount borrowed from the lender</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-green-500/30 rounded-lg p-4 mb-3">
+                    <div className="text-xl font-bold">r</div>
+                  </div>
+                  <h5 className="font-semibold mb-2">Monthly Interest Rate</h5>
+                  <p className="text-gray-200 text-sm">Annual interest rate divided by 12 months</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-purple-500/30 rounded-lg p-4 mb-3">
+                    <div className="text-xl font-bold">n</div>
+                  </div>
+                  <h5 className="font-semibold mb-2">Number of Months</h5>
+                  <p className="text-gray-200 text-sm">Total loan tenure in months</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Professional Loan Tips */}
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-center mb-8 text-white">💡 Professional Loan Tips</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <h4 className="font-semibold text-lg mb-4 flex items-center">
+                  <span className="bg-blue-500/30 rounded-lg p-2 mr-3 text-sm">SMART</span>
+                  Smart Borrowing Practices
+                </h4>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li><strong>Credit Score:</strong> Maintain 750+ score for best interest rates</li>
+                  <li><strong>Income Stability:</strong> Ensure stable income before applying</li>
+                  <li><strong>Debt-to-Income:</strong> Keep total EMIs under 40% of income</li>
+                  <li><strong>Emergency Fund:</strong> Maintain 6-month EMI as emergency fund</li>
+                  <li><strong>Read Fine Print:</strong> Understand all terms and conditions</li>
+                </ul>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <h4 className="font-semibold text-lg mb-4 flex items-center">
+                  <span className="bg-red-500/30 rounded-lg p-2 mr-3 text-sm">AVOID</span>
+                  Common Loan Mistakes
+                </h4>
+                <ul className="space-y-2 text-gray-200 text-sm">
+                  <li><strong>Over-borrowing:</strong> Taking loan amount beyond repayment capacity</li>
+                  <li><strong>Ignoring Charges:</strong> Not considering processing fees and charges</li>
+                  <li><strong>No Comparison:</strong> Not comparing rates across multiple lenders</li>
+                  <li><strong>Missing Payments:</strong> Late EMI payments affecting credit score</li>
+                  <li><strong>No Insurance:</strong> Not having adequate life and health insurance</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* FAQ Section */}
       <Card className="mt-8">
         <CardHeader>

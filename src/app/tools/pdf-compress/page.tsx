@@ -300,6 +300,171 @@ export default function PDFCompressPage() {
             </div>
           </div>
 
+          {/* How to Use Section */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">How to Use PDF Compress Tool</h2>
+            
+            {/* Visual Guide */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 rounded-lg p-6 mb-8">
+              <div className="flex flex-col lg:flex-row items-center justify-center space-y-6 lg:space-y-0 lg:space-x-8">
+                
+                {/* Step 1 */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-blue-500 rounded-full w-16 h-16 flex items-center justify-center mb-4 relative">
+                    <FileText className="h-8 w-8 text-white" />
+                    <div className="absolute -top-2 -right-2 bg-blue-600 rounded-full w-6 h-6 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">1</span>
+                    </div>
+                  </div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Upload PDF Files</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 max-w-32">Drag and drop or click to select your PDF files</p>
+                </div>
+
+                {/* Arrow */}
+                <div className="hidden lg:block">
+                  <div className="w-8 h-0.5 bg-gray-300 dark:bg-gray-500 relative">
+                    <div className="absolute right-0 top-0 w-0 h-0 border-l-4 border-l-gray-300 dark:border-l-gray-500 border-t-2 border-b-2 border-t-transparent border-b-transparent transform -translate-y-1/2"></div>
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-green-500 rounded-full w-16 h-16 flex items-center justify-center mb-4 relative">
+                    <Settings className="h-8 w-8 text-white" />
+                    <div className="absolute -top-2 -right-2 bg-green-600 rounded-full w-6 h-6 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">2</span>
+                    </div>
+                  </div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Choose Compression</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 max-w-32">Select light, medium, or strong compression level</p>
+                </div>
+
+                {/* Arrow */}
+                <div className="hidden lg:block">
+                  <div className="w-8 h-0.5 bg-gray-300 dark:bg-gray-500 relative">
+                    <div className="absolute right-0 top-0 w-0 h-0 border-l-4 border-l-gray-300 dark:border-l-gray-500 border-t-2 border-b-2 border-t-transparent border-b-transparent transform -translate-y-1/2"></div>
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-purple-500 rounded-full w-16 h-16 flex items-center justify-center mb-4 relative">
+                    <Zap className="h-8 w-8 text-white" />
+                    <div className="absolute -top-2 -right-2 bg-purple-600 rounded-full w-6 h-6 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">3</span>
+                    </div>
+                  </div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Process Files</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 max-w-32">Click compress to start the optimization process</p>
+                </div>
+
+                {/* Arrow */}
+                <div className="hidden lg:block">
+                  <div className="w-8 h-0.5 bg-gray-300 dark:bg-gray-500 relative">
+                    <div className="absolute right-0 top-0 w-0 h-0 border-l-4 border-l-gray-300 dark:border-l-gray-500 border-t-2 border-b-2 border-t-transparent border-b-transparent transform -translate-y-1/2"></div>
+                  </div>
+                </div>
+
+                {/* Step 4 */}
+                <div className="flex flex-col items-center text-center">
+                  <div className="bg-orange-500 rounded-full w-16 h-16 flex items-center justify-center mb-4 relative">
+                    <Download className="h-8 w-8 text-white" />
+                    <div className="absolute -top-2 -right-2 bg-orange-600 rounded-full w-6 h-6 flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">4</span>
+                    </div>
+                  </div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Download Results</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 max-w-32">Download your compressed PDF files instantly</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Detailed Steps */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <div className="bg-blue-100 dark:bg-blue-900/40 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-blue-600 dark:text-blue-400 font-bold text-sm">1</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Upload Your PDF Files</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Start by uploading your PDF files using the drag-and-drop area or by clicking to browse your files. 
+                      You can upload up to 10 PDF files at once, with each file being up to 100MB in size.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <div className="bg-green-100 dark:bg-green-900/40 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-green-600 dark:text-green-400 font-bold text-sm">2</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Select Compression Level</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Choose your preferred compression level: Light (20% reduction, best quality), 
+                      Medium (40% reduction, balanced), or Strong (60% reduction, maximum compression).
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <div className="bg-purple-100 dark:bg-purple-900/40 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-purple-600 dark:text-purple-400 font-bold text-sm">3</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Start Compression Process</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Click the "Compress PDFs" button to begin the optimization process. 
+                      All processing happens locally in your browser, ensuring your files remain private and secure.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <div className="bg-orange-100 dark:bg-orange-900/40 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-orange-600 dark:text-orange-400 font-bold text-sm">4</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Download Compressed Files</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Once compression is complete, download your optimized PDF files individually or as a ZIP archive. 
+                      You'll see the compression ratio and file size reduction for each processed document.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Tips Section */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 mt-8">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2" />
+                Pro Tips for Better Compression
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex items-start space-x-2">
+                  <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
+                  <span>Image-heavy PDFs typically achieve better compression ratios than text-only documents</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
+                  <span>Use Medium compression for the best balance between file size and quality</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
+                  <span>All processing happens locally - your files never leave your device</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
+                  <span>Batch process multiple files to save time and effort</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Frequently Asked Questions</h2>

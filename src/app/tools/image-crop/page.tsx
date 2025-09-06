@@ -519,6 +519,171 @@ export default function ImageCropPage() {
             </div>
           </div>
 
+          {/* How to Use Section */}
+          <div className="mt-16 sm:mt-20 mb-8">
+            <div className="bg-gradient-to-br from-gray-600 via-slate-700 to-gray-800 dark:from-gray-700 dark:via-slate-800 dark:to-gray-900 rounded-2xl p-8 sm:p-12 text-white shadow-2xl">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
+                  <Crop className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Professional Image Cropping Guide</h2>
+                <p className="text-xl text-gray-200 dark:text-gray-300 max-w-3xl mx-auto">
+                  Master precision image cropping with our advanced tools and professional techniques for perfect composition
+                </p>
+              </div>
+
+              {/* Cropping Workflow */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">✂️ Cropping Workflow</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <FileImage className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Upload & Select</h4>
+                    <p className="text-gray-200 dark:text-gray-300 text-sm">
+                      Upload your images and navigate between multiple files using the intuitive file selector interface.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Settings className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Set Aspect Ratio</h4>
+                    <p className="text-gray-200 dark:text-gray-300 text-sm">
+                      Choose from preset ratios (square, 16:9, 4:3) or use free crop for custom dimensions and compositions.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Scissors className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Position & Zoom</h4>
+                    <p className="text-gray-200 dark:text-gray-300 text-sm">
+                      Drag to position the crop area and use zoom controls for precise framing with grid overlay guidance.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Download className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Process & Download</h4>
+                    <p className="text-gray-200 dark:text-gray-300 text-sm">
+                      Apply crops to all images, choose output format and quality, then download individually or as ZIP.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Aspect Ratio Guide */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">📐 Aspect Ratio Mastery</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="bg-gradient-to-br from-gray-500/20 to-slate-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-gray-500/30 rounded-lg p-2 mr-3">
+                        <span className="text-lg font-bold">1:1</span>
+                      </div>
+                      <h4 className="font-semibold text-lg">Square Format</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
+                      <li>• Perfect for social media posts</li>
+                      <li>• Instagram profile pictures</li>
+                      <li>• Product photography</li>
+                      <li>• Balanced composition focus</li>
+                      <li>• Works great for portraits</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gradient-to-br from-slate-500/20 to-gray-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-slate-500/30 rounded-lg p-2 mr-3">
+                        <span className="text-lg font-bold">16:9</span>
+                      </div>
+                      <h4 className="font-semibold text-lg">Widescreen</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
+                      <li>• YouTube thumbnails & videos</li>
+                      <li>• Website hero banners</li>
+                      <li>• Landscape photography</li>
+                      <li>• Presentation slides</li>
+                      <li>• TV and monitor displays</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gradient-to-br from-gray-600/20 to-slate-600/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-gray-600/30 rounded-lg p-2 mr-3">
+                        <span className="text-lg font-bold">9:16</span>
+                      </div>
+                      <h4 className="font-semibold text-lg">Mobile Stories</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
+                      <li>• Instagram & TikTok stories</li>
+                      <li>• Mobile app screenshots</li>
+                      <li>• Vertical video content</li>
+                      <li>• Phone wallpapers</li>
+                      <li>• Portrait mode photography</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cropping Techniques */}
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">🎯 Professional Techniques</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-gray-500/30 rounded-lg p-2 mr-3 text-sm">RULE</span>
+                      Rule of Thirds
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
+                      <li><strong>Grid Alignment:</strong> Use the grid overlay to position subjects</li>
+                      <li><strong>Intersection Points:</strong> Place focal points at grid intersections</li>
+                      <li><strong>Horizon Lines:</strong> Align horizons with grid lines</li>
+                      <li><strong>Visual Balance:</strong> Create more dynamic compositions</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-slate-500/30 rounded-lg p-2 mr-3 text-sm">ZOOM</span>
+                      Precision Control
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
+                      <li><strong>Fine Adjustments:</strong> Use zoom for detailed positioning</li>
+                      <li><strong>Edge Detection:</strong> Zoom in to align with object edges</li>
+                      <li><strong>Perfect Framing:</strong> Get exact crop boundaries</li>
+                      <li><strong>Detail Focus:</strong> Ensure important elements are included</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-gray-600/30 rounded-lg p-2 mr-3 text-sm">BATCH</span>
+                      Multi-Image Workflow
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
+                      <li><strong>Consistent Ratios:</strong> Apply same aspect ratio to all images</li>
+                      <li><strong>Navigation:</strong> Use arrow controls to switch between images</li>
+                      <li><strong>Individual Crops:</strong> Set unique crop area for each image</li>
+                      <li><strong>Batch Processing:</strong> Process all images with one click</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-slate-600/30 rounded-lg p-2 mr-3 text-sm">PRO</span>
+                      Advanced Tips
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
+                      <li><strong>Format Strategy:</strong> Choose format based on use case</li>
+                      <li><strong>Quality Balance:</strong> Optimize file size vs quality</li>
+                      <li><strong>Composition:</strong> Consider negative space and balance</li>
+                      <li><strong>Preview First:</strong> Check results before downloading</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Frequently Asked Questions</h2>

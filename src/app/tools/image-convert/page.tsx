@@ -334,6 +334,190 @@ export default function ImageConvertPage() {
             </div>
           </div>
 
+          {/* How to Use Section */}
+          <div className="mt-16 sm:mt-20 mb-8">
+            <div className="bg-gradient-to-br from-gray-700 via-gray-600 to-slate-700 rounded-2xl p-8 sm:p-12 text-white shadow-2xl">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
+                  <RefreshCw className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Smart Image Format Conversion Guide</h2>
+                <p className="text-xl text-gray-200 max-w-3xl mx-auto">
+                  Master the art of image format conversion with our comprehensive step-by-step guide and format selection strategies
+                </p>
+              </div>
+
+              {/* Conversion Process */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">🔄 Conversion Process</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <FileImage className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Upload Images</h4>
+                    <p className="text-gray-200 text-sm">
+                      Drag & drop or select your images. Supports JPEG, PNG, WebP, GIF, and BMP formats up to 50MB each.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Settings className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Choose Format</h4>
+                    <p className="text-gray-200 text-sm">
+                      Select your target format (JPEG, PNG, or WebP) and adjust quality settings for lossy formats.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Zap className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Convert & Preview</h4>
+                    <p className="text-gray-200 text-sm">
+                      Click convert to process your images using Canvas API. Preview results before downloading.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Download className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Download Results</h4>
+                    <p className="text-gray-200 text-sm">
+                      Download individual files or get all converted images in a convenient ZIP archive.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Format Selection Guide */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">📋 Format Selection Guide</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-red-500/30 rounded-lg p-2 mr-3">
+                        <span className="text-lg font-bold">JPEG</span>
+                      </div>
+                      <h4 className="font-semibold text-lg">Best for Photos</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• Excellent compression for photographs</li>
+                      <li>• Smaller file sizes for web use</li>
+                      <li>• Adjustable quality (10-100%)</li>
+                      <li>• No transparency support</li>
+                      <li>• Lossy compression format</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-green-500/30 rounded-lg p-2 mr-3">
+                        <span className="text-lg font-bold">PNG</span>
+                      </div>
+                      <h4 className="font-semibold text-lg">Best for Graphics</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• Lossless compression quality</li>
+                      <li>• Full transparency support</li>
+                      <li>• Perfect for logos & graphics</li>
+                      <li>• Larger file sizes than JPEG</li>
+                      <li>• No quality degradation</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-blue-500/30 rounded-lg p-2 mr-3">
+                        <span className="text-lg font-bold">WebP</span>
+                      </div>
+                      <h4 className="font-semibold text-lg">Modern Web Format</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• Superior compression efficiency</li>
+                      <li>• Both lossy and lossless modes</li>
+                      <li>• Transparency support included</li>
+                      <li>• Excellent for modern browsers</li>
+                      <li>• 25-35% smaller than JPEG</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Conversion Strategies */}
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">🎯 Conversion Strategies</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-yellow-500/30 rounded-lg p-2 mr-3 text-sm">WEB</span>
+                      Web Optimization
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>Photos:</strong> Convert to JPEG (80-90% quality)</li>
+                      <li><strong>Graphics:</strong> Use PNG for transparency</li>
+                      <li><strong>Modern sites:</strong> WebP for best compression</li>
+                      <li><strong>Thumbnails:</strong> JPEG at 70-80% quality</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-green-500/30 rounded-lg p-2 mr-3 text-sm">PRINT</span>
+                      Print & Archive
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>High quality:</strong> PNG for no quality loss</li>
+                      <li><strong>Photos:</strong> JPEG at 95-100% quality</li>
+                      <li><strong>Documents:</strong> PNG for text clarity</li>
+                      <li><strong>Archive:</strong> PNG for long-term storage</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pro Conversion Tips */}
+              <div>
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">💡 Pro Conversion Tips</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-3 text-white">🎨 Format Selection</h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• Choose JPEG for photos with many colors</li>
+                      <li>• Use PNG for images with text or transparency</li>
+                      <li>• WebP offers best compression for modern browsers</li>
+                      <li>• Consider your target audience's browser support</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-3 text-white">⚡ Quality Balance</h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• Start with 85% quality for most use cases</li>
+                      <li>• Use 95%+ for professional photography</li>
+                      <li>• 70-80% works well for web thumbnails</li>
+                      <li>• Test different settings to find sweet spot</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-3 text-white">📦 Batch Processing</h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• Process similar images together</li>
+                      <li>• Use consistent quality settings</li>
+                      <li>• Download as ZIP for multiple files</li>
+                      <li>• Preview before bulk downloading</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-3 text-white">🚀 Performance Impact</h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• Smaller files load faster on websites</li>
+                      <li>• WebP can reduce bandwidth by 25-35%</li>
+                      <li>• Consider progressive JPEG for large images</li>
+                      <li>• Balance quality vs file size for your needs</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Frequently Asked Questions</h2>

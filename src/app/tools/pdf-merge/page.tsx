@@ -6,7 +6,7 @@ import { Dropzone, UploadedFile } from '@/components/Dropzone';
 import { Progress } from '@/components/ui/progress';
 import { RelatedArticles } from '@/components/RelatedArticles';
 import ToolsNavigation from '@/components/ToolsNavigation';
-import { GitMerge, Download, AlertCircle, CheckCircle } from 'lucide-react';
+import { GitMerge, Download, AlertCircle, CheckCircle, FileText, Zap, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 import { newJobId } from '@/lib/jobs/id';
 import { names } from '@/lib/names';
@@ -315,6 +315,184 @@ export default function PDFMergePage() {
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 Download your merged PDF immediately after processing
               </p>
+            </div>
+          </div>
+
+          {/* How to Use Section - Timeline Style */}
+          <div className="mt-16 sm:mt-20 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-600 rounded-2xl shadow-xl p-8 mb-8 border border-emerald-100 dark:border-gray-600">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
+                Master PDF Merging in 4 Simple Steps
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                Follow our comprehensive guide to seamlessly combine multiple PDF documents into one unified file
+              </p>
+            </div>
+
+            {/* Timeline Container */}
+            <div className="relative max-w-4xl mx-auto">
+              {/* Vertical Timeline Line */}
+              <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-400 via-teal-400 to-cyan-400 transform md:-translate-x-1/2"></div>
+
+              {/* Step 1 - Left Side */}
+              <div className="relative flex items-center mb-12">
+                <div className="flex flex-col md:flex-row items-start md:items-center w-full">
+                  {/* Content - Left */}
+                  <div className="md:w-1/2 md:pr-8 ml-20 md:ml-0 md:text-right">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-l-4 border-emerald-500">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center md:justify-end">
+                        <span className="md:order-2">Select Your PDF Files</span>
+                        <FileText className="h-6 w-6 text-emerald-600 mr-3 md:mr-0 md:ml-3 md:order-1" />
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">
+                        Begin by choosing the PDF documents you want to combine. Use our intuitive drag-and-drop interface 
+                        or click the upload area to browse your files. You can select up to 20 PDF files simultaneously.
+                      </p>
+                      <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3">
+                        <p className="text-sm text-emerald-700 dark:text-emerald-300 font-medium">
+                          💡 Tip: Each file can be up to 50MB for optimal processing speed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Timeline Node */}
+                  <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 -translate-y-1/2 top-1/2">
+                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-gray-800">
+                      <span className="text-white font-bold text-xl">1</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 2 - Right Side */}
+              <div className="relative flex items-center mb-12">
+                <div className="flex flex-col md:flex-row items-start md:items-center w-full">
+                  {/* Content - Right */}
+                  <div className="md:w-1/2 md:pl-8 ml-20 md:ml-0 md:order-2">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-r-4 border-teal-500">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                        <Settings className="h-6 w-6 text-teal-600 mr-3" />
+                        <span>Arrange File Order</span>
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">
+                        The files will be merged in the exact sequence you upload them. The first file becomes the first 
+                        section, followed by the second file, and so on. Plan your upload order carefully for the desired result.
+                      </p>
+                      <div className="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-3">
+                        <p className="text-sm text-teal-700 dark:text-teal-300 font-medium">
+                          🔄 Pro Tip: Remove and re-upload files to change their order if needed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Timeline Node */}
+                  <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 -translate-y-1/2 top-1/2">
+                    <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-gray-800">
+                      <span className="text-white font-bold text-xl">2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3 - Left Side */}
+              <div className="relative flex items-center mb-12">
+                <div className="flex flex-col md:flex-row items-start md:items-center w-full">
+                  {/* Content - Left */}
+                  <div className="md:w-1/2 md:pr-8 ml-20 md:ml-0 md:text-right">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-l-4 border-cyan-500">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center md:justify-end">
+                        <span className="md:order-2">Execute Merge Process</span>
+                        <Zap className="h-6 w-6 text-cyan-600 mr-3 md:mr-0 md:ml-3 md:order-1" />
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">
+                        Click the "Merge PDFs" button to start the combination process. Our advanced algorithm processes 
+                        each document while preserving formatting, fonts, and layout integrity throughout the merge.
+                      </p>
+                      <div className="bg-cyan-50 dark:bg-cyan-900/20 rounded-lg p-3">
+                        <p className="text-sm text-cyan-700 dark:text-cyan-300 font-medium">
+                          🔒 Security: All processing happens locally in your browser
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Timeline Node */}
+                  <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 -translate-y-1/2 top-1/2">
+                    <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-gray-800">
+                      <span className="text-white font-bold text-xl">3</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 4 - Right Side */}
+              <div className="relative flex items-center">
+                <div className="flex flex-col md:flex-row items-start md:items-center w-full">
+                  {/* Content - Right */}
+                  <div className="md:w-1/2 md:pl-8 ml-20 md:ml-0 md:order-2">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border-r-4 border-indigo-500">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                        <Download className="h-6 w-6 text-indigo-600 mr-3" />
+                        <span>Download Unified Document</span>
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">
+                        Once merging is complete, instantly download your new unified PDF document. The merged file contains 
+                        all pages from your original documents in the correct sequence with preserved quality.
+                      </p>
+                      <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-3">
+                        <p className="text-sm text-indigo-700 dark:text-indigo-300 font-medium">
+                          ⚡ Instant: No waiting time - download immediately after processing
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Timeline Node */}
+                  <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 -translate-y-1/2 top-1/2">
+                    <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg border-4 border-white dark:border-gray-800">
+                      <span className="text-white font-bold text-xl">4</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Tips Section */}
+            <div className="mt-12 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+                Expert Merging Strategies
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <FileText className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">File Organization</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Name your files with numbers (01, 02, 03) to maintain logical order during upload
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/40 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Settings className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+                  </div>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Quality Control</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Ensure all files are properly formatted PDFs before merging for best results
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/40 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Zap className="h-6 w-6 text-cyan-600 dark:text-cyan-400" />
+                  </div>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Performance Tips</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Keep individual file sizes under 50MB and total batch under 200MB for optimal speed
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 

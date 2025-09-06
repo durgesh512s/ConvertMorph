@@ -338,6 +338,171 @@ export default function WordCounterPage() {
             </div>
           </div>
 
+          {/* How to Use Section */}
+          <div className="mt-16 sm:mt-20">
+            <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-800 rounded-2xl p-8 sm:p-12 text-white shadow-2xl">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
+                  <Type className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Advanced Text Analysis Guide</h2>
+                <p className="text-xl text-slate-200 max-w-3xl mx-auto">
+                  Master comprehensive text analysis with real-time statistics, readability scoring, and professional writing insights
+                </p>
+              </div>
+
+              {/* Analysis Workflow */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">📝 Analysis Workflow</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <FileText className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Input Text</h4>
+                    <p className="text-slate-200 text-sm">
+                      Type directly or paste your content into the text area. Analysis begins automatically as you type.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <BarChart3 className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Real-time Stats</h4>
+                    <p className="text-slate-200 text-sm">
+                      View instant statistics including word count, characters, sentences, and paragraph counts.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Eye className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Readability Analysis</h4>
+                    <p className="text-slate-200 text-sm">
+                      Get readability scores, reading time estimates, and text complexity analysis for better writing.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Download className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Export Results</h4>
+                    <p className="text-slate-200 text-sm">
+                      Download your analysis in TXT, JSON, or CSV formats for documentation and reporting.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Writing Metrics Guide */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">📊 Understanding Your Metrics</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-blue-500/30 rounded-lg p-2 mr-3">
+                        <Hash className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-semibold text-lg">Character Counts</h4>
+                    </div>
+                    <ul className="space-y-2 text-slate-200 text-sm">
+                      <li>• <strong>With spaces:</strong> Total character count including spaces</li>
+                      <li>• <strong>Without spaces:</strong> Letters, numbers, and punctuation only</li>
+                      <li>• <strong>Use case:</strong> Social media limits, form validation</li>
+                      <li>• <strong>Twitter:</strong> 280 character limit</li>
+                      <li>• <strong>Meta descriptions:</strong> 150-160 characters</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-green-500/30 rounded-lg p-2 mr-3">
+                        <Type className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-semibold text-lg">Word Analysis</h4>
+                    </div>
+                    <ul className="space-y-2 text-slate-200 text-sm">
+                      <li>• <strong>Word count:</strong> Total words in your text</li>
+                      <li>• <strong>Common words:</strong> Most frequently used terms</li>
+                      <li>• <strong>Blog posts:</strong> 1,500-2,500 words ideal</li>
+                      <li>• <strong>Essays:</strong> Follow assignment requirements</li>
+                      <li>• <strong>Articles:</strong> 800-1,200 words for SEO</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-purple-500/30 rounded-lg p-2 mr-3">
+                        <BookOpen className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-semibold text-lg">Readability</h4>
+                    </div>
+                    <ul className="space-y-2 text-slate-200 text-sm">
+                      <li>• <strong>90-100:</strong> Very easy (5th grade)</li>
+                      <li>• <strong>80-89:</strong> Easy (6th grade)</li>
+                      <li>• <strong>70-79:</strong> Fairly easy (7th grade)</li>
+                      <li>• <strong>60-69:</strong> Standard (8th-9th grade)</li>
+                      <li>• <strong>50-59:</strong> Fairly difficult (10th-12th grade)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Professional Use Cases */}
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">🎯 Professional Applications</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-yellow-500/30 rounded-lg p-2 mr-3 text-sm">SEO</span>
+                      Content Optimization
+                    </h4>
+                    <ul className="space-y-2 text-slate-200 text-sm">
+                      <li><strong>Blog Posts:</strong> Target 1,500+ words for better rankings</li>
+                      <li><strong>Meta Descriptions:</strong> Keep under 160 characters</li>
+                      <li><strong>Title Tags:</strong> 50-60 characters optimal</li>
+                      <li><strong>Readability:</strong> Aim for 60-70 score for web content</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-green-500/30 rounded-lg p-2 mr-3 text-sm">EDU</span>
+                      Academic Writing
+                    </h4>
+                    <ul className="space-y-2 text-slate-200 text-sm">
+                      <li><strong>Essays:</strong> Follow word count requirements precisely</li>
+                      <li><strong>Research Papers:</strong> 3,000-8,000 words typical</li>
+                      <li><strong>Abstracts:</strong> 150-300 words maximum</li>
+                      <li><strong>Readability:</strong> Match audience education level</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-blue-500/30 rounded-lg p-2 mr-3 text-sm">BIZ</span>
+                      Business Communication
+                    </h4>
+                    <ul className="space-y-2 text-slate-200 text-sm">
+                      <li><strong>Emails:</strong> Keep under 200 words for best response</li>
+                      <li><strong>Reports:</strong> Executive summaries 1-2 pages</li>
+                      <li><strong>Proposals:</strong> 2,000-5,000 words typical</li>
+                      <li><strong>Presentations:</strong> 6-8 words per slide maximum</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-purple-500/30 rounded-lg p-2 mr-3 text-sm">SOCIAL</span>
+                      Social Media
+                    </h4>
+                    <ul className="space-y-2 text-slate-200 text-sm">
+                      <li><strong>Twitter:</strong> 280 characters maximum</li>
+                      <li><strong>LinkedIn:</strong> 1,300 characters for posts</li>
+                      <li><strong>Facebook:</strong> 40-80 characters for best engagement</li>
+                      <li><strong>Instagram:</strong> 125 characters for captions</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mt-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Frequently Asked Questions</h2>

@@ -406,6 +406,180 @@ export default function TaxCalculatorPage() {
             </div>
           </div>
 
+          {/* How to Use Section */}
+          <div className="mt-8 sm:mt-12 mb-8">
+            <div className="bg-gradient-to-br from-gray-700 via-gray-600 to-slate-700 rounded-2xl p-8 sm:p-12 text-white shadow-2xl">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
+                  <Calculator className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Complete Tax Calculation Guide</h2>
+                <p className="text-xl text-gray-200 max-w-3xl mx-auto">
+                  Master Indian income tax calculations with our comprehensive guide for FY 2025-26 (AY 2026-27)
+                </p>
+              </div>
+
+              {/* Tax Calculation Process */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">💰 Tax Calculation Process</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <Settings className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Choose Regime</h4>
+                    <p className="text-gray-200 text-sm">
+                      Select between old tax regime (with deductions) or new tax regime (lower rates) based on your financial situation.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <DollarSign className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Enter Income</h4>
+                    <p className="text-gray-200 text-sm">
+                      Input your gross annual income including salary, bonuses, and other taxable income sources.
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <FileText className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Add Deductions</h4>
+                    <p className="text-gray-200 text-sm">
+                      Include applicable deductions like 80C investments, home loan interest, and insurance premiums (old regime only).
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
+                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                      <TrendingUp className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Get Results</h4>
+                    <p className="text-gray-200 text-sm">
+                      View detailed tax breakdown, effective rates, and net income after tax calculations.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tax Regime Comparison */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">⚖️ Tax Regime Comparison</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-blue-500/30 rounded-lg p-2 mr-3">
+                        <Settings className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-semibold text-lg">New Tax Regime (Default)</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• <strong>Tax Slabs:</strong> 0% up to ₹4L, 5% (₹4L-₹8L), 10% (₹8L-₹12L)</li>
+                      <li>• <strong>Benefits:</strong> Lower tax rates, simplified structure</li>
+                      <li>• <strong>Limitations:</strong> Limited deductions available</li>
+                      <li>• <strong>Best for:</strong> Lower income, minimal investments</li>
+                      <li>• <strong>Standard Deduction:</strong> ₹75,000 for salaried</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl p-6 border border-white/20">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-green-500/30 rounded-lg p-2 mr-3">
+                        <FileText className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-semibold text-lg">Old Tax Regime</h4>
+                    </div>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li>• <strong>Tax Slabs:</strong> 0% up to ₹2.5L, 5% (₹2.5L-₹5L), 20% (₹5L-₹10L)</li>
+                      <li>• <strong>Benefits:</strong> Multiple deductions and exemptions</li>
+                      <li>• <strong>Deductions:</strong> 80C, 80D, HRA, LTA, home loan interest</li>
+                      <li>• <strong>Best for:</strong> Higher income, significant investments</li>
+                      <li>• <strong>Complexity:</strong> Requires detailed tax planning</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Income Tax Planning Strategies */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">📊 Tax Planning Strategies</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-yellow-500/30 rounded-lg p-2 mr-3 text-sm">80C</span>
+                      Investment Deductions
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>ELSS Mutual Funds:</strong> Tax saving with growth potential</li>
+                      <li><strong>PPF:</strong> 15-year lock-in, tax-free returns</li>
+                      <li><strong>NSC:</strong> 5-year fixed deposit alternative</li>
+                      <li><strong>Life Insurance:</strong> Term + investment plans</li>
+                      <li><strong>ULIP:</strong> Insurance + market-linked returns</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-green-500/30 rounded-lg p-2 mr-3 text-sm">80D</span>
+                      Health Insurance
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>Self & Family:</strong> Up to ₹25,000 deduction</li>
+                      <li><strong>Parents:</strong> Additional ₹25,000 (₹50,000 if senior)</li>
+                      <li><strong>Preventive Health:</strong> ₹5,000 for checkups</li>
+                      <li><strong>Critical Illness:</strong> Additional ₹25,000 coverage</li>
+                      <li><strong>Total Benefit:</strong> Up to ₹1,00,000 deduction</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-blue-500/30 rounded-lg p-2 mr-3 text-sm">HRA</span>
+                      House Rent Allowance
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>Metro Cities:</strong> 50% of basic salary exemption</li>
+                      <li><strong>Non-Metro:</strong> 40% of basic salary exemption</li>
+                      <li><strong>Actual Rent:</strong> Rent paid minus 10% of salary</li>
+                      <li><strong>Documentation:</strong> Rent receipts and agreements</li>
+                      <li><strong>Benefit:</strong> Significant tax savings for renters</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Professional Tax Tips */}
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-center mb-8 text-white">💡 Professional Tax Tips</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-purple-500/30 rounded-lg p-2 mr-3 text-sm">CALC</span>
+                      Calculation Best Practices
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>Annual Planning:</strong> Calculate tax liability at year start</li>
+                      <li><strong>Quarterly Review:</strong> Monitor income and deductions</li>
+                      <li><strong>Investment Timing:</strong> Plan 80C investments early</li>
+                      <li><strong>Documentation:</strong> Maintain all investment proofs</li>
+                      <li><strong>Professional Help:</strong> Consult CA for complex cases</li>
+                    </ul>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="font-semibold text-lg mb-4 flex items-center">
+                      <span className="bg-red-500/30 rounded-lg p-2 mr-3 text-sm">AVOID</span>
+                      Common Mistakes
+                    </h4>
+                    <ul className="space-y-2 text-gray-200 text-sm">
+                      <li><strong>Last-minute Investments:</strong> Rushed decisions in March</li>
+                      <li><strong>Wrong Regime Choice:</strong> Not comparing both options</li>
+                      <li><strong>Missing Deadlines:</strong> Late tax filing penalties</li>
+                      <li><strong>Inadequate Records:</strong> Lost investment proofs</li>
+                      <li><strong>Ignoring TDS:</strong> Not claiming advance tax credit</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* FAQ Section */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Frequently Asked Questions</h2>
