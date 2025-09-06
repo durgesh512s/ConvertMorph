@@ -9,6 +9,7 @@ import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 
 interface ConvertedFile {
   name: string
@@ -628,6 +629,9 @@ export default function ImagesToPDFPage() {
 
           {/* Related Articles */}
           <RelatedArticles toolName="images-to-pdf" />
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="images-to-pdf" className="mt-8" />
         </div>
       </div>
     </div>

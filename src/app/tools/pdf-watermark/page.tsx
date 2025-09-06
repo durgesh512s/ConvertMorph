@@ -1,6 +1,7 @@
 import { Type } from 'lucide-react'
 import { PDFWatermarkClient } from '@/components/PDFWatermarkClient'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -234,6 +235,9 @@ export default function PDFWatermarkPage() {
 
             {/* Related Articles */}
             <RelatedArticles toolName="pdf-watermark" />
+
+            {/* Tools Navigation */}
+            <ToolsNavigation currentTool="pdf-watermark" className="mt-8" />
           </div>
         </div>
       </div>

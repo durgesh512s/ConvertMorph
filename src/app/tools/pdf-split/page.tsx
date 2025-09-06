@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Scissors, Download, FileText, Zap, Info } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { newJobId } from '@/lib/jobs/id'
@@ -664,6 +665,9 @@ export default function PDFSplitPage() {
 
           {/* Related Articles */}
           <RelatedArticles toolName="pdf-split" />
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="pdf-split" className="mt-8" />
         </div>
       </div>
     </div>

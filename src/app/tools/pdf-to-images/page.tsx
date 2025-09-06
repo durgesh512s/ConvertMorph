@@ -7,6 +7,7 @@ import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 
 
 interface ConvertedImage {
@@ -546,6 +547,9 @@ export default function PDFToImagesPage() {
 
           {/* Related Articles */}
           <RelatedArticles toolName="pdf-to-images" />
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="pdf-to-images" className="mt-8" />
         </div>
       </div>
     </div>

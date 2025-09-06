@@ -1,6 +1,7 @@
 import { PenTool } from 'lucide-react'
 import { PDFSignClient } from '@/components/PDFSignClient'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -244,6 +245,9 @@ export default function PDFSignPage() {
 
             {/* Related Articles */}
             <RelatedArticles toolName="pdf-sign" />
+
+            {/* Tools Navigation */}
+            <ToolsNavigation currentTool="pdf-sign" className="mt-8" />
           </div>
         </div>
       </div>

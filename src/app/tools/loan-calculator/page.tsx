@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Calculator, CreditCard, Percent, Calendar, DollarSign, PieChart, BarChart3 } from 'lucide-react';
 import { RelatedArticles } from '@/components/RelatedArticles';
+import ToolsNavigation from '@/components/ToolsNavigation';
 import { toast } from 'sonner';
 
 interface LoanResult {
@@ -472,6 +473,9 @@ export default function LoanCalculatorPage() {
 
       {/* Related Articles */}
       <RelatedArticles toolName="loan-calculator" />
+
+      {/* Tools Navigation */}
+      <ToolsNavigation currentTool="loan-calculator" className="mt-8" />
     </div>
   );
 }

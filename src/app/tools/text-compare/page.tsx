@@ -5,6 +5,7 @@ import { GitCompare, Download, FileText, BarChart3, Settings, Eye, Shield, Zap, 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 import { toast } from 'sonner'
 import { track } from '@/lib/analytics/client'
 import { compareTexts, getSimilarityLevel, exportComparison, type ComparisonResult, type ComparisonOptions } from '@/lib/textComparator'
@@ -469,6 +470,9 @@ export default function TextComparePage() {
           <div className="mt-12 sm:mt-16">
             <RelatedArticles toolName="text-compare" />
           </div>
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="text-compare" className="mt-8" />
         </div>
       </div>
     </div>

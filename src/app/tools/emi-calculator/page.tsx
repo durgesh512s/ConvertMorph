@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Calculator, Home, DollarSign, FileText, TrendingUp, Settings, AlertCircle, Info } from 'lucide-react'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 import { toast } from 'sonner'
 import { track } from '@/lib/analytics/client'
 
@@ -404,6 +405,9 @@ export default function EMICalculatorPage() {
 
           {/* Related Articles */}
           <RelatedArticles toolName="emi-calculator" />
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="emi-calculator" className="mt-8" />
         </div>
       </div>
     </div>

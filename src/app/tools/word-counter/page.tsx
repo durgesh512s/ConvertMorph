@@ -5,6 +5,7 @@ import { Type, Download, FileText, BarChart3, Clock, BookOpen, TrendingUp, Hash,
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 import { toast } from 'sonner'
 import { track } from '@/lib/analytics/client'
 import { analyzeText, getReadabilityLevel, exportTextAnalysis, type TextStats, type TextAnalysisResult } from '@/lib/textAnalyzer'
@@ -390,6 +391,9 @@ export default function WordCounterPage() {
           <div className="mt-12 sm:mt-16">
             <RelatedArticles toolName="word-counter" />
           </div>
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="word-counter" className="mt-8" />
         </div>
       </div>
     </div>

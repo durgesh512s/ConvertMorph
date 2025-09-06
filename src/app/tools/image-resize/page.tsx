@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Maximize2, Download, FileImage, Settings, RotateCcw, Lock, Unlock, Zap, Palette, Shield } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { names } from '@/lib/names'
@@ -467,6 +468,9 @@ export default function ImageResizePage() {
 
           {/* Related Articles */}
           <RelatedArticles toolName="image-resize" />
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="image-resize" className="mt-8" />
         </div>
       </div>
     </div>

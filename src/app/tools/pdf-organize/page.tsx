@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { PDFOrganizeClient } from '@/components/PDFOrganizeClient'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -319,6 +320,9 @@ export default function PDFOrganizePage() {
 
             {/* Related Articles */}
             <RelatedArticles toolName="pdf-organize" />
+
+            {/* Tools Navigation */}
+            <ToolsNavigation currentTool="pdf-organize" className="mt-8" />
           </div>
         </div>
       </div>

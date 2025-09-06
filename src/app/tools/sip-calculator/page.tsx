@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Calculator, TrendingUp, Target, PiggyBank, BarChart3, Calendar, DollarSign } from 'lucide-react';
 import { RelatedArticles } from '@/components/RelatedArticles';
+import ToolsNavigation from '@/components/ToolsNavigation';
 import { toast } from 'sonner';
 
 interface SIPResult {
@@ -342,6 +343,9 @@ export default function SIPCalculatorPage() {
 
       {/* Related Articles */}
       <RelatedArticles toolName="sip-calculator" />
+
+      {/* Tools Navigation */}
+      <ToolsNavigation currentTool="sip-calculator" className="mt-8" />
     </div>
   );
 }

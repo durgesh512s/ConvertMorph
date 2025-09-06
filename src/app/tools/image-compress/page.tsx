@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Image, Download, FileImage, Zap, Settings, AlertCircle } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { names } from '@/lib/names'
@@ -307,6 +308,9 @@ export default function ImageCompressPage() {
 
           {/* Related Articles */}
           <RelatedArticles toolName="image-compress" />
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="image-compress" className="mt-8" />
         </div>
       </div>
     </div>

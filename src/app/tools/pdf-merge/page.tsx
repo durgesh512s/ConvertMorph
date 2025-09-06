@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Dropzone, UploadedFile } from '@/components/Dropzone';
 import { Progress } from '@/components/ui/progress';
 import { RelatedArticles } from '@/components/RelatedArticles';
+import ToolsNavigation from '@/components/ToolsNavigation';
 import { GitMerge, Download, AlertCircle, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { newJobId } from '@/lib/jobs/id';
@@ -385,6 +386,9 @@ export default function PDFMergePage() {
 
           {/* Related Articles */}
           <RelatedArticles toolName="pdf-merge" />
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="pdf-merge" className="mt-8" />
         </div>
       </div>
     </div>

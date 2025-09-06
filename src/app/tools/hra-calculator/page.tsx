@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Calculator, Home, Receipt, Building, MapPin, IndianRupee, FileText } from 'lucide-react';
 import { RelatedArticles } from '@/components/RelatedArticles';
+import ToolsNavigation from '@/components/ToolsNavigation';
 import { toast } from 'sonner';
 
 interface HRAResult {
@@ -365,6 +366,9 @@ export default function HRACalculatorPage() {
 
       {/* Related Articles */}
       <RelatedArticles toolName="hra-calculator" />
+
+      {/* Tools Navigation */}
+      <ToolsNavigation currentTool="hra-calculator" className="mt-8" />
     </div>
   );
 }

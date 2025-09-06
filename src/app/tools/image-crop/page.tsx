@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react'
 import { Crop, Download, FileImage, Settings, RotateCcw, Scissors, Zap, Palette, Shield } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { names } from '@/lib/names'
@@ -563,6 +564,9 @@ export default function ImageCropPage() {
 
           {/* Related Articles */}
           <RelatedArticles toolName="image-crop" />
+
+          {/* Tools Navigation */}
+          <ToolsNavigation currentTool="image-crop" className="mt-8" />
         </div>
       </div>
     </div>

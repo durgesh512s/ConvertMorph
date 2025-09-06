@@ -1,6 +1,7 @@
 import { Hash } from 'lucide-react'
 import { PDFPageNumClient } from '@/components/PDFPageNumClient'
 import { RelatedArticles } from '@/components/RelatedArticles'
+import ToolsNavigation from '@/components/ToolsNavigation'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -244,6 +245,9 @@ export default function PDFPageNumPage() {
 
             {/* Related Articles */}
             <RelatedArticles toolName="pdf-pagenum" />
+
+            {/* Tools Navigation */}
+            <ToolsNavigation currentTool="pdf-pagenum" className="mt-8" />
           </div>
         </div>
       </div>
