@@ -98,8 +98,8 @@ const textTools = [
     color: 'bg-amber-100 text-amber-600'
   },
   { 
-    name: 'Text Comparator', 
-    href: '/tools/text-comparator', 
+    name: 'Text Comparison', 
+    href: '/tools/text-compare', 
     icon: GitCompare,
     description: 'Compare and find differences between texts',
     color: 'bg-yellow-100 text-yellow-600'
