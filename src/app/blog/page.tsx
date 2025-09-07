@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { formatDate } from '@/lib/date-utils';
 import Newsletter from '@/components/Newsletter';
+import { absoluteUrl } from '@/lib/url';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: '/blog',
+    canonical: absoluteUrl('/blog'),
   },
 };
 

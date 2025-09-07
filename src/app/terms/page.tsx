@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { getCurrentDate } from '@/lib/date-utils'
+import { absoluteUrl } from '@/lib/url'
 import { FileText, Shield, AlertTriangle, Scale } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: absoluteUrl('/terms'),
   },
 }
 

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { absoluteUrl } from '@/lib/url'
 
 export const metadata: Metadata = {
   title: 'Contact Us | ConvertMorph - PDF Tools Support',
@@ -12,6 +13,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: absoluteUrl('/contact'),
   },
 }
 

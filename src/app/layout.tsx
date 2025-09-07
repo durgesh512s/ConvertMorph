@@ -13,6 +13,7 @@ import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
+import { absoluteUrl } from '@/lib/url';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -50,9 +51,8 @@ export const metadata: Metadata = {
   applicationName: "ConvertMorph",
   category: "Productivity Tools",
   classification: "Business & Productivity",
-  metadataBase: new URL(process.env.SITE_URL || 'https://convertmorph.com'),
+  metadataBase: new URL(absoluteUrl('/')),
   alternates: {
-    canonical: 'https://convertmorph.com/',
     languages: {
       'en-US': 'https://convertmorph.com/',
       'en': 'https://convertmorph.com/',

@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { getCurrentDate } from '@/lib/date-utils'
+import { absoluteUrl } from '@/lib/url'
 import { Shield, Lock, Trash2, Eye } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -14,6 +15,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: absoluteUrl('/privacy'),
   },
 }
 
