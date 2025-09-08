@@ -39,44 +39,6 @@ const jsonLd = {
   ],
 }
 
-const faqData = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'How do I reorder pages in a PDF?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Upload your PDF and you\'ll see thumbnail previews of each page. Simply drag and drop the thumbnails to reorder them, then download the reorganized PDF.'
-      }
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I rotate individual pages?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes! Each page thumbnail has rotation buttons that let you rotate pages in 90-degree increments (clockwise and counterclockwise).'
-      }
-    },
-    {
-      '@type': 'Question',
-      name: 'What keyboard shortcuts are available?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Use Ctrl+Z for undo, Ctrl+Y for redo, arrow keys to navigate between pages, and R to rotate the selected page.'
-      }
-    },
-    {
-      '@type': 'Question',
-      name: 'Is there a limit to the number of pages?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'You can organize PDFs with up to 200 pages. For larger documents, consider splitting them first.'
-      }
-    }
-  ]
-}
 
 export default function PDFOrganizePage() {
   return (
@@ -84,10 +46,6 @@ export default function PDFOrganizePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqData) }}
       />
       
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 dark:from-gray-900 dark:to-gray-800">

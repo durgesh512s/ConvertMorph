@@ -43,60 +43,6 @@ const jsonLd = {
   ],
 }
 
-const faqJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'How do I add page numbers to a PDF?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Upload your PDF file, choose the position (header or footer), select the number format, set the starting number, and click "Add Page Numbers". The tool will process your PDF and add page numbers to all pages.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I choose where to place the page numbers?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, you can place page numbers in the header (top) or footer (bottom) of your PDF pages. You can also choose the alignment: left, center, or right.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What number formats are supported?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'We support multiple formats including: 1, 2, 3... (Arabic numerals), i, ii, iii... (lowercase Roman), I, II, III... (uppercase Roman), a, b, c... (lowercase letters), and A, B, C... (uppercase letters).',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I start page numbering from a specific number?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, you can set any starting number for your page numbering. This is useful when adding numbers to a document that is part of a larger series.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Is my PDF file secure when adding page numbers?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, your PDF is processed entirely in your browser. No files are uploaded to our servers, ensuring complete privacy and security of your documents.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Are there any file size limits?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Our tool can handle PDF files up to 100MB in size. For larger files, consider compressing your PDF first or splitting it into smaller sections.',
-      },
-    },
-  ],
-}
 
 export default function PDFPageNumPage() {
   return (
@@ -104,10 +50,6 @@ export default function PDFPageNumPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-100 dark:from-gray-900 dark:to-gray-800">

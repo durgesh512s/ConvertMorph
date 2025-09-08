@@ -42,60 +42,6 @@ const jsonLd = {
   ],
 }
 
-const faqJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'How do I add a signature to a PDF?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Upload your PDF file, choose to draw or type your signature, position it where needed on the document, and download the signed PDF. You can add multiple signatures and text fields as needed.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I draw my signature with a mouse or touchpad?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, you can draw your signature using a mouse, touchpad, or touch screen. The tool provides a smooth drawing experience with adjustable pen thickness and color options.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I type my signature instead of drawing it?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, you can type your signature using various fonts and styles. This is useful for creating consistent, professional-looking signatures.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Is this legally binding for electronic signatures?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'This tool creates visual signatures on PDFs. For legally binding electronic signatures, consult with legal professionals about your specific jurisdiction and use case requirements.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Are my documents secure when signing?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, your PDF is processed entirely in your browser. No files are uploaded to our servers, ensuring complete privacy and security of your documents.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I add multiple signatures to one document?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, you can add multiple signatures, text fields, and other elements to a single PDF document. Each element can be positioned independently.',
-      },
-    },
-  ],
-}
 
 export default function PDFSignPage() {
   return (
@@ -103,10 +49,6 @@ export default function PDFSignPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       
       <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 dark:from-gray-900 dark:to-gray-800">

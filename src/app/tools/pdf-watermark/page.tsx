@@ -40,60 +40,6 @@ const jsonLd = {
   ]
 }
 
-const faqJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'How do I add a watermark to my PDF?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Upload your PDF file, enter your watermark text, choose the position and transparency, then download the watermarked PDF. The process is completely free and secure.'
-      }
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I customize the watermark appearance?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes! You can customize the watermark text, position (center, corners, etc.), transparency level, font size, and color to match your needs.'
-      }
-    },
-    {
-      '@type': 'Question',
-      name: 'Is my PDF secure when adding watermarks?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Absolutely. All processing happens locally in your browser. Your files are never uploaded to our servers, ensuring complete privacy and security.'
-      }
-    },
-    {
-      '@type': 'Question',
-      name: 'What file formats are supported?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'This tool works with PDF files only. The output will also be a PDF file with your watermark applied to all pages.'
-      }
-    },
-    {
-      '@type': 'Question',
-      name: 'Can I add watermarks to multiple pages?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, the watermark will be applied to all pages in your PDF document automatically. You can choose different positions for variety.'
-      }
-    },
-    {
-      '@type': 'Question',
-      name: 'Are there any file size limits?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'The default limit is 100MB per file, but this can handle most PDF documents. For larger files, consider compressing your PDF first.'
-      }
-    }
-  ]
-}
 
 export default function PDFWatermarkPage() {
   return (
@@ -101,10 +47,6 @@ export default function PDFWatermarkPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       
       <div className="min-h-screen bg-gradient-to-br from-cyan-50 to-teal-100 dark:from-gray-900 dark:to-gray-800">

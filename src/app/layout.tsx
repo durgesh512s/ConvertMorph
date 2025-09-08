@@ -340,44 +340,6 @@ const breadcrumbJsonLd = {
   ]
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is ConvertMorph free to use?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, ConvertMorph is completely free to use. All our PDF tools, image editors, text processors, and financial calculators are available at no cost with no hidden charges or subscriptions."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Are my files safe and private?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Absolutely. All processing happens locally in your browser. Your files never leave your device and are not uploaded to our servers, ensuring complete privacy and security."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do I need to register or create an account?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No registration required. You can start using all our tools immediately without creating an account or providing any personal information."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What types of tools does ConvertMorph offer?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "ConvertMorph offers four main categories of tools: PDF tools (compress, merge, split, convert), Image tools (background removal, compression, resize), Text tools (grammar checker, paraphraser, plagiarism checker), and Finance tools (tax calculator, EMI calculator, SIP calculator)."
-      }
-    }
-  ]
-};
 
 export default function RootLayout({
   children,
@@ -391,7 +353,6 @@ export default function RootLayout({
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
         <JsonLd data={breadcrumbJsonLd} />
-        <JsonLd data={faqJsonLd} />
         
         {/* Favicon and Icons */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
