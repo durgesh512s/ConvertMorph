@@ -4,6 +4,9 @@ import type { NextRequest } from 'next/server';
 export function middleware(req: NextRequest) {
   const res = NextResponse.next();
   
+  // Pass pathname to headers for server-side breadcrumb generation
+  res.headers.set('x-pathname', req.nextUrl.pathname);
+  
   const csp = [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline'", // allow inline JSON-LD; consider nonce later
