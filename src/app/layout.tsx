@@ -13,6 +13,7 @@ import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
+import { DynamicBreadcrumb } from '@/components/DynamicBreadcrumb';
 import { absoluteUrl } from '@/lib/url';
 
 const inter = Inter({
@@ -315,30 +316,6 @@ const websiteJsonLd = {
   }
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://convertmorph.com"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://convertmorph.com/tools"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Blog",
-      "item": "https://convertmorph.com/blog"
-    }
-  ]
-};
 
 
 export default function RootLayout({
@@ -352,7 +329,7 @@ export default function RootLayout({
         {/* Enhanced JSON-LD structured data */}
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
-        <JsonLd data={breadcrumbJsonLd} />
+        <DynamicBreadcrumb />
         
         {/* Favicon and Icons */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
