@@ -109,6 +109,67 @@ export function DynamicBreadcrumb() {
         case 'pdf-sign':
           name = 'PDF Fill & Sign';
           break;
+        // Blog post specific breadcrumbs
+        case 'organize-pdf-pages':
+          name = 'Organize PDF Pages';
+          break;
+        case 'add-watermark-to-pdf':
+          name = 'Add Watermark to PDF';
+          break;
+        case 'merge-pdf-files-online':
+          name = 'Merge PDF Files Online';
+          break;
+        case 'how-to-compress-pdf-files':
+          name = 'How to Compress PDF Files';
+          break;
+        case 'split-pdf-pages':
+          name = 'Split PDF Pages';
+          break;
+        case 'sign-pdf-documents':
+          name = 'Sign PDF Documents';
+          break;
+        case 'convert-images-to-pdf':
+          name = 'Convert Images to PDF';
+          break;
+        case 'convert-pdf-to-images':
+          name = 'Convert PDF to Images';
+          break;
+        case 'add-page-numbers-to-pdf':
+          name = 'Add Page Numbers to PDF';
+          break;
+        case 'compress-images-online':
+          name = 'Compress Images Online';
+          break;
+        case 'resize-images-online':
+          name = 'Resize Images Online';
+          break;
+        case 'convert-image-formats-online':
+          name = 'Convert Image Formats Online';
+          break;
+        case 'crop-images-online':
+          name = 'Crop Images Online';
+          break;
+        case 'text-analysis-tools':
+          name = 'Text Analysis Tools';
+          break;
+        case 'tax-calculator-guide':
+          name = 'Tax Calculator Guide';
+          break;
+        case 'emi-calculator-guide':
+          name = 'EMI Calculator Guide';
+          break;
+        case 'sip-calculator-guide':
+          name = 'SIP Calculator Guide';
+          break;
+        case 'hra-calculator-guide':
+          name = 'HRA Calculator Guide';
+          break;
+        case 'loan-calculator-guide':
+          name = 'Loan Calculator Guide';
+          break;
+        case 'convertmorph-free-online-tools':
+          name = 'ConvertMorph Free Online Tools';
+          break;
         default:
           // Capitalize and format unknown segments
           name = segment
