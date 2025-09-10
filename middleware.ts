@@ -2,14 +2,22 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(req: NextRequest) {
-  const res = NextResponse.next();
-  
-  // Pass pathname to headers for server-side breadcrumb generation
+  // Pass pathname to request headers for server-side breadcrumb generation
   const pathname = req.nextUrl.pathname;
-  res.headers.set('x-pathname', pathname);
+  
+  // Clone the request headers and add our custom header
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set('x-pathname', pathname);
   
   // Debug logging - always log in production to diagnose the issue
   console.log('Middleware - setting x-pathname header:', pathname);
+  
+  // Create response with modified request headers
+  const res = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
   
   const csp = [
     "default-src 'self'",
