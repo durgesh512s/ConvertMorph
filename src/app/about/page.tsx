@@ -128,7 +128,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <JsonLd data={organizationSchema} />
       <JsonLd data={websiteSchema} />
-      <JsonLd data={breadcrumbSchema} />
+      {/* Breadcrumb JSON-LD removed - handled by DynamicBreadcrumb component in layout */}
       
       {/* Hero Section */}
       <div className="relative overflow-hidden">
