@@ -5,7 +5,11 @@ export function middleware(req: NextRequest) {
   const res = NextResponse.next();
   
   // Pass pathname to headers for server-side breadcrumb generation
-  res.headers.set('x-pathname', req.nextUrl.pathname);
+  const pathname = req.nextUrl.pathname;
+  res.headers.set('x-pathname', pathname);
+  
+  // Debug logging - always log in production to diagnose the issue
+  console.log('Middleware - setting x-pathname header:', pathname);
   
   const csp = [
     "default-src 'self'",

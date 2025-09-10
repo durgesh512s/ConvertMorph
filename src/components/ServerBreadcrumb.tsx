@@ -187,7 +187,14 @@ export async function ServerBreadcrumb() {
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '/';
   
+  // Debug logging - always log in production to diagnose the issue
+  console.log('ServerBreadcrumb - pathname received:', pathname);
+  console.log('ServerBreadcrumb - all headers:', Object.fromEntries(headersList.entries()));
+  
   const breadcrumbs = generateBreadcrumbs(pathname);
+  
+  // Debug logging - always log in production to diagnose the issue
+  console.log('ServerBreadcrumb - generated breadcrumbs:', breadcrumbs);
   
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -199,6 +206,9 @@ export async function ServerBreadcrumb() {
       "item": crumb.item
     }))
   };
+
+  // Debug logging - log the final JSON-LD
+  console.log('ServerBreadcrumb - final JSON-LD:', JSON.stringify(breadcrumbJsonLd, null, 2));
 
   return (
     <script
