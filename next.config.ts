@@ -21,52 +21,13 @@ const nextConfig: NextConfig = {
 
   async headers() {
     return [
-      // Critical CSS and Framework JS - allow indexing for proper rendering
+      // Static assets - long cache with immutable
       {
-        source: '/_next/static/css/:path*',
+        source: '/_next/static/:path*',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
-          },
-          // NO X-Robots-Tag - CSS needed for rendering
-        ],
-      },
-      {
-        source: '/_next/static/chunks/(framework|main|pages)/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          // NO X-Robots-Tag - Critical JS needed for rendering
-        ],
-      },
-      // Non-critical static assets - block from indexing
-      {
-        source: '/_next/static/chunks/(webpack|vendor)/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'X-Robots-Tag',
-            value: 'noindex, nofollow, noarchive, nosnippet',
-          },
-        ],
-      },
-      // Other static assets
-      {
-        source: '/_next/static/media/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'X-Robots-Tag',
-            value: 'noindex, nofollow, noarchive, nosnippet',
           },
         ],
       },
@@ -100,7 +61,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // OG images specific headers + crawl blocking
+  // OG images specific headers
   {
     source: '/og/:path*',
     headers: [
@@ -111,66 +72,6 @@ const nextConfig: NextConfig = {
       {
         key: 'Content-Type',
         value: 'image/png',
-      },
-      {
-        key: 'X-Robots-Tag',
-        value: 'noindex, nofollow, noarchive, nosnippet',
-      },
-    ],
-  },
-  // Block crawling of service workers and PWA files
-  {
-    source: '/(sw|service-worker|manifest)\\.(:?js|json|webmanifest)$',
-    headers: [
-      {
-        key: 'X-Robots-Tag',
-        value: 'noindex, nofollow, noarchive, nosnippet',
-      },
-      {
-        key: 'Cache-Control',
-        value: 'public, max-age=86400',
-      },
-    ],
-  },
-  // Block crawling of PDF worker
-  {
-    source: '/pdf\\.worker\\.min\\.js$',
-    headers: [
-      {
-        key: 'X-Robots-Tag',
-        value: 'noindex, nofollow, noarchive, nosnippet',
-      },
-      {
-        key: 'Cache-Control',
-        value: 'public, max-age=31536000, immutable',
-      },
-    ],
-  },
-  // Block crawling of sample files
-  {
-    source: '/samples/:path*',
-    headers: [
-      {
-        key: 'X-Robots-Tag',
-        value: 'noindex, nofollow, noarchive, nosnippet',
-      },
-      {
-        key: 'Cache-Control',
-        value: 'public, max-age=86400',
-      },
-    ],
-  },
-  // Block crawling of logo assets
-  {
-    source: '/logo/:path*',
-    headers: [
-      {
-        key: 'X-Robots-Tag',
-        value: 'noindex, nofollow, noarchive, nosnippet',
-      },
-      {
-        key: 'Cache-Control',
-        value: 'public, max-age=31536000, immutable',
       },
     ],
   },

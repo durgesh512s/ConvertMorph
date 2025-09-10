@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { crawlOptimizationMiddleware } from './src/middleware/crawl-optimization';
 
 export function middleware(req: NextRequest) {
-  // Apply crawl optimization middleware first
-  const res = crawlOptimizationMiddleware(req);
+  const res = NextResponse.next();
   
   const csp = [
     "default-src 'self'",
@@ -23,8 +21,7 @@ export function middleware(req: NextRequest) {
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.headers.set('X-Content-Type-Options', 'nosniff');
   res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  
-  // Only set X-Robots-Tag for non-production environments (override crawl optimization for dev)
+  // Only set X-Robots-Tag for non-production environments
   if (process.env.NODE_ENV !== 'production') {
     res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
   }
