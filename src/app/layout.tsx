@@ -63,13 +63,12 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: '32x32' },
-      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon.svg?v=mffc5l8y', type: 'image/svg+xml' },
+      { url: '/android-chrome-192x192.png?v=mffc5l8y', sizes: '192x192', type: 'image/png' },
+      { url: '/android-chrome-512x512.png?v=mffc5l8y', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-touch-icon.png?v=mffc5l8y', sizes: '180x180', type: 'image/png' },
     ],
   },
   appleWebApp: {
@@ -331,12 +330,11 @@ export default function RootLayout({
         <JsonLd data={websiteJsonLd} />
         <ClientBreadcrumb />
         
-        {/* Favicon and Icons */}
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon.ico" sizes="32x32" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="icon" href="/android-chrome-192x192.png" sizes="192x192" type="image/png" />
-        <link rel="icon" href="/android-chrome-512x512.png" sizes="512x512" type="image/png" />
+        {/* Favicon and Icons - Only favicon.svg and essential files */}
+        <link rel="icon" href="/favicon.svg?v=mffc5l8y" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=mffc5l8y" />
+        <link rel="icon" href="/android-chrome-192x192.png?v=mffc5l8y" sizes="192x192" type="image/png" />
+        <link rel="icon" href="/android-chrome-512x512.png?v=mffc5l8y" sizes="512x512" type="image/png" />
         
         {/* Meta tags */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
