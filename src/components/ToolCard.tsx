@@ -2,10 +2,56 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LucideIcon } from 'lucide-react';
+import { 
+  LucideIcon,
+  Archive, 
+  GitMerge, 
+  Scissors, 
+  Image, 
+  Download,
+  Move3D,
+  Type,
+  Hash,
+  PenTool,
+  Eraser,
+  Minimize2,
+  CheckCircle,
+  Copy,
+  FileText,
+  Calculator,
+  Home,
+  CreditCard,
+  PiggyBank,
+  Crop,
+  GitCompare
+} from 'lucide-react';
+
+// Icon mapping for string to component conversion
+const iconMap: Record<string, LucideIcon> = {
+  Archive,
+  GitMerge,
+  Scissors,
+  Image,
+  Download,
+  Move3D,
+  Type,
+  Hash,
+  PenTool,
+  Eraser,
+  Minimize2,
+  CheckCircle,
+  Copy,
+  FileText,
+  Calculator,
+  Home,
+  CreditCard,
+  PiggyBank,
+  Crop,
+  GitCompare,
+};
 
 interface ToolCardProps {
-  icon: LucideIcon;
+  icon: LucideIcon | string;
   title: string;
   description: string;
   href: string;
@@ -52,7 +98,7 @@ const getBadgeInfo = (comingSoon: boolean, title: string) => {
 };
 
 export default function ToolCard({ 
-  icon: Icon, 
+  icon, 
   title, 
   description, 
   href, 
@@ -62,6 +108,9 @@ export default function ToolCard({
 }: ToolCardProps) {
   const gradientClasses = getCategoryGradient(categoryId);
   const badgeInfo = getBadgeInfo(comingSoon, title);
+
+  // Get the icon component - handle both string and component types
+  const IconComponent = typeof icon === 'string' ? iconMap[icon] || FileText : icon;
 
   const cardContent = (
     <Card className="h-full flex flex-col border rounded-2xl p-4 transition hover:-translate-y-0.5 hover:shadow-lg relative overflow-hidden bg-white dark:bg-gray-900">
@@ -76,7 +125,7 @@ export default function ToolCard({
       <CardHeader className="p-0 pb-4">
         <div className="flex items-center space-x-3 mb-3">
           <div className={`rounded-2xl p-3 flex items-center justify-center bg-gradient-to-br ${gradientClasses}`}>
-            <Icon className="h-6 w-6" style={{ color: accentColor }} />
+            <IconComponent className="h-6 w-6" style={{ color: accentColor }} />
           </div>
         </div>
         <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white">{title}</CardTitle>
