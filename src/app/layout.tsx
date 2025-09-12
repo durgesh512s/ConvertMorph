@@ -13,7 +13,7 @@ import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
-import { BreadcrumbProvider } from '@/components/BreadcrumbProvider';
+import { UnifiedBreadcrumb } from '@/components/UnifiedBreadcrumb';
 import { absoluteUrl } from '@/lib/url';
 
 const inter = Inter({
@@ -328,7 +328,6 @@ export default function RootLayout({
         {/* Enhanced JSON-LD structured data */}
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
-        <BreadcrumbProvider />
         
         {/* Favicon and Icons - Only favicon.svg and essential files */}
         <link rel="icon" href="/favicon.svg?v=mffc5l8y" type="image/svg+xml" />
@@ -374,6 +373,7 @@ export default function RootLayout({
           </header>
           
           <main className="flex-1 relative">
+            <UnifiedBreadcrumb />
             {children}
           </main>
           

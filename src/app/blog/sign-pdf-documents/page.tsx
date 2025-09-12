@@ -86,25 +86,9 @@ export default function SignPDFDocumentsGuide() {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-          {/* Breadcrumbs */}
-          <nav className="mb-4 sm:mb-6" aria-label="Breadcrumb">
-            <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 overflow-x-auto whitespace-nowrap">
-              {breadcrumbs.map((crumb, index) => (
-                <li key={crumb.url} className="flex items-center">
-                  {index > 0 && <span className="mx-2">/</span>}
-                  {index === breadcrumbs.length - 1 ? (
-                    <span className="text-gray-900 dark:text-white font-medium">{crumb.name}</span>
-                  ) : (
-                    <Link href={crumb.url} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                      {crumb.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ol>
-          </nav>
+          {/* Breadcrumbs removed - now handled by UnifiedBreadcrumb component in layout */}
 
-          <Link 
+<Link 
             href="/blog" 
             className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-6 sm:mb-8 transition-colors"
           >
