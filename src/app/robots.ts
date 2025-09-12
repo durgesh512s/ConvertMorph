@@ -18,11 +18,18 @@ export default function robots(): MetadataRoute.Robots {
           '/docs/',
           '/*.ts$',
           '/*.map$',
+          // 🚫 Block unnecessary chunks (save crawl budget)
+          '/_next/static/chunks/vendor-*',
+          '/_next/static/chunks/webpack-*',
+          '/_next/static/chunks/framework-*',
         ],
       },
       {
         userAgent: 'Googlebot',
         allow: [
+          '/_next/static/chunks/app/tools/', // ✅ allow tool chunks
+          '/tools/',                         // ✅ allow tool pages
+          '/og/',                            // ✅ allow OG images
           '/_next/static/*.js',
           '/public/*.js',
         ],
