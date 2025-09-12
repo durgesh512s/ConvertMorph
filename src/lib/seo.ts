@@ -167,18 +167,6 @@ export function faqJsonLd(faqs: { question: string; answer: string }[]) {
   };
 }
 
-export function breadcrumbsJsonLd(crumbs: { name: string; url: string }[]) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: crumbs.map((crumb, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: crumb.name,
-      item: absoluteUrl(crumb.url),
-    })),
-  };
-}
 
 // Utility functions
 export function calculateWordCount(text: string): number {

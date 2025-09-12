@@ -1,64 +1,12 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
 import { absoluteUrl } from '@/lib/url';
-import { useEffect, useState } from 'react';
 
 interface BreadcrumbItem {
   position: number;
   name: string;
   item: string;
   isLast?: boolean;
-}
-
-function getPageTitle(pathname: string): string | null {
-  if (typeof document !== 'undefined') {
-    // For tool pages, prioritize the main heading that's not navigation
-    const toolTitle = document.querySelector('main h1, .tool-title, [data-tool-title]');
-    if (toolTitle?.textContent) {
-      const title = toolTitle.textContent.trim();
-      // Avoid generic titles like "All Tools" but allow specific tool names
-      if (title && title !== 'All Tools' && !title.includes('ConvertMorph') && !title.includes('Home')) {
-        return title;
-      }
-    }
-    
-    // Try to get the main title from the page (for blog posts)
-    const mainTitle = document.querySelector('#main-title');
-    if (mainTitle?.textContent) {
-      const title = mainTitle.textContent.trim();
-      if (title && title !== 'All Tools' && !title.includes('ConvertMorph')) {
-        return title;
-      }
-    }
-    
-    // Try first h1 that's not in navigation
-    const h1Elements = document.querySelectorAll('h1');
-    for (const h1 of h1Elements) {
-      const title = h1.textContent?.trim();
-      if (title && title !== 'All Tools' && !title.includes('ConvertMorph') && !title.includes('Home') && !h1.closest('nav, header, .breadcrumb')) {
-        return title;
-      }
-    }
-    
-    // Extract title from document.title if it contains site name
-    const docTitle = document.title;
-    if (docTitle.includes(' - ConvertMorph')) {
-      const extracted = docTitle.split(' - ConvertMorph')[0];
-      if (extracted && extracted !== 'All Tools') {
-        return extracted;
-      }
-    }
-    if (docTitle.includes(' | ConvertMorph')) {
-      const extracted = docTitle.split(' | ConvertMorph')[0];
-      if (extracted && extracted !== 'All Tools') {
-        return extracted;
-      }
-    }
-  }
-  return null;
 }
 
 function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
@@ -77,19 +25,7 @@ function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
     const path = '/' + pathSegments.slice(0, index + 1).join('/');
     let name = '';
     
-    // For the last segment (current page), try to get actual page title
-    // But prioritize mapped names for certain pages
-    const isLastSegment = index === pathSegments.length - 1;
-    const shouldUseMappedName = ['about', 'blog', 'contact', 'privacy', 'terms'].includes(segment);
-    
-    if (isLastSegment && !shouldUseMappedName) {
-      const pageTitle = getPageTitle(pathname);
-      if (pageTitle) {
-        name = pageTitle;
-      }
-    }
-    
-    // If we don't have a page title, use mapping or formatting
+    // Use static mapping for all segments - no dynamic title extraction
     if (!name) {
       // Map path segments to readable names
       switch (segment) {
@@ -262,29 +198,19 @@ function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
   return breadcrumbs;
 }
 
-export function UnifiedBreadcrumb() {
-  const pathname = usePathname();
-  const [isClient, setIsClient] = useState(false);
-  const [clientBreadcrumbs, setClientBreadcrumbs] = useState<BreadcrumbItem[]>([]);
+interface UnifiedBreadcrumbProps {
+  pathname: string;
+}
 
-  // Generate server-safe breadcrumbs (without document access)
-  const serverBreadcrumbs = generateBreadcrumbs(pathname);
-
-  useEffect(() => {
-    setIsClient(true);
-    // Re-generate breadcrumbs after client-side hydration to get proper page titles
-    const timer = setTimeout(() => {
-      setClientBreadcrumbs(generateBreadcrumbs(pathname));
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, [pathname]);
+export function UnifiedBreadcrumb({ pathname }: UnifiedBreadcrumbProps) {
+  // Generate server-side breadcrumbs only - no client-side processing
+  const breadcrumbs = generateBreadcrumbs(pathname);
   
-  // Use server breadcrumbs for JSON-LD to avoid hydration mismatch
+  // Generate JSON-LD using server-side breadcrumbs only
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": serverBreadcrumbs.map(crumb => ({
+    "itemListElement": breadcrumbs.map(crumb => ({
       "@type": "ListItem",
       "position": crumb.position,
       "name": crumb.name,
@@ -292,17 +218,14 @@ export function UnifiedBreadcrumb() {
     }))
   };
 
-  // Use client breadcrumbs for visible navigation (with proper titles)
-  const displayBreadcrumbs = isClient && clientBreadcrumbs.length > 0 ? clientBreadcrumbs : serverBreadcrumbs;
-
   // Don't render breadcrumbs on homepage - no structured data either
-  if (pathname === '/' || serverBreadcrumbs.length <= 1) {
+  if (pathname === '/' || breadcrumbs.length <= 1) {
     return null;
   }
 
   return (
     <>
-      {/* JSON-LD Structured Data - Uses server-safe breadcrumbs */}
+      {/* JSON-LD Structured Data - Single source of truth */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -310,7 +233,7 @@ export function UnifiedBreadcrumb() {
         }}
       />
       
-      {/* Visible Breadcrumb Navigation - Render server-side with client enhancement */}
+      {/* Visible Breadcrumb Navigation */}
       <nav 
         aria-label="Breadcrumb" 
         className="flex items-center space-x-1 text-sm text-muted-foreground py-2 px-4 bg-muted/30 border-b"
@@ -318,9 +241,9 @@ export function UnifiedBreadcrumb() {
         itemType="https://schema.org/BreadcrumbList"
       >
         <ol className="flex items-center space-x-1">
-          {displayBreadcrumbs.map((crumb, index) => (
+          {breadcrumbs.map((crumb, index) => (
             <li 
-              key={crumb.position}
+              key={`breadcrumb-${crumb.position}-${crumb.name}`}
               className="flex items-center"
               itemProp="itemListElement"
               itemScope
