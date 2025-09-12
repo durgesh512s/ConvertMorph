@@ -1,4 +1,7 @@
-import { headers } from 'next/headers';
+'use client';
+
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import { absoluteUrl } from '@/lib/url';
 
 interface BreadcrumbItem {
@@ -183,79 +186,43 @@ function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
   return breadcrumbs;
 }
 
-export async function ServerBreadcrumb() {
-  const headersList = await headers();
-  
-  // Get pathname from various possible headers
-  let pathname = headersList.get('x-pathname') || 
-                 headersList.get('x-forwarded-path') || 
-                 headersList.get('x-invoke-path') ||
-                 '/';
-  
-  // If we still don't have a pathname, try to extract it from the referer
-  if (pathname === '/') {
-    const referer = headersList.get('referer');
-    if (referer) {
-      try {
-        const url = new URL(referer);
-        pathname = url.pathname;
-      } catch (e) {
-        // Fallback to root if URL parsing fails
-        pathname = '/';
-      }
+export function BreadcrumbProvider() {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Remove any existing breadcrumb JSON-LD
+    const existingBreadcrumb = document.querySelector('script[type="application/ld+json"][data-breadcrumb]');
+    if (existingBreadcrumb) {
+      existingBreadcrumb.remove();
     }
-  }
-  
-  // Additional fallback: try to get from x-forwarded-for or other headers
-  if (pathname === '/') {
-    const host = headersList.get('host');
-    const userAgent = headersList.get('user-agent');
+
+    // Generate new breadcrumbs
+    const breadcrumbs = generateBreadcrumbs(pathname);
     
-    // For development, we can try to extract from the request URL
-    if (host && host.includes('localhost')) {
-      // In development, we might need to use a different approach
-      // Let's check if we can get it from the request URL
-      const requestUrl = headersList.get('x-request-url');
-      if (requestUrl) {
-        try {
-          const url = new URL(requestUrl);
-          pathname = url.pathname;
-        } catch (e) {
-          // Continue with fallback
-        }
-      }
-    }
-  }
-  
-  // Debug logging - always log in production to diagnose the issue
-  console.log('ServerBreadcrumb - pathname received:', pathname);
-  console.log('ServerBreadcrumb - all headers:', Object.fromEntries(headersList.entries()));
-  
-  const breadcrumbs = generateBreadcrumbs(pathname);
-  
-  // Debug logging - always log in production to diagnose the issue
-  console.log('ServerBreadcrumb - generated breadcrumbs:', breadcrumbs);
-  
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map(crumb => ({
-      "@type": "ListItem",
-      "position": crumb.position,
-      "name": crumb.name,
-      "item": crumb.item
-    }))
-  };
+    const breadcrumbJsonLd = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbs.map(crumb => ({
+        "@type": "ListItem",
+        "position": crumb.position,
+        "name": crumb.name,
+        "item": crumb.item
+      }))
+    };
 
-  // Debug logging - log the final JSON-LD
-  console.log('ServerBreadcrumb - final JSON-LD:', JSON.stringify(breadcrumbJsonLd, null, 2));
+    // Debug logging
+    console.log('BreadcrumbProvider - pathname:', pathname);
+    console.log('BreadcrumbProvider - generated breadcrumbs:', breadcrumbs);
+    console.log('BreadcrumbProvider - final JSON-LD:', JSON.stringify(breadcrumbJsonLd, null, 2));
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(breadcrumbJsonLd)
-      }}
-    />
-  );
+    // Create and inject new JSON-LD script
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.setAttribute('data-breadcrumb', 'true');
+    script.textContent = JSON.stringify(breadcrumbJsonLd);
+    document.head.appendChild(script);
+
+  }, [pathname]);
+
+  return null; // This component doesn't render anything visible
 }

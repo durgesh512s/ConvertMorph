@@ -8,9 +8,11 @@ export function middleware(req: NextRequest) {
   // Clone the request headers and add our custom header
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set('x-pathname', pathname);
+  requestHeaders.set('x-request-url', req.url);
   
   // Debug logging - always log in production to diagnose the issue
   console.log('Middleware - setting x-pathname header:', pathname);
+  console.log('Middleware - full URL:', req.url);
   
   // Create response with modified request headers
   const res = NextResponse.next({
@@ -18,6 +20,9 @@ export function middleware(req: NextRequest) {
       headers: requestHeaders,
     },
   });
+  
+  // Also set response headers for debugging
+  res.headers.set('x-pathname', pathname);
   
   const csp = [
     "default-src 'self'",

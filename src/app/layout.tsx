@@ -13,7 +13,7 @@ import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
-import { ServerBreadcrumb } from '@/components/ServerBreadcrumb';
+import { BreadcrumbProvider } from '@/components/BreadcrumbProvider';
 import { absoluteUrl } from '@/lib/url';
 
 const inter = Inter({
@@ -328,7 +328,7 @@ export default function RootLayout({
         {/* Enhanced JSON-LD structured data */}
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
-        <ServerBreadcrumb />
+        <BreadcrumbProvider />
         
         {/* Favicon and Icons - Only favicon.svg and essential files */}
         <link rel="icon" href="/favicon.svg?v=mffc5l8y" type="image/svg+xml" />
