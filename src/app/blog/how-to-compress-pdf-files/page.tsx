@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, FileText, Clock } from 'lucide-react';
-import { buildPostMetadata, articleJsonLd, faqJsonLd, breadcrumbsJsonLd, BlogPostMetadata } from '@/lib/seo';
+import { buildPostMetadata, articleJsonLd, faqJsonLd, BlogPostMetadata } from '@/lib/seo';
 import JsonLd from '@/components/JsonLd';
 import { BlogTOC } from '@/components/BlogTOC';
 import { ToolCTA } from '@/components/RelatedCTA';
@@ -70,12 +70,6 @@ const faqs = [
   }
 ];
 
-// Breadcrumbs data
-const breadcrumbs = [
-  { name: 'Home', url: '/' },
-  { name: 'Blog', url: '/blog' },
-  { name: 'How to Compress PDF Files', url: '/blog/how-to-compress-pdf-files' }
-];
 
 export default function CompressPDFGuide() {
   return (

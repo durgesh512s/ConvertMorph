@@ -115,14 +115,6 @@ export default function AboutPage() {
     }
   }
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": config.siteUrl },
-      { "@type": "ListItem", "position": 2, "name": "About", "item": `${config.siteUrl}/about` }
-    ]
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">

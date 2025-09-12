@@ -295,19 +295,9 @@ export function UnifiedBreadcrumb() {
   // Use client breadcrumbs for visible navigation (with proper titles)
   const displayBreadcrumbs = isClient && clientBreadcrumbs.length > 0 ? clientBreadcrumbs : serverBreadcrumbs;
 
-  // Don't render breadcrumbs on homepage
+  // Don't render breadcrumbs on homepage - no structured data either
   if (pathname === '/' || serverBreadcrumbs.length <= 1) {
-    return (
-      <>
-        {/* Always include JSON-LD structured data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbJsonLd)
-          }}
-        />
-      </>
-    );
+    return null;
   }
 
   return (
