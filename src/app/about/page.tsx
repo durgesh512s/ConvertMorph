@@ -27,6 +27,25 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://convertmorph.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About",
+        "item": "https://convertmorph.com/about"
+      }
+    ]
+  }
+
   // Organization Schema Markup
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -117,10 +136,14 @@ export default function AboutPage() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <JsonLd data={organizationSchema} />
-      <JsonLd data={websiteSchema} />
-      {/* Breadcrumb JSON-LD removed - handled by UnifiedBreadcrumb component in layout */}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <JsonLd data={organizationSchema} />
+        <JsonLd data={websiteSchema} />
       
       {/* Hero Section */}
       <div className="relative overflow-hidden">
@@ -544,6 +567,7 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   )
 }

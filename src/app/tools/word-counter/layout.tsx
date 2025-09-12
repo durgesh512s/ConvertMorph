@@ -36,5 +36,23 @@ export default function WordCounterLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://convertmorph.com/tools" },
+      { "@type": "ListItem", "position": 3, "name": "Word Counter", "item": "https://convertmorph.com/tools/word-counter" }
+    ]
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {children}
+    </>
+  )
 }

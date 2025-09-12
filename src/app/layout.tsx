@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { Suspense } from "react";
-import { headers } from "next/headers";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { LazyFooter } from "@/components/LazyFooter";
@@ -14,7 +13,6 @@ import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
-import { UnifiedBreadcrumb } from '@/components/UnifiedBreadcrumb';
 import { absoluteUrl } from '@/lib/url';
 
 const inter = Inter({
@@ -318,14 +316,11 @@ const websiteJsonLd = {
 
 
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Get pathname from headers for server-side breadcrumb generation
-  const headersList = await headers();
-  const pathname = headersList.get('x-pathname') || '/';
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <head>
@@ -377,7 +372,6 @@ export default async function RootLayout({
           </header>
           
           <main className="flex-1 relative">
-            <UnifiedBreadcrumb pathname={pathname} />
             {children}
           </main>
           

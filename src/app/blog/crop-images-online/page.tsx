@@ -76,17 +76,32 @@ const faqs = [
 ];
 
 
-export default function CropImagesGuide() {
+export default function CropImagesGuide() {  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://convertmorph.com/blog" },
+      { "@type": "ListItem", "position": 3, "name": "Crop Images Online: Complete Guide to Image Cropping", "item": "https://convertmorph.com/blog/crop-images-online" }
+    ]
+  };
+
+
   return (
     <>
-      {/* JSON-LD Structured Data */}
+      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+{/* JSON-LD Structured Data */}
       <JsonLd data={articleJsonLd(postData)} />
       <JsonLd data={faqJsonLd(faqs)} />
-      {/* Breadcrumb JSON-LD removed - handled by UnifiedBreadcrumb component in layout */}
+      {/* Breadcrumb JSON-LD added directly to this page */}
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-          {/* Breadcrumbs removed - now handled by UnifiedBreadcrumb component in layout */}
+          {/* Breadcrumbs handled by individual page breadcrumb JSON-LD */}
 
 <Link 
             href="/blog" 
