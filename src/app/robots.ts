@@ -1,3 +1,4 @@
+// src/app/robots.ts (or public/robots.txt)
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
@@ -18,42 +19,38 @@ export default function robots(): MetadataRoute.Robots {
           '/docs/',
           '/*.ts$',
           '/*.map$',
-          // 🚫 Block unnecessary chunks (save crawl budget)
-          '/_next/static/chunks/vendor-*',
-          '/_next/static/chunks/webpack-*',
-          '/_next/static/chunks/framework-*',
         ],
       },
       {
+        // Tell Googlebot: allow pages & tool chunks, block wasteful vendor/webpack
         userAgent: 'Googlebot',
         allow: [
-          '/_next/static/chunks/app/tools/', // ✅ allow tool chunks
-          '/tools/',                         // ✅ allow tool pages
-          '/og/',                            // ✅ allow OG images
-          '/_next/static/*.js',
-          '/public/*.js',
+          '/tools/',
+          '/_next/static/chunks/app/tools/',
+          '/_next/static/chunks/pages*',
+          '/_next/static/chunks/framework*',   // keep framework allowed for safety
+          '/_next/static/css/*',
+          '/favicon.ico',
+          '/manifest.webmanifest',
+        ],
+        disallow: [
+          '/_next/static/chunks/vendor-*',    // block large vendor bundles from crawling
+          '/_next/static/chunks/webpack-*',   // block webpack runtime
+          '/_next/static/chunks/ui-*',        // optional: UI lib chunks
+          '/_next/static/media/*',
+          '/public/samples/*',
+          '/public/og/*',
+          '/sw.js',
+          '/service-worker.js',
+          '/pdf.worker.min.js',
         ],
       },
-      {
-        userAgent: 'GPTBot',
-        disallow: '/',
-      },
-      {
-        userAgent: 'ChatGPT-User',
-        disallow: '/',
-      },
-      {
-        userAgent: 'CCBot',
-        disallow: '/',
-      },
-      {
-        userAgent: 'anthropic-ai',
-        disallow: '/',
-      },
-      {
-        userAgent: 'Claude-Web',
-        disallow: '/',
-      },
+      // Block other unwanted bots
+      { userAgent: 'GPTBot', disallow: ['/'] },
+      { userAgent: 'ChatGPT-User', disallow: ['/'] },
+      { userAgent: 'CCBot', disallow: ['/'] },
+      { userAgent: 'anthropic-ai', disallow: ['/'] },
+      { userAgent: 'Claude-Web', disallow: ['/'] },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
   }
