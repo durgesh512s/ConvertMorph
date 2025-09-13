@@ -476,7 +476,7 @@ export function RelatedArticles({ toolName, articles }: RelatedArticlesProps) {
                 href={article.href}
                 className="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
               >
-                Read Article
+                Read {article.category} Guide
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Link>
             </CardContent>

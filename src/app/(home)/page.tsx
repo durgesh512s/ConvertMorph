@@ -471,7 +471,7 @@ export default function Home() {
                         href={`/blog/${post.slug}`}
                         className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors text-sm"
                       >
-                        Read More
+                        Read {post.category} Guide
                         <ArrowRight className="ml-1 h-3 w-3" />
                       </Link>
                     </div>
