@@ -1,7 +1,7 @@
 import React from 'react';
 import { Archive, GitMerge, Scissors } from 'lucide-react';
-import ToolsGrid from './ToolsGrid';
 import { getAllTools } from './toolsData';
+import ToolsClientWrapper from './ToolsClientWrapper';
 
 // Generate JSON-LD structured data on server
 function generateJsonLd() {
@@ -76,8 +76,8 @@ export default function ToolsPage() {
             </p>
           </div>
 
-          {/* Server-rendered tools grid */}
-          <ToolsGrid />
+          {/* Client-side component with search and category filters */}
+          <ToolsClientWrapper />
 
           {/* Features Section */}
           <div className="bg-white dark:bg-gray-900 rounded-lg p-8 shadow-sm mt-16">
