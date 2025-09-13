@@ -16,7 +16,7 @@ import React, { useEffect } from 'react';
  */
 
 // Suppression expiry date - remove after fixing root cause
-const SUPPRESSION_EXPIRY = new Date('2025-01-15'); // 3 months from deployment
+const SUPPRESSION_EXPIRY = new Date('2026-01-15'); // 3 months from deployment
 
 // Error Boundary Class Component
 class ErrorBoundary extends React.Component<
