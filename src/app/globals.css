@@ -123,6 +123,44 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 4rem; /* Account for sticky header height */
+    /* Mobile performance optimizations */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  /* Mobile performance optimizations */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeSpeed;
+    /* Optimize scrolling performance on mobile */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Optimize touch interactions for mobile */
+  button,
+  [role="button"],
+  input,
+  textarea,
+  select,
+  a {
+    touch-action: manipulation;
+  }
+  
+  /* Prevent zoom on input focus (mobile) */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Prevent layout shift during font load */
+  * {
+    font-synthesis: none;
   }
 }
 
@@ -156,6 +194,44 @@
     .tabs-rail {
       padding-right: max(0.5rem, env(safe-area-inset-right));
     }
+  }
+  
+  /* Mobile performance optimizations */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  /* Optimize animations for mobile */
+  @media (prefers-reduced-motion: no-preference) {
+    .animate-pulse,
+    .animate-spin,
+    .animate-bounce {
+      will-change: transform;
+    }
+  }
+  
+  /* Remove will-change after animations to save memory */
+  .animate-pulse:not(.animating),
+  .animate-spin:not(.animating),
+  .animate-bounce:not(.animating) {
+    will-change: auto;
+  }
+  
+  /* Prevent layout shifts for dynamic content */
+  .dynamic-content-container {
+    min-height: 200px; /* Adjust based on content */
+  }
+  
+  /* Image containers to prevent layout shift */
+  .image-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 }
 
