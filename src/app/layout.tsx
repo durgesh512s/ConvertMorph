@@ -13,10 +13,7 @@ import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
-import HydrationErrorBoundary from '@/components/HydrationErrorBoundary';
 import HydrationErrorSuppressor from '@/components/HydrationErrorSuppressor';
-import ClientOnly from '@/components/ClientOnly';
-import { ClientErrorBoundary } from '@/components/ClientErrorBoundary';
 import { absoluteUrl } from '@/lib/url';
 
 const inter = Inter({
@@ -364,19 +361,15 @@ export default function RootLayout({
         )}
       </head>
       <body className={`min-h-screen bg-background font-sans antialiased ${poppins.variable}`}>
-        <ClientErrorBoundary>
-          <HydrationErrorBoundary>
-            <Suspense fallback={null}>
-              <ProgressBar />
-            </Suspense>
-          </HydrationErrorBoundary>
+        <HydrationErrorSuppressor>
+          <Suspense fallback={null}>
+            <ProgressBar />
+          </Suspense>
           
           {/* Modern layout structure with improved accessibility */}
           <div className="flex min-h-screen flex-col">
             <header>
-              <HydrationErrorBoundary>
-                <Navbar />
-              </HydrationErrorBoundary>
+              <Navbar />
               <LazyHeaderAd />
             </header>
             
@@ -394,18 +387,13 @@ export default function RootLayout({
           <KeyboardShortcuts />
           
           {/* Analytics and Performance */}
-          <ClientOnly>
-            <HydrationErrorSuppressor />
-            <Suspense fallback={null}>
-              <GoogleAnalytics />
-            </Suspense>
-            <VercelAnalytics />
-            <PerformanceMonitor />
-            <HydrationErrorBoundary>
-              <CacheBuster debug={process.env.NODE_ENV === 'development'} />
-            </HydrationErrorBoundary>
-          </ClientOnly>
-        </ClientErrorBoundary>
+          <Suspense fallback={null}>
+            <GoogleAnalytics />
+          </Suspense>
+          <VercelAnalytics />
+          <PerformanceMonitor />
+          <CacheBuster debug={process.env.NODE_ENV === 'development'} />
+        </HydrationErrorSuppressor>
       </body>
     </html>
   );

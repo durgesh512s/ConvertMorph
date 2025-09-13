@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LazyContentAd } from '@/components/LazyAdSense';
 import { CSSFadeIn, CSSSlideUp, LazyFadeIn, LazySlideUp } from '@/components/LazyMotion';
 import { formatDate } from '@/lib/date-utils';
-import ClientOnly from '@/components/ClientOnly';
 import {
   Archive,
   GitMerge,
@@ -584,9 +583,7 @@ export default function Home() {
       {/* Content Ad */}
       <section className="py-8 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ClientOnly>
-            <LazyContentAd />
-          </ClientOnly>
+          <LazyContentAd />
         </div>
       </section>
 
