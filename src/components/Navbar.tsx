@@ -267,32 +267,34 @@ export function Navbar() {
                       </Link>
                     </div>
 
-                    {/* Recently Used Section - Only show after client hydration */}
-                    {isClient && mounted && recentlyUsedTools.length > 0 && (
-                      <div className="mb-6">
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Recently Used</h3>
-                        <div className="flex space-x-3">
-                          {recentlyUsedTools.map((tool) => {
-                            const Icon = tool.icon;
-                            return (
-                              <Link
-                                key={tool.name}
-                                href={tool.href}
-                                className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
-                                onClick={() => handleToolClick(tool.href)}
-                              >
-                                <div className={cn("w-8 h-8 rounded-full flex items-center justify-center mb-1", tool.color)}>
-                                  <Icon className="h-4 w-4" />
-                                </div>
-                                <span className="text-xs text-gray-600 dark:text-gray-400 text-center leading-tight">
-                                  {tool.name.replace('PDF ', '')}
-                                </span>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
+                    {/* Recently Used Section - Reserve space to prevent layout shift */}
+                    <div className="mb-6" style={{ minHeight: isClient && mounted && recentlyUsedTools.length > 0 ? 'auto' : '0px', contain: 'layout' }}>
+                      {isClient && mounted && recentlyUsedTools.length > 0 && (
+                        <>
+                          <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Recently Used</h3>
+                          <div className="flex space-x-3">
+                            {recentlyUsedTools.map((tool) => {
+                              const Icon = tool.icon;
+                              return (
+                                <Link
+                                  key={tool.name}
+                                  href={tool.href}
+                                  className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
+                                  onClick={() => handleToolClick(tool.href)}
+                                >
+                                  <div className={cn("w-8 h-8 rounded-full flex items-center justify-center mb-1", tool.color)}>
+                                    <Icon className="h-4 w-4" />
+                                  </div>
+                                  <span className="text-xs text-gray-600 dark:text-gray-400 text-center leading-tight">
+                                    {tool.name.replace('PDF ', '')}
+                                  </span>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </>
+                      )}
+                    </div>
 
                     {/* 4-Column Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

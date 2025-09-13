@@ -128,10 +128,11 @@ export function CSSFadeIn({ children, className, delay = 0 }: { children: ReactN
     <div 
       className={`${className}`}
       style={{ 
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0px)' : 'translateY(10px)',
-        transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
-        minHeight: '1em' // Reserve space to prevent layout shift
+        opacity: isVisible ? 1 : 0.01, // Start with minimal opacity instead of 0
+        transform: isVisible ? 'translateY(0px)' : 'translateY(5px)', // Reduced movement
+        transition: 'opacity 0.3s ease-out, transform 0.3s ease-out', // Faster transition
+        contain: 'layout style', // Prevent layout shifts
+        willChange: isVisible ? 'auto' : 'opacity, transform' // Optimize for animation
       }}
     >
       {children}
@@ -155,10 +156,11 @@ export function CSSSlideUp({ children, className, delay = 0 }: { children: React
     <div 
       className={`${className}`}
       style={{ 
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0px)' : 'translateY(20px)',
-        transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
-        minHeight: '1em' // Reserve space to prevent layout shift
+        opacity: isVisible ? 1 : 0.01, // Start with minimal opacity instead of 0
+        transform: isVisible ? 'translateY(0px)' : 'translateY(10px)', // Reduced movement
+        transition: 'opacity 0.3s ease-out, transform 0.3s ease-out', // Faster transition
+        contain: 'layout style', // Prevent layout shifts
+        willChange: isVisible ? 'auto' : 'opacity, transform' // Optimize for animation
       }}
     >
       {children}

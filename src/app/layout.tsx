@@ -21,6 +21,8 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
   preload: true,
+  fallback: ['system-ui', 'arial'],
+  adjustFontFallback: true,
 });
 
 const poppins = Poppins({
@@ -29,6 +31,8 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
   preload: true,
+  fallback: ['system-ui', 'arial'],
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
@@ -351,6 +355,22 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
+        {/* Preload critical fonts to prevent layout shift */}
+        <link
+          rel="preload"
+          href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        
         {/* Google AdSense - Load with lower priority */}
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
           <script
@@ -373,7 +393,7 @@ export default function RootLayout({
               <LazyHeaderAd />
             </header>
             
-            <main className="flex-1 relative">
+            <main className="flex-1 relative min-h-[calc(100vh-200px)]">
               {children}
             </main>
             

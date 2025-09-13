@@ -216,9 +216,9 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10 py-16 sm:py-20 lg:py-24 min-h-[600px] flex items-center hero-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <section className="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10 py-16 sm:py-20 lg:py-24 min-h-[600px] flex items-center hero-section mobile-container mobile-content">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mobile-container">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mobile-grid">
             {/* Left Content */}
             <CSSFadeIn className="text-center lg:text-left">
               <CSSSlideUp
@@ -231,7 +231,7 @@ export default function Home() {
 
               <CSSSlideUp 
                 delay={0}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 mobile-text"
               >
                 Transform Documents{' '}
                 <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -241,7 +241,7 @@ export default function Home() {
 
               <CSSSlideUp 
                 delay={0}
-                className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed"
+                className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed mobile-text"
               >
                 Professional PDF tools, image editors, text processors, and financial calculators. 
                 <br className="hidden sm:block" />
@@ -252,13 +252,13 @@ export default function Home() {
                 delay={4}
                 className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8"
               >
-                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 mobile-button mobile-touch">
                   <Link href="/tools" className="flex items-center gap-2">
                     Start Using Tools Free
                     <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all duration-300">
+                <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all duration-300 mobile-button mobile-touch">
                   <Link href="/about">
                     Learn More About ConvertMorph
                   </Link>
