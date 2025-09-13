@@ -16,14 +16,15 @@ function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) 
     // Set mounted to true after client hydration
     setMounted(true);
 
+    // Only run on client side after mounting
+    if (typeof window === 'undefined') return;
+
     if (debug) {
       console.log('CacheBuster: Component mounted');
     }
 
     // Simple cache busting functionality
     const handleCacheBusting = () => {
-      if (typeof window === 'undefined') return;
-
       // Get cache bust ID from environment - use consistent fallback
       const cacheBustId = process.env.NEXT_PUBLIC_CACHE_BUST_ID || 'static';
       
@@ -62,7 +63,7 @@ function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) 
     }, 100);
 
     // Add global functions for debugging only after mounting
-    if (typeof window !== 'undefined' && debug) {
+    if (debug) {
       try {
         (window as any).cacheBustInfo = {
           id: process.env.NEXT_PUBLIC_CACHE_BUST_ID || 'static',
@@ -77,6 +78,11 @@ function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) 
 
     return () => clearTimeout(timer);
   }, [debug, forceRefresh]);
+
+  // Don't render anything until mounted to prevent hydration issues
+  if (!mounted) {
+    return null;
+  }
 
   return null; // This component doesn't render anything
 }

@@ -14,6 +14,19 @@ const nextConfig: NextConfig = {
   generateEtags: true,
   poweredByHeader: false,
 
+  // Suppress hydration warnings in production
+  onDemandEntries: {
+    // Period (in ms) where the server will keep pages in the buffer
+    maxInactiveAge: 25 * 1000,
+    // Number of pages that should be kept simultaneously without being disposed
+    pagesBufferLength: 2,
+  },
+
+  // React configuration to handle hydration issues
+  env: {
+    SUPPRESS_HYDRATION_WARNING: process.env.NODE_ENV === 'production' ? 'true' : 'false',
+  },
+
   // Custom build ID for cache busting
   generateBuildId: async () => {
     return buildId;

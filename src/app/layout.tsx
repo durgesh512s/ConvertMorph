@@ -14,6 +14,7 @@ import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
 import HydrationErrorBoundary from '@/components/HydrationErrorBoundary';
+import ClientOnly from '@/components/ClientOnly';
 import { absoluteUrl } from '@/lib/url';
 
 const inter = Inter({
@@ -390,14 +391,16 @@ export default function RootLayout({
         <KeyboardShortcuts />
         
         {/* Analytics and Performance */}
-        <Suspense fallback={null}>
-          <GoogleAnalytics />
-        </Suspense>
-        <VercelAnalytics />
-        <PerformanceMonitor />
-        <HydrationErrorBoundary>
-          <CacheBuster debug={process.env.NODE_ENV === 'development'} />
-        </HydrationErrorBoundary>
+        <ClientOnly>
+          <Suspense fallback={null}>
+            <GoogleAnalytics />
+          </Suspense>
+          <VercelAnalytics />
+          <PerformanceMonitor />
+          <HydrationErrorBoundary>
+            <CacheBuster debug={process.env.NODE_ENV === 'development'} />
+          </HydrationErrorBoundary>
+        </ClientOnly>
       </body>
     </html>
   );

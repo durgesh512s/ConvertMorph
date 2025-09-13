@@ -1,6 +1,6 @@
 'use client';
 
-import { lazy, Suspense, ReactNode } from 'react';
+import { lazy, Suspense, ReactNode, useEffect, useState } from 'react';
 
 // Lazy load framer-motion to prevent blocking initial render
 const MotionDiv = lazy(() => 
@@ -20,6 +20,17 @@ const MotionFallback = ({ children, className }: { children: ReactNode; classNam
   <div className={className}>{children}</div>
 );
 
+// Hook to check if component is mounted (client-side)
+function useIsMounted() {
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  return isMounted;
+}
+
 // Optimized motion components with lazy loading
 interface LazyMotionProps {
   children: ReactNode;
@@ -33,6 +44,13 @@ interface LazyMotionProps {
 }
 
 export function LazyFadeIn({ children, className, delay = 0 }: LazyMotionProps) {
+  const isMounted = useIsMounted();
+  
+  // Use CSS animation on server/initial render, motion on client
+  if (!isMounted) {
+    return <CSSFadeIn className={className} delay={delay}>{children}</CSSFadeIn>;
+  }
+  
   return (
     <Suspense fallback={<MotionFallback className={className}>{children}</MotionFallback>}>
       <MotionDiv
@@ -49,6 +67,13 @@ export function LazyFadeIn({ children, className, delay = 0 }: LazyMotionProps) 
 }
 
 export function LazySlideUp({ children, className, delay = 0 }: LazyMotionProps) {
+  const isMounted = useIsMounted();
+  
+  // Use CSS animation on server/initial render, motion on client
+  if (!isMounted) {
+    return <CSSSlideUp className={className} delay={delay}>{children}</CSSSlideUp>;
+  }
+  
   return (
     <Suspense fallback={<MotionFallback className={className}>{children}</MotionFallback>}>
       <MotionDiv
@@ -65,6 +90,13 @@ export function LazySlideUp({ children, className, delay = 0 }: LazyMotionProps)
 }
 
 export function LazyHeroAnimation({ children, className, delay = 0 }: LazyMotionProps) {
+  const isMounted = useIsMounted();
+  
+  // Use CSS animation on server/initial render, motion on client
+  if (!isMounted) {
+    return <CSSFadeIn className={className} delay={delay}>{children}</CSSFadeIn>;
+  }
+  
   return (
     <Suspense fallback={<MotionFallback className={className}>{children}</MotionFallback>}>
       <MotionDiv
