@@ -14,6 +14,7 @@ import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
 import HydrationErrorBoundary from '@/components/HydrationErrorBoundary';
+import HydrationErrorSuppressor from '@/components/HydrationErrorSuppressor';
 import ClientOnly from '@/components/ClientOnly';
 import { absoluteUrl } from '@/lib/url';
 
@@ -392,6 +393,7 @@ export default function RootLayout({
         
         {/* Analytics and Performance */}
         <ClientOnly>
+          <HydrationErrorSuppressor />
           <Suspense fallback={null}>
             <GoogleAnalytics />
           </Suspense>

@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LazyContentAd } from '@/components/LazyAdSense';
 import { CSSFadeIn, CSSSlideUp, LazyFadeIn, LazySlideUp } from '@/components/LazyMotion';
 import { formatDate } from '@/lib/date-utils';
+import ClientOnly from '@/components/ClientOnly';
 import {
   Archive,
   GitMerge,
@@ -198,13 +199,18 @@ export default function Home() {
 
   const scrollToToolkit = (categoryIndex: number) => {
     setActiveCategory(categoryIndex);
-    // Scroll to the Professional Digital Toolkit section
-    const toolkitSection = document.getElementById('professional-toolkit');
-    if (toolkitSection) {
-      toolkitSection.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
+    // Only scroll if we're on the client side
+    if (typeof window !== 'undefined') {
+      // Use setTimeout to ensure the DOM is ready
+      setTimeout(() => {
+        const toolkitSection = document.getElementById('professional-toolkit');
+        if (toolkitSection) {
+          toolkitSection.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 0);
     }
   };
 
@@ -578,7 +584,9 @@ export default function Home() {
       {/* Content Ad */}
       <section className="py-8 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <LazyContentAd />
+          <ClientOnly>
+            <LazyContentAd />
+          </ClientOnly>
         </div>
       </section>
 
