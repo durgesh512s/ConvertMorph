@@ -9,6 +9,7 @@ const buildId = process.env.VERCEL_GIT_COMMIT_SHA ||
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
+  productionBrowserSourceMaps: true, // enable source maps
 
   // Enable ETags for better caching
   generateEtags: true,

@@ -16,6 +16,7 @@ import CacheBuster from '../CacheBuster';
 import HydrationErrorBoundary from '@/components/HydrationErrorBoundary';
 import HydrationErrorSuppressor from '@/components/HydrationErrorSuppressor';
 import ClientOnly from '@/components/ClientOnly';
+import { ClientErrorBoundary } from '@/components/ClientErrorBoundary';
 import { absoluteUrl } from '@/lib/url';
 
 const inter = Inter({
@@ -363,46 +364,48 @@ export default function RootLayout({
         )}
       </head>
       <body className={`min-h-screen bg-background font-sans antialiased ${poppins.variable}`}>
-        <HydrationErrorBoundary>
-          <Suspense fallback={null}>
-            <ProgressBar />
-          </Suspense>
-        </HydrationErrorBoundary>
-        
-        {/* Modern layout structure with improved accessibility */}
-        <div className="flex min-h-screen flex-col">
-          <header>
-            <HydrationErrorBoundary>
-              <Navbar />
-            </HydrationErrorBoundary>
-            <LazyHeaderAd />
-          </header>
-          
-          <main className="flex-1 relative">
-            {children}
-          </main>
-          
-          <footer>
-            <LazyFooter />
-          </footer>
-        </div>
-        
-        {/* Global UI Components */}
-        <Toaster />
-        <KeyboardShortcuts />
-        
-        {/* Analytics and Performance */}
-        <ClientOnly>
-          <HydrationErrorSuppressor />
-          <Suspense fallback={null}>
-            <GoogleAnalytics />
-          </Suspense>
-          <VercelAnalytics />
-          <PerformanceMonitor />
+        <ClientErrorBoundary>
           <HydrationErrorBoundary>
-            <CacheBuster debug={process.env.NODE_ENV === 'development'} />
+            <Suspense fallback={null}>
+              <ProgressBar />
+            </Suspense>
           </HydrationErrorBoundary>
-        </ClientOnly>
+          
+          {/* Modern layout structure with improved accessibility */}
+          <div className="flex min-h-screen flex-col">
+            <header>
+              <HydrationErrorBoundary>
+                <Navbar />
+              </HydrationErrorBoundary>
+              <LazyHeaderAd />
+            </header>
+            
+            <main className="flex-1 relative">
+              {children}
+            </main>
+            
+            <footer>
+              <LazyFooter />
+            </footer>
+          </div>
+          
+          {/* Global UI Components */}
+          <Toaster />
+          <KeyboardShortcuts />
+          
+          {/* Analytics and Performance */}
+          <ClientOnly>
+            <HydrationErrorSuppressor />
+            <Suspense fallback={null}>
+              <GoogleAnalytics />
+            </Suspense>
+            <VercelAnalytics />
+            <PerformanceMonitor />
+            <HydrationErrorBoundary>
+              <CacheBuster debug={process.env.NODE_ENV === 'development'} />
+            </HydrationErrorBoundary>
+          </ClientOnly>
+        </ClientErrorBoundary>
       </body>
     </html>
   );
