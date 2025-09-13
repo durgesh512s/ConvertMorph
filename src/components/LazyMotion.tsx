@@ -113,10 +113,26 @@ export function LazyHeroAnimation({ children, className, delay = 0 }: LazyMotion
 
 // Simple CSS-only animations as fallback for critical content
 export function CSSFadeIn({ children, className, delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    // Trigger animation after component mounts to prevent layout shift
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, delay * 100);
+    
+    return () => clearTimeout(timer);
+  }, [delay]);
+  
   return (
     <div 
-      className={`${className} animate-in fade-in duration-500`}
-      style={{ animationDelay: `${delay * 100}ms` }}
+      className={`${className}`}
+      style={{ 
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0px)' : 'translateY(10px)',
+        transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
+        minHeight: '1em' // Reserve space to prevent layout shift
+      }}
     >
       {children}
     </div>
@@ -124,10 +140,26 @@ export function CSSFadeIn({ children, className, delay = 0 }: { children: ReactN
 }
 
 export function CSSSlideUp({ children, className, delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    // Trigger animation after component mounts to prevent layout shift
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, delay * 100);
+    
+    return () => clearTimeout(timer);
+  }, [delay]);
+  
   return (
     <div 
-      className={`${className} animate-in slide-in-from-bottom-4 duration-500`}
-      style={{ animationDelay: `${delay * 100}ms` }}
+      className={`${className}`}
+      style={{ 
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0px)' : 'translateY(20px)',
+        transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
+        minHeight: '1em' // Reserve space to prevent layout shift
+      }}
     >
       {children}
     </div>

@@ -233,6 +233,33 @@
     height: auto;
     display: block;
   }
+  
+  /* Prevent layout shifts during hydration */
+  .hero-section {
+    contain: layout style;
+  }
+  
+  /* Stable dimensions for animated elements */
+  .stable-animation {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Prevent font loading layout shifts */
+  .font-display-swap {
+    font-display: swap;
+  }
+  
+  /* Reserve space for content that loads dynamically */
+  .content-placeholder {
+    min-height: 1em;
+    visibility: hidden;
+  }
+  
+  .content-placeholder.loaded {
+    visibility: visible;
+  }
 }
 
 /* Custom NProgress styles */
