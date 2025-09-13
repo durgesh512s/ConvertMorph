@@ -178,7 +178,11 @@ export function Navbar() {
   useEffect(() => {
     setMounted(true);
     if (!isClient) return;
-    setRecentlyUsedSlugs(getRecentlyUsedTools());
+    // Delay loading recently used tools to prevent hydration mismatch
+    const timer = setTimeout(() => {
+      setRecentlyUsedSlugs(getRecentlyUsedTools());
+    }, 100);
+    return () => clearTimeout(timer);
   }, [isClient]);
 
   // Click outside handler
@@ -205,11 +209,14 @@ export function Navbar() {
     .filter(Boolean) as typeof allTools;
 
   const handleToolClick = (toolHref: string) => {
-    if (!isClient) return;
+    if (!isClient || !mounted) return;
     const toolSlug = toolHref.split('/').pop();
     if (toolSlug) {
       addToRecentlyUsed(toolSlug);
-      setRecentlyUsedSlugs(getRecentlyUsedTools());
+      // Update recently used tools after a brief delay to ensure consistency
+      setTimeout(() => {
+        setRecentlyUsedSlugs(getRecentlyUsedTools());
+      }, 50);
     }
     setToolsDropdownOpen(false);
   };
@@ -259,8 +266,8 @@ export function Navbar() {
                       </Link>
                     </div>
 
-                    {/* Recently Used Section */}
-                    {isClient && recentlyUsedTools.length > 0 && (
+                    {/* Recently Used Section - Only show after client hydration */}
+                    {isClient && mounted && recentlyUsedTools.length > 0 && (
                       <div className="mb-6">
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Recently Used</h3>
                         <div className="flex space-x-3">

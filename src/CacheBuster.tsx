@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface CacheBusterProps {
   /** Enable debug logging */
@@ -10,17 +10,22 @@ interface CacheBusterProps {
 }
 
 function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) {
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    // Set mounted to true after client hydration
+    setMounted(true);
+
     if (debug) {
       console.log('CacheBuster: Component mounted');
     }
 
     // Simple cache busting functionality
     const handleCacheBusting = () => {
-      if (typeof window === 'undefined') return;
+      if (typeof window === 'undefined' || !mounted) return;
 
-      // Get cache bust ID from environment
-      const cacheBustId = process.env.NEXT_PUBLIC_CACHE_BUST_ID || 'dev';
+      // Get cache bust ID from environment - use consistent fallback
+      const cacheBustId = process.env.NEXT_PUBLIC_CACHE_BUST_ID || 'static';
       
       if (debug) {
         console.log('CacheBuster: Cache bust ID:', cacheBustId);
@@ -45,16 +50,21 @@ function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) 
       }
     };
 
-    handleCacheBusting();
+    // Delay cache busting to ensure it happens after hydration
+    const timer = setTimeout(() => {
+      handleCacheBusting();
+    }, 100);
 
-    // Add global functions for debugging
-    if (typeof window !== 'undefined' && debug) {
+    // Add global functions for debugging only after mounting
+    if (typeof window !== 'undefined' && debug && mounted) {
       (window as any).cacheBustInfo = {
-        id: process.env.NEXT_PUBLIC_CACHE_BUST_ID || 'dev',
+        id: process.env.NEXT_PUBLIC_CACHE_BUST_ID || 'static',
         environment: process.env.NODE_ENV || 'development',
       };
     }
-  }, [debug, forceRefresh]);
+
+    return () => clearTimeout(timer);
+  }, [debug, forceRefresh, mounted]);
 
   return null; // This component doesn't render anything
 }

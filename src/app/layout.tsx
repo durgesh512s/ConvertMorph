@@ -13,6 +13,7 @@ import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
+import HydrationErrorBoundary from '@/components/HydrationErrorBoundary';
 import { absoluteUrl } from '@/lib/url';
 
 const inter = Inter({
@@ -360,14 +361,18 @@ export default function RootLayout({
         )}
       </head>
       <body className={`min-h-screen bg-background font-sans antialiased ${poppins.variable}`}>
-        <Suspense fallback={null}>
-          <ProgressBar />
-        </Suspense>
+        <HydrationErrorBoundary>
+          <Suspense fallback={null}>
+            <ProgressBar />
+          </Suspense>
+        </HydrationErrorBoundary>
         
         {/* Modern layout structure with improved accessibility */}
         <div className="flex min-h-screen flex-col">
           <header>
-            <Navbar />
+            <HydrationErrorBoundary>
+              <Navbar />
+            </HydrationErrorBoundary>
             <LazyHeaderAd />
           </header>
           
@@ -390,7 +395,9 @@ export default function RootLayout({
         </Suspense>
         <VercelAnalytics />
         <PerformanceMonitor />
-        <CacheBuster debug={process.env.NODE_ENV === 'development'} />
+        <HydrationErrorBoundary>
+          <CacheBuster debug={process.env.NODE_ENV === 'development'} />
+        </HydrationErrorBoundary>
       </body>
     </html>
   );

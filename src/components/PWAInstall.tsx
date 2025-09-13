@@ -17,22 +17,25 @@ interface BeforeInstallPromptEvent extends Event {
 export function PWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const isClient = useIsClient();
 
   useEffect(() => {
     if (!isClient) return;
 
+    // Set mounted to true after client hydration
+    setMounted(true);
+
     // Register service worker
-   // NEW
-if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js")
-    .then((registration) => {
-      console.log("SW registered: ", registration);
-    })
-    .catch((registrationError) => {
-      console.log("SW registration failed: ", registrationError);
-    });
-}
+    if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then((registration) => {
+          console.log("SW registered: ", registration);
+        })
+        .catch((registrationError) => {
+          console.log("SW registration failed: ", registrationError);
+        });
+    }
 
     // Listen for beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -49,7 +52,7 @@ if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
   }, [isClient]);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt || !mounted) return;
 
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
@@ -60,7 +63,8 @@ if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     }
   };
 
-  if (!isClient || !isInstallable) return null;
+  // Don't render anything during SSR or before client hydration to prevent mismatch
+  if (!isClient || !mounted || !isInstallable) return null;
 
   return (
     <Button

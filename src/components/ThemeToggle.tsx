@@ -7,10 +7,14 @@ import { useIsClient } from '@/hooks/useIsClient';
 
 export function ThemeToggle() {
   const [isDark, setIsDark] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
   const isClient = useIsClient();
 
   React.useEffect(() => {
     if (!isClient) return;
+    
+    // Set mounted to true after client hydration
+    setMounted(true);
     
     // Check for saved theme preference or default to light mode
     const savedTheme = localStorage.getItem('theme');
@@ -26,6 +30,8 @@ export function ThemeToggle() {
   }, [isClient]);
 
   const toggleTheme = () => {
+    if (!mounted) return;
+    
     const newTheme = !isDark;
     setIsDark(newTheme);
     
@@ -38,8 +44,8 @@ export function ThemeToggle() {
     }
   };
 
-  // Show consistent icon during SSR and initial hydration
-  if (!isClient) {
+  // Always show Moon icon during SSR and initial hydration to prevent mismatch
+  if (!isClient || !mounted) {
     return (
       <Button
         variant="ghost"
