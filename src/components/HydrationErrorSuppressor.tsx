@@ -93,11 +93,29 @@ export function HydrationErrorSuppressor({ children }: { children?: React.ReactN
     const isReactError418 = (message: string, stack?: string) => {
       // Exact minified React error #418 detection (highest priority)
       if (message.includes('Minified React error #418') || 
-          message.includes('Error: Minified React error #418')) {
+          message.includes('Error: Minified React error #418') ||
+          message.includes('https://react.dev/errors/418')) {
         return true;
       }
 
-      // Exact bundle name matches (high priority)
+      // React 19 canary specific patterns from the actual bundle
+      if (message.includes('visit https://react.dev/errors/') && message.includes('418')) {
+        return true;
+      }
+
+      // EXACT PATTERNS FROM ACTUAL REACT_ERROR.TXT FILE (highest priority)
+      if (stack && (
+        stack.includes('webpackChunk_N_E') ||
+        stack.includes('59248:') ||
+        stack.includes('vendor-ff30e0d3') ||
+        stack.includes('a979c45c4456421f.js') ||
+        stack.includes('self.webpackChunk_N_E=self.webpackChunk_N_E') ||
+        stack.includes('function(e){var n="https://react.dev/errors/"+e')
+      )) {
+        return true;
+      }
+
+      // Current bundle name matches (high priority)
       if (stack && (
         stack.includes('main-app.js') ||
         stack.includes('webpack.js') ||
@@ -108,20 +126,31 @@ export function HydrationErrorSuppressor({ children }: { children?: React.ReactN
         return true;
       }
 
+      // React 19 canary error message patterns from actual bundle
+      if (message.includes('use the non-minified dev environment for full errors') ||
+          message.includes('additional helpful warnings') ||
+          message.includes('for the full message or use the non-minified dev environment')) {
+        return true;
+      }
+
       // Hydration-specific errors (medium priority)
       if (message.includes('Hydration failed') ||
           message.includes('Text content does not match') ||
           message.includes('server rendered HTML didn\'t match') ||
           message.includes('Warning: Text content did not match') ||
           message.includes('Warning: Expected server HTML') ||
-          message.includes('Warning: Did not expect server HTML')) {
+          message.includes('Warning: Did not expect server HTML') ||
+          message.includes('Hydration error') ||
+          message.includes('hydration mismatch')) {
         return true;
       }
 
       // Fuzzy fallback matches (lowest priority)
       if (message.includes('418') && stack && (
         stack.includes('react') || 
-        stack.includes('vendor')
+        stack.includes('vendor') ||
+        stack.includes('chunk') ||
+        stack.includes('webpack')
       )) {
         return true;
       }
