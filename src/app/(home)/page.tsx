@@ -230,7 +230,7 @@ export default function Home() {
               </CSSSlideUp>
 
               <CSSSlideUp 
-                delay={2}
+                delay={0}
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6"
               >
                 Transform Documents{' '}
@@ -240,7 +240,7 @@ export default function Home() {
               </CSSSlideUp>
 
               <CSSSlideUp 
-                delay={3}
+                delay={0}
                 className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed"
               >
                 Professional PDF tools, image editors, text processors, and financial calculators. 
