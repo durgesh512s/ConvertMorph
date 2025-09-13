@@ -22,22 +22,22 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
       {
-        // Tell Googlebot: allow pages & tool chunks, block wasteful vendor/webpack
+        // Googlebot must see vendor, webpack, ui, fonts to render correctly
         userAgent: 'Googlebot',
         allow: [
           '/tools/',
           '/_next/static/chunks/app/tools/',
           '/_next/static/chunks/pages*',
-          '/_next/static/chunks/framework*',   // keep framework allowed for safety
+          '/_next/static/chunks/framework*',
+          '/_next/static/chunks/vendor-*',
+          '/_next/static/chunks/webpack-*',
+          '/_next/static/chunks/ui-*',
           '/_next/static/css/*',
+          '/_next/static/media/*',
           '/favicon.ico',
           '/manifest.webmanifest',
         ],
         disallow: [
-          '/_next/static/chunks/vendor-*',    // block large vendor bundles from crawling
-          '/_next/static/chunks/webpack-*',   // block webpack runtime
-          '/_next/static/chunks/ui-*',        // optional: UI lib chunks
-          '/_next/static/media/*',
           '/public/samples/*',
           '/public/og/*',
           '/sw.js',
@@ -45,7 +45,7 @@ export default function robots(): MetadataRoute.Robots {
           '/pdf.worker.min.js',
         ],
       },
-      // Block other unwanted bots
+      // Block unwanted bots
       { userAgent: 'GPTBot', disallow: ['/'] },
       { userAgent: 'ChatGPT-User', disallow: ['/'] },
       { userAgent: 'CCBot', disallow: ['/'] },
