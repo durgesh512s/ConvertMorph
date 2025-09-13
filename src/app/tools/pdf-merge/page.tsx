@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { newJobId } from '@/lib/jobs/id';
 import { names } from '@/lib/names';
 import { track } from '@/lib/analytics/client';
+import { generateFileId } from '@/lib/id-utils';
 
 interface ProcessingResult {
   success: boolean;
@@ -35,7 +36,7 @@ export default function PDFMergePage() {
     }
 
     const newFiles: UploadedFile[] = pdfFiles.map(file => ({
-      id: Math.random().toString(36).substr(2, 9),
+      id: generateFileId(),
       file,
       name: file.name,
       size: file.size,

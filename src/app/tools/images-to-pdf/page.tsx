@@ -10,6 +10,7 @@ import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
 import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
+import { generateFileId, generateHistoryTimestamp } from '@/lib/id-utils'
 
 interface ConvertedFile {
   name: string
@@ -27,7 +28,7 @@ export default function ImagesToPDFPage() {
 
   const handleFilesAdded = (files: File[]) => {
     const newFiles: UploadedFile[] = files.map(file => ({
-      id: Math.random().toString(36).substr(2, 9),
+      id: generateFileId(),
       file,
       name: file.name,
       size: file.size,
@@ -55,7 +56,7 @@ export default function ImagesToPDFPage() {
     if (uploadedFiles.length === 0) return
 
     const jobId = newJobId('img2pdf')
-    const startTime = Date.now()
+    const startTime = generateHistoryTimestamp()
     setIsProcessing(true)
     
     // Track job start
@@ -228,7 +229,7 @@ export default function ImagesToPDFPage() {
         }
       }
       
-      const durationMs = Date.now() - startTime
+      const durationMs = generateHistoryTimestamp() - startTime
       const totalResultSize = results.reduce((sum) => {
         // Estimate PDF size (actual size would require blob.size but that's async)
         return sum + (totalOriginalSize / uploadedFiles.length)

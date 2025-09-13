@@ -19,6 +19,7 @@ import { Progress } from '@/components/Progress'
 import { useAnalytics } from '@/hooks/useAnalytics'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
+import { generateFileId } from '@/lib/id-utils'
 
 interface WatermarkSettings {
   text: string
@@ -77,7 +78,7 @@ export function PDFWatermarkClient() {
     
     // Create uploaded file entry
     const uploadedFile: UploadedFile = {
-      id: `file-${Date.now()}`,
+      id: generateFileId(),
       file: pdfFile,
       name: pdfFile.name,
       size: pdfFile.size,

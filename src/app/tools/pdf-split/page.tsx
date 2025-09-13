@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
+import { generateFileId } from '@/lib/id-utils'
 
 interface SplitFile {
   name: string
@@ -28,7 +29,7 @@ export default function PDFSplitPage() {
 
   const handleFilesAdded = (files: File[]) => {
     const newFiles: UploadedFile[] = files.map(file => ({
-      id: Math.random().toString(36).substr(2, 9),
+      id: generateFileId(),
       file,
       name: file.name,
       size: file.size,
@@ -218,7 +219,7 @@ export default function PDFSplitPage() {
         return
       }
       
-      const totalPages = Math.floor(Math.random() * 50) + 10 // Simulate 10-60 pages
+      const totalPages = 30 // Default simulation value for fallback
       
       let splits: SplitFile[] = []
       

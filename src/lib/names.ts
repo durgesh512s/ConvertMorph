@@ -1,5 +1,7 @@
+import { generateHistoryTimestamp } from './id-utils'
+
 export function ts(): string {
-  return new Date().toISOString().replace(/[:.]/g, '-');
+  return generateHistoryTimestamp().toString().replace(/[:.]/g, '-');
 }
 
 export function base(name: string): string {

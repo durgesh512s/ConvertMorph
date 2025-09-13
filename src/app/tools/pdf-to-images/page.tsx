@@ -8,6 +8,7 @@ import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
 import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
+import { generateFileId, generateHistoryTimestamp } from '@/lib/id-utils'
 
 
 interface ConvertedImage {
@@ -29,7 +30,7 @@ export default function PDFToImagesPage() {
 
   const handleFilesAdded = (files: File[]) => {
     const newFiles: UploadedFile[] = files.map(file => ({
-      id: Math.random().toString(36).substr(2, 9),
+      id: generateFileId(),
       file,
       name: file.name,
       size: file.size,
@@ -57,7 +58,7 @@ export default function PDFToImagesPage() {
     if (uploadedFiles.length === 0) return
 
     const jobId = newJobId('pdf2img')
-    const startTime = Date.now()
+    const startTime = generateHistoryTimestamp()
     setIsProcessing(true)
     
     // Track job start
@@ -77,7 +78,7 @@ export default function PDFToImagesPage() {
       await new Promise(resolve => setTimeout(resolve, 3000))
       
       // Simulate extracted images (in real implementation, this would process the actual PDF)
-      const mockPageCount = Math.floor(Math.random() * 10) + 1 // 1-10 pages
+      const mockPageCount = 5 // Fixed page count for consistent behavior
       const results: ConvertedImage[] = []
       const firstFile = uploadedFiles[0]
       if (!firstFile) {
@@ -94,12 +95,12 @@ export default function PDFToImagesPage() {
             name: filename,
             pageNumber: i,
             downloadUrl: URL.createObjectURL(firstFile.file), // Placeholder
-            size: `${Math.floor(Math.random() * 500 + 100)} KB`
+            size: `${200 + (i * 50)} KB`
           })
         }
       }
       
-      const durationMs = Date.now() - startTime
+      const durationMs = generateHistoryTimestamp() - startTime
       const totalResultSize = results.length * 300 * 1024 // Estimate 300KB per image
       
       // Track successful conversion
@@ -141,7 +142,7 @@ export default function PDFToImagesPage() {
           name: filename,
           pageNumber: i,
           downloadUrl: URL.createObjectURL(firstFile.file),
-          size: `${Math.floor(Math.random() * 500 + 100)} KB`
+          size: `${200 + (i * 50)} KB`
         })
       }
       

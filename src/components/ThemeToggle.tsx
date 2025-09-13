@@ -3,31 +3,32 @@
 import React from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useIsClient } from '@/hooks/useIsClient';
 
 export function ThemeToggle() {
   const [isDark, setIsDark] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
-  const isClient = useIsClient();
 
   React.useEffect(() => {
-    if (!isClient) return;
-    
     // Set mounted to true after client hydration
     setMounted(true);
     
     // Check for saved theme preference or default to light mode
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    } else {
+    try {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        setIsDark(true);
+        document.documentElement.classList.add('dark');
+      } else {
+        setIsDark(false);
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (error) {
+      // Fallback for environments without localStorage
       setIsDark(false);
-      document.documentElement.classList.remove('dark');
     }
-  }, [isClient]);
+  }, []);
 
   const toggleTheme = () => {
     if (!mounted) return;
@@ -35,17 +36,22 @@ export function ThemeToggle() {
     const newTheme = !isDark;
     setIsDark(newTheme);
     
-    if (newTheme) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+    try {
+      if (newTheme) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    } catch (error) {
+      // Fallback for environments without localStorage
+      console.warn('Unable to save theme preference:', error);
     }
   };
 
-  // Always show Moon icon during SSR and initial hydration to prevent mismatch
-  if (!isClient || !mounted) {
+  // Prevent hydration mismatch by showing consistent UI until mounted
+  if (!mounted) {
     return (
       <Button
         variant="ghost"

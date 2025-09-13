@@ -20,6 +20,7 @@ import { Progress } from '@/components/Progress'
 import { useAnalytics } from '@/hooks/useAnalytics'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
+import { generateFileId, generateHistoryTimestamp } from '@/lib/id-utils'
 import { 
   DndContext, 
   closestCenter, 
@@ -213,7 +214,7 @@ export function PDFOrganizeClient() {
   const saveToHistory = useCallback((newPages: PageData[]) => {
     const newState: HistoryState = {
       pages: [...newPages],
-      timestamp: Date.now()
+      timestamp: generateHistoryTimestamp()
     }
     
     // Remove any future history if we're not at the end
@@ -281,7 +282,7 @@ export function PDFOrganizeClient() {
       // Initialize history
       setHistory([{
         pages: [...newPages],
-        timestamp: Date.now()
+        timestamp: generateHistoryTimestamp()
       }])
       setHistoryIndex(0)
       
@@ -307,7 +308,7 @@ export function PDFOrganizeClient() {
     
     // Create uploaded file entry
     const uploadedFile: UploadedFile = {
-      id: `file-${Date.now()}`,
+      id: generateFileId(),
       file: pdfFile,
       name: pdfFile.name,
       size: pdfFile.size,

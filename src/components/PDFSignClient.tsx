@@ -20,6 +20,7 @@ import { Progress } from '@/components/Progress'
 import { useAnalytics } from '@/hooks/useAnalytics'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
+import { generateFileId, generateSignatureId, generateTextId } from '@/lib/id-utils'
 
 interface SignatureElement {
   id: string
@@ -76,7 +77,7 @@ export function PDFSignClient() {
     
     // Create uploaded file entry
     const uploadedFile: UploadedFile = {
-      id: `file-${Date.now()}`,
+      id: generateFileId(),
       file: pdfFile,
       name: pdfFile.name,
       size: pdfFile.size,
@@ -161,7 +162,7 @@ export function PDFSignClient() {
     
     const dataURL = canvas.toDataURL('image/png')
     const element: SignatureElement = {
-      id: `sig-${Date.now()}`,
+      id: generateSignatureId(),
       type: 'signature',
       content: dataURL,
       x: 100,
@@ -182,7 +183,7 @@ export function PDFSignClient() {
     if (!textInput.trim()) return
     
     const element: SignatureElement = {
-      id: `text-${Date.now()}`,
+      id: generateTextId(),
       type: 'text',
       content: textInput,
       x: 100,

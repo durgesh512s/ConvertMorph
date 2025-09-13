@@ -9,6 +9,7 @@ import ToolsNavigation from '@/components/ToolsNavigation'
 import { toast } from 'sonner'
 import { track } from '@/lib/analytics/client'
 import { analyzeText, getReadabilityLevel, exportTextAnalysis, type TextStats, type TextAnalysisResult } from '@/lib/textAnalyzer'
+import { generateHistoryTimestamp } from '@/lib/id-utils'
 
 export default function WordCounterPage() {
   const [text, setText] = useState('')
@@ -25,7 +26,7 @@ export default function WordCounterPage() {
           setAnalysis({
             text,
             stats,
-            timestamp: Date.now()
+            timestamp: generateHistoryTimestamp()
           })
         } catch (error) {
           console.error('Analysis error:', error)

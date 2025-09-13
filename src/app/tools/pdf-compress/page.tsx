@@ -9,6 +9,7 @@ import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
+import { generateFileId } from '@/lib/id-utils'
 // Dynamic import for client-side only PDF compression
 
 interface ProcessedFile {
@@ -39,7 +40,7 @@ export default function PDFCompressPage() {
         sizeMb: Math.round(file.size / (1024*1024) * 100) / 100,
         pages
       })
-      return { id: Math.random().toString(36).slice(2, 11), file, name: file.name, size: file.size, type: file.type, status: 'success' } as UploadedFile
+      return { id: generateFileId(), file, name: file.name, size: file.size, type: file.type, status: 'success' } as UploadedFile
     }))
     setUploadedFiles(prev => [...prev, ...mapped])
     setProcessedFiles([])

@@ -9,6 +9,7 @@ import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
+import { generateFileId } from '@/lib/id-utils'
 
 interface ProcessedFile {
   name: string
@@ -37,7 +38,7 @@ export default function ImageConvertPage() {
         format: file.type
       })
       return { 
-        id: Math.random().toString(36).slice(2, 11), 
+        id: generateFileId(), 
         file, 
         name: file.name, 
         size: file.size, 

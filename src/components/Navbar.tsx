@@ -177,13 +177,14 @@ export function Navbar() {
 
   useEffect(() => {
     setMounted(true);
-    if (!isClient) return;
     // Delay loading recently used tools to prevent hydration mismatch
     const timer = setTimeout(() => {
-      setRecentlyUsedSlugs(getRecentlyUsedTools());
+      if (typeof window !== 'undefined') {
+        setRecentlyUsedSlugs(getRecentlyUsedTools());
+      }
     }, 100);
     return () => clearTimeout(timer);
-  }, [isClient]);
+  }, []);
 
   // Click outside handler
   useEffect(() => {

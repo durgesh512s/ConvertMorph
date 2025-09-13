@@ -7,8 +7,8 @@ import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
-import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
+import { generateFileId } from '@/lib/id-utils'
 import Cropper from 'react-easy-crop'
 import { cropImage, dataURLToBlob, getFileExtension, ASPECT_RATIOS, type AspectRatioKey, type CropArea } from '@/lib/imageCropper'
 
@@ -55,7 +55,7 @@ export default function ImageCropPage() {
         format: file.type
       })
       return { 
-        id: Math.random().toString(36).slice(2, 11), 
+        id: generateFileId(), 
         file, 
         name: file.name, 
         size: file.size, 
