@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Word Counter — ConvertMorph',
@@ -46,12 +48,38 @@ export default function WordCounterLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "What statistics does the word counter provide?",
+          "answer": "We provide word count, character count (with and without spaces), sentence count, paragraph count, reading time, and readability scores."
+      },
+      {
+          "question": "How is reading time calculated?",
+          "answer": "Reading time is calculated based on an average reading speed of 200-250 words per minute, which is the standard for adult readers."
+      },
+      {
+          "question": "What readability scores do you provide?",
+          "answer": "We calculate Flesch Reading Ease and Flesch-Kincaid Grade Level to help you understand how easy your text is to read."
+      },
+      {
+          "question": "Can I analyze text in different languages?",
+          "answer": "Yes, the basic counting features work with any language. However, readability scores are optimized for English text."
+      },
+      {
+          "question": "Is my text data secure?",
+          "answer": "Absolutely! All text analysis happens entirely in your browser. Your text is never uploaded to our servers, ensuring complete privacy."
+      },
+      {
+          "question": "What's the maximum text length I can analyze?",
+          "answer": "There's no strict limit, but very large texts (over 1MB) may slow down the analysis. The tool works best with documents up to 500KB."
+      }
+  ];
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )

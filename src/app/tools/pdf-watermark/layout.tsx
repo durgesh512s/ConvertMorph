@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Add Watermark to PDF — ConvertMorph',
@@ -46,12 +48,38 @@ export default function PdfWatermarkLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "What types of watermarks can I add?",
+          "answer": "You can add text watermarks, image watermarks, or both. Text can be customized with different fonts, sizes, colors, and transparency levels."
+      },
+      {
+          "question": "Can I control watermark position and opacity?",
+          "answer": "Yes, you can position watermarks anywhere on the page and adjust opacity from 10% to 100% to achieve the desired visibility."
+      },
+      {
+          "question": "Will watermarks appear on all pages?",
+          "answer": "By default, watermarks are applied to all pages, but you can choose to apply them to specific page ranges if needed."
+      },
+      {
+          "question": "Can I rotate watermarks?",
+          "answer": "Yes, you can rotate text watermarks to any angle, including diagonal placement across the page for security purposes."
+      },
+      {
+          "question": "Is my data secure during watermarking?",
+          "answer": "Absolutely! All PDF watermarking happens entirely in your browser. Your documents are never uploaded to our servers, ensuring complete privacy."
+      },
+      {
+          "question": "Can I remove watermarks after adding them?",
+          "answer": "Once watermarks are added and saved, they become part of the PDF content. Keep a backup of your original PDF if you might need to remove them."
+      }
+  ];
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )

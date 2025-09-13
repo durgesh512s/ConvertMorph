@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Images to PDF — ConvertMorph',
@@ -46,12 +48,38 @@ export default function ImagesToPdfLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "What image formats can I convert to PDF?",
+          "answer": "You can convert JPEG, PNG, WebP, GIF, and BMP images to PDF. All formats are supported with high-quality conversion."
+      },
+      {
+          "question": "Can I combine multiple images into one PDF?",
+          "answer": "Yes, you can add multiple images and they'll be combined into a single PDF document with each image on a separate page."
+      },
+      {
+          "question": "How do I control image order in the PDF?",
+          "answer": "Images are arranged in the order you add them. You can drag and drop to reorder images before generating the PDF."
+      },
+      {
+          "question": "What page sizes are available?",
+          "answer": "We support standard page sizes like A4, Letter, Legal, and custom dimensions. Images are automatically fitted to the selected page size."
+      },
+      {
+          "question": "Is my data secure during conversion?",
+          "answer": "Absolutely! All image to PDF conversion happens entirely in your browser. Your files are never uploaded to our servers, ensuring complete privacy."
+      },
+      {
+          "question": "Can I adjust image quality in the PDF?",
+          "answer": "Yes, you can choose compression levels to balance file size and image quality in the resulting PDF document."
+      }
+  ];
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )

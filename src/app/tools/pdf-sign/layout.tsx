@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Sign PDF — ConvertMorph',
@@ -46,12 +48,38 @@ export default function PdfSignLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "How do I create a digital signature?",
+          "answer": "You can draw your signature using a mouse or touchscreen, upload an image of your signature, or type your name in various signature fonts."
+      },
+      {
+          "question": "Can I save my signature for reuse?",
+          "answer": "Yes, you can save your signature locally in your browser for quick reuse across multiple documents."
+      },
+      {
+          "question": "Are digital signatures legally valid?",
+          "answer": "Digital signatures created with our tool are suitable for most business purposes, but legal validity depends on your jurisdiction and specific use case."
+      },
+      {
+          "question": "Can I add multiple signatures to one document?",
+          "answer": "Yes, you can add multiple signatures, initials, dates, and text fields to different locations within the same PDF document."
+      },
+      {
+          "question": "Is my data secure during signing?",
+          "answer": "Absolutely! All PDF signing happens entirely in your browser. Your documents and signatures are never uploaded to our servers, ensuring complete privacy."
+      },
+      {
+          "question": "What's the maximum PDF size I can sign?",
+          "answer": "You can sign PDF files up to 100MB. This covers most document types while ensuring optimal browser performance."
+      }
+  ];
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )

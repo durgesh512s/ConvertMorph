@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'PDF to Images — ConvertMorph',
@@ -46,12 +48,38 @@ export default function PdfToImagesLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "What image formats can I convert PDF pages to?",
+          "answer": "You can convert PDF pages to JPEG, PNG, or WebP formats. Each format offers different benefits for quality and file size."
+      },
+      {
+          "question": "Can I convert specific pages only?",
+          "answer": "Yes, you can select individual pages or page ranges to convert, rather than converting the entire PDF document."
+      },
+      {
+          "question": "What resolution options are available?",
+          "answer": "You can choose from various DPI settings (72, 150, 300, 600) to balance image quality and file size based on your needs."
+      },
+      {
+          "question": "Will conversion preserve image quality?",
+          "answer": "Yes, conversion maintains high quality based on your selected DPI. Higher DPI settings produce better quality but larger file sizes."
+      },
+      {
+          "question": "Is my data secure during conversion?",
+          "answer": "Absolutely! All PDF to image conversion happens entirely in your browser. Your documents are never uploaded to our servers, ensuring complete privacy."
+      },
+      {
+          "question": "Can I convert password-protected PDFs?",
+          "answer": "Currently, password-protected PDFs cannot be converted. Please remove the password protection first, then convert the pages."
+      }
+  ];
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )

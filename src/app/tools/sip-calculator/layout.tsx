@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Sip Calculator — ConvertMorph',
@@ -46,12 +48,38 @@ export default function SipCalculatorLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "How is SIP return calculated?",
+          "answer": "SIP returns are calculated using compound interest formula, considering monthly investments, expected annual return rate, and investment duration."
+      },
+      {
+          "question": "What is the difference between SIP and lump sum investment?",
+          "answer": "SIP involves regular monthly investments, benefiting from rupee cost averaging, while lump sum is a one-time investment. SIP reduces market timing risk."
+      },
+      {
+          "question": "Can I change my SIP amount during the tenure?",
+          "answer": "Yes, most mutual funds allow you to increase or decrease your SIP amount. You can use our calculator to compare different scenarios."
+      },
+      {
+          "question": "What is a good SIP amount to start with?",
+          "answer": "Start with an amount you can comfortably invest monthly. Even ₹500-1000 per month can create significant wealth over long periods due to compounding."
+      },
+      {
+          "question": "How accurate are SIP calculations?",
+          "answer": "Our calculator provides estimates based on assumed returns. Actual returns may vary due to market conditions, fund performance, and other factors."
+      },
+      {
+          "question": "What is the ideal SIP tenure?",
+          "answer": "Longer tenures (10+ years) are ideal for wealth creation due to compounding benefits. However, choose tenure based on your financial goals and needs."
+      }
+  ];
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )

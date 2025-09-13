@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Emi Calculator — ConvertMorph',
@@ -46,12 +48,34 @@ export default function EmiCalculatorLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "How is EMI calculated?",
+          "answer": "EMI is calculated using the formula: EMI = [P x R x (1+R)^N] / [(1+R)^N-1], where P is principal amount, R is monthly interest rate, and N is number of months."
+      },
+      {
+          "question": "What factors affect my EMI amount?",
+          "answer": "EMI amount depends on three main factors: loan amount (principal), interest rate, and loan tenure. Higher loan amount or interest rate increases EMI, while longer tenure reduces it."
+      },
+      {
+          "question": "Can I prepay my loan to reduce EMI?",
+          "answer": "Yes, prepayment reduces the outstanding principal, which can either reduce your EMI amount or loan tenure, depending on your lender's policy."
+      },
+      {
+          "question": "Is this EMI calculator accurate?",
+          "answer": "Our calculator provides accurate estimates based on standard EMI formulas. However, actual EMI may vary slightly due to bank-specific policies, processing fees, or rounding differences."
+      },
+      {
+          "question": "What is the ideal EMI to income ratio?",
+          "answer": "Financial experts recommend keeping your total EMI obligations below 40-50% of your monthly income to maintain healthy finances and avoid over-leveraging."
+      }
+  ];
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )

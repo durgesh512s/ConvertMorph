@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Tax Calculator — ConvertMorph',
@@ -46,12 +48,38 @@ export default function TaxCalculatorLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "Which tax regime should I choose?",
+          "answer": "Compare both old and new tax regimes using our calculator. New regime has lower rates but fewer deductions, while old regime offers more deductions."
+      },
+      {
+          "question": "What deductions are available under old tax regime?",
+          "answer": "Old regime allows deductions like 80C (₹1.5L), 80D (health insurance), HRA, home loan interest, and various other sections."
+      },
+      {
+          "question": "How accurate are the tax calculations?",
+          "answer": "Our calculator follows current Income Tax Act provisions and is updated regularly. However, consult a tax advisor for complex situations."
+      },
+      {
+          "question": "Can I calculate tax for previous years?",
+          "answer": "Our calculator is designed for the current financial year. Tax rates and slabs may differ for previous years."
+      },
+      {
+          "question": "What is standard deduction?",
+          "answer": "Standard deduction is ₹50,000 for salaried individuals under both tax regimes, automatically reducing your taxable income."
+      },
+      {
+          "question": "How do I save more tax legally?",
+          "answer": "Maximize deductions under 80C, 80D, invest in ELSS, claim HRA if applicable, and consider tax-saving instruments based on your regime choice."
+      }
+  ];
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )

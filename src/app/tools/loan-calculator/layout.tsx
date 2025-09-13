@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Loan Calculator — ConvertMorph',
@@ -46,12 +48,38 @@ export default function LoanCalculatorLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "What types of loans can I calculate?",
+          "answer": "Our calculator works for all types of loans including home loans, personal loans, car loans, and business loans with fixed interest rates."
+      },
+      {
+          "question": "How accurate are the loan calculations?",
+          "answer": "Our calculator uses standard loan formulas and provides accurate estimates. Actual amounts may vary slightly due to bank-specific policies and fees."
+      },
+      {
+          "question": "Can I see the complete payment schedule?",
+          "answer": "Yes, the calculator shows a detailed amortization schedule with monthly breakdowns of principal and interest payments throughout the loan term."
+      },
+      {
+          "question": "What is the difference between reducing and flat interest rates?",
+          "answer": "Reducing balance calculates interest on the outstanding principal, while flat rate calculates on the original amount. Our calculator uses the reducing balance method."
+      },
+      {
+          "question": "How do prepayments affect my loan?",
+          "answer": "Prepayments reduce the outstanding principal, which can either reduce your EMI amount or loan tenure, depending on your preference and lender policy."
+      },
+      {
+          "question": "Can I calculate loans with variable interest rates?",
+          "answer": "Currently, our calculator works with fixed interest rates. For variable rates, you can calculate different scenarios by adjusting the interest rate."
+      }
+  ];
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )

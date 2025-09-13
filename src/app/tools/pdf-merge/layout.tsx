@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { absoluteUrl } from '@/lib/url'
+import JsonLd from '@/components/JsonLd'
+import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Merge PDF — ConvertMorph',
@@ -46,12 +48,42 @@ export default function PdfMergeLayout({
     ]
   };
 
+  // FAQ data for structured data
+  const faqs =   [
+      {
+          "question": "How many PDFs can I merge at once?",
+          "answer": "You can merge up to 20 PDF files in a single operation, with each file up to 100MB in size."
+      },
+      {
+          "question": "Can I control the order of merged pages?",
+          "answer": "Yes, you can drag and drop files to reorder them before merging. Pages will be combined in the order you specify."
+      },
+      {
+          "question": "Will merging affect PDF quality?",
+          "answer": "No, merging preserves the original quality of all pages. No compression or quality loss occurs during the merge process."
+      },
+      {
+          "question": "Can I merge password-protected PDFs?",
+          "answer": "Currently, password-protected PDFs cannot be merged. Please remove password protection first, then merge the files."
+      },
+      {
+          "question": "Is my data secure during merging?",
+          "answer": "Absolutely! All PDF merging happens entirely in your browser. Your documents are never uploaded to our servers, ensuring complete privacy."
+      },
+      {
+          "question": "What happens to bookmarks and metadata?",
+          "answer": "Bookmarks from the first PDF are preserved, while metadata is combined when possible. Some metadata may be lost during the merge process."
+      }
+  ];
+
+  
+  
+
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>
   )
