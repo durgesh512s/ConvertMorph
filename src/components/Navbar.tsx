@@ -68,21 +68,21 @@ const imageTools = [
   },
   { 
     name: 'Image Converter', 
-    href: '/tools/image-converter', 
+    href: '/tools/image-convert', 
     icon: Copy,
     description: 'Convert between different image formats',
     color: 'bg-teal-100 text-teal-600'
   },
   { 
     name: 'Image Resizer', 
-    href: '/tools/image-resizer', 
+    href: '/tools/image-resize', 
     icon: PenTool,
     description: 'Resize images to specific dimensions',
     color: 'bg-cyan-100 text-cyan-600'
   },
   { 
     name: 'Image Cropper', 
-    href: '/tools/image-cropper', 
+    href: '/tools/image-crop', 
     icon: Crop,
     description: 'Crop and trim images to desired size',
     color: 'bg-sky-100 text-sky-600'
