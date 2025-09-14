@@ -91,6 +91,7 @@
     "@types/react-dom": "^19",
     "@types/which": "^3.0.4",
     "concurrently": "^9.1.0",
+    "css-minimizer-webpack-plugin": "^7.0.2",
     "cypress": "^15.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
