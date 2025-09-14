@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
   compress: true,
   productionBrowserSourceMaps: true, // enable source maps
 
+  // External packages for server components
+  serverExternalPackages: ['sharp', 'canvas'],
+
   // Enable ETags for better caching
   generateEtags: true,
   poweredByHeader: false,
@@ -219,12 +222,30 @@ const nextConfig: NextConfig = {
 
   // Enable experimental features for better performance
   experimental: {
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-slot', 'framer-motion'],
+    optimizePackageImports: [
+      'lucide-react', 
+      '@radix-ui/react-slot', 
+      'framer-motion',
+      'react-dropzone',
+      'browser-image-compression',
+      'pdf-lib',
+      'pdfjs-dist',
+      'jszip',
+      'archiver',
+      'uuid',
+      'clsx',
+      'tailwind-merge',
+      'class-variance-authority',
+      '@dnd-kit/core',
+      '@dnd-kit/sortable',
+      '@dnd-kit/utilities',
+      'sonner',
+      'zod'
+    ],
     optimizeCss: true,
     webpackBuildWorker: true,
     gzipSize: true,
     esmExternals: true,
-    serverComponentsExternalPackages: ['sharp', 'canvas'],
     // Enable aggressive CSS optimization
     cssChunking: 'strict',
     optimizeServerReact: true,
@@ -259,6 +280,21 @@ const nextConfig: NextConfig = {
       type: "asset/resource",
     });
 
+    // Enhanced tree shaking configuration - let Next.js handle usedExports
+    config.optimization.sideEffects = false;
+    config.optimization.providedExports = true;
+    config.optimization.innerGraph = true;
+    
+    // Mark specific packages as side-effect free for better tree shaking
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      // Optimize lodash imports to use individual functions
+      'lodash': 'lodash-es',
+    };
+
+    // Configure module resolution for better tree shaking
+    config.resolve.mainFields = ['es2015', 'module', 'main'];
+    
     // Add CSS optimization plugins for production
     if (!dev && !isServer) {
       const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
@@ -300,86 +336,116 @@ const nextConfig: NextConfig = {
           },
         })
       );
+
+      // Enhanced dead code elimination - rely on Next.js built-in optimization
+      config.optimization.minimize = true;
+      config.optimization.concatenateModules = true;
     }
 
-    // Optimize bundle splitting for better performance
+    // Optimize bundle splitting for better performance and unused code elimination
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
-        minSize: 20000,
-        maxSize: 200000, // Reduced max size for better loading
-        maxInitialRequests: 30,
-        maxAsyncRequests: 30,
+        minSize: 10000, // Smaller chunks for better granularity
+        maxSize: 100000, // Smaller max size for better loading and tree shaking
+        maxInitialRequests: 50,
+        maxAsyncRequests: 50,
         cacheGroups: {
           default: false,
           vendors: false,
           
-          // Critical framework chunk - highest priority
+          // Critical framework chunk - highest priority, minimal size
           framework: {
             chunks: 'all',
             name: 'framework',
             test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
-            priority: 50,
+            priority: 60,
             enforce: true,
             reuseExistingChunk: true,
+            maxSize: 80000,
           },
           
-          // Critical UI libraries - load early
+          // Critical UI libraries - load early, tree-shaken
           criticalUI: {
             name: 'critical-ui',
             chunks: 'initial',
             test: /[\\/]node_modules[\\/](@radix-ui\/react-slot|clsx|class-variance-authority|tailwind-merge)[\\/]/,
-            priority: 45,
+            priority: 55,
             enforce: true,
+            maxSize: 50000,
           },
           
-          // Icons - can be async loaded
+          // Icons - async loaded, tree-shaken for used icons only
           icons: {
             name: 'icons',
             chunks: 'async',
             test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
-            priority: 35,
+            priority: 45,
+            maxSize: 30000,
           },
           
-          // Animation libraries - async load
+          // Animation libraries - async load, tree-shaken
           animations: {
             name: 'animations',
             chunks: 'async',
             test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-            priority: 30,
+            priority: 40,
+            maxSize: 60000,
           },
           
-          // PDF libraries - async load only when needed
+          // PDF libraries - async load only when needed, highly optimized
           pdfLibs: {
             name: 'pdf-libs',
             chunks: 'async',
             test: /[\\/]node_modules[\\/](pdf-lib|pdfjs-dist)[\\/]/,
-            priority: 25,
+            priority: 35,
+            maxSize: 80000,
           },
           
-          // Image processing - async load
+          // Image processing - async load, tree-shaken
           imageLibs: {
             name: 'image-libs',
             chunks: 'async',
             test: /[\\/]node_modules[\\/](browser-image-compression|react-easy-crop)[\\/]/,
-            priority: 25,
+            priority: 35,
+            maxSize: 40000,
           },
           
-          // Utility libraries - can be shared
+          // DnD libraries - async load when needed
+          dndLibs: {
+            name: 'dnd-libs',
+            chunks: 'async',
+            test: /[\\/]node_modules[\\/]@dnd-kit[\\/]/,
+            priority: 30,
+            maxSize: 30000,
+          },
+          
+          // Utility libraries - tree-shaken, shared
           utils: {
             name: 'utils',
             chunks: 'all',
-            test: /[\\/]node_modules[\\/](uuid|jszip|archiver|zod)[\\/]/,
-            priority: 20,
+            test: /[\\/]node_modules[\\/](uuid|jszip|archiver|zod|sonner)[\\/]/,
+            priority: 25,
             minChunks: 1,
+            maxSize: 40000,
           },
           
-          // Analytics and tracking - defer loading
+          // Analytics and tracking - defer loading, minimal
           analytics: {
             name: 'analytics',
             chunks: 'async',
             test: /[\\/]node_modules[\\/](@vercel\/analytics|@vercel\/speed-insights)[\\/]/,
-            priority: 15,
+            priority: 20,
+            maxSize: 20000,
+          },
+          
+          // Dropzone - async load when needed
+          dropzone: {
+            name: 'dropzone',
+            chunks: 'async',
+            test: /[\\/]node_modules[\\/]react-dropzone[\\/]/,
+            priority: 25,
+            maxSize: 25000,
           },
           
           // Common vendor chunk for remaining libraries
@@ -390,6 +456,7 @@ const nextConfig: NextConfig = {
             priority: 10,
             minChunks: 1,
             reuseExistingChunk: true,
+            maxSize: 60000,
           },
           
           // App-specific common code
@@ -400,13 +467,13 @@ const nextConfig: NextConfig = {
             priority: 5,
             reuseExistingChunk: true,
             enforce: false,
+            maxSize: 40000,
           },
         },
       };
 
-      // Advanced optimizations
+      // Advanced optimizations - let Next.js handle usedExports
       config.optimization.concatenateModules = true;
-      config.optimization.usedExports = true;
       config.optimization.sideEffects = false;
       config.optimization.innerGraph = true;
       config.optimization.providedExports = true;
