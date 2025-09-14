@@ -221,6 +221,13 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-slot', 'framer-motion'],
     optimizeCss: true,
+    webpackBuildWorker: true,
+    gzipSize: true,
+    esmExternals: true,
+    serverComponentsExternalPackages: ['sharp', 'canvas'],
+    // Enable aggressive CSS optimization
+    cssChunking: 'strict',
+    optimizeServerReact: true,
   },
 
   // Turbopack configuration
@@ -252,72 +259,166 @@ const nextConfig: NextConfig = {
       type: "asset/resource",
     });
 
-    // Optimize bundle splitting
+    // Add CSS optimization plugins for production
+    if (!dev && !isServer) {
+      const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+      
+      // Add CSS minimizer to optimization
+      config.optimization.minimizer = config.optimization.minimizer || [];
+      config.optimization.minimizer.push(
+        new CssMinimizerPlugin({
+          minimizerOptions: {
+            preset: [
+              'default',
+              {
+                discardComments: { removeAll: true },
+                discardUnused: true,
+                mergeIdents: true,
+                reduceIdents: true,
+                discardDuplicates: true,
+                discardEmpty: true,
+                minifyFontValues: true,
+                minifyGradients: true,
+                minifyParams: true,
+                minifySelectors: true,
+                normalizeCharset: true,
+                normalizeDisplayValues: true,
+                normalizePositions: true,
+                normalizeRepeatStyle: true,
+                normalizeString: true,
+                normalizeTimingFunctions: true,
+                normalizeUnicode: true,
+                normalizeUrl: true,
+                normalizeWhitespace: true,
+                orderedValues: true,
+                reduceInitial: true,
+                reduceTransforms: true,
+                svgo: true,
+                uniqueSelectors: true,
+              },
+            ],
+          },
+        })
+      );
+    }
+
+    // Optimize bundle splitting for better performance
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
         minSize: 20000,
-        maxSize: 244000,
+        maxSize: 200000, // Reduced max size for better loading
+        maxInitialRequests: 30,
+        maxAsyncRequests: 30,
         cacheGroups: {
           default: false,
           vendors: false,
-          // Framework chunk
+          
+          // Critical framework chunk - highest priority
           framework: {
             chunks: 'all',
             name: 'framework',
             test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
-            priority: 40,
+            priority: 50,
+            enforce: true,
+            reuseExistingChunk: true,
+          },
+          
+          // Critical UI libraries - load early
+          criticalUI: {
+            name: 'critical-ui',
+            chunks: 'initial',
+            test: /[\\/]node_modules[\\/](@radix-ui\/react-slot|clsx|class-variance-authority|tailwind-merge)[\\/]/,
+            priority: 45,
             enforce: true,
           },
-          // Vendor chunk for large libraries
-          vendor: {
-            name: 'vendor',
-            chunks: 'all',
-            test: /[\\/]node_modules[\\/]/,
-            priority: 20,
-            minChunks: 1,
-            maxInitialRequests: 25,
-            minSize: 20000,
+          
+          // Icons - can be async loaded
+          icons: {
+            name: 'icons',
+            chunks: 'async',
+            test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
+            priority: 35,
           },
-          // Separate chunk for framer-motion (lazy loaded)
-          framerMotion: {
-            name: 'framer-motion',
+          
+          // Animation libraries - async load
+          animations: {
+            name: 'animations',
             chunks: 'async',
             test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
             priority: 30,
           },
-          // Separate chunk for PDF libraries (lazy loaded)
+          
+          // PDF libraries - async load only when needed
           pdfLibs: {
             name: 'pdf-libs',
             chunks: 'async',
             test: /[\\/]node_modules[\\/](pdf-lib|pdfjs-dist)[\\/]/,
-            priority: 30,
-          },
-          // UI components chunk
-          ui: {
-            name: 'ui',
-            chunks: 'all',
-            test: /[\\/]node_modules[\\/](@radix-ui|lucide-react)[\\/]/,
             priority: 25,
           },
-          // Common chunk for shared code
+          
+          // Image processing - async load
+          imageLibs: {
+            name: 'image-libs',
+            chunks: 'async',
+            test: /[\\/]node_modules[\\/](browser-image-compression|react-easy-crop)[\\/]/,
+            priority: 25,
+          },
+          
+          // Utility libraries - can be shared
+          utils: {
+            name: 'utils',
+            chunks: 'all',
+            test: /[\\/]node_modules[\\/](uuid|jszip|archiver|zod)[\\/]/,
+            priority: 20,
+            minChunks: 1,
+          },
+          
+          // Analytics and tracking - defer loading
+          analytics: {
+            name: 'analytics',
+            chunks: 'async',
+            test: /[\\/]node_modules[\\/](@vercel\/analytics|@vercel\/speed-insights)[\\/]/,
+            priority: 15,
+          },
+          
+          // Common vendor chunk for remaining libraries
+          vendor: {
+            name: 'vendor',
+            chunks: 'all',
+            test: /[\\/]node_modules[\\/]/,
+            priority: 10,
+            minChunks: 1,
+            reuseExistingChunk: true,
+          },
+          
+          // App-specific common code
           common: {
             name: 'common',
             minChunks: 2,
             chunks: 'all',
-            priority: 10,
+            priority: 5,
             reuseExistingChunk: true,
             enforce: false,
           },
         },
       };
 
-      // Optimize module concatenation
+      // Advanced optimizations
       config.optimization.concatenateModules = true;
-      
-      // Enable tree shaking
       config.optimization.usedExports = true;
       config.optimization.sideEffects = false;
+      config.optimization.innerGraph = true;
+      config.optimization.providedExports = true;
+      
+      // Minimize chunk overhead
+      config.optimization.runtimeChunk = {
+        name: 'runtime',
+      };
+      
+      // Enable module federation for better caching
+      config.optimization.moduleIds = 'deterministic';
+      config.optimization.chunkIds = 'deterministic';
     }
 
     return config;

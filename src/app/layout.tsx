@@ -7,9 +7,7 @@ import { LazyFooter } from "@/components/LazyFooter";
 import { Toaster } from "@/components/ui/sonner";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { LazyHeaderAd } from "@/components/LazyAdSense";
-import { VercelAnalytics } from '@/components/VercelAnalytics';
-import { GoogleAnalytics } from '@/components/GoogleAnalytics';
-import { PerformanceMonitor } from '@/components/PerformanceMonitor';
+import { DeferredScripts } from '@/components/DeferredScripts';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
@@ -351,9 +349,13 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#0052CC" />
         <meta name="theme-color" content="#0052CC" />
         
-        {/* Preconnect to external domains for performance */}
+        {/* Critical resource hints for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://vercel.live" />
+        <link rel="preconnect" href="https://va.vercel-scripts.com" />
+        <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         
         {/* Preload critical fonts to prevent layout shift */}
         <link
@@ -371,10 +373,32 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         
-        {/* Google AdSense - Load with lower priority */}
+        {/* Preload critical CSS */}
+        <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
+        <link rel="preload" href="/_next/static/css/app/globals.css" as="style" />
+        
+        {/* Critical inline CSS for above-the-fold content */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            /* Critical CSS for initial render */
+            .hero-section{min-height:600px;display:flex;align-items:center}
+            .mobile-container{width:100%;max-width:100vw;overflow-x:hidden}
+            .mobile-content{min-height:calc(100vh-64px)}
+            .mobile-nav{position:sticky;top:0;z-index:50;min-height:64px;max-height:64px}
+            .font-display-swap{font-display:swap}
+            .stable-animation{transform:translateZ(0);backface-visibility:hidden;perspective:1000px}
+            /* Prevent layout shifts */
+            *{box-sizing:border-box}
+            body{margin:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+            .loading-skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:loading 1.5s infinite}
+            @keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
+          `
+        }} />
+        
+        {/* Google AdSense - Defer loading to prevent blocking */}
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
           <script
-            async
+            defer
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
             crossOrigin="anonymous"
           />
@@ -406,12 +430,8 @@ export default function RootLayout({
           <Toaster />
           <KeyboardShortcuts />
           
-          {/* Analytics and Performance */}
-          <Suspense fallback={null}>
-            <GoogleAnalytics />
-          </Suspense>
-          <VercelAnalytics />
-          <PerformanceMonitor />
+          {/* Analytics and Performance - Deferred to prevent blocking */}
+          <DeferredScripts />
           <CacheBuster debug={process.env.NODE_ENV === 'development'} />
         </HydrationErrorSuppressor>
       </body>

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LazyContentAd } from '@/components/LazyAdSense';
 import { CSSFadeIn, CSSSlideUp, LazyFadeIn, LazySlideUp } from '@/components/LazyMotion';
+import { DeferredFeature } from '@/components/DeferredScripts';
 import { formatDate } from '@/lib/date-utils';
 import {
   Archive,
@@ -342,8 +343,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Tool Categories Section */}
-      <section id="professional-toolkit" className="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900">
+      {/* Tool Categories Section - Defer non-critical animations */}
+      <DeferredFeature delay={500}>
+        <section id="professional-toolkit" className="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyFadeIn className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -429,9 +431,11 @@ export default function Home() {
             </Card>
           </div>
         </div>
-      </section>
+        </section>
+      </DeferredFeature>
 
-      {/* Blog Preview Section */}
+      {/* Blog Preview Section - Defer to improve initial load */}
+      <DeferredFeature delay={1000}>
       <section className="py-16 sm:py-20 bg-white dark:bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyFadeIn className="text-center mb-12 sm:mb-16">
@@ -496,9 +500,11 @@ export default function Home() {
             </Button>
           </div>
         </div>
-      </section>
+        </section>
+      </DeferredFeature>
 
-      {/* Features Section */}
+      {/* Features Section - Defer to improve initial load */}
+      <DeferredFeature delay={1500}>
       <section className="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyFadeIn className="text-center mb-12 sm:mb-16">
@@ -535,9 +541,11 @@ export default function Home() {
             })}
           </div>
         </div>
-      </section>
+        </section>
+      </DeferredFeature>
 
-      {/* Benefits Section */}
+      {/* Benefits Section - Defer to improve initial load */}
+      <DeferredFeature delay={2000}>
       <section className="py-16 sm:py-20 bg-white dark:bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyFadeIn className="text-center mb-12 sm:mb-16">
@@ -578,14 +586,17 @@ export default function Home() {
             })}
           </div>
         </div>
-      </section>
+        </section>
+      </DeferredFeature>
 
-      {/* Content Ad */}
+      {/* Content Ad - Defer to prevent blocking */}
+      <DeferredFeature delay={2500}>
       <section className="py-8 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyContentAd />
         </div>
-      </section>
+        </section>
+      </DeferredFeature>
 
       {/* CTA Section */}
       <section className="py-16 sm:py-20 bg-gradient-to-r from-blue-600 to-purple-600">
