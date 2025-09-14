@@ -338,7 +338,6 @@ export default function RootLayout({
         <link rel="icon" href="/android-chrome-512x512.png?v=mffc5l8y" sizes="512x512" type="image/png" />
         
         {/* Meta tags */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
