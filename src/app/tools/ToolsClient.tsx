@@ -1,14 +1,24 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { CategoryTabs } from '@/components/CategoryTabs';
 import ToolCard from '@/components/ToolCard';
 import { Search } from 'lucide-react';
 import { toolCategories, tabs, getAllTools } from './toolsData';
 
 export default function ToolsClient() {
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
+
+  // Handle URL search parameters for category filtering
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam && ['pdf', 'image', 'text', 'finance'].includes(categoryParam)) {
+      setActiveCategory(categoryParam);
+    }
+  }, [searchParams]);
 
   // Get all tools
   const allTools = useMemo(() => getAllTools(), []);

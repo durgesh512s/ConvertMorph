@@ -32,12 +32,14 @@
     "seo:optimize": "node scripts/optimize-seo.js",
     "prelaunch": "npm run seo:optimize && npm run build && npm run test && npm run lhci && echo '✓ Prelaunch checks complete'",
     "enterprise-check": "node scripts/enterprise-launch-check.js",
-    "deploy-ready": "npm run enterprise-check && echo '🚀 Ready for enterprise deployment!'"
+    "deploy-ready": "npm run enterprise-check && echo '🚀 Ready for enterprise deployment!'",
+    "analyze": "ANALYZE=true npm run build"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@next/bundle-analyzer": "^15.5.3",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-progress": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",

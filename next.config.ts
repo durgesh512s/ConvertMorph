@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 import type { NextConfig } from "next";
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 // Generate build-time cache busting hash
 const buildId = process.env.VERCEL_GIT_COMMIT_SHA || 
@@ -500,4 +503,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
