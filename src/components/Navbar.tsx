@@ -323,7 +323,7 @@ export function Navbar() {
                             );
                           })}
                           <Link
-                            href="/tools?category=pdf"
+                            href="/tools#pdf-section"
                             className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 block"
                             onClick={() => setToolsDropdownOpen(false)}
                           >
@@ -357,7 +357,7 @@ export function Navbar() {
                             );
                           })}
                           <Link
-                            href="/tools?category=image"
+                            href="/tools#image-section"
                             className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 block"
                             onClick={() => setToolsDropdownOpen(false)}
                           >
@@ -391,7 +391,7 @@ export function Navbar() {
                             );
                           })}
                           <Link
-                            href="/tools?category=text"
+                            href="/tools#text-section"
                             className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 block"
                             onClick={() => setToolsDropdownOpen(false)}
                           >
@@ -425,7 +425,7 @@ export function Navbar() {
                             );
                           })}
                           <Link
-                            href="/tools?category=finance"
+                            href="/tools#finance-section"
                             className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 block"
                             onClick={() => setToolsDropdownOpen(false)}
                           >

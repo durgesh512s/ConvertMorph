@@ -47,6 +47,7 @@ import {
 const toolCategories = [
   {
     title: 'PDF Tools',
+    slug: 'pdf',
     description: 'Complete PDF manipulation suite',
     icon: FileSignature,
     color: 'text-blue-600',
@@ -66,6 +67,7 @@ const toolCategories = [
   },
   {
     title: 'Image Tools',
+    slug: 'image',
     description: 'Professional image editing and optimization',
     icon: ImageIcon,
     color: 'text-purple-600',
@@ -81,6 +83,7 @@ const toolCategories = [
   },
   {
     title: 'Text Tools',
+    slug: 'text',
     description: 'Advanced text processing and analysis',
     icon: FileText,
     color: 'text-green-600',
@@ -96,6 +99,7 @@ const toolCategories = [
   },
   {
     title: 'Finance Tools',
+    slug: 'finance',
     description: 'Financial calculators and planning tools',
     icon: Calculator,
     color: 'text-orange-600',
@@ -217,102 +221,113 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10 py-16 sm:py-20 lg:py-24 min-h-[600px] flex items-center hero-section mobile-container mobile-content">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mobile-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mobile-grid">
-            {/* Left Content */}
-            <CSSFadeIn className="text-center lg:text-left">
-              <CSSSlideUp
-                delay={1}
-                className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-full text-sm font-medium mb-6"
-              >
-                <Sparkles className="h-4 w-4" />
-                Free & Privacy-First Digital Tools
-              </CSSSlideUp>
+      <section className="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-blue-950/10 dark:to-purple-950/10 py-16 sm:py-20 lg:py-24 min-h-[700px] flex items-center hero-section mobile-container mobile-content">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left Content - Takes up 7 columns on large screens */}
+            <div className="lg:col-span-7">
+              <CSSFadeIn className="text-center lg:text-left">
+                <CSSSlideUp
+                  delay={1}
+                  className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium mb-8"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Free & Privacy-First Digital Tools
+                </CSSSlideUp>
 
-              <CSSSlideUp 
-                delay={0}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 mobile-text"
-              >
-                Transform Documents{' '}
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  Instantly & Securely
-                </span>
-              </CSSSlideUp>
+                <CSSSlideUp 
+                  delay={0}
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-8 leading-tight"
+                >
+                  Transform Documents{' '}
+                  <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    Instantly & Securely
+                  </span>
+                </CSSSlideUp>
 
-              <CSSSlideUp 
-                delay={0}
-                className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed mobile-text"
-              >
-                Professional PDF tools, image editors, text processors, and financial calculators. 
-                <br className="hidden sm:block" />
-                <span className="text-blue-600 dark:text-blue-400 font-semibold">100% browser-based, completely private, always free.</span>
-              </CSSSlideUp>
+                <CSSSlideUp 
+                  delay={0}
+                  className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0"
+                >
+                  Professional PDF tools, image editors, text processors, and financial calculators. 
+                  <br className="hidden sm:block" />
+                  <span className="text-blue-600 dark:text-blue-400 font-semibold">100% browser-based, completely private, always free.</span>
+                </CSSSlideUp>
 
-              <CSSSlideUp 
-                delay={4}
-                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8"
-              >
-                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 mobile-button mobile-touch">
-                  <Link href="/tools" className="flex items-center gap-2">
-                    Start Using Tools Free
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all duration-300 mobile-button mobile-touch">
-                  <Link href="/about">
-                    Learn More About ConvertMorph
-                  </Link>
-                </Button>
-              </CSSSlideUp>
+                <CSSSlideUp 
+                  delay={4}
+                  className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10"
+                >
+                  <Button asChild size="lg" className="text-lg px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                    <Link href="/tools" className="flex items-center gap-2">
+                      Start Using Tools Free
+                      <ArrowRight className="h-5 w-5" />
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg" className="text-lg px-8 py-4 rounded-xl border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all duration-300">
+                    <Link href="/about">
+                      Learn More About ConvertMorph
+                    </Link>
+                  </Button>
+                </CSSSlideUp>
 
-              {/* Trust Indicators */}
-              <CSSFadeIn 
-                delay={5}
-                className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 text-sm text-gray-600 dark:text-gray-400"
-              >
-                {[
-                  { icon: Shield, text: "100% Private" },
-                  { icon: Zap, text: "Instant Results" },
-                  { icon: Heart, text: "Always Free" },
-                  { icon: CheckCircle, text: "No Registration" }
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <item.icon className="h-4 w-4 text-green-500" />
-                    <span>{item.text}</span>
-                  </div>
-                ))}
+                {/* Trust Indicators */}
+                <CSSFadeIn 
+                  delay={5}
+                  className="flex flex-wrap justify-center lg:justify-start gap-6 text-sm text-gray-600 dark:text-gray-400"
+                >
+                  {[
+                    { icon: Shield, text: "100% Private" },
+                    { icon: Zap, text: "Instant Results" },
+                    { icon: Heart, text: "Always Free" },
+                    { icon: CheckCircle, text: "No Registration" }
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4 text-green-500" />
+                      <span className="font-medium">{item.text}</span>
+                    </div>
+                  ))}
+                </CSSFadeIn>
               </CSSFadeIn>
-            </CSSFadeIn>
+            </div>
 
-            {/* Right Illustration */}
-            <CSSFadeIn 
-              delay={3}
-              className="flex justify-center lg:justify-end mt-8 lg:mt-0"
-            >
-              <div className="relative">
-                <div className="grid grid-cols-2 gap-4 max-w-sm">
-                  {toolCategories.map((category, index) => {
-                    const Icon = category.icon;
-                    return (
-                      <div
-                        key={category.title}
-                        className={`p-6 rounded-2xl ${category.bgColor} shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer`}
-                        onClick={() => scrollToToolkit(index)}
-                      >
-                        <Icon className={`h-8 w-8 ${category.color} mb-2`} />
-                        <h3 className="font-semibold text-gray-900 dark:text-white text-sm">
-                          {category.title}
-                        </h3>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                          {category.tools.length} tools
-                        </p>
-                      </div>
-                    );
-                  })}
+            {/* Right Tool Cards - Takes up 5 columns on large screens */}
+            <div className="lg:col-span-5">
+              <CSSFadeIn 
+                delay={3}
+                className="flex justify-center lg:justify-end"
+              >
+                <div className="w-full max-w-md">
+                  <div className="grid grid-cols-2 gap-4">
+                    {toolCategories.map((category, index) => {
+                      const Icon = category.icon;
+                      return (
+                        <div
+                          key={category.title}
+                          className={`p-6 rounded-2xl ${category.bgColor} shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer border border-gray-100 dark:border-gray-700`}
+                          onClick={() => scrollToToolkit(index)}
+                        >
+                          <div className="flex flex-col items-center text-center">
+                            <div className={`p-3 rounded-xl bg-gradient-to-r ${category.gradient} mb-3`}>
+                              <Icon className="h-8 w-8 text-white" />
+                            </div>
+                            <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">
+                              {category.title}
+                            </h3>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                              {category.tools.length} tools
+                            </p>
+                            <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                              Explore →
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            </CSSFadeIn>
+              </CSSFadeIn>
+            </div>
           </div>
         </div>
       </section>
@@ -393,25 +408,26 @@ export default function Home() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6 sm:p-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* Create a consistent grid layout that works for all categories */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
                   {toolCategories[activeCategory]?.tools.map((tool, index) => (
-                    <div key={tool.name} className="relative">
+                    <div key={tool.name} className="relative h-full">
                       {tool.available ? (
                         <Link
                           href={tool.href}
-                          className="block p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                          className="flex items-center justify-center h-full min-h-[60px] p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 hover:scale-105 hover:shadow-md border border-gray-200 dark:border-gray-600"
                         >
-                          <span className="font-medium text-gray-900 dark:text-white">
+                          <span className="font-medium text-gray-900 dark:text-white text-center">
                             {tool.name}
                           </span>
                         </Link>
                       ) : (
-                        <div className="block p-4 rounded-lg bg-gray-100 dark:bg-gray-700 opacity-60 cursor-not-allowed relative">
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium text-gray-500 dark:text-gray-400 pr-2">
+                        <div className="flex items-center justify-center h-full min-h-[60px] p-4 rounded-lg bg-gray-100 dark:bg-gray-700 opacity-60 cursor-not-allowed relative border border-gray-200 dark:border-gray-600">
+                          <div className="flex items-center justify-between w-full">
+                            <span className="font-medium text-gray-500 dark:text-gray-400 pr-2 text-center flex-1">
                               {tool.name}
                             </span>
-                            <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
+                            <span className="bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 px-2 py-1 rounded text-xs font-medium whitespace-nowrap ml-2">
                               Coming Soon
                             </span>
                           </div>
@@ -419,11 +435,24 @@ export default function Home() {
                       )}
                     </div>
                   ))}
+                  
+                  {/* Add empty placeholders to ensure grid alignment when needed */}
+                  {(() => {
+                    const currentTools = toolCategories[activeCategory]?.tools.length || 0;
+                    const remainder = currentTools % 3;
+                    const placeholdersNeeded = remainder === 0 ? 0 : 3 - remainder;
+                    
+                    return Array.from({ length: placeholdersNeeded }, (_, index) => (
+                      <div key={`placeholder-${index}`} className="hidden lg:block"></div>
+                    ));
+                  })()}
                 </div>
+                
                 <div className="mt-8 text-center">
-                  <Button asChild className="w-full sm:w-auto">
-                    <Link href="/tools">
+                  <Button asChild className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                    <Link href={`/tools?category=${toolCategories[activeCategory]?.slug}`} className="flex items-center gap-2">
                       View All {toolCategories[activeCategory]?.title}
+                      <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
                 </div>

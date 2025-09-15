@@ -258,39 +258,39 @@ export default function BlogPage() {
         </div>
 
         {/* Blog Posts Grid */}
-        <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 auto-rows-fr">
           {blogPosts.slice(1).map((post) => (
-            <Card key={post.slug} className="bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow group w-full">
-              <CardHeader className="p-4 sm:p-6">
+            <Card key={post.slug} className="bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow group flex flex-col h-full">
+              <CardHeader className="p-6 flex-shrink-0">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
-                  <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 px-2 py-1 rounded text-xs font-medium self-start">
+                  <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full text-xs font-medium self-start">
                     {post.category}
                   </span>
-                  <div className="flex items-center space-x-3 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center space-x-1">
-                      <Calendar className="h-3 w-3 flex-shrink-0" />
+                      <Calendar className="h-4 w-4 flex-shrink-0" />
                       <span className="whitespace-nowrap">{formatDate(post.date)}</span>
                     </div>
                     <div className="flex items-center space-x-1">
-                      <Clock className="h-3 w-3 flex-shrink-0" />
+                      <Clock className="h-4 w-4 flex-shrink-0" />
                       <span className="whitespace-nowrap">{post.readTime}</span>
                     </div>
                   </div>
                 </div>
-                <CardTitle className="text-lg sm:text-xl mb-2 group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400 transition-colors leading-tight">
+                <CardTitle className="text-xl mb-2 group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400 transition-colors leading-tight line-clamp-2">
                   {post.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-4 sm:p-6 pt-0">
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4 text-sm sm:text-base">
+              <CardContent className="p-6 pt-0 flex flex-col flex-grow">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6 flex-grow line-clamp-3">
                   {post.excerpt}
                 </p>
                 <Link 
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors text-sm sm:text-base"
+                  className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors mt-auto"
                 >
                   Read {post.category} Guide
-                  <ArrowRight className="ml-1 h-4 w-4 flex-shrink-0" />
+                  <ArrowRight className="ml-2 h-4 w-4 flex-shrink-0" />
                 </Link>
               </CardContent>
             </Card>
