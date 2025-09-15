@@ -326,148 +326,48 @@ const nextConfig: NextConfig = {
       config.optimization.concatenateModules = true;
     }
 
-    // Optimize bundle splitting for better performance and unused code elimination
+    // Simplified bundle splitting to prevent CSS/JS conflicts
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
-        minSize: 10000, // Smaller chunks for better granularity
-        maxSize: 100000, // Smaller max size for better loading and tree shaking
-        maxInitialRequests: 50,
-        maxAsyncRequests: 50,
+        minSize: 20000,
+        maxSize: 244000,
         cacheGroups: {
           default: false,
           vendors: false,
           
-          // Critical framework chunk - highest priority, minimal size
+          // Framework chunk
           framework: {
             chunks: 'all',
             name: 'framework',
             test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
-            priority: 60,
+            priority: 40,
             enforce: true,
             reuseExistingChunk: true,
-            maxSize: 80000,
           },
           
-          // Critical UI libraries - load early, tree-shaken
-          criticalUI: {
-            name: 'critical-ui',
-            chunks: 'initial',
-            test: /[\\/]node_modules[\\/](@radix-ui\/react-slot|clsx|class-variance-authority|tailwind-merge)[\\/]/,
-            priority: 55,
-            enforce: true,
-            maxSize: 50000,
-          },
-          
-          // Icons - async loaded, tree-shaken for used icons only
-          icons: {
-            name: 'icons',
-            chunks: 'async',
-            test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
-            priority: 45,
-            maxSize: 30000,
-          },
-          
-          // Animation libraries - async load, tree-shaken
-          animations: {
-            name: 'animations',
-            chunks: 'async',
-            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-            priority: 40,
-            maxSize: 60000,
-          },
-          
-          // PDF libraries - async load only when needed, highly optimized
-          pdfLibs: {
-            name: 'pdf-libs',
-            chunks: 'async',
-            test: /[\\/]node_modules[\\/](pdf-lib|pdfjs-dist)[\\/]/,
-            priority: 35,
-            maxSize: 80000,
-          },
-          
-          // Image processing - async load, tree-shaken
-          imageLibs: {
-            name: 'image-libs',
-            chunks: 'async',
-            test: /[\\/]node_modules[\\/](browser-image-compression|react-easy-crop)[\\/]/,
-            priority: 35,
-            maxSize: 40000,
-          },
-          
-          // DnD libraries - async load when needed
-          dndLibs: {
-            name: 'dnd-libs',
-            chunks: 'async',
-            test: /[\\/]node_modules[\\/]@dnd-kit[\\/]/,
-            priority: 30,
-            maxSize: 30000,
-          },
-          
-          // Utility libraries - tree-shaken, shared
-          utils: {
-            name: 'utils',
-            chunks: 'all',
-            test: /[\\/]node_modules[\\/](uuid|jszip|archiver|zod|sonner)[\\/]/,
-            priority: 25,
-            minChunks: 1,
-            maxSize: 40000,
-          },
-          
-          // Analytics and tracking - defer loading, minimal
-          analytics: {
-            name: 'analytics',
-            chunks: 'async',
-            test: /[\\/]node_modules[\\/](@vercel\/analytics|@vercel\/speed-insights)[\\/]/,
-            priority: 20,
-            maxSize: 20000,
-          },
-          
-          // Dropzone - async load when needed
-          dropzone: {
-            name: 'dropzone',
-            chunks: 'async',
-            test: /[\\/]node_modules[\\/]react-dropzone[\\/]/,
-            priority: 25,
-            maxSize: 25000,
-          },
-          
-          // Common vendor chunk for remaining libraries
+          // Vendor libraries
           vendor: {
             name: 'vendor',
             chunks: 'all',
             test: /[\\/]node_modules[\\/]/,
-            priority: 10,
+            priority: 20,
             minChunks: 1,
             reuseExistingChunk: true,
-            maxSize: 60000,
           },
           
-          // App-specific common code
+          // Common app code
           common: {
             name: 'common',
             minChunks: 2,
             chunks: 'all',
-            priority: 5,
+            priority: 10,
             reuseExistingChunk: true,
-            enforce: false,
-            maxSize: 40000,
           },
         },
       };
 
-      // Advanced optimizations - let Next.js handle usedExports
-      config.optimization.concatenateModules = true;
-      config.optimization.sideEffects = false;
-      config.optimization.innerGraph = true;
-      config.optimization.providedExports = true;
-      
-      // Minimize chunk overhead
-      config.optimization.runtimeChunk = {
-        name: 'runtime',
-      };
-      
-      // Enable module federation for better caching
+      // Basic optimizations
       config.optimization.moduleIds = 'deterministic';
       config.optimization.chunkIds = 'deterministic';
     }
