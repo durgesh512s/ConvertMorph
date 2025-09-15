@@ -13,6 +13,7 @@ import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
 import HydrationErrorSuppressor from '@/components/HydrationErrorSuppressor';
 import { absoluteUrl } from '@/lib/url';
+import { getCacheBustId, addCacheBust } from '@/lib/cache-bust';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,6 +33,9 @@ const poppins = Poppins({
   fallback: ['system-ui', 'arial'],
   adjustFontFallback: true,
 });
+
+// Get cache bust ID for consistent versioning
+const cacheBustId = getCacheBustId();
 
 export const metadata: Metadata = {
   title: {
@@ -65,12 +69,12 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
-      { url: '/favicon.svg?v=mffc5l8y', type: 'image/svg+xml' },
-      { url: '/android-chrome-192x192.png?v=mffc5l8y', sizes: '192x192', type: 'image/png' },
-      { url: '/android-chrome-512x512.png?v=mffc5l8y', sizes: '512x512', type: 'image/png' },
+      { url: addCacheBust('/favicon.svg', cacheBustId), type: 'image/svg+xml' },
+      { url: addCacheBust('/android-chrome-192x192.png', cacheBustId), sizes: '192x192', type: 'image/png' },
+      { url: addCacheBust('/android-chrome-512x512.png', cacheBustId), sizes: '512x512', type: 'image/png' },
     ],
     apple: [
-      { url: '/apple-touch-icon.png?v=mffc5l8y', sizes: '180x180', type: 'image/png' },
+      { url: addCacheBust('/apple-touch-icon.png', cacheBustId), sizes: '180x180', type: 'image/png' },
     ],
   },
   appleWebApp: {
@@ -331,11 +335,11 @@ export default function RootLayout({
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
         
-        {/* Favicon and Icons - Only favicon.svg and essential files */}
-        <link rel="icon" href="/favicon.svg?v=mffc5l8y" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=mffc5l8y" />
-        <link rel="icon" href="/android-chrome-192x192.png?v=mffc5l8y" sizes="192x192" type="image/png" />
-        <link rel="icon" href="/android-chrome-512x512.png?v=mffc5l8y" sizes="512x512" type="image/png" />
+        {/* Favicon and Icons - Using dynamic cache busting */}
+        <link rel="icon" href={addCacheBust('/favicon.svg', cacheBustId)} type="image/svg+xml" />
+        <link rel="apple-touch-icon" href={addCacheBust('/apple-touch-icon.png', cacheBustId)} />
+        <link rel="icon" href={addCacheBust('/android-chrome-192x192.png', cacheBustId)} sizes="192x192" type="image/png" />
+        <link rel="icon" href={addCacheBust('/android-chrome-512x512.png', cacheBustId)} sizes="512x512" type="image/png" />
         
         {/* Meta tags */}
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />

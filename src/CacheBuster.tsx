@@ -1,15 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { getCacheBustId, clientCacheBust } from '@/lib/cache-bust';
 
 interface CacheBusterProps {
   /** Enable debug logging */
   debug?: boolean;
   /** Force refresh CSS on mount */
   forceRefresh?: boolean;
+  /** Force refresh favicons on mount */
+  refreshFavicons?: boolean;
 }
 
-function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) {
+function CacheBuster({ 
+  debug = false, 
+  forceRefresh = false, 
+  refreshFavicons = false 
+}: CacheBusterProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -21,30 +28,21 @@ function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) 
 
     if (debug) {
       console.log('CacheBuster: Component mounted');
+      console.log('CacheBuster: Cache info:', clientCacheBust.getInfo());
     }
 
-    // Simple cache busting functionality
+    // Enhanced cache busting functionality
     const handleCacheBusting = () => {
-      // Get cache bust ID from environment - use consistent fallback
-      const cacheBustId = process.env.NEXT_PUBLIC_CACHE_BUST_ID || 'static';
+      const cacheBustId = getCacheBustId();
       
       if (debug) {
-        console.log('CacheBuster: Cache bust ID:', cacheBustId);
+        console.log('CacheBuster: Using cache bust ID:', cacheBustId);
       }
 
-      // Add cache busting to stylesheets if needed
+      // Refresh stylesheets if requested
       if (forceRefresh) {
         try {
-          const links = document.querySelectorAll('link[rel="stylesheet"]');
-          links.forEach((link) => {
-            const href = link.getAttribute('href');
-            if (href && !href.includes('/_next/static/')) {
-              const cleanHref = href.split('?')[0] || href;
-              const separator = cleanHref.includes('?') ? '&' : '?';
-              const newHref = `${cleanHref}${separator}v=${cacheBustId}`;
-              link.setAttribute('href', newHref);
-            }
-          });
+          clientCacheBust.reloadStylesheets();
           
           if (debug) {
             console.log('CacheBuster: CSS cache cleared and stylesheets reloaded');
@@ -52,6 +50,21 @@ function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) 
         } catch (error) {
           if (debug) {
             console.warn('CacheBuster: Error updating stylesheets:', error);
+          }
+        }
+      }
+
+      // Refresh favicons if requested
+      if (refreshFavicons) {
+        try {
+          clientCacheBust.reloadFavicons();
+          
+          if (debug) {
+            console.log('CacheBuster: Favicons cache cleared and reloaded');
+          }
+        } catch (error) {
+          if (debug) {
+            console.warn('CacheBuster: Error updating favicons:', error);
           }
         }
       }
@@ -65,10 +78,15 @@ function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) 
     // Add global functions for debugging only after mounting
     if (debug) {
       try {
-        (window as any).cacheBustInfo = {
-          id: process.env.NEXT_PUBLIC_CACHE_BUST_ID || 'static',
-          environment: process.env.NODE_ENV || 'development',
+        (window as any).cacheBustInfo = clientCacheBust.getInfo();
+        (window as any).cacheBustUtils = {
+          reload: handleCacheBusting,
+          reloadCSS: clientCacheBust.reloadStylesheets,
+          reloadFavicons: clientCacheBust.reloadFavicons,
+          getInfo: clientCacheBust.getInfo,
         };
+        
+        console.log('CacheBuster: Debug utilities available on window.cacheBustUtils');
       } catch (error) {
         if (debug) {
           console.warn('CacheBuster: Error setting global debug info:', error);
@@ -77,7 +95,7 @@ function CacheBuster({ debug = false, forceRefresh = false }: CacheBusterProps) 
     }
 
     return () => clearTimeout(timer);
-  }, [debug, forceRefresh]);
+  }, [debug, forceRefresh, refreshFavicons]);
 
   // Don't render anything until mounted to prevent hydration issues
   if (!mounted) {
