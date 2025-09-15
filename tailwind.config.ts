@@ -8,6 +8,7 @@ const config: Config = {
     "./src/lib/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/hooks/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/workers/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/styles/**/*.css",
   ],
   theme: {
     extend: {

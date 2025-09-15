@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft, Zap, Clock, Shield, Star, Users, ArrowRight, Calculator, FileText, Image, Archive } from 'lucide-react';
+import { ArrowLeft, Zap, Clock, Calendar, Shield, Star, Users, ArrowRight, Calculator, FileText, Image, Archive } from 'lucide-react';
 import { buildPostMetadata, articleJsonLd, faqJsonLd, BlogPostMetadata } from '@/lib/seo';
 import JsonLd from '@/components/JsonLd';
 import { BlogTOC } from '@/components/BlogTOC';
@@ -114,22 +114,25 @@ export default function ConvertMorphToolsPage() {  const breadcrumbJsonLd = {
             <div className="lg:col-span-3 order-2 lg:order-1 w-full min-w-0">
               <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:p-8 w-full overflow-hidden">
                 <header className="mb-6 lg:mb-8">
-                  <h1 id="main-title" className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-white mb-3 lg:mb-4 leading-tight break-words">
+                  <h1 id="main-title" className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 dark:text-white mb-4 lg:mb-6 leading-tight break-words hyphens-auto">
                     ConvertMorph: Free Online Tools for PDF, Image, Text & Finance
                   </h1>
                   
-                  <div className="flex items-center text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 lg:mb-6 flex-wrap gap-2 sm:gap-4">
-                    <time dateTime={postData.datePublished}>August 1, 2025</time>
+                  <div className="flex flex-col sm:flex-row sm:items-center text-gray-600 dark:text-gray-400 text-sm mb-4 lg:mb-6 gap-2 sm:gap-4">
+                    <time dateTime={postData.datePublished} className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-1 flex-shrink-0" />
+                      August 1, 2025
+                    </time>
                     <div className="flex items-center">
-                      <Clock className="w-4 h-4 mr-1" />
+                      <Clock className="w-4 h-4 mr-1 flex-shrink-0" />
                       {postData.readingTime}
                     </div>
-                    <span className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs font-medium">
+                    <span className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium self-start">
                       Platform Overview
                     </span>
                   </div>
                   
-                  <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                  <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed break-words hyphens-auto">
                     Discover <strong>ConvertMorph's comprehensive suite of free online tools</strong> for PDF processing, image editing, 
                     text analysis, and financial calculations. Process your files <strong>securely in your browser</strong> with 
                     professional-grade tools that prioritize privacy and deliver exceptional results.
