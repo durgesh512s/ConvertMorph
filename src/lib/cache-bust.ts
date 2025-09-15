@@ -5,15 +5,23 @@
 
 // Generate a consistent cache bust ID based on build information
 export function getCacheBustId(): string {
-  // Use environment variables in order of preference - must match Next.js buildId
-  const buildId = 
-    process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 8) ||
-    process.env.GITHUB_SHA?.slice(0, 8) ||
-    process.env.NEXT_PUBLIC_CACHE_BUST_ID ||
-    process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 8) ||
-    'mffc5l8y'; // Fallback to current version
-
-  return buildId;
+  // Production: Use git commit SHA (available in Vercel/GitHub Actions)
+  const gitSha = process.env.VERCEL_GIT_COMMIT_SHA || 
+                 process.env.GITHUB_SHA || 
+                 process.env.CI_COMMIT_SHA;
+  
+  if (gitSha) {
+    return gitSha.substring(0, 8);
+  }
+  
+  // Local development: Use environment variable
+  const envCacheBustId = process.env.NEXT_PUBLIC_CACHE_BUST_ID;
+  if (envCacheBustId) {
+    return envCacheBustId;
+  }
+  
+  // Final fallback for edge cases
+  return Date.now().toString().substring(-8);
 }
 
 // Add cache busting parameter to URLs

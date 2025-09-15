@@ -6,7 +6,8 @@
   "devCommand": "next",
   "env": {
     "NODE_ENV": "production",
-    "SITE_URL": "https://convertmorph.com"
+    "SITE_URL": "https://convertmorph.com",
+    "NEXT_PUBLIC_CACHE_BUST_ID": "@vercel-git-commit-sha"
   },
   "functions": {
     "src/app/api/**/*.ts": {

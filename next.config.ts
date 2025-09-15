@@ -4,10 +4,22 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-// Generate build-time cache busting hash
-const buildId = process.env.VERCEL_GIT_COMMIT_SHA || 
-                process.env.GITHUB_SHA || 
-                Date.now().toString();
+// Generate build-time cache busting hash that works in both local and production
+const generateProductionCacheBustId = () => {
+  // In production, use git commit SHA or generate deterministic hash
+  const gitSha = process.env.VERCEL_GIT_COMMIT_SHA || 
+                 process.env.GITHUB_SHA || 
+                 process.env.CI_COMMIT_SHA;
+  
+  if (gitSha) {
+    return gitSha.substring(0, 8);
+  }
+  
+  // For production builds without git info, use timestamp
+  return Date.now().toString().substring(-8);
+};
+
+const buildId = generateProductionCacheBustId();
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -36,9 +48,24 @@ const nextConfig: NextConfig = {
 
   // Custom build ID for cache busting - this affects RSC cache parameters
   generateBuildId: async () => {
-    // Use a shorter, more predictable build ID that changes with each deployment
+    // Use the same cache bust ID as favicons for consistency
+    const cacheBustId = process.env.NEXT_PUBLIC_CACHE_BUST_ID;
+    
+    if (cacheBustId) {
+      console.log('Next.js Build ID (RSC cache):', cacheBustId);
+      console.log('Using consistent cache bust ID for both RSC and static assets');
+      return cacheBustId;
+    }
+    
+    // Fallback to git hash or timestamp
     const shortBuildId = buildId.slice(0, 8);
-    console.log('Next.js Build ID:', shortBuildId);
+    console.log('Next.js Build ID (RSC cache):', shortBuildId);
+    console.log('Available env vars:', {
+      VERCEL_GIT_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 8),
+      GITHUB_SHA: process.env.GITHUB_SHA?.slice(0, 8),
+      NEXT_PUBLIC_CACHE_BUST_ID: process.env.NEXT_PUBLIC_CACHE_BUST_ID
+    });
+    
     return shortBuildId;
   },
 
