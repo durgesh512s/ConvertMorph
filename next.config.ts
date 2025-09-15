@@ -279,8 +279,8 @@ const nextConfig: NextConfig = {
     webpackBuildWorker: true,
     gzipSize: true,
     esmExternals: true,
-    // Enable aggressive CSS optimization
-    cssChunking: 'strict',
+    // Use default CSS chunking to avoid script tag issues
+    cssChunking: true,
     optimizeServerReact: true,
   },
 
@@ -328,48 +328,8 @@ const nextConfig: NextConfig = {
     // Configure module resolution for better tree shaking
     config.resolve.mainFields = ['es2015', 'module', 'main'];
     
-    // Add CSS optimization plugins for production
+    // Let Next.js handle CSS optimization natively
     if (!dev && !isServer) {
-      const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-      
-      // Add CSS minimizer to optimization
-      config.optimization.minimizer = config.optimization.minimizer || [];
-      config.optimization.minimizer.push(
-        new CssMinimizerPlugin({
-          minimizerOptions: {
-            preset: [
-              'default',
-              {
-                discardComments: { removeAll: true },
-                discardUnused: true,
-                mergeIdents: true,
-                reduceIdents: true,
-                discardDuplicates: true,
-                discardEmpty: true,
-                minifyFontValues: true,
-                minifyGradients: true,
-                minifyParams: true,
-                minifySelectors: true,
-                normalizeCharset: true,
-                normalizeDisplayValues: true,
-                normalizePositions: true,
-                normalizeRepeatStyle: true,
-                normalizeString: true,
-                normalizeTimingFunctions: true,
-                normalizeUnicode: true,
-                normalizeUrl: true,
-                normalizeWhitespace: true,
-                orderedValues: true,
-                reduceInitial: true,
-                reduceTransforms: true,
-                svgo: true,
-                uniqueSelectors: true,
-              },
-            ],
-          },
-        })
-      );
-
       // Enhanced dead code elimination - rely on Next.js built-in optimization
       config.optimization.minimize = true;
       config.optimization.concatenateModules = true;
