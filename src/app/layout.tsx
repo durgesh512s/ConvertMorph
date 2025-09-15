@@ -372,9 +372,8 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         
-        {/* Preload critical CSS */}
-        <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
-        <link rel="preload" href="/_next/static/css/app/globals.css" as="style" />
+        {/* CSS is automatically handled by Next.js through ES6 imports */}
+        {/* Removed hardcoded preload links that cause 404 errors in production */}
         
         {/* Critical inline CSS for above-the-fold content */}
         <style dangerouslySetInnerHTML={{
