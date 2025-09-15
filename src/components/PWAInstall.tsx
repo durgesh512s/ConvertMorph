@@ -26,16 +26,16 @@ export function PWAInstall() {
     // Set mounted to true after client hydration
     setMounted(true);
 
-    // Register service worker - TEMPORARILY DISABLED FOR DEBUGGING
-    // if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
-    //   navigator.serviceWorker.register("/service-worker.js")
-    //     .then((registration) => {
-    //       console.log("SW registered: ", registration);
-    //     })
-    //     .catch((registrationError) => {
-    //       console.log("SW registration failed: ", registrationError);
-    //     });
-    // }
+    // Register service worker
+    if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then((registration) => {
+          console.log("SW registered: ", registration);
+        })
+        .catch((registrationError) => {
+          console.log("SW registration failed: ", registrationError);
+        });
+    }
 
     // Listen for beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {

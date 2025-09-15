@@ -253,35 +253,36 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Enable experimental features for better performance
+  // Enable experimental features for better performance - SIMPLIFIED TO FIX CONSOLE ERROR
   experimental: {
-    optimizePackageImports: [
-      'lucide-react', 
-      '@radix-ui/react-slot', 
-      'framer-motion',
-      'react-dropzone',
-      'browser-image-compression',
-      'pdf-lib',
-      'pdfjs-dist',
-      'jszip',
-      'archiver',
-      'uuid',
-      'clsx',
-      'tailwind-merge',
-      'class-variance-authority',
-      '@dnd-kit/core',
-      '@dnd-kit/sortable',
-      '@dnd-kit/utilities',
-      'sonner',
-      'zod'
-    ],
-    optimizeCss: true,
-    webpackBuildWorker: true,
-    gzipSize: true,
-    esmExternals: true,
+    // Temporarily disable aggressive optimizations that might cause CSS/JS conflicts
+    // optimizePackageImports: [
+    //   'lucide-react', 
+    //   '@radix-ui/react-slot', 
+    //   'framer-motion',
+    //   'react-dropzone',
+    //   'browser-image-compression',
+    //   'pdf-lib',
+    //   'pdfjs-dist',
+    //   'jszip',
+    //   'archiver',
+    //   'uuid',
+    //   'clsx',
+    //   'tailwind-merge',
+    //   'class-variance-authority',
+    //   '@dnd-kit/core',
+    //   '@dnd-kit/sortable',
+    //   '@dnd-kit/utilities',
+    //   'sonner',
+    //   'zod'
+    // ],
+    // optimizeCss: true,
+    // webpackBuildWorker: true,
+    // gzipSize: true,
+    // esmExternals: true,
     // Use default CSS chunking to avoid script tag issues
     cssChunking: true,
-    optimizeServerReact: true,
+    // optimizeServerReact: true,
   },
 
   // Turbopack configuration
