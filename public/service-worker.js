@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v60"; // Cline  Manually increment this to invalidate old caches
+const CACHE_VERSION = "v61"; // Cline  Manually increment this to invalidate old caches
 const STATIC_CACHE = `cm-static-${CACHE_VERSION}`;
 const CSS_CACHE = `cm-css-${CACHE_VERSION}`;
 const HTML_CACHE = `cm-html-${CACHE_VERSION}`;
@@ -20,6 +20,9 @@ const isStaticAsset = (url) =>
   url.includes("/_next/static/") ||
   url.includes("/static/") ||
   /\.(js|png|jpg|jpeg|gif|ico|svg|webp|woff|woff2|ttf|eot)$/.test(url);
+
+// Ensure CSS files are NOT treated as static assets to avoid conflicts
+const isCSSFile = (url) => /\.css(\?|$)/.test(url);
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();
@@ -78,8 +81,8 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Static Assets → Cache first
-  if (isStaticAsset(url)) {
+  // Static Assets → Cache first (but exclude CSS files)
+  if (isStaticAsset(url) && !isCSSFile(url)) {
     event.respondWith(
       (async () => {
         const cache = await caches.open(STATIC_CACHE);
