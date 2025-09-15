@@ -34,9 +34,12 @@ const nextConfig: NextConfig = {
     SUPPRESS_HYDRATION_WARNING: process.env.NODE_ENV === 'production' ? 'true' : 'false',
   },
 
-  // Custom build ID for cache busting
+  // Custom build ID for cache busting - this affects RSC cache parameters
   generateBuildId: async () => {
-    return buildId;
+    // Use a shorter, more predictable build ID that changes with each deployment
+    const shortBuildId = buildId.slice(0, 8);
+    console.log('Next.js Build ID:', shortBuildId);
+    return shortBuildId;
   },
 
   async headers() {

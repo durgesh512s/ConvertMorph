@@ -5,7 +5,7 @@
 
 // Generate a consistent cache bust ID based on build information
 export function getCacheBustId(): string {
-  // Use environment variables in order of preference
+  // Use environment variables in order of preference - must match Next.js buildId
   const buildId = 
     process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 8) ||
     process.env.GITHUB_SHA?.slice(0, 8) ||
