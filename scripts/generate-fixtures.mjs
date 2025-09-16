@@ -28,7 +28,7 @@ async function generatePDFFixtures() {
     font: helveticaFont,
     color: rgb(0, 0, 0),
   });
-  page1A.drawText('This is a test document for Cypress testing.', {
+  page1A.drawText('This is a test document for E2E testing.', {
     x: 50,
     y: 650,
     size: 12,
