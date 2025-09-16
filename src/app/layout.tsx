@@ -69,6 +69,9 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
+      { url: addCacheBust('/favicon.ico', cacheBustId), type: 'image/x-icon' },
+      { url: addCacheBust('/favicon-16x16.png', cacheBustId), sizes: '16x16', type: 'image/png' },
+      { url: addCacheBust('/favicon-32x32.png', cacheBustId), sizes: '32x32', type: 'image/png' },
       { url: addCacheBust('/favicon.svg', cacheBustId), type: 'image/svg+xml' },
       { url: addCacheBust('/android-chrome-192x192.png', cacheBustId), sizes: '192x192', type: 'image/png' },
       { url: addCacheBust('/android-chrome-512x512.png', cacheBustId), sizes: '512x512', type: 'image/png' },
@@ -335,7 +338,11 @@ export default function RootLayout({
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
         
-        {/* Favicon and Icons - Using dynamic cache busting */}
+        {/* Favicon and Icons - Optimized for Google Search */}
+        <link rel="icon" href={addCacheBust('/favicon.ico', cacheBustId)} type="image/x-icon" />
+        <link rel="shortcut icon" href={addCacheBust('/favicon.ico', cacheBustId)} type="image/x-icon" />
+        <link rel="icon" href={addCacheBust('/favicon-16x16.png', cacheBustId)} sizes="16x16" type="image/png" />
+        <link rel="icon" href={addCacheBust('/favicon-32x32.png', cacheBustId)} sizes="32x32" type="image/png" />
         <link rel="icon" href={addCacheBust('/favicon.svg', cacheBustId)} type="image/svg+xml" />
         <link rel="apple-touch-icon" href={addCacheBust('/apple-touch-icon.png', cacheBustId)} />
         <link rel="icon" href={addCacheBust('/android-chrome-192x192.png', cacheBustId)} sizes="192x192" type="image/png" />
