@@ -54,8 +54,10 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(event.request)
         .then((resp) => {
+          // Clone the response immediately before any consumption
+          const responseClone = resp.clone();
           caches.open(HTML_CACHE).then((cache) =>
-            cache.put(event.request, resp.clone())
+            cache.put(event.request, responseClone)
           );
           return resp;
         })
@@ -71,7 +73,11 @@ self.addEventListener("fetch", (event) => {
         const cache = await caches.open(CSS_CACHE);
         try {
           const resp = await fetch(event.request);
-          if (resp.ok) cache.put(event.request, resp.clone());
+          if (resp.ok) {
+            // Clone the response immediately before any consumption
+            const responseClone = resp.clone();
+            cache.put(event.request, responseClone);
+          }
           return resp;
         } catch {
           return cache.match(event.request);
@@ -90,7 +96,11 @@ self.addEventListener("fetch", (event) => {
         if (cached) return cached;
         try {
           const resp = await fetch(event.request);
-          if (resp.ok) cache.put(event.request, resp.clone());
+          if (resp.ok) {
+            // Clone the response immediately before any consumption
+            const responseClone = resp.clone();
+            cache.put(event.request, responseClone);
+          }
           return resp;
         } catch {
           return new Response("Asset not found", { status: 404 });
