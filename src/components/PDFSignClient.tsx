@@ -144,16 +144,6 @@ export function PDFSignClient() {
     setCurrentPage(0)
   }, [])
 
-  // Clear signature canvas
-  const clearSignature = () => {
-    const canvas = signatureCanvasRef.current
-    if (canvas) {
-      const ctx = canvas.getContext('2d')
-      if (ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-      }
-    }
-  }
 
   // Save signature from canvas
   const saveSignature = () => {
@@ -161,14 +151,20 @@ export function PDFSignClient() {
     if (!canvas) return
     
     const dataURL = canvas.toDataURL('image/png')
+    
+    // Calculate much larger default size for better visibility
+    const currentPageData = pdfPages[currentPage]
+    const defaultWidth = currentPageData ? Math.min(400, currentPageData.width * 0.5) : 400
+    const defaultHeight = currentPageData ? Math.min(200, currentPageData.height * 0.25) : 200
+    
     const element: SignatureElement = {
       id: generateSignatureId(),
       type: 'signature',
       content: dataURL,
-      x: 100,
-      y: 100,
-      width: 200,
-      height: 100,
+      x: 50,
+      y: 50,
+      width: defaultWidth,
+      height: defaultHeight,
       pageIndex: currentPage
     }
     
@@ -182,14 +178,20 @@ export function PDFSignClient() {
   const addTextElement = () => {
     if (!textInput.trim()) return
     
+    // Calculate much larger default size for better visibility
+    const currentPageData = pdfPages[currentPage]
+    const baseWidth = Math.max(textInput.length * (fontSize * 1.2), fontSize * 6) // Minimum 6 characters width, more generous multiplier
+    const defaultWidth = currentPageData ? Math.min(baseWidth, currentPageData.width * 0.7) : baseWidth
+    const defaultHeight = fontSize * 2 // Much more generous height
+    
     const element: SignatureElement = {
       id: generateTextId(),
       type: 'text',
       content: textInput,
-      x: 100,
-      y: 100,
-      width: textInput.length * (fontSize * 0.6),
-      height: fontSize + 4,
+      x: 50,
+      y: 50,
+      width: defaultWidth,
+      height: defaultHeight,
       pageIndex: currentPage,
       fontSize,
       color: '#000000'
@@ -378,23 +380,37 @@ export function PDFSignClient() {
     
     let newWidth = element.width
     let newHeight = element.height
+    let newX = element.x
+    let newY = element.y
     
-    // Calculate new dimensions based on resize handle
+    // Calculate new dimensions and positions based on resize handle
     if (resizeHandle.includes('right')) {
-      newWidth = Math.max(20, pointerX - element.x)
+      newWidth = Math.max(30, pointerX - element.x)
     }
     if (resizeHandle.includes('bottom')) {
       newHeight = Math.max(20, pointerY - element.y)
     }
     if (resizeHandle.includes('left')) {
-      newWidth = Math.max(20, element.x + element.width - pointerX)
+      const minWidth = 30
+      const maxX = element.x + element.width - minWidth
+      newX = Math.min(pointerX, maxX)
+      newWidth = element.x + element.width - newX
     }
     if (resizeHandle.includes('top')) {
-      newHeight = Math.max(20, element.y + element.height - pointerY)
+      const minHeight = 20
+      const maxY = element.y + element.height - minHeight
+      newY = Math.min(pointerY, maxY)
+      newHeight = element.y + element.height - newY
     }
     
-    // Maintain aspect ratio for corner handles
-    if (resizeHandle.includes('corner')) {
+    // For text elements, maintain a reasonable aspect ratio but allow more flexibility
+    if (element.type === 'text') {
+      // Don't maintain strict aspect ratio for text - allow free resizing
+      // Just ensure minimum dimensions
+      newWidth = Math.max(50, newWidth)
+      newHeight = Math.max(20, newHeight)
+    } else if (resizeHandle.includes('corner')) {
+      // Maintain aspect ratio for corner handles on signatures only
       const aspectRatio = initialSize.width / initialSize.height
       if (resizeHandle.includes('right') || resizeHandle.includes('left')) {
         newHeight = newWidth / aspectRatio
@@ -410,12 +426,17 @@ export function PDFSignClient() {
     requestAnimationFrame(() => {
       setElements(prev => prev.map(el => {
         if (el.id === resizingElement) {
-          const updatedElement = { ...el, width: newWidth, height: newHeight }
+          const updatedElement = { ...el, x: newX, y: newY, width: newWidth, height: newHeight }
           
-          // For text elements, update font size proportionally
+          // For text elements, update font size proportionally based on height change
           if (el.type === 'text' && el.fontSize) {
-            const scaleFactor = newHeight / el.height
-            updatedElement.fontSize = Math.max(8, Math.min(72, el.fontSize * scaleFactor))
+            // Use a more aggressive scaling factor for better visual feedback
+            const heightScaleFactor = newHeight / el.height
+            const widthScaleFactor = newWidth / el.width
+            // Use the average of both scale factors for more balanced scaling
+            const avgScaleFactor = (heightScaleFactor + widthScaleFactor) / 2
+            const newFontSize = Math.max(8, Math.min(72, el.fontSize * avgScaleFactor))
+            updatedElement.fontSize = Math.round(newFontSize) // Round for cleaner values
           }
           
           return updatedElement
@@ -500,12 +521,17 @@ export function PDFSignClient() {
     }
   }, [resizingElement, handleResizeMove, handleMouseUp])
 
-  // Handle canvas drawing (mouse and touch events)
+  // Enhanced canvas drawing with smooth lines and better touch support
+  const [lastPoint, setLastPoint] = useState<{ x: number; y: number } | null>(null)
+  const [drawingPath, setDrawingPath] = useState<{ x: number; y: number }[]>([])
+
   const getEventPosition = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = signatureCanvasRef.current
     if (!canvas) return { x: 0, y: 0 }
     
     const rect = canvas.getBoundingClientRect()
+    const scaleX = canvas.width / rect.width
+    const scaleY = canvas.height / rect.height
     
     if ('touches' in e) {
       // Touch event
@@ -514,14 +540,14 @@ export function PDFSignClient() {
         return { x: 0, y: 0 }
       }
       return {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
+        x: (touch.clientX - rect.left) * scaleX,
+        y: (touch.clientY - rect.top) * scaleY
       }
     } else {
       // Mouse event
       return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
+        x: (e.clientX - rect.left) * scaleX,
+        y: (e.clientY - rect.top) * scaleY
       }
     }
   }
@@ -537,16 +563,24 @@ export function PDFSignClient() {
     
     const { x, y } = getEventPosition(e)
     
+    // Set up drawing context for smooth lines
+    ctx.lineCap = 'round'
+    ctx.lineJoin = 'round'
+    ctx.strokeStyle = '#000000'
+    ctx.lineWidth = 2
+    ctx.globalCompositeOperation = 'source-over'
+    
+    // Start new path
     ctx.beginPath()
     ctx.moveTo(x, y)
-    ctx.lineWidth = 2
-    ctx.lineCap = 'round'
-    ctx.strokeStyle = '#000000'
+    
+    setLastPoint({ x, y })
+    setDrawingPath([{ x, y }])
   }
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault()
-    if (!isDrawing) return
+    if (!isDrawing || !lastPoint) return
     
     const canvas = signatureCanvasRef.current
     if (!canvas) return
@@ -556,13 +590,55 @@ export function PDFSignClient() {
     
     const { x, y } = getEventPosition(e)
     
-    ctx.lineTo(x, y)
-    ctx.stroke()
+    // Calculate distance for smooth drawing
+    const distance = Math.sqrt(Math.pow(x - lastPoint.x, 2) + Math.pow(y - lastPoint.y, 2))
+    
+    // Only draw if moved enough distance (reduces jitter)
+    if (distance > 1) {
+      // Use quadratic curves for smoother lines
+      const midX = (lastPoint.x + x) / 2
+      const midY = (lastPoint.y + y) / 2
+      
+      ctx.quadraticCurveTo(lastPoint.x, lastPoint.y, midX, midY)
+      ctx.stroke()
+      
+      setLastPoint({ x, y })
+      setDrawingPath(prev => [...prev, { x, y }])
+    }
   }
 
   const stopDrawing = (e?: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (e) e.preventDefault()
+    if (!isDrawing) return
+    
+    const canvas = signatureCanvasRef.current
+    if (!canvas) return
+    
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    
+    // Finish the current stroke
+    ctx.stroke()
+    ctx.closePath()
+    
     setIsDrawing(false)
+    setLastPoint(null)
+    setDrawingPath([])
+  }
+
+  // Enhanced clear signature function
+  const clearSignature = () => {
+    const canvas = signatureCanvasRef.current
+    if (canvas) {
+      const ctx = canvas.getContext('2d')
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        // Reset drawing state
+        setIsDrawing(false)
+        setLastPoint(null)
+        setDrawingPath([])
+      }
+    }
   }
 
   // Process and download signed PDF
@@ -616,8 +692,9 @@ export function PDFSignClient() {
         const page = pages[element.pageIndex]
         if (!page) continue
         
-        // CRITICAL: Convert from scaled canvas coordinates (1.5x) back to original PDF coordinates (1x)
-        // The preview canvas is rendered at 1.5x scale, but element coordinates are stored in that scaled system
+        // CRITICAL: Convert coordinates properly accounting for canvas scale and coordinate systems
+        // Elements are stored in canvas coordinates (1.5x scaled, top-left origin)
+        // Need to convert to PDF coordinates (1x scale, bottom-left origin)
         const CANVAS_SCALE = 1.5
         const actualX = element.x / CANVAS_SCALE
         const actualY = element.y / CANVAS_SCALE
@@ -752,7 +829,7 @@ export function PDFSignClient() {
   }, [])
 
   return (
-    <div className="space-y-6">
+    <div className="relative space-y-6">
       {/* Upload Section */}
       {!file && (
         <Dropzone
@@ -934,8 +1011,12 @@ export function PDFSignClient() {
                               </div>
                               {element.type === 'text' && (
                                 <div 
-                                  className="w-full h-full flex items-center justify-center text-black pointer-events-none"
-                                  style={{ fontSize: `${(element.fontSize || 16) * scaleX}px` }}
+                                  className="w-full h-full flex items-center justify-center text-black pointer-events-none overflow-hidden"
+                                  style={{ 
+                                    fontSize: `${(element.fontSize || 16) * scaleX}px`,
+                                    lineHeight: '1.2',
+                                    wordBreak: 'break-word'
+                                  }}
                                 >
                                   {element.content}
                                 </div>
@@ -961,8 +1042,9 @@ export function PDFSignClient() {
 
           {/* Tools Panel */}
           <div className="space-y-3 sm:space-y-4 order-1 lg:order-2">
-            {/* Mobile: Horizontal layout for signature and text buttons */}
-            <div className="grid grid-cols-2 gap-3 lg:hidden">
+            {/* Mobile: Inline components */}
+            <div className="space-y-3 lg:hidden">
+              {/* Add Signature */}
               <Card>
                 <CardContent className="p-3">
                   <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm">
@@ -970,18 +1052,51 @@ export function PDFSignClient() {
                     <span className="hidden sm:inline">Add Signature</span>
                     <span className="sm:hidden">Signature</span>
                   </h3>
-                  <Button
-                    onClick={() => setShowSignaturePad(true)}
-                    className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm"
-                    size="sm"
-                  >
-                    <PenTool className="w-4 h-4 mr-1 sm:mr-2" />
-                    <span className="hidden sm:inline">Draw Signature</span>
-                    <span className="sm:hidden">Draw</span>
-                  </Button>
+                  {!showSignaturePad ? (
+                    <Button
+                      onClick={() => setShowSignaturePad(true)}
+                      className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm"
+                      size="sm"
+                    >
+                      <PenTool className="w-4 h-4 mr-1 sm:mr-2" />
+                      <span className="hidden sm:inline">Draw Signature</span>
+                      <span className="sm:hidden">Draw</span>
+                    </Button>
+                  ) : (
+                    <div className="space-y-2">
+                      <div className="border border-gray-300 rounded-lg">
+                        <canvas
+                          ref={signatureCanvasRef}
+                          width={280}
+                          height={120}
+                          className="w-full h-auto cursor-crosshair touch-none rounded-lg"
+                          onMouseDown={startDrawing}
+                          onMouseMove={draw}
+                          onMouseUp={stopDrawing}
+                          onMouseLeave={stopDrawing}
+                          onTouchStart={startDrawing}
+                          onTouchMove={draw}
+                          onTouchEnd={stopDrawing}
+                        />
+                      </div>
+                      <div className="flex space-x-1">
+                        <Button onClick={clearSignature} variant="outline" size="sm" className="flex-1 text-xs">
+                          Clear
+                        </Button>
+                        <Button onClick={() => setShowSignaturePad(false)} variant="outline" size="sm" className="flex-1 text-xs">
+                          Cancel
+                        </Button>
+                        <Button onClick={saveSignature} size="sm" className="flex-1 bg-rose-600 hover:bg-rose-700 text-white text-xs">
+                          <Save className="w-3 h-3 mr-1" />
+                          Save
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
+              {/* Add Text */}
               <Card>
                 <CardContent className="p-3">
                   <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm">
@@ -989,15 +1104,67 @@ export function PDFSignClient() {
                     <span className="hidden sm:inline">Add Text</span>
                     <span className="sm:hidden">Text</span>
                   </h3>
-                  <Button
-                    onClick={() => setShowTextInput(true)}
-                    className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm"
-                    size="sm"
-                  >
-                    <Type className="w-4 h-4 mr-1 sm:mr-2" />
-                    <span className="hidden sm:inline">Add Text</span>
-                    <span className="sm:hidden">Add</span>
-                  </Button>
+                  {!showTextInput ? (
+                    <Button
+                      onClick={() => setShowTextInput(true)}
+                      className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm"
+                      size="sm"
+                    >
+                      <Type className="w-4 h-4 mr-1 sm:mr-2" />
+                      <span className="hidden sm:inline">Add Text</span>
+                      <span className="sm:hidden">Add</span>
+                    </Button>
+                  ) : (
+                    <div className="space-y-2">
+                      <div>
+                        <Label htmlFor="mobile-text-input" className="text-xs">Text</Label>
+                        <Input
+                          id="mobile-text-input"
+                          value={textInput}
+                          onChange={(e) => setTextInput(e.target.value)}
+                          placeholder="Enter text to add"
+                          className="mt-1 text-sm"
+                        />
+                      </div>
+                        <div>
+                          <Label className="text-xs">Font Size: {fontSize}px</Label>
+                          <div className="flex items-center space-x-2 mt-1">
+                            <input
+                              type="range"
+                              min="12"
+                              max="48"
+                              step="1"
+                              value={fontSize}
+                              onChange={(e) => setFontSize(Number(e.target.value))}
+                              className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            />
+                            <Input
+                              type="number"
+                              min="12"
+                              max="48"
+                              step="1"
+                              value={fontSize}
+                              onChange={(e) => {
+                                const value = Number(e.target.value)
+                                if (value >= 12 && value <= 48) {
+                                  setFontSize(value)
+                                }
+                              }}
+                              className="w-12 text-xs"
+                            />
+                          </div>
+                        </div>
+                      <div className="flex space-x-1">
+                        <Button onClick={() => setShowTextInput(false)} variant="outline" size="sm" className="flex-1 text-xs">
+                          Cancel
+                        </Button>
+                        <Button onClick={addTextElement} size="sm" className="flex-1 bg-rose-600 hover:bg-rose-700 disabled:bg-gray-400 text-white text-xs" disabled={!textInput.trim()}>
+                          <Plus className="w-3 h-3 mr-1" />
+                          Add
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -1011,13 +1178,45 @@ export function PDFSignClient() {
                     <PenTool className="w-4 h-4" />
                     Add Signature
                   </h3>
-                  <Button
-                    onClick={() => setShowSignaturePad(true)}
-                    className="w-full bg-rose-600 hover:bg-rose-700 text-white"
-                  >
-                    <PenTool className="w-4 h-4 mr-2" />
-                    Draw Signature
-                  </Button>
+                  {!showSignaturePad ? (
+                    <Button
+                      onClick={() => setShowSignaturePad(true)}
+                      className="w-full bg-rose-600 hover:bg-rose-700 text-white"
+                    >
+                      <PenTool className="w-4 h-4 mr-2" />
+                      Draw Signature
+                    </Button>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="border border-gray-300 rounded-lg">
+                        <canvas
+                          ref={signatureCanvasRef}
+                          width={280}
+                          height={140}
+                          className="w-full h-auto cursor-crosshair touch-none rounded-lg"
+                          onMouseDown={startDrawing}
+                          onMouseMove={draw}
+                          onMouseUp={stopDrawing}
+                          onMouseLeave={stopDrawing}
+                          onTouchStart={startDrawing}
+                          onTouchMove={draw}
+                          onTouchEnd={stopDrawing}
+                        />
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button onClick={clearSignature} variant="outline" size="sm" className="flex-1">
+                          Clear
+                        </Button>
+                        <Button onClick={() => setShowSignaturePad(false)} variant="outline" size="sm" className="flex-1">
+                          Cancel
+                        </Button>
+                        <Button onClick={saveSignature} size="sm" className="flex-1 bg-rose-600 hover:bg-rose-700 text-white">
+                          <Save className="w-3 h-3 mr-1" />
+                          Save
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
@@ -1028,13 +1227,65 @@ export function PDFSignClient() {
                     <Type className="w-4 h-4" />
                     Add Text
                   </h3>
-                  <Button
-                    onClick={() => setShowTextInput(true)}
-                    className="w-full bg-rose-600 hover:bg-rose-700 text-white"
-                  >
-                    <Type className="w-4 h-4 mr-2" />
-                    Add Text
-                  </Button>
+                  {!showTextInput ? (
+                    <Button
+                      onClick={() => setShowTextInput(true)}
+                      className="w-full bg-rose-600 hover:bg-rose-700 text-white"
+                    >
+                      <Type className="w-4 h-4 mr-2" />
+                      Add Text
+                    </Button>
+                  ) : (
+                    <div className="space-y-3">
+                      <div>
+                        <Label htmlFor="text-input" className="text-sm">Text</Label>
+                        <Input
+                          id="text-input"
+                          value={textInput}
+                          onChange={(e) => setTextInput(e.target.value)}
+                          placeholder="Enter text to add"
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm">Font Size: {fontSize}px</Label>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <input
+                            type="range"
+                            min="12"
+                            max="48"
+                            step="1"
+                            value={fontSize}
+                            onChange={(e) => setFontSize(Number(e.target.value))}
+                            className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                          />
+                          <Input
+                            type="number"
+                            min="12"
+                            max="48"
+                            step="1"
+                            value={fontSize}
+                            onChange={(e) => {
+                              const value = Number(e.target.value)
+                              if (value >= 12 && value <= 48) {
+                                setFontSize(value)
+                              }
+                            }}
+                            className="w-16 text-xs"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button onClick={() => setShowTextInput(false)} variant="outline" size="sm" className="flex-1">
+                          Cancel
+                        </Button>
+                        <Button onClick={addTextElement} size="sm" className="flex-1 bg-rose-600 hover:bg-rose-700 disabled:bg-gray-400 text-white" disabled={!textInput.trim()}>
+                          <Plus className="w-3 h-3 mr-1" />
+                          Add
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -1107,97 +1358,6 @@ export function PDFSignClient() {
         </div>
       )}
 
-      {/* Signature Pad Modal */}
-      {showSignaturePad && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <Card className="w-full max-w-md mx-4">
-            <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Draw Your Signature</h3>
-              <div className="border border-gray-300 rounded-lg mb-4">
-                <canvas
-                  ref={signatureCanvasRef}
-                  width={400}
-                  height={200}
-                  className="w-full h-auto cursor-crosshair touch-none"
-                  onMouseDown={startDrawing}
-                  onMouseMove={draw}
-                  onMouseUp={stopDrawing}
-                  onMouseLeave={stopDrawing}
-                  onTouchStart={startDrawing}
-                  onTouchMove={draw}
-                  onTouchEnd={stopDrawing}
-                />
-              </div>
-              <div className="flex space-x-2">
-                <Button onClick={clearSignature} variant="outline" className="flex-1">
-                  Clear
-                </Button>
-                <Button onClick={() => setShowSignaturePad(false)} variant="outline" className="flex-1">
-                  Cancel
-                </Button>
-                <Button onClick={saveSignature} className="flex-1 bg-rose-600 hover:bg-rose-700 text-white">
-                  <Save className="w-4 h-4 mr-2" />
-                  Save
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Text Input Modal */}
-      {showTextInput && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <Card className="w-full max-w-md mx-4">
-            <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Add Text</h3>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="text-input">Text</Label>
-                  <Input
-                    id="text-input"
-                    value={textInput}
-                    onChange={(e) => setTextInput(e.target.value)}
-                    placeholder="Enter text to add"
-                  />
-                </div>
-                <div>
-                  <Label>Font Size: {fontSize}px</Label>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="range"
-                      min="12"
-                      max="48"
-                      value={fontSize}
-                      onChange={(e) => setFontSize(parseInt(e.target.value))}
-                      className="flex-1"
-                    />
-                    {/* Mobile: Size input text box - Always visible for better UX */}
-                    <Input
-                      type="number"
-                      min="12"
-                      max="48"
-                      value={fontSize}
-                      onChange={(e) => setFontSize(parseInt(e.target.value) || 16)}
-                      className="w-16 text-xs"
-                      placeholder="Size"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex space-x-2 mt-4">
-                <Button onClick={() => setShowTextInput(false)} variant="outline" className="flex-1">
-                  Cancel
-                </Button>
-                <Button onClick={addTextElement} className="flex-1 bg-rose-600 hover:bg-rose-700 disabled:bg-gray-400 text-white" disabled={!textInput.trim()}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Text
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
     </div>
   )
 }
