@@ -15,6 +15,8 @@ interface CompressedResult {
 }
 
 export async function compressPDF(file: File, level: CompressionLevel = "medium"): Promise<CompressedResult> {
+  console.log('🔧 PDF Compression started:', { fileName: file.name, size: file.size, level });
+  
   const originalSize = file.size
 
   // Load PDF with pdf.js
@@ -29,6 +31,8 @@ export async function compressPDF(file: File, level: CompressionLevel = "medium"
   const maxWidth = level === "light" ? 1400 : 1000
 
   for (let i = 0; i < pdf.numPages; i++) {
+    console.log(`🖼️ Processing page ${i + 1}/${pdf.numPages}...`);
+    
     const page = await pdf.getPage(i + 1)
 
     // Render to canvas

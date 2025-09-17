@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { Archive, Download, FileText, Zap, Settings, AlertCircle } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Archive, Download, FileText, Zap, Settings, AlertCircle, Server, Monitor, Shield, Clock } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
@@ -10,7 +10,14 @@ import { toast } from 'sonner'
 import { names } from '@/lib/names'
 import { track } from '@/lib/analytics/client'
 import { generateFileId } from '@/lib/id-utils'
-// Dynamic import for client-side only PDF compression
+import { 
+  compressPDFHybrid, 
+  getCompressionRecommendation, 
+  checkServerAvailability,
+  type CompressionProgress,
+  type HybridCompressionResult 
+} from '@/lib/hybridPDFCompressor'
+import { type CompressionMethod } from '@/lib/pdfCompressionRouter'
 
 interface ProcessedFile {
   name: string
@@ -18,6 +25,16 @@ interface ProcessedFile {
   compressedSize: number
   compressionRatio: number
   downloadUrl: string
+  method: CompressionMethod
+  processingTime: number
+}
+
+interface FileRecommendation {
+  fileId: string
+  method: CompressionMethod
+  reason: string
+  estimatedTime: string
+  recommendation: string
 }
 
 export default function PDFCompressPage() {
@@ -25,6 +42,10 @@ export default function PDFCompressPage() {
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([])
   const [compressionLevel, setCompressionLevel] = useState<'light' | 'medium' | 'strong'>('medium')
   const [isProcessing, setIsProcessing] = useState(false)
+  const [userPreference, setUserPreference] = useState<'auto' | 'privacy' | 'performance' | 'quality'>('auto')
+  const [fileRecommendations, setFileRecommendations] = useState<FileRecommendation[]>([])
+  const [serverAvailable, setServerAvailable] = useState<boolean | null>(null)
+  const [currentProgress, setCurrentProgress] = useState<CompressionProgress | null>(null)
 
   const handleFilesAdded = async (files: File[]) => {
     const mapped = await Promise.all(files.map(async file => {
@@ -66,16 +87,22 @@ export default function PDFCompressPage() {
 
     setIsProcessing(true)
     setProcessedFiles([])
+    setCurrentProgress(null)
 
     try {
       const results: ProcessedFile[] = []
 
-      // Dynamically import the PDF compressor to avoid SSR issues
-      const { compressPDF } = await import('@/lib/pdfClientCompressor')
-
       for (const uf of uploadedFiles) {
         try {
-          const result = await compressPDF(uf.file, compressionLevel as 'light' | 'medium')
+          const result = await compressPDFHybrid(
+            uf.file, 
+            compressionLevel as 'light' | 'medium',
+            userPreference,
+            (progress) => {
+              setCurrentProgress(progress)
+            }
+          )
+          
           const url = URL.createObjectURL(result.blob)
           const safeName = uf.name.replace(/[^\w.\-()\s]/g, '_')
 
@@ -85,6 +112,8 @@ export default function PDFCompressPage() {
             compressedSize: result.compressedSize,
             compressionRatio: result.ratio,
             downloadUrl: url,
+            method: result.method,
+            processingTime: result.processingTime
           })
         } catch (err) {
           console.error('Compression error:', err)
@@ -101,6 +130,7 @@ export default function PDFCompressPage() {
       toast.error('Compression failed. Please try again.')
     } finally {
       setIsProcessing(false)
+      setCurrentProgress(null)
     }
   }
 
@@ -134,6 +164,76 @@ export default function PDFCompressPage() {
             <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
               Reduce PDF file size while maintaining quality. Choose your compression level and optimize your documents.
             </p>
+          </div>
+
+          {/* Processing Method Selection */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+              <Monitor className="h-4 w-4 sm:h-5 sm:w-5 mr-2" /> Processing Method
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+              {[
+                { 
+                  value: 'auto' as const, 
+                  name: 'Smart Auto', 
+                  description: 'Automatically chooses the best method',
+                  icon: Zap,
+                  color: 'blue'
+                },
+                { 
+                  value: 'privacy' as const, 
+                  name: 'Privacy First', 
+                  description: 'Process locally for maximum privacy',
+                  icon: Shield,
+                  color: 'green'
+                },
+                { 
+                  value: 'performance' as const, 
+                  name: 'Performance', 
+                  description: 'Fastest processing on our servers',
+                  icon: Server,
+                  color: 'purple'
+                },
+                { 
+                  value: 'quality' as const, 
+                  name: 'Best Quality', 
+                  description: 'Optimal compression with quality preservation',
+                  icon: Settings,
+                  color: 'orange'
+                }
+              ].map(option => {
+                const IconComponent = option.icon
+                return (
+                  <div
+                    key={option.value}
+                    className={`border-2 rounded-lg p-3 transition-all cursor-pointer ${
+                      userPreference === option.value
+                        ? `border-${option.color}-500 bg-${option.color}-50 dark:bg-${option.color}-900/20`
+                        : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                    }`}
+                    onClick={() => setUserPreference(option.value)}
+                  >
+                    <div className="flex items-center mb-2">
+                      <input
+                        type="radio"
+                        checked={userPreference === option.value}
+                        onChange={() => setUserPreference(option.value)}
+                        className="mr-2 flex-shrink-0"
+                        id={`method-${option.value}`}
+                        name="processing-method"
+                      />
+                      <IconComponent className={`h-4 w-4 mr-2 text-${option.color}-600 dark:text-${option.color}-400`} />
+                      <label htmlFor={`method-${option.value}`} className="font-medium text-sm cursor-pointer text-gray-900 dark:text-white">
+                        {option.name}
+                      </label>
+                    </div>
+                    <p className="text-xs text-gray-600 dark:text-gray-300 ml-6">
+                      {option.description}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
           </div>
 
           {/* Compression Level Selection */}
@@ -217,6 +317,44 @@ export default function PDFCompressPage() {
                     </>
                   )}
                 </button>
+                
+                {/* Progress Display */}
+                {currentProgress && (
+                  <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center">
+                        {currentProgress.method === 'client-side' ? (
+                          <Monitor className="h-4 w-4 text-blue-600 dark:text-blue-400 mr-2" />
+                        ) : (
+                          <Server className="h-4 w-4 text-purple-600 dark:text-purple-400 mr-2" />
+                        )}
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                          {currentProgress.method === 'client-side' ? 'Client-Side Processing' : 'Server-Side Processing'}
+                        </span>
+                      </div>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {currentProgress.progress}%
+                      </span>
+                    </div>
+                    
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${currentProgress.progress}%` }}
+                      ></div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
+                      <span>{currentProgress.message}</span>
+                      {currentProgress.estimatedTime && (
+                        <span className="flex items-center">
+                          <Clock className="h-3 w-3 mr-1" />
+                          {currentProgress.estimatedTime}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
