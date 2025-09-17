@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData()
     const file = formData.get('file') as File
     const compressionLevel = formData.get('compressionLevel') as string || 'medium'
+    const pdfType = formData.get('pdfType') as string || 'text-heavy'
     
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
@@ -27,6 +28,9 @@ export async function POST(request: NextRequest) {
     if (file.size > maxSize) {
       return NextResponse.json({ error: 'File too large (max 500MB)' }, { status: 400 })
     }
+
+    // Log processing details for monitoring
+    console.log(`Processing PDF: ${file.name}, Size: ${(file.size / (1024 * 1024)).toFixed(2)}MB, Type: ${pdfType}, Level: ${compressionLevel}`)
 
     // Create temporary file paths
     const tempDir = '/tmp'

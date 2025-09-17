@@ -12,12 +12,11 @@ import { track } from '@/lib/analytics/client'
 import { generateFileId } from '@/lib/id-utils'
 import { 
   compressPDFHybrid, 
-  getCompressionRecommendation, 
   checkServerAvailability,
   type CompressionProgress,
-  type HybridCompressionResult 
+  type HybridCompressionResult,
+  type CompressionPreset
 } from '@/lib/hybridPDFCompressor'
-import { type CompressionMethod } from '@/lib/pdfCompressionRouter'
 
 interface ProcessedFile {
   name: string
@@ -25,16 +24,9 @@ interface ProcessedFile {
   compressedSize: number
   compressionRatio: number
   downloadUrl: string
-  method: CompressionMethod
+  method: 'client-side' | 'server-side'
   processingTime: number
-}
-
-interface FileRecommendation {
-  fileId: string
-  method: CompressionMethod
-  reason: string
-  estimatedTime: string
-  recommendation: string
+  pdfType: 'image-heavy' | 'text-heavy'
 }
 
 export default function PDFCompressPage() {
@@ -42,8 +34,6 @@ export default function PDFCompressPage() {
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([])
   const [compressionLevel, setCompressionLevel] = useState<'light' | 'medium' | 'strong'>('medium')
   const [isProcessing, setIsProcessing] = useState(false)
-  const [userPreference, setUserPreference] = useState<'auto' | 'privacy' | 'performance' | 'quality'>('auto')
-  const [fileRecommendations, setFileRecommendations] = useState<FileRecommendation[]>([])
   const [serverAvailable, setServerAvailable] = useState<boolean | null>(null)
   const [currentProgress, setCurrentProgress] = useState<CompressionProgress | null>(null)
 
@@ -97,8 +87,7 @@ export default function PDFCompressPage() {
           const result = await compressPDFHybrid(
             uf.file, 
             compressionLevel as 'light' | 'medium',
-            userPreference,
-            (progress) => {
+            (progress: CompressionProgress) => {
               setCurrentProgress(progress)
             }
           )
@@ -113,7 +102,8 @@ export default function PDFCompressPage() {
             compressionRatio: result.ratio,
             downloadUrl: url,
             method: result.method,
-            processingTime: result.processingTime
+            processingTime: result.processingTime,
+            pdfType: result.pdfType
           })
         } catch (err) {
           console.error('Compression error:', err)
@@ -166,73 +156,37 @@ export default function PDFCompressPage() {
             </p>
           </div>
 
-          {/* Processing Method Selection */}
+          {/* Hybrid Processing Info */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-              <Monitor className="h-4 w-4 sm:h-5 sm:w-5 mr-2" /> Processing Method
+              <Zap className="h-4 w-4 sm:h-5 sm:w-5 mr-2" /> Smart Hybrid Processing
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-              {[
-                { 
-                  value: 'auto' as const, 
-                  name: 'Smart Auto', 
-                  description: 'Automatically chooses the best method',
-                  icon: Zap,
-                  color: 'blue'
-                },
-                { 
-                  value: 'privacy' as const, 
-                  name: 'Privacy First', 
-                  description: 'Process locally for maximum privacy',
-                  icon: Shield,
-                  color: 'green'
-                },
-                { 
-                  value: 'performance' as const, 
-                  name: 'Performance', 
-                  description: 'Fastest processing on our servers',
-                  icon: Server,
-                  color: 'purple'
-                },
-                { 
-                  value: 'quality' as const, 
-                  name: 'Best Quality', 
-                  description: 'Optimal compression with quality preservation',
-                  icon: Settings,
-                  color: 'orange'
-                }
-              ].map(option => {
-                const IconComponent = option.icon
-                return (
-                  <div
-                    key={option.value}
-                    className={`border-2 rounded-lg p-3 transition-all cursor-pointer ${
-                      userPreference === option.value
-                        ? `border-${option.color}-500 bg-${option.color}-50 dark:bg-${option.color}-900/20`
-                        : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
-                    }`}
-                    onClick={() => setUserPreference(option.value)}
-                  >
-                    <div className="flex items-center mb-2">
-                      <input
-                        type="radio"
-                        checked={userPreference === option.value}
-                        onChange={() => setUserPreference(option.value)}
-                        className="mr-2 flex-shrink-0"
-                        id={`method-${option.value}`}
-                        name="processing-method"
-                      />
-                      <IconComponent className={`h-4 w-4 mr-2 text-${option.color}-600 dark:text-${option.color}-400`} />
-                      <label htmlFor={`method-${option.value}`} className="font-medium text-sm cursor-pointer text-gray-900 dark:text-white">
-                        {option.name}
-                      </label>
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <div className="bg-blue-100 dark:bg-blue-800 rounded-full p-2 flex-shrink-0">
+                  <Zap className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Automatic Method Selection</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    Our system automatically chooses the best processing method for your files:
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <Monitor className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0" />
+                      <span className="text-gray-700 dark:text-gray-300">
+                        <strong>Files &lt; 20MB:</strong> Client-side processing (Private & Fast)
+                      </span>
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-300 ml-6">
-                      {option.description}
-                    </p>
+                    <div className="flex items-center space-x-2">
+                      <Server className="h-4 w-4 text-purple-600 dark:text-purple-400 flex-shrink-0" />
+                      <span className="text-gray-700 dark:text-gray-300">
+                        <strong>Files ≥ 20MB:</strong> Server-side processing (Powerful & Reliable)
+                      </span>
+                    </div>
                   </div>
-                )
-              })}
+                </div>
+              </div>
             </div>
           </div>
 
