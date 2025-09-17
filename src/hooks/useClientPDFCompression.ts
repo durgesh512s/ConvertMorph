@@ -39,7 +39,7 @@ export function useClientPDFCompression() {
     setState(prev => ({ ...prev, isProcessing: true, results: {}, errors: {}, progress: {}, speed: {} }))
 
     // Dynamically import the PDF compressor to avoid SSR issues
-    const { compressPDF } = await import("@/lib/pdfClientCompressor")
+    const { compressPDFHybrid } = await import("@/lib/hybridPDFCompressor")
 
     for (const file of files) {
       const fileId = `${file.name}-${file.size}-${file.lastModified}`
@@ -51,7 +51,7 @@ export function useClientPDFCompression() {
           progress: { ...prev.progress, [fileId]: 0 }
         }))
 
-        const result = await compressPDF(file, options.level)
+        const result = await compressPDFHybrid(file, options.level)
 
         const arrayBuffer = await result.blob.arrayBuffer()
         setState(prev => ({
