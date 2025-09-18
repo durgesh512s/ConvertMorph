@@ -554,7 +554,8 @@ export function PDFSignClient() {
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault()
-    setIsDrawing(true)
+    e.stopPropagation()
+    
     const canvas = signatureCanvasRef.current
     if (!canvas) return
     
@@ -574,12 +575,15 @@ export function PDFSignClient() {
     ctx.beginPath()
     ctx.moveTo(x, y)
     
+    setIsDrawing(true)
     setLastPoint({ x, y })
     setDrawingPath([{ x, y }])
   }
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault()
+    e.stopPropagation()
+    
     if (!isDrawing || !lastPoint) return
     
     const canvas = signatureCanvasRef.current
@@ -593,14 +597,15 @@ export function PDFSignClient() {
     // Calculate distance for smooth drawing
     const distance = Math.sqrt(Math.pow(x - lastPoint.x, 2) + Math.pow(y - lastPoint.y, 2))
     
-    // Only draw if moved enough distance (reduces jitter)
-    if (distance > 1) {
-      // Use quadratic curves for smoother lines
-      const midX = (lastPoint.x + x) / 2
-      const midY = (lastPoint.y + y) / 2
-      
-      ctx.quadraticCurveTo(lastPoint.x, lastPoint.y, midX, midY)
+    // Only draw if moved enough distance (reduces jitter) - lower threshold for better responsiveness
+    if (distance > 0.5) {
+      // Draw line from last point to current point
+      ctx.lineTo(x, y)
       ctx.stroke()
+      
+      // Start new path from current point for next segment
+      ctx.beginPath()
+      ctx.moveTo(x, y)
       
       setLastPoint({ x, y })
       setDrawingPath(prev => [...prev, { x, y }])
@@ -608,7 +613,11 @@ export function PDFSignClient() {
   }
 
   const stopDrawing = (e?: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    if (e) e.preventDefault()
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    
     if (!isDrawing) return
     
     const canvas = signatureCanvasRef.current

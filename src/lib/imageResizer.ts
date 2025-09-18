@@ -75,6 +75,10 @@ export async function resizeImage(
         }
       }
 
+      // Round dimensions to integers to ensure clean filenames
+      newWidth = Math.round(newWidth)
+      newHeight = Math.round(newHeight)
+
       // Set canvas dimensions
       canvas.width = newWidth
       canvas.height = newHeight
