@@ -232,7 +232,7 @@ export function PDFPageNumClient() {
       
       // Load the original PDF
       const arrayBuffer = await file.arrayBuffer()
-      const pdfDoc = await PDFDocument.load(arrayBuffer)
+      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true })
       
       setProgress(20)
       

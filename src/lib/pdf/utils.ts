@@ -40,7 +40,7 @@ export class PDFProcessor {
 
       for (const file of files) {
         const pdfBuffer = await tempStorage.readFile(file.path);
-        const pdf = await PDFDocument.load(pdfBuffer);
+        const pdf = await PDFDocument.load(pdfBuffer, { ignoreEncryption: true });
         const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
         
         pages.forEach((page) => mergedPdf.addPage(page));
@@ -80,7 +80,7 @@ export class PDFProcessor {
   async splitPDF(file: TempFile, ranges: string): Promise<ProcessingResult> {
     try {
       const pdfBuffer = await tempStorage.readFile(file.path);
-      const pdf = await PDFDocument.load(pdfBuffer);
+      const pdf = await PDFDocument.load(pdfBuffer, { ignoreEncryption: true });
       const totalPages = pdf.getPageCount();
       
       const pageRanges = this.parseRanges(ranges, totalPages);
@@ -259,7 +259,7 @@ export class PDFProcessor {
   async compressPDF(file: TempFile, level: CompressionLevel): Promise<ProcessingResult> {
     try {
       const pdfBuffer = await tempStorage.readFile(file.path);
-      const pdf = await PDFDocument.load(pdfBuffer);
+      const pdf = await PDFDocument.load(pdfBuffer, { ignoreEncryption: true });
 
       // Process embedded images
       // This is a simplified compression approach

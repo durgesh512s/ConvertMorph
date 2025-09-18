@@ -676,7 +676,7 @@ export function PDFSignClient() {
       
       // Load the original PDF
       const arrayBuffer = await file.arrayBuffer()
-      const pdfDoc = await PDFDocument.load(arrayBuffer)
+      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true })
       
       setProgress(20)
       
@@ -696,6 +696,12 @@ export function PDFSignClient() {
         // Elements are stored in canvas coordinates (1.5x scaled, top-left origin)
         // Need to convert to PDF coordinates (1x scale, bottom-left origin)
         const CANVAS_SCALE = 1.5
+        
+        // Get the actual PDF page dimensions (not the canvas dimensions)
+        const pageWidth = page.getWidth()
+        const pageHeight = page.getHeight()
+        
+        // Convert from canvas coordinates to actual PDF coordinates
         const actualX = element.x / CANVAS_SCALE
         const actualY = element.y / CANVAS_SCALE
         const actualWidth = element.width / CANVAS_SCALE
@@ -711,9 +717,6 @@ export function PDFSignClient() {
           const imageBytes = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0))
           const image = await pdfDoc.embedPng(imageBytes)
           
-          // Get the page dimensions from the original PDF page
-          const pageHeight = page.getHeight()
-          
           // Convert coordinates from canvas coordinate system (top-left origin) 
           // to PDF coordinate system (bottom-left origin)
           const pdfX = actualX
@@ -727,14 +730,13 @@ export function PDFSignClient() {
             height: actualHeight,
           })
         } else if (element.type === 'text') {
-          // Get the page dimensions from the original PDF page
-          const pageHeight = page.getHeight()
-          
           // Convert coordinates from canvas coordinate system (top-left origin) 
           // to PDF coordinate system (bottom-left origin)
-          // For text, we need to account for the font size to position the baseline correctly
+          // For text, we need to position the baseline correctly
+          // The text element's Y position in canvas is the top of the text box
+          // In PDF coordinates, we need to position the baseline (bottom of text)
           const pdfX = actualX
-          const pdfY = pageHeight - actualY - actualFontSize
+          const pdfY = pageHeight - actualY - actualFontSize // Position baseline at bottom of element
           
           // Add text to page
           page.drawText(element.content, {
@@ -1069,7 +1071,8 @@ export function PDFSignClient() {
                           ref={signatureCanvasRef}
                           width={280}
                           height={120}
-                          className="w-full h-auto cursor-crosshair touch-none rounded-lg"
+                          className="w-full h-auto cursor-crosshair rounded-lg"
+                          style={{ touchAction: 'none' }}
                           onMouseDown={startDrawing}
                           onMouseMove={draw}
                           onMouseUp={stopDrawing}
@@ -1193,7 +1196,8 @@ export function PDFSignClient() {
                           ref={signatureCanvasRef}
                           width={280}
                           height={140}
-                          className="w-full h-auto cursor-crosshair touch-none rounded-lg"
+                          className="w-full h-auto cursor-crosshair rounded-lg"
+                          style={{ touchAction: 'none' }}
                           onMouseDown={startDrawing}
                           onMouseMove={draw}
                           onMouseUp={stopDrawing}

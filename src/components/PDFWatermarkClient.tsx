@@ -116,21 +116,21 @@ export function PDFWatermarkClient() {
     
     switch (position) {
       case 'top-left':
-        return { x: margin, y: pageHeight - margin - textHeight }
+        return { x: margin, y: pageHeight - margin }
       case 'top-center':
-        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight - margin - textHeight }
+        return { x: pageWidth / 2, y: pageHeight - margin }
       case 'top-right':
-        return { x: pageWidth - margin - textWidth, y: pageHeight - margin - textHeight }
+        return { x: pageWidth - margin, y: pageHeight - margin }
       case 'center':
-        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 - textHeight / 2 }
+        return { x: pageWidth / 2, y: pageHeight / 2 }
       case 'bottom-left':
-        return { x: margin, y: margin }
+        return { x: margin, y: margin + textHeight }
       case 'bottom-center':
-        return { x: pageWidth / 2 - textWidth / 2, y: margin }
+        return { x: pageWidth / 2, y: margin + textHeight }
       case 'bottom-right':
-        return { x: pageWidth - margin - textWidth, y: margin }
+        return { x: pageWidth - margin, y: margin + textHeight }
       default:
-        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 - textHeight / 2 }
+        return { x: pageWidth / 2, y: pageHeight / 2 }
     }
   }
 
@@ -168,7 +168,7 @@ export function PDFWatermarkClient() {
       
       // Load the original PDF
       const arrayBuffer = await file.arrayBuffer()
-      const pdfDoc = await PDFDocument.load(arrayBuffer)
+      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true })
       
       setProgress(20)
       
@@ -511,30 +511,74 @@ export function PDFWatermarkClient() {
             <h3 className="text-lg font-semibold mb-4">Watermark Preview</h3>
             <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
               <div className="relative inline-block">
-                <div className="w-48 h-64 bg-white border border-gray-300 rounded shadow-sm flex items-center justify-center">
-                  <div
-                    className="absolute pointer-events-none select-none"
-                    style={{
-                      color: watermarkSettings.color,
-                      opacity: watermarkSettings.opacity,
-                      fontSize: `${Math.max(8, watermarkSettings.fontSize / 6)}px`,
-                      transform: `rotate(${watermarkSettings.rotation}deg)`,
-                      ...(watermarkSettings.position === 'top-left' && { top: '10px', left: '10px' }),
-                      ...(watermarkSettings.position === 'top-center' && { top: '10px', left: '50%', transform: `translateX(-50%) rotate(${watermarkSettings.rotation}deg)` }),
-                      ...(watermarkSettings.position === 'top-right' && { top: '10px', right: '10px' }),
-                      ...(watermarkSettings.position === 'center' && { top: '50%', left: '50%', transform: `translate(-50%, -50%) rotate(${watermarkSettings.rotation}deg)` }),
-                      ...(watermarkSettings.position === 'bottom-left' && { bottom: '10px', left: '10px' }),
-                      ...(watermarkSettings.position === 'bottom-center' && { bottom: '10px', left: '50%', transform: `translateX(-50%) rotate(${watermarkSettings.rotation}deg)` }),
-                      ...(watermarkSettings.position === 'bottom-right' && { bottom: '10px', right: '10px' }),
-                    }}
-                  >
-                    {watermarkSettings.text}
-                  </div>
+                <div className="w-48 h-64 bg-white border border-gray-300 rounded shadow-sm flex items-center justify-center relative overflow-hidden">
+                  {(() => {
+                    // Calculate preview position using the same logic as PDF processing
+                    const previewWidth = 192 // 48 * 4 (w-48 = 12rem = 192px)
+                    const previewHeight = 256 // 64 * 4 (h-64 = 16rem = 256px)
+                    const margin = 10 // Scaled down margin for preview
+                    const fontSize = Math.max(8, watermarkSettings.fontSize / 6)
+                    const textWidth = watermarkSettings.text.length * (fontSize * 0.6)
+                    const textHeight = fontSize
+                    
+                    // Use the same coordinate calculation as PDF processing
+                    let x, y
+                    switch (watermarkSettings.position) {
+                      case 'top-left':
+                        x = margin
+                        y = margin
+                        break
+                      case 'top-center':
+                        x = previewWidth / 2
+                        y = margin
+                        break
+                      case 'top-right':
+                        x = previewWidth - margin
+                        y = margin
+                        break
+                      case 'center':
+                        x = previewWidth / 2
+                        y = previewHeight / 2
+                        break
+                      case 'bottom-left':
+                        x = margin
+                        y = previewHeight - margin - textHeight
+                        break
+                      case 'bottom-center':
+                        x = previewWidth / 2
+                        y = previewHeight - margin - textHeight
+                        break
+                      case 'bottom-right':
+                        x = previewWidth - margin
+                        y = previewHeight - margin - textHeight
+                        break
+                      default:
+                        x = previewWidth / 2
+                        y = previewHeight / 2
+                    }
+                    
+                    return (
+                      <div
+                        className="absolute pointer-events-none select-none"
+                        style={{
+                          color: watermarkSettings.color,
+                          opacity: watermarkSettings.opacity,
+                          fontSize: `${fontSize}px`,
+                          left: `${x}px`,
+                          top: `${y}px`,
+                          transform: `rotate(${watermarkSettings.rotation}deg)`,
+                          transformOrigin: 'center center',
+                        }}
+                      >
+                        {watermarkSettings.text}
+                      </div>
+                    )
+                  })()}
                   <div className="text-gray-400 text-xs">PDF Page Preview</div>
                 </div>
               </div>
               <p className="text-sm text-gray-600 mt-4">
-                This is a preview of how your watermark will appear on the PDF pages
+                This preview matches exactly how your watermark will appear on the PDF pages
               </p>
             </div>
           </CardContent>

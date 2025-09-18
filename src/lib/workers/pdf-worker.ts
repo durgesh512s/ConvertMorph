@@ -83,7 +83,7 @@ async function compressPdf(filePath: string, quality: 'light' | 'medium' | 'stro
     sendProgress(jobId, 10);
     
     const pdfBytes = await fs.readFile(filePath);
-    const pdfDoc = await PDFDocument.load(pdfBytes);
+    const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
     
     sendProgress(jobId, 30);
     
@@ -135,7 +135,7 @@ async function mergePdfs(filePaths: string[], jobId: string) {
       if (!filePath) continue;
       
       const pdfBytes = await fs.readFile(filePath);
-      const pdf = await PDFDocument.load(pdfBytes);
+      const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
       const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
       
       copiedPages.forEach((page) => mergedPdf.addPage(page));
@@ -167,7 +167,7 @@ async function splitPdf(filePath: string, ranges: string, jobId: string) {
     sendProgress(jobId, 10);
     
     const pdfBytes = await fs.readFile(filePath);
-    const pdfDoc = await PDFDocument.load(pdfBytes);
+    const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
     const totalPages = pdfDoc.getPageCount();
     
     sendProgress(jobId, 30);
@@ -311,7 +311,7 @@ async function pdfToImages(filePath: string, format: 'png' | 'jpg', jobId: strin
     // Note: This is a simplified version. In a real implementation,
     // you would use pdfjs-dist with node-canvas to render pages
     const pdfBytes = await fs.readFile(filePath);
-    const pdfDoc = await PDFDocument.load(pdfBytes);
+    const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
     const pageCount = pdfDoc.getPageCount();
     
     sendProgress(jobId, 30);

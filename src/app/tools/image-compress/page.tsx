@@ -73,45 +73,91 @@ export default function ImageCompressPage() {
 
     setProcessing(true)
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('quality', quality.toString())
-      formData.append('format', format)
+      // First try server-side processing for better performance
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('quality', quality.toString())
+        formData.append('format', format)
 
-      const response = await fetch('/api/image-compress', {
-        method: 'POST',
-        body: formData
-      })
+        const response = await fetch('/api/image-compress', {
+          method: 'POST',
+          body: formData
+        })
 
-      if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Processing failed')
+        if (response.ok) {
+          // Get metadata from headers
+          const metadata: Record<string, string> = {}
+          response.headers.forEach((value, key) => {
+            if (key.startsWith('x-')) {
+              metadata[key] = value
+            }
+          })
+
+          const blob = await response.blob()
+          const filename = response.headers.get('content-disposition')
+            ?.match(/filename="(.+)"/)?.[1] || 'compressed_image'
+
+          const originalSize = parseInt(metadata['x-original-size'] || '0')
+          const processedSize = parseInt(metadata['x-compressed-size'] || '0')
+
+          setResult({
+            blob,
+            filename,
+            originalSize,
+            processedSize,
+            metadata
+          })
+
+          toast.success('Image compressed successfully using server processing!')
+          return
+        }
+      } catch (serverError) {
+        console.warn('Server-side processing failed, falling back to client-side:', serverError)
       }
 
-      // Get metadata from headers
-      const metadata: Record<string, string> = {}
-      response.headers.forEach((value, key) => {
-        if (key.startsWith('x-')) {
-          metadata[key] = value
+      // Fallback to client-side compression using browser-image-compression
+      console.log('Using client-side compression fallback...')
+      
+      // Import the compression library dynamically
+      const { compressImage } = await import('@/lib/imageCompressor')
+      
+      // Use quality directly instead of mapping to compression levels
+      // This gives users precise control over compression
+      const compressionLevel: 'light' | 'medium' | 'strong' = 'medium' // Default fallback
+
+      // Map format
+      let outputFormat: 'original' | 'jpeg' | 'webp'
+      if (format === 'jpeg') {
+        outputFormat = 'jpeg'
+      } else if (format === 'webp') {
+        outputFormat = 'webp'
+      } else {
+        outputFormat = 'original'
+      }
+
+      // Pass quality directly to ensure precise compression control
+      const result = await compressImage(file, compressionLevel, outputFormat, quality)
+      
+      // Generate filename
+      const originalName = file.name.split('.')[0] || 'compressed'
+      const extension = result.format
+      const filename = `${originalName}_compressed.${extension}`
+
+      setResult({
+        blob: result.blob,
+        filename,
+        originalSize: result.originalSize,
+        processedSize: result.compressedSize,
+        metadata: {
+          'compression-ratio': `${result.ratio}%`,
+          'processing-method': 'client-side',
+          'original-format': file.type,
+          'output-format': result.blob.type
         }
       })
 
-      const blob = await response.blob()
-      const filename = response.headers.get('content-disposition')
-        ?.match(/filename="(.+)"/)?.[1] || 'compressed_image'
-
-      const originalSize = parseInt(metadata['x-original-size'] || '0')
-      const processedSize = parseInt(metadata['x-compressed-size'] || '0')
-
-      setResult({
-        blob,
-        filename,
-        originalSize,
-        processedSize,
-        metadata
-      })
-
-      toast.success('Image compressed successfully!')
+      toast.success('Image compressed successfully using client-side processing!')
     } catch (error) {
       console.error('Processing error:', error)
       toast.error(error instanceof Error ? error.message : 'Processing failed')
@@ -143,6 +189,11 @@ export default function ImageCompressPage() {
 
   const compressionRatio = result ? 
     ((result.originalSize - result.processedSize) / result.originalSize * 100).toFixed(1) : '0'
+  
+  const isFileLarger = result && result.processedSize > result.originalSize
+  const compressionText = isFileLarger 
+    ? `+${Math.abs(parseFloat(compressionRatio))}% increase` 
+    : `${compressionRatio}% reduction`
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 dark:from-gray-900 dark:to-gray-800">
@@ -316,9 +367,11 @@ export default function ImageCompressPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-600 dark:text-gray-400">Reduction:</p>
-                  <p className="font-medium text-green-600 dark:text-green-400">
-                    {compressionRatio}%
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {isFileLarger ? 'Size Change:' : 'Reduction:'}
+                  </p>
+                  <p className={`font-medium ${isFileLarger ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
+                    {compressionText}
                   </p>
                 </div>
                 <div>

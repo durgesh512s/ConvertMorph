@@ -80,7 +80,7 @@ export default function PDFSplitPage() {
       
       // Load the PDF
       const arrayBuffer = await file.file.arrayBuffer()
-      const pdfDoc = await PDFDocument.load(arrayBuffer)
+      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true })
       const totalPages = pdfDoc.getPageCount()
       
       let splits: SplitFile[] = []

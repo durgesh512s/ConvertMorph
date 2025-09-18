@@ -108,14 +108,14 @@ function SortablePage({ page, index, onRotate, isProcessing }: SortablePageProps
       }`}>
         <CardContent className="p-3">
           <div className="relative">
-            {/* Drag Handle */}
+            {/* Drag Handle - Larger for mobile touch */}
             <div
               {...attributes}
               {...listeners}
-              className="absolute top-1 left-1 z-10 p-2 bg-white/90 rounded cursor-grab active:cursor-grabbing opacity-100 transition-opacity"
+              className="absolute top-1 left-1 z-10 p-2 sm:p-2 bg-white/90 dark:bg-gray-800/90 rounded cursor-grab active:cursor-grabbing opacity-100 transition-opacity touch-manipulation"
               aria-label={`Drag page ${page.pageNumber}`}
             >
-              <GripVertical className="w-4 h-4 text-gray-600" />
+              <GripVertical className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400" />
             </div>
 
             {/* Page Number Badge */}
@@ -139,27 +139,27 @@ function SortablePage({ page, index, onRotate, isProcessing }: SortablePageProps
               />
             </div>
 
-            {/* Rotation Controls */}
-            <div className="flex gap-1 justify-center">
+            {/* Rotation Controls - Larger for mobile */}
+            <div className="flex gap-1 sm:gap-1 justify-center">
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => onRotate(page.id, 'ccw')}
                 disabled={isProcessing}
-                className="h-7 px-2"
+                className="h-8 sm:h-7 px-3 sm:px-2 touch-manipulation"
                 aria-label={`Rotate page ${page.pageNumber} counter-clockwise`}
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-4 h-4 sm:w-3 sm:h-3" />
               </Button>
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => onRotate(page.id, 'cw')}
                 disabled={isProcessing}
-                className="h-7 px-2"
+                className="h-8 sm:h-7 px-3 sm:px-2 touch-manipulation"
                 aria-label={`Rotate page ${page.pageNumber} clockwise`}
               >
-                <RotateCw className="w-3 h-3" />
+                <RotateCw className="w-4 h-4 sm:w-3 sm:h-3" />
               </Button>
             </div>
 
@@ -424,7 +424,7 @@ export function PDFOrganizeClient() {
       
       // Load the original PDF
       const arrayBuffer = await file.arrayBuffer()
-      const originalPdf = await PDFDocument.load(arrayBuffer)
+      const originalPdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true })
       
       // Create new PDF document
       const newPdf = await PDFDocument.create()
@@ -595,79 +595,132 @@ export function PDFOrganizeClient() {
                 <Badge variant="secondary">{pages.length} pages</Badge>
               </div>
               
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2">
-                {/* First row - Undo/Redo/Help */}
-                <div className="flex gap-2 flex-1">
+              {/* Action Buttons - Mobile optimized */}
+              <div className="flex flex-col gap-3">
+                {/* Mobile: Two rows of buttons for better touch targets */}
+                <div className="flex gap-2 sm:hidden">
                   <Button
                     variant="outline"
-                    size="sm"
                     onClick={undo}
                     disabled={!canUndo || isProcessing}
-                    className="flex items-center space-x-1 flex-1 sm:flex-none"
+                    className="flex items-center justify-center space-x-2 flex-1 h-11 touch-manipulation"
                   >
-                    <Undo className="w-4 h-4" />
-                    <span className="hidden sm:inline">Undo</span>
+                    <Undo className="w-5 h-5" />
+                    <span>Undo</span>
                   </Button>
                   
                   <Button
                     variant="outline"
-                    size="sm"
                     onClick={redo}
                     disabled={!canRedo || isProcessing}
-                    className="flex items-center space-x-1 flex-1 sm:flex-none"
+                    className="flex items-center justify-center space-x-2 flex-1 h-11 touch-manipulation"
                   >
-                    <Redo className="w-4 h-4" />
-                    <span className="hidden sm:inline">Redo</span>
-                  </Button>
-                  
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
-                    className="flex items-center space-x-1 flex-1 sm:flex-none"
-                  >
-                    <Keyboard className="w-4 h-4" />
-                    <span className="hidden sm:inline">Help</span>
-                  </Button>
-                  
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleReset}
-                    disabled={isProcessing}
-                    className="flex items-center space-x-1 flex-1 sm:flex-none"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    <span className="hidden sm:inline">Reset</span>
+                    <Redo className="w-5 h-5" />
+                    <span>Redo</span>
                   </Button>
                 </div>
                 
-                {/* Download Button */}
-                <Button
-                  onClick={handleProcess}
-                  disabled={isProcessing || pages.length === 0}
-                  className="flex items-center justify-center space-x-2 w-full sm:w-auto"
-                >
-                  <Download className="w-4 h-4" />
-                  <span className="text-sm sm:text-base">Download Organized PDF</span>
-                </Button>
+                <div className="flex gap-2 sm:hidden">
+                  <Button
+                    variant="outline"
+                    onClick={handleReset}
+                    disabled={isProcessing}
+                    className="flex items-center justify-center space-x-2 flex-1 h-11 touch-manipulation"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                    <span>Reset</span>
+                  </Button>
+                  
+                  <Button
+                    onClick={handleProcess}
+                    disabled={isProcessing || pages.length === 0}
+                    className="flex items-center justify-center space-x-2 flex-1 h-11 touch-manipulation"
+                  >
+                    <Download className="w-5 h-5" />
+                    <span>Download</span>
+                  </Button>
+                </div>
+
+                {/* Desktop: Single row layout */}
+                <div className="hidden sm:flex sm:flex-row gap-2">
+                  <div className="flex gap-2 flex-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={undo}
+                      disabled={!canUndo || isProcessing}
+                      className="flex items-center space-x-1"
+                    >
+                      <Undo className="w-4 h-4" />
+                      <span>Undo</span>
+                    </Button>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={redo}
+                      disabled={!canRedo || isProcessing}
+                      className="flex items-center space-x-1"
+                    >
+                      <Redo className="w-4 h-4" />
+                      <span>Redo</span>
+                    </Button>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
+                      className="flex items-center space-x-1"
+                    >
+                      <Keyboard className="w-4 h-4" />
+                      <span>Help</span>
+                    </Button>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleReset}
+                      disabled={isProcessing}
+                      className="flex items-center space-x-1"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span>Reset</span>
+                    </Button>
+                  </div>
+                  
+                  <Button
+                    onClick={handleProcess}
+                    disabled={isProcessing || pages.length === 0}
+                    className="flex items-center justify-center space-x-2"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download Organized PDF</span>
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
       )}
 
-      {/* Keyboard Help Modal */}
+      {/* Keyboard Help Modal - Hidden on mobile to reduce clutter */}
       {showKeyboardHelp && (
-        <Card className="border-blue-200 bg-blue-50">
+        <Card className="hidden sm:block border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
           <CardContent className="p-4">
-            <h3 className="font-semibold mb-3">Keyboard Shortcuts</h3>
+            <h3 className="font-semibold mb-3 text-gray-900 dark:text-white">Keyboard Shortcuts</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-              <div><kbd className="px-2 py-1 bg-white rounded text-xs">Ctrl/Cmd + Z</kbd> Undo</div>
-              <div><kbd className="px-2 py-1 bg-white rounded text-xs">Ctrl/Cmd + Y</kbd> Redo</div>
-              <div><kbd className="px-2 py-1 bg-white rounded text-xs">Ctrl/Cmd + D</kbd> Download</div>
-              <div><kbd className="px-2 py-1 bg-white rounded text-xs">?</kbd> Toggle this help</div>
+              <div className="text-gray-700 dark:text-gray-300">
+                <kbd className="px-2 py-1 bg-white dark:bg-gray-700 rounded text-xs text-gray-900 dark:text-gray-100">Ctrl/Cmd + Z</kbd> Undo
+              </div>
+              <div className="text-gray-700 dark:text-gray-300">
+                <kbd className="px-2 py-1 bg-white dark:bg-gray-700 rounded text-xs text-gray-900 dark:text-gray-100">Ctrl/Cmd + Y</kbd> Redo
+              </div>
+              <div className="text-gray-700 dark:text-gray-300">
+                <kbd className="px-2 py-1 bg-white dark:bg-gray-700 rounded text-xs text-gray-900 dark:text-gray-100">Ctrl/Cmd + D</kbd> Download
+              </div>
+              <div className="text-gray-700 dark:text-gray-300">
+                <kbd className="px-2 py-1 bg-white dark:bg-gray-700 rounded text-xs text-gray-900 dark:text-gray-100">?</kbd> Toggle this help
+              </div>
             </div>
           </CardContent>
         </Card>

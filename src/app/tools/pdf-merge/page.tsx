@@ -98,7 +98,7 @@ export default function PDFMergePage() {
         
         // Load the PDF
         const arrayBuffer = await uploadedFile.file.arrayBuffer();
-        const pdf = await PDFDocument.load(arrayBuffer);
+        const pdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
         
         // Copy all pages from this PDF to the merged PDF
         const pageIndices = pdf.getPageIndices();

@@ -337,7 +337,7 @@ async function compressInMainThread(
 ): Promise<Omit<HybridCompressionResult, 'method' | 'processingTime' | 'pdfType'>> {
   
   const arrayBuffer = await file.arrayBuffer()
-  const pdfDoc = await PDFDocument.load(arrayBuffer)
+  const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true })
   
   onProgress?.({
     stage: 'processing',
