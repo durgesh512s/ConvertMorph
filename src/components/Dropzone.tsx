@@ -100,6 +100,7 @@ export function Dropzone({
         role="button"
         tabIndex={0}
         aria-label="Upload files"
+        data-testid="dropzone"
         onKeyDown={handleKeyDown}
         onClick={open}
         className={cn(

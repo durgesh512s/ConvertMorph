@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 // Environment configuration schema
 export const envSchema = z.object({
-  SITE_URL: z.string().url().default('http://localhost:3000'),
+  SITE_URL: z.string().url().default('https://convertmorph.com'),
   MAX_FILE_SIZE_MB: z.coerce.number().positive().default(25),
   MAX_PAGES: z.coerce.number().positive().default(200),
   JOB_TIMEOUT_MS: z.coerce.number().positive().default(90000),
@@ -41,7 +41,7 @@ export const imagesToPdfSchema = z.object({
 export const pdfToImagesSchema = z.object({
   format: z.enum(['png', 'jpg']).default('png'),
   quality: z.number().min(1).max(100).default(90),
-  dpi: z.number().min(72).max(300).default(150),
+  dpi: z.number().min(72).max(600).default(150),
 });
 
 // Tool types

@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { FileText, Download, Image, Zap, Settings } from 'lucide-react'
+import { useState, useCallback, useEffect } from 'react'
+import { FileText, Download, Image, Zap, Settings, AlertCircle } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
@@ -9,26 +9,55 @@ import { track } from '@/lib/analytics/client'
 import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
 import { generateFileId, generateHistoryTimestamp } from '@/lib/id-utils'
-
+import { PdfToImagesOptions } from '@/lib/validation/schemas'
 
 interface ConvertedImage {
   name: string
   pageNumber: number
-  downloadUrl: string
+  blob: Blob
+  dataUrl: string
   size: string
+  width: number
+  height: number
+}
+
+interface PDFPageImage {
+  pageNumber: number
+  canvas: HTMLCanvasElement
+  blob: Blob
+  dataUrl: string
+  width: number
+  height: number
+}
+
+interface PDFToImagesResult {
+  images: PDFPageImage[]
+  totalPages: number
+  originalFileName: string
 }
 
 export default function PDFToImagesPage() {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
   const [convertedImages, setConvertedImages] = useState<ConvertedImage[]>([])
-  const [imageFormat, setImageFormat] = useState<'PNG' | 'JPG'>('PNG')
+  const [processingProgress, setProcessingProgress] = useState(0)
+  const [processingMessage, setProcessingMessage] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [isClient, setIsClient] = useState(false)
+  
+  // Settings
+  const [imageFormat, setImageFormat] = useState<'png' | 'jpg'>('png')
   const [imageQuality, setImageQuality] = useState<number>(90)
   const [resolution, setResolution] = useState<number>(150)
   const [pageRange, setPageRange] = useState<string>('')
   const [extractMode, setExtractMode] = useState<'all' | 'range'>('all')
 
-  const handleFilesAdded = (files: File[]) => {
+  // Initialize client-side only
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  const handleFilesAdded = useCallback((files: File[]) => {
     const newFiles: UploadedFile[] = files.map(file => ({
       id: generateFileId(),
       file,
@@ -39,6 +68,7 @@ export default function PDFToImagesPage() {
     }))
     setUploadedFiles(prev => [...prev, ...newFiles])
     setConvertedImages([])
+    setError(null)
     
     // Track file uploads
     files.forEach(file => {
@@ -48,11 +78,13 @@ export default function PDFToImagesPage() {
         pages: 0 // Will be determined during processing
       })
     })
-  }
+  }, [])
 
-  const handleFileRemove = (fileId: string) => {
+  const handleFileRemove = useCallback((fileId: string) => {
     setUploadedFiles(prev => prev.filter(f => f.id !== fileId))
-  }
+    setConvertedImages([])
+    setError(null)
+  }, [])
 
   const handleConvert = async () => {
     if (uploadedFiles.length === 0) return
@@ -60,6 +92,9 @@ export default function PDFToImagesPage() {
     const jobId = newJobId('pdf2img')
     const startTime = generateHistoryTimestamp()
     setIsProcessing(true)
+    setError(null)
+    setProcessingProgress(0)
+    setProcessingMessage('Initializing...')
     
     // Track job start
     track('job_start', {
@@ -69,39 +104,51 @@ export default function PDFToImagesPage() {
       extractMode,
       imageFormat,
       resolution,
-      imageQuality: imageFormat === 'JPG' ? imageQuality : undefined,
+      imageQuality: imageFormat === 'jpg' ? imageQuality : undefined,
       pageRange: extractMode === 'range' ? pageRange : undefined
     })
     
     try {
-      // Simulate conversion process
-      await new Promise(resolve => setTimeout(resolve, 3000))
-      
-      // Simulate extracted images (in real implementation, this would process the actual PDF)
-      const mockPageCount = 5 // Fixed page count for consistent behavior
-      const results: ConvertedImage[] = []
-      const firstFile = uploadedFiles[0]
-      if (!firstFile) {
-        throw new Error('No file available for conversion')
+      const file = uploadedFiles[0]?.file
+      if (!file) {
+        throw new Error('No file selected')
       }
-      const originalName = firstFile.name
-      
-      for (let i = 1; i <= mockPageCount; i++) {
-        if (extractMode === 'all' || isPageInRange(i, pageRange)) {
-          // Use names helper for consistent filename
-          const filename = names.pdfToImages(originalName, i, imageFormat.toLowerCase() as 'png' | 'jpg')
-          
-          results.push({
-            name: filename,
-            pageNumber: i,
-            downloadUrl: URL.createObjectURL(firstFile.file), // Placeholder
-            size: `${200 + (i * 50)} KB`
-          })
-        }
+
+      // Dynamic import to avoid SSR issues
+      const { PDFToImagesProcessor } = await import('@/lib/pdf/pdfToImagesProcessor')
+
+      // Create processor options
+      const options: PdfToImagesOptions = {
+        format: imageFormat,
+        quality: imageQuality,
+        dpi: resolution
       }
+
+      const processor = new PDFToImagesProcessor(options)
+      
+      // Process the PDF
+      const result: PDFToImagesResult = await processor.processFile(
+        file,
+        (progress: number, message: string) => {
+          setProcessingProgress(progress)
+          setProcessingMessage(message)
+        },
+        extractMode === 'range' ? pageRange : undefined
+      )
+      
+      // Convert results to our format
+      const convertedResults: ConvertedImage[] = result.images.map((image: PDFPageImage) => ({
+        name: PDFToImagesProcessor.generateFileName(result.originalFileName, image.pageNumber, imageFormat),
+        pageNumber: image.pageNumber,
+        blob: image.blob,
+        dataUrl: image.dataUrl,
+        size: formatFileSize(image.blob.size),
+        width: image.width,
+        height: image.height
+      }))
       
       const durationMs = generateHistoryTimestamp() - startTime
-      const totalResultSize = results.length * 300 * 1024 // Estimate 300KB per image
+      const totalResultSize = convertedResults.reduce((sum, img) => sum + img.blob.size, 0)
       
       // Track successful conversion
       track('job_success', {
@@ -110,74 +157,95 @@ export default function PDFToImagesPage() {
         durationMs,
         resultSizeMb: Math.round(totalResultSize / (1024 * 1024) * 100) / 100,
         fileCount: uploadedFiles.length,
-        extractedImages: results.length,
-        totalPages: mockPageCount,
+        extractedImages: convertedResults.length,
+        totalPages: result.totalPages,
         extractMode,
         imageFormat,
         resolution
       })
       
-      setConvertedImages(results)
+      setConvertedImages(convertedResults)
+      setProcessingProgress(100)
+      setProcessingMessage('Conversion completed!')
     } catch (error) {
       console.error('Error converting PDF to images:', error)
+      
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+      setError(errorMessage)
       
       // Track error
       track('job_error', {
         jobId,
         tool: 'pdf2img',
-        code: 'conversion_failed'
+        code: 'conversion_failed',
+        error: errorMessage
       })
-      
-      // Fallback - still show some results for demo
-      const results: ConvertedImage[] = []
-      const firstFile = uploadedFiles[0]
-      if (!firstFile) {
-        return
-      }
-      const originalName = firstFile.name
-      
-      for (let i = 1; i <= 3; i++) {
-        const filename = names.pdfToImages(originalName, i, imageFormat.toLowerCase() as 'png' | 'jpg')
-        results.push({
-          name: filename,
-          pageNumber: i,
-          downloadUrl: URL.createObjectURL(firstFile.file),
-          size: `${200 + (i * 50)} KB`
-        })
-      }
-      
-      setConvertedImages(results)
     } finally {
       setIsProcessing(false)
     }
   }
 
-  const isPageInRange = (pageNum: number, range: string): boolean => {
-    if (!range.trim()) return true
-    
-    const ranges = range.split(',').map(r => r.trim())
-    
-    for (const r of ranges) {
-      if (r.includes('-')) {
-        const parts = r.split('-')
-        const startStr = parts[0]
-        const endStr = parts[1]
-        if (!startStr || !endStr) continue
-        
-        const start = parseInt(startStr.trim())
-        const end = parseInt(endStr.trim())
-        if (isNaN(start) || isNaN(end)) continue
-        
-        if (pageNum >= start && pageNum <= end) return true
-      } else {
-        const pageNumber = parseInt(r)
-        if (!isNaN(pageNumber) && pageNum === pageNumber) return true
-      }
+  const handleDownloadImage = async (image: ConvertedImage) => {
+    try {
+      const { PDFToImagesProcessor } = await import('@/lib/pdf/pdfToImagesProcessor')
+      await PDFToImagesProcessor.downloadImage(image.blob, image.name)
+      
+      track('download', {
+        tool: 'pdf2img',
+        type: 'single_image',
+        format: imageFormat,
+        pageNumber: image.pageNumber
+      })
+    } catch (error) {
+      console.error('Error downloading image:', error)
+      setError('Failed to download image')
     }
-    
-    return false
   }
 
+  const handleDownloadAll = async () => {
+    if (convertedImages.length === 0) return
+    
+    try {
+      const { PDFToImagesProcessor } = await import('@/lib/pdf/pdfToImagesProcessor')
+      const images: PDFPageImage[] = convertedImages.map(img => ({
+        pageNumber: img.pageNumber,
+        canvas: document.createElement('canvas'), // Not used for download
+        blob: img.blob,
+        dataUrl: img.dataUrl,
+        width: img.width,
+        height: img.height
+      }))
+      
+      const originalFileName = uploadedFiles[0]?.name || 'document.pdf'
+      await PDFToImagesProcessor.downloadAllAsZip(images, originalFileName, imageFormat)
+      
+      track('download', {
+        tool: 'pdf2img',
+        type: 'zip_archive',
+        format: imageFormat,
+        imageCount: convertedImages.length
+      })
+    } catch (error) {
+      console.error('Error downloading ZIP:', error)
+      setError('Failed to create ZIP file')
+    }
+  }
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
+  const resetTool = () => {
+    setUploadedFiles([])
+    setConvertedImages([])
+    setError(null)
+    setProcessingProgress(0)
+    setProcessingMessage('')
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-rose-100 dark:from-gray-900 dark:to-gray-800">
@@ -197,6 +265,16 @@ export default function PDFToImagesPage() {
               Extract pages from PDF as high-quality PNG or JPG image files. Choose format, quality, and specific page ranges. All processing happens in your browser for maximum privacy.
             </p>
           </div>
+
+          {/* Error Display */}
+          {error && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+              <div className="flex items-center">
+                <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mr-2" />
+                <p className="text-red-700 dark:text-red-300">{error}</p>
+              </div>
+            </div>
+          )}
 
           {/* Conversion Settings */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
@@ -287,11 +365,11 @@ export default function PDFToImagesPage() {
                 <select
                   id="imageFormat"
                   value={imageFormat}
-                  onChange={(e) => setImageFormat(e.target.value as 'PNG' | 'JPG')}
+                  onChange={(e) => setImageFormat(e.target.value as 'png' | 'jpg')}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                 >
-                  <option value="PNG">PNG (Lossless)</option>
-                  <option value="JPG">JPG (Smaller size)</option>
+                  <option value="png">PNG (Lossless)</option>
+                  <option value="jpg">JPG (Smaller size)</option>
                 </select>
               </div>
 
@@ -312,7 +390,7 @@ export default function PDFToImagesPage() {
                 </select>
               </div>
 
-              {imageFormat === 'JPG' && (
+              {imageFormat === 'jpg' && (
                 <div>
                   <label htmlFor="imageQuality" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Quality ({imageQuality}%)
@@ -363,11 +441,27 @@ export default function PDFToImagesPage() {
                   ) : (
                     <>
                       <Zap className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                      <span className="hidden sm:inline">Convert to {imageFormat} Images</span>
-                      <span className="sm:hidden">Convert to {imageFormat}</span>
+                      <span className="hidden sm:inline">Convert to {imageFormat.toUpperCase()} Images</span>
+                      <span className="sm:hidden">Convert to {imageFormat.toUpperCase()}</span>
                     </>
                   )}
                 </button>
+              </div>
+            )}
+
+            {/* Progress Bar */}
+            {isProcessing && (
+              <div className="mt-4">
+                <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-2">
+                  <span>{processingMessage}</span>
+                  <span>{Math.round(processingProgress)}%</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div
+                    className="bg-red-600 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${processingProgress}%` }}
+                  ></div>
+                </div>
               </div>
             )}
           </div>
@@ -395,15 +489,42 @@ export default function PDFToImagesPage() {
                       </span>
                     </div>
                     
-                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg h-24 mb-3 flex items-center justify-center">
-                      <Image className="h-8 w-8 text-gray-400" aria-label="Image preview placeholder" />
+                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg h-24 mb-3 flex items-center justify-center overflow-hidden">
+                      {image.dataUrl && image.dataUrl.startsWith('data:image/') && image.dataUrl.length > 1000 ? (
+                        <img
+                          src={image.dataUrl}
+                          alt={`Page ${image.pageNumber} preview`}
+                          className="max-h-full max-w-full object-contain"
+                          onError={(e) => {
+                            console.error(`Failed to load preview for page ${image.pageNumber}:`, e);
+                            // Hide the broken image and show fallback
+                            e.currentTarget.style.display = 'none';
+                            const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                            if (fallback) fallback.style.display = 'flex';
+                          }}
+                          onLoad={() => {
+                            console.log(`Successfully loaded preview for page ${image.pageNumber}`);
+                          }}
+                        />
+                      ) : null}
+                      <div 
+                        className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400"
+                        style={{ display: image.dataUrl && image.dataUrl.startsWith('data:image/') && image.dataUrl.length > 1000 ? 'none' : 'flex' }}
+                      >
+                        <Image className="h-8 w-8 mb-2" />
+                        <span className="text-xs">Preview</span>
+                        <span className="text-xs">Page {image.pageNumber}</span>
+                      </div>
                     </div>
                     
                     <p className="text-sm font-medium text-gray-900 dark:text-white mb-2 truncate">
                       {image.name}
                     </p>
                     
-                    <button className="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm">
+                    <button
+                      onClick={() => handleDownloadImage(image)}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm"
+                    >
                       <Download className="h-4 w-4 mr-2" />
                       Download
                     </button>
@@ -413,9 +534,7 @@ export default function PDFToImagesPage() {
               
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                 <button
-                  onClick={() => {
-                    // Download all as ZIP
-                  }}
+                  onClick={handleDownloadAll}
                   className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm sm:text-base"
                 >
                   <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
@@ -423,10 +542,7 @@ export default function PDFToImagesPage() {
                   <span className="sm:hidden">Download ZIP</span>
                 </button>
                 <button
-                  onClick={() => {
-                    setUploadedFiles([])
-                    setConvertedImages([])
-                  }}
+                  onClick={resetTool}
                   className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 text-sm sm:text-base"
                 >
                   <span className="hidden sm:inline">Convert Another PDF</span>
@@ -476,274 +592,6 @@ export default function PDFToImagesPage() {
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 Download all images individually or as a ZIP file
               </p>
-            </div>
-          </div>
-
-          {/* How to Use Section */}
-          <div className="mt-16 sm:mt-20 bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-3xl p-8 sm:p-12">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-                Extract PDF Pages as Images
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                Transform your PDF documents into high-quality images with precision control over format, resolution, and page selection.
-              </p>
-            </div>
-
-            {/* Visual Process Flow */}
-            <div className="mb-12">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {/* Step 1 */}
-                <div className="text-center">
-                  <div className="relative">
-                    <div className="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
-                      <FileText className="h-12 w-12 text-white mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-white mb-2">Upload PDF</h3>
-                      <p className="text-cyan-100 text-sm">
-                        Drop your PDF file or click to browse. Up to 100MB supported.
-                      </p>
-                    </div>
-                    <div className="absolute -top-2 -right-2 bg-cyan-400 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
-                      1
-                    </div>
-                  </div>
-                </div>
-
-                {/* Step 2 */}
-                <div className="text-center">
-                  <div className="relative">
-                    <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
-                      <Settings className="h-12 w-12 text-white mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-white mb-2">Configure</h3>
-                      <p className="text-blue-100 text-sm">
-                        Choose format, resolution, quality, and page range settings.
-                      </p>
-                    </div>
-                    <div className="absolute -top-2 -right-2 bg-blue-400 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
-                      2
-                    </div>
-                  </div>
-                </div>
-
-                {/* Step 3 */}
-                <div className="text-center">
-                  <div className="relative">
-                    <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
-                      <Zap className="h-12 w-12 text-white mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-white mb-2">Extract</h3>
-                      <p className="text-indigo-100 text-sm">
-                        Process your PDF and extract pages as high-quality images.
-                      </p>
-                    </div>
-                    <div className="absolute -top-2 -right-2 bg-indigo-400 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
-                      3
-                    </div>
-                  </div>
-                </div>
-
-                {/* Step 4 */}
-                <div className="text-center">
-                  <div className="relative">
-                    <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
-                      <Download className="h-12 w-12 text-white mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-white mb-2">Download</h3>
-                      <p className="text-purple-100 text-sm">
-                        Get individual images or download all as a ZIP archive.
-                      </p>
-                    </div>
-                    <div className="absolute -top-2 -right-2 bg-purple-400 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
-                      4
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Format & Quality Guide */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-                <div className="flex items-center mb-6">
-                  <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-full p-3 mr-4">
-                    <Image className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Format Selection Guide</h3>
-                </div>
-                
-                <div className="space-y-6">
-                  <div className="border-l-4 border-green-500 pl-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">🖼️ PNG Format</h4>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
-                      Perfect for documents with text, diagrams, and graphics requiring crisp edges.
-                    </p>
-                    <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
-                      <p className="text-green-700 dark:text-green-300 text-xs">
-                        <strong>Best for:</strong> Text documents, presentations, technical drawings, logos
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="border-l-4 border-blue-500 pl-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">📸 JPG Format</h4>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">
-                      Ideal for photos and images where smaller file size is important.
-                    </p>
-                    <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-                      <p className="text-blue-700 dark:text-blue-300 text-xs">
-                        <strong>Best for:</strong> Photo albums, magazines, brochures, web sharing
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-                <div className="flex items-center mb-6">
-                  <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-full p-3 mr-4">
-                    <Settings className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Resolution Guide</h3>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div>
-                      <span className="font-medium text-gray-900 dark:text-white">72 DPI</span>
-                      <p className="text-xs text-gray-600 dark:text-gray-300">Web & Screen</p>
-                    </div>
-                    <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">Small files</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div>
-                      <span className="font-medium text-gray-900 dark:text-white">150 DPI</span>
-                      <p className="text-xs text-gray-600 dark:text-gray-300">Standard Quality</p>
-                    </div>
-                    <span className="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-1 rounded">Recommended</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div>
-                      <span className="font-medium text-gray-900 dark:text-white">300 DPI</span>
-                      <p className="text-xs text-gray-600 dark:text-gray-300">High Quality Print</p>
-                    </div>
-                    <span className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-1 rounded">Large files</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div>
-                      <span className="font-medium text-gray-900 dark:text-white">600 DPI</span>
-                      <p className="text-xs text-gray-600 dark:text-gray-300">Professional Print</p>
-                    </div>
-                    <span className="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded">Very large</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Advanced Tips */}
-            <div className="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-                🎯 Pro Extraction Tips
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl">📄</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Page Range Syntax</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Use "1-5" for ranges, "1,3,5" for specific pages, or "1-3,7-9" for mixed selections.
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl">⚡</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Optimize File Size</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Use JPG at 80-90% quality for photos, PNG for text. Lower DPI for web use.
-                  </p>
-                </div>
-
-                <div className="text-center">
-                  <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl">🎨</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Quality Balance</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    150 DPI PNG for documents, 300 DPI JPG for photos, 600 DPI for professional printing.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* FAQ Section */}
-          <div className="mt-12 sm:mt-16">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 text-center">
-              Frequently Asked Questions
-            </h2>
-            
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                    What image formats can I export to?
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    You can export PDF pages as PNG (lossless, larger files) or JPG (compressed, smaller files). PNG is best for documents with text, while JPG is suitable for photos.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                    How do I extract specific pages?
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Select &quot;Page Range&quot; mode and enter the pages you want. Use commas to separate individual pages and hyphens for ranges. For example: &quot;1-3,5,7-9&quot; extracts pages 1, 2, 3, 5, 7, 8, and 9.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                    What resolution should I choose?
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    72 DPI is suitable for web use, 150 DPI for standard viewing, 300 DPI for high-quality printing, and 600 DPI for professional print work. Higher DPI creates larger files.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                    What is the maximum PDF size I can upload?
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    You can upload PDF files up to 100MB in size. For larger files, consider compressing your PDF first using our PDF compression tool.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                    Are my PDF files stored on your servers?
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    No, all PDF processing happens locally in your browser. Your files are never uploaded to our servers, ensuring complete privacy and security.
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                    Can I adjust the image quality for JPG exports?
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Yes, when exporting to JPG format, you can adjust the quality from 10% to 100%. Higher quality produces better images but larger file sizes.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
 
