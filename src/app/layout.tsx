@@ -142,7 +142,6 @@ export const metadata: Metadata = {
     yahoo: process.env.YAHOO_VERIFICATION,
   },
   other: {
-    'theme-color': '#0052CC',
     'color-scheme': 'light dark',
     'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-capable': 'yes',
