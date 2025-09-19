@@ -36,8 +36,8 @@ Fast, private PDF & image tools. Many operations run locally in your browser.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/docmorph.git
-cd docmorph
+git clone https://github.com/yourusername/convertmorph.git
+cd convertmorph
 
 # Install dependencies
 npm install
@@ -73,7 +73,7 @@ RATE_LIMIT_DURATION=3600
 ## 🏗️ Project Structure
 
 ```
-docmorph/
+convertmorph/
 ├── src/
 │   ├── app/                 # Next.js App Router pages
 │   │   ├── tools/          # PDF tool pages
@@ -127,10 +127,10 @@ vercel
 
 ```bash
 # Build image
-docker build -t docmorph .
+docker build -t convertmorph .
 
 # Run container
-docker run -p 3000:3000 docmorph
+docker run -p 3000:3000 convertmorph
 ```
 
 ## 📊 Performance
@@ -191,7 +191,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Documentation** - Check this README and inline comments
 - **Issues** - Report bugs via GitHub Issues
-- **Email** - support@docmorph.com
+- **Email** - support@convertmorph.com
 - **Response Time** - Usually within 24 hours
 
 ## 🗺️ Roadmap

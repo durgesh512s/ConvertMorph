@@ -26,7 +26,7 @@ class TempStorage {
   private jobs = new Map<string, TempJob>();
 
   constructor() {
-    this.baseDir = path.join(os.tmpdir(), 'docmorph');
+    this.baseDir = path.join(os.tmpdir(), 'convertmorph');
   }
 
   async init(): Promise<void> {
