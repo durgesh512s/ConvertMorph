@@ -1102,7 +1102,7 @@ export function PDFSignClient() {
                 {/* PDF Page Display */}
                 <div 
                   ref={pdfContainerRef}
-                  className="relative border border-gray-300 rounded-lg overflow-hidden bg-white"
+                  className="relative border border-gray-300 rounded-lg overflow-hidden bg-white dark:bg-white"
                   style={{ maxHeight: '70vh', overflow: 'auto' }}
                 >
                   {pdfPages[currentPage] && (
@@ -1262,12 +1262,12 @@ export function PDFSignClient() {
                     </Button>
                   ) : (
                     <div className="space-y-2">
-                      <div className="border border-gray-300 rounded-lg">
+                      <div className="border border-gray-300 rounded-lg bg-white dark:bg-white">
                         <canvas
                           ref={signatureCanvasRef}
                           width={280}
                           height={120}
-                          className="w-full h-auto cursor-crosshair rounded-lg"
+                          className="w-full h-auto cursor-crosshair rounded-lg bg-white dark:bg-white"
                           style={{ touchAction: 'none' }}
                           onMouseDown={startDrawing}
                           onMouseMove={draw}
@@ -1384,12 +1384,12 @@ export function PDFSignClient() {
                     </Button>
                   ) : (
                     <div className="space-y-3">
-                      <div className="border border-gray-300 rounded-lg">
+                      <div className="border border-gray-300 rounded-lg bg-white dark:bg-white">
                         <canvas
                           ref={signatureCanvasRef}
                           width={280}
                           height={140}
-                          className="w-full h-auto cursor-crosshair rounded-lg"
+                          className="w-full h-auto cursor-crosshair rounded-lg bg-white dark:bg-white"
                           style={{ touchAction: 'none' }}
                           onMouseDown={startDrawing}
                           onMouseMove={draw}
