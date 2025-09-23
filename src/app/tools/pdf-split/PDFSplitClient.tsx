@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Scissors, Download, FileText, Zap, Info } from 'lucide-react'
+import { Scissors, Download, FileText, Zap, Info, Settings } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
@@ -461,6 +461,252 @@ export default function PDFSplitClient() {
             </button>
           </div>
         )}
+      </div>
+
+      {/* PDF Splitting Made Simple Section */}
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 mb-8 border border-slate-700">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+            🔧 PDF Splitting Made Simple
+          </h2>
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            Transform your large PDF documents into perfectly organized smaller files with our intuitive splitting tools
+          </p>
+        </div>
+
+        {/* Three Feature Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Precise Page Ranges */}
+          <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center">
+                <Scissors className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-white text-center mb-3">Precise Page Ranges</h3>
+            <p className="text-gray-300 text-center mb-4">Extract exactly what you need</p>
+            
+            <div className="bg-purple-900/30 rounded-lg p-3 mb-3">
+              <div className="flex items-center text-purple-300 text-sm mb-1">
+                <span className="mr-2">📝</span>
+                <span className="font-medium">Example Input:</span>
+              </div>
+              <div className="bg-purple-800/50 rounded px-2 py-1 text-purple-200 font-mono text-sm">
+                1-5,8,12-15
+              </div>
+            </div>
+            
+            <div className="bg-green-900/30 rounded-lg p-3">
+              <div className="flex items-center text-green-300 text-sm mb-1">
+                <span className="mr-2">📄</span>
+                <span className="font-medium">Result:</span>
+              </div>
+              <div className="text-green-200 text-sm">
+                3 files: Pages 1-5, Page 8, Pages 12-15
+              </div>
+            </div>
+          </div>
+
+          {/* Equal Chunks */}
+          <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center">
+                <FileText className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-white text-center mb-3">Equal Chunks</h3>
+            <p className="text-gray-300 text-center mb-4">Divide into uniform sections</p>
+            
+            <div className="bg-indigo-900/30 rounded-lg p-3 mb-3">
+              <div className="flex items-center text-indigo-300 text-sm mb-1">
+                <span className="mr-2">⚙️</span>
+                <span className="font-medium">Set Pages:</span>
+              </div>
+              <div className="bg-indigo-800/50 rounded px-2 py-1 text-indigo-200 font-mono text-sm">
+                5 pages each
+              </div>
+            </div>
+            
+            <div className="bg-blue-900/30 rounded-lg p-3">
+              <div className="flex items-center text-blue-300 text-sm mb-1">
+                <span className="mr-2">📊</span>
+                <span className="font-medium">20-page PDF becomes:</span>
+              </div>
+              <div className="text-blue-200 text-sm">
+                4 files with 5 pages each
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Split */}
+          <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center">
+                <Zap className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-white text-center mb-3">Quick Split</h3>
+            <p className="text-gray-300 text-center mb-4">Instant 50/50 division</p>
+            
+            <div className="bg-pink-900/30 rounded-lg p-3 mb-3">
+              <div className="flex items-center text-pink-300 text-sm mb-1">
+                <span className="mr-2">⚡</span>
+                <span className="font-medium">One Click:</span>
+              </div>
+              <div className="bg-pink-800/50 rounded px-2 py-1 text-pink-200 font-mono text-sm">
+                Auto-split
+              </div>
+            </div>
+            
+            <div className="bg-orange-900/30 rounded-lg p-3">
+              <div className="flex items-center text-orange-300 text-sm mb-1">
+                <span className="mr-2">📋</span>
+                <span className="font-medium">Perfect for:</span>
+              </div>
+              <div className="text-orange-200 text-sm">
+                Reports, books, long documents
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Your Splitting Journey */}
+        <div className="bg-slate-700/30 rounded-xl p-6 mb-8">
+          <h3 className="text-2xl font-bold text-white text-center mb-6">
+            🚀 Your Splitting Journey
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Step 1 */}
+            <div className="flex items-start space-x-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold">1</span>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-white mb-2">Choose Your Method</h4>
+                <p className="text-gray-300 text-sm mb-3">
+                  Select from three powerful splitting options: precise page ranges for targeted extraction, 
+                  equal chunks for uniform distribution, or quick split for instant division.
+                </p>
+                <div className="bg-purple-900/20 rounded-lg p-2">
+                  <p className="text-purple-300 text-xs">
+                    💡 Pro Tip: Use page ranges for extracting specific chapters or sections
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="flex items-start space-x-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold">3</span>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-white mb-2">Configure Settings</h4>
+                <p className="text-gray-300 text-sm mb-3">
+                  Fine-tune your splitting preferences. Enter page ranges, set chunk sizes, or simply 
+                  choose the quick split option. Our intelligent system validates your inputs automatically.
+                </p>
+                <div className="bg-pink-900/20 rounded-lg p-2">
+                  <p className="text-pink-300 text-xs">
+                    ⚙️ Smart validation prevents errors before processing
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="flex items-start space-x-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold">2</span>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-white mb-2">Upload Your PDF</h4>
+                <p className="text-gray-300 text-sm mb-3">
+                  Drag and drop your PDF file or click to browse. Our tool supports files up to 100MB and 
+                  processes everything locally in your browser for maximum security.
+                </p>
+                <div className="bg-indigo-900/20 rounded-lg p-2">
+                  <p className="text-indigo-300 text-xs">
+                    🔒 Security: Your files never leave your device
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div className="flex items-start space-x-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold">4</span>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-white mb-2">Download Results</h4>
+                <p className="text-gray-300 text-sm mb-3">
+                  Get your split files instantly! Download each file individually or grab everything in a 
+                  convenient ZIP archive. All files maintain original quality and formatting.
+                </p>
+                <div className="bg-cyan-900/20 rounded-lg p-2">
+                  <p className="text-cyan-300 text-xs">
+                    📦 Bulk download available for multiple files
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Advanced Splitting Strategies */}
+        <div className="bg-slate-700/30 rounded-xl p-6">
+          <h3 className="text-2xl font-bold text-white text-center mb-6">
+            🎯 Advanced Splitting Strategies
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Document Organization */}
+            <div className="bg-slate-600/50 rounded-lg p-4">
+              <h4 className="text-lg font-bold text-white mb-3 flex items-center">
+                <span className="mr-2">📚</span>
+                Document Organization
+              </h4>
+              <ul className="space-y-2 text-gray-300 text-sm">
+                <li className="flex items-start">
+                  <span className="text-purple-400 mr-2">•</span>
+                  Extract table of contents as separate file
+                </li>
+                <li className="flex items-start">
+                  <span className="text-purple-400 mr-2">•</span>
+                  Split chapters using page ranges
+                </li>
+                <li className="flex items-start">
+                  <span className="text-purple-400 mr-2">•</span>
+                  Separate appendices and references
+                </li>
+              </ul>
+            </div>
+
+            {/* Performance Optimization */}
+            <div className="bg-slate-600/50 rounded-lg p-4">
+              <h4 className="text-lg font-bold text-white mb-3 flex items-center">
+                <span className="mr-2">⚡</span>
+                Performance Optimization
+              </h4>
+              <ul className="space-y-2 text-gray-300 text-sm">
+                <li className="flex items-start">
+                  <span className="text-pink-400 mr-2">•</span>
+                  Use smaller chunks for faster processing
+                </li>
+                <li className="flex items-start">
+                  <span className="text-pink-400 mr-2">•</span>
+                  Split large files to reduce memory usage
+                </li>
+                <li className="flex items-start">
+                  <span className="text-pink-400 mr-2">•</span>
+                  Batch process multiple ranges efficiently
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Results */}
