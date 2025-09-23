@@ -170,13 +170,13 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // HTML pages - short cache with revalidation
+      // HTML pages - optimized for GSC crawling
       {
         source: '/((?!api|_next|static).*)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=0, must-revalidate',
+            value: 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400',
           },
           // Security headers for all routes
           {
@@ -281,9 +281,9 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Enable experimental features for better performance - CONSERVATIVE APPROACH
+  // Enable experimental features for better performance and crawling
   experimental: {
-    // Keep essential optimizations but remove potentially problematic ones
+    // Package import optimization for faster builds and smaller bundles
     optimizePackageImports: [
       'lucide-react', 
       '@radix-ui/react-slot', 
@@ -291,16 +291,19 @@ const nextConfig: NextConfig = {
       'tailwind-merge',
       'class-variance-authority',
       'uuid',
-      'zod'
+      'zod',
+      'react-dropzone',
+      'jspdf'
     ],
-    // Disable CSS optimization that might cause conflicts
-    // optimizeCss: false,
     webpackBuildWorker: true,
     gzipSize: true,
     esmExternals: true,
-    // Use default CSS chunking to avoid script tag issues
     cssChunking: true,
     optimizeServerReact: true,
+    // Improve mobile-first indexing
+    optimizeCss: true,
+    // Enable partial prerendering for better crawling
+    ppr: false, // Keep disabled for now to avoid issues
   },
 
   // Turbopack configuration

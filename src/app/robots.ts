@@ -22,28 +22,53 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
       {
-        // Googlebot must see vendor, webpack, ui, fonts to render correctly
+        // Optimize Googlebot crawling - allow essential JS for SSR/CSR hybrid
         userAgent: 'Googlebot',
         allow: [
+          '/',
           '/tools/',
-          '/_next/static/chunks/app/tools/',
-          '/_next/static/chunks/pages*',
-          '/_next/static/chunks/framework*',
-          '/_next/static/chunks/vendor-*',
-          '/_next/static/chunks/webpack-*',
-          '/_next/static/chunks/ui-*',
-          '/_next/static/css/*',
-          '/_next/static/media/*',
+          '/blog/',
+          '/about',
+          '/contact',
+          '/privacy',
+          '/terms',
+          '/_next/static/css/*', // Essential for rendering
+          '/_next/static/chunks/*', // Allow JS chunks for proper rendering
           '/favicon.ico',
           '/manifest.webmanifest',
+          '/apple-app-site-association',
+          '/.well-known/apple-app-site-association',
         ],
         disallow: [
+          '/_next/static/media/*', // Block media files only
           '/public/samples/*',
           '/public/og/*',
           '/sw.js',
           '/service-worker.js',
           '/pdf.worker.min.js',
+          '/workers/*',
+          '/scripts/*',
         ],
+        crawlDelay: 0.5, // Faster crawling for better response times
+      },
+      {
+        // Mobile Googlebot - ensure mobile-first indexing works properly
+        userAgent: 'Googlebot-Mobile',
+        allow: [
+          '/',
+          '/tools/',
+          '/blog/',
+          '/_next/static/css/*',
+          '/_next/static/chunks/*', // Allow JS for mobile rendering
+          '/favicon.ico',
+          '/manifest.webmanifest',
+        ],
+        disallow: [
+          '/_next/static/media/*',
+          '/public/samples/*',
+          '/workers/*',
+        ],
+        crawlDelay: 0.3, // Even faster for mobile-first indexing
       },
       // Block unwanted bots
       { userAgent: 'GPTBot', disallow: ['/'] },

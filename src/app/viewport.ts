@@ -7,7 +7,9 @@ export const viewport: Viewport = {
   ],
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5, // Allow zoom for accessibility
+  userScalable: true, // Enable user scaling for better mobile experience
   viewportFit: 'cover',
+  colorScheme: 'light dark',
+  interactiveWidget: 'resizes-content',
 }
