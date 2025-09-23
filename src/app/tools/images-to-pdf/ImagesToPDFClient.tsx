@@ -440,6 +440,79 @@ export default function ImagesToPDFClient() {
         )}
       </div>
 
+      {/* Results */}
+      {convertedFiles.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center">
+            <Download className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+            Converted PDFs ({convertedFiles.length})
+          </h3>
+          
+          <div className="space-y-4">
+            {convertedFiles.map((file, index) => (
+              <div key={index} className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 sm:p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                  <div className="flex items-start sm:items-center">
+                    <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mr-3 mt-0.5 sm:mt-0 flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-all">{file.name}</p>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        <span>{file.pageCount} page{file.pageCount !== 1 ? 's' : ''}</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span>Size: {pageSize} {orientation !== 'auto' ? orientation : ''}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <a
+                    href={file.downloadUrl}
+                    download={file.name}
+                    className="bg-orange-600 hover:bg-orange-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm sm:text-base flex-shrink-0"
+                  >
+                    <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    Download
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+            {convertedFiles.length > 1 && (
+              <button
+                onClick={async () => {
+                  try {
+                    const files = convertedFiles.map(file => ({
+                      name: file.name,
+                      url: file.downloadUrl
+                    }))
+                    await downloadFilesAsZip(files, 'converted-pdfs.zip')
+                    toast.success('ZIP file downloaded successfully!')
+                  } catch (error) {
+                    console.error('Error downloading ZIP:', error)
+                    toast.error('Failed to create ZIP file')
+                  }
+                }}
+                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm sm:text-base"
+              >
+                <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
+                <span className="hidden sm:inline">Download All as ZIP</span>
+                <span className="sm:hidden">Download ZIP</span>
+              </button>
+            )}
+            <button
+              onClick={() => {
+                setUploadedFiles([])
+                setConvertedFiles([])
+              }}
+              className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 text-sm sm:text-base"
+            >
+              <span className="hidden sm:inline">Convert More Images</span>
+              <span className="sm:hidden">Convert More</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Transform Images to PDF in Minutes Section */}
       <div className="mt-16 sm:mt-20 bg-gradient-to-r from-amber-50 via-orange-50 to-red-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-2xl p-8 sm:p-12 mb-6 sm:mb-8">
         <div className="text-center mb-12">
@@ -597,79 +670,6 @@ export default function ImagesToPDFClient() {
           </div>
         </div>
       </div>
-
-      {/* Results */}
-      {convertedFiles.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center">
-            <Download className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-            Converted PDFs ({convertedFiles.length})
-          </h3>
-          
-          <div className="space-y-4">
-            {convertedFiles.map((file, index) => (
-              <div key={index} className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 sm:p-4">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-                  <div className="flex items-start sm:items-center">
-                    <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mr-3 mt-0.5 sm:mt-0 flex-shrink-0" />
-                    <div className="min-w-0 flex-1">
-                      <p className="font-medium text-gray-900 dark:text-white text-sm sm:text-base break-all">{file.name}</p>
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
-                        <span>{file.pageCount} page{file.pageCount !== 1 ? 's' : ''}</span>
-                        <span className="hidden sm:inline">•</span>
-                        <span>Size: {pageSize} {orientation !== 'auto' ? orientation : ''}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <a
-                    href={file.downloadUrl}
-                    download={file.name}
-                    className="bg-orange-600 hover:bg-orange-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm sm:text-base flex-shrink-0"
-                  >
-                    <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                    Download
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-            {convertedFiles.length > 1 && (
-              <button
-                onClick={async () => {
-                  try {
-                    const files = convertedFiles.map(file => ({
-                      name: file.name,
-                      url: file.downloadUrl
-                    }))
-                    await downloadFilesAsZip(files, 'converted-pdfs.zip')
-                    toast.success('ZIP file downloaded successfully!')
-                  } catch (error) {
-                    console.error('Error downloading ZIP:', error)
-                    toast.error('Failed to create ZIP file')
-                  }
-                }}
-                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm sm:text-base"
-              >
-                <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
-                <span className="hidden sm:inline">Download All as ZIP</span>
-                <span className="sm:hidden">Download ZIP</span>
-              </button>
-            )}
-            <button
-              onClick={() => {
-                setUploadedFiles([])
-                setConvertedFiles([])
-              }}
-              className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 text-sm sm:text-base"
-            >
-              <span className="hidden sm:inline">Convert More Images</span>
-              <span className="sm:hidden">Convert More</span>
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Features */}
       <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
