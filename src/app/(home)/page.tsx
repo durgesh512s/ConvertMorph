@@ -313,9 +313,9 @@ export default function Home() {
                             <div className={`p-3 rounded-xl bg-gradient-to-r ${category.gradient} mb-3`}>
                               <Icon className="h-8 w-8 text-white" />
                             </div>
-                            <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">
+                            <h2 className="font-bold text-gray-900 dark:text-white text-sm mb-1">
                               {category.title}
-                            </h3>
+                            </h2>
                             <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
                               {category.tools.length} tools
                             </p>
