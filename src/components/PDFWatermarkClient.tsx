@@ -110,27 +110,27 @@ export function PDFWatermarkClient() {
     }))
   }, [])
 
-  // Get position coordinates for watermark
+  // Get position coordinates for watermark (PDF coordinate system: bottom-left origin)
   const getPositionCoordinates = (position: string, pageWidth: number, pageHeight: number, textWidth: number, textHeight: number) => {
     const margin = 50
     
     switch (position) {
       case 'top-left':
-        return { x: margin, y: pageHeight - margin }
+        return { x: margin, y: pageHeight - margin - textHeight }
       case 'top-center':
-        return { x: pageWidth / 2, y: pageHeight - margin }
+        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight - margin - textHeight }
       case 'top-right':
-        return { x: pageWidth - margin, y: pageHeight - margin }
+        return { x: pageWidth - margin - textWidth, y: pageHeight - margin - textHeight }
       case 'center':
-        return { x: pageWidth / 2, y: pageHeight / 2 }
+        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 - textHeight / 2 }
       case 'bottom-left':
-        return { x: margin, y: margin + textHeight }
+        return { x: margin, y: margin }
       case 'bottom-center':
-        return { x: pageWidth / 2, y: margin + textHeight }
+        return { x: pageWidth / 2 - textWidth / 2, y: margin }
       case 'bottom-right':
-        return { x: pageWidth - margin, y: margin + textHeight }
+        return { x: pageWidth - margin - textWidth, y: margin }
       default:
-        return { x: pageWidth / 2, y: pageHeight / 2 }
+        return { x: pageWidth / 2 - textWidth / 2, y: pageHeight / 2 - textHeight / 2 }
     }
   }
 
@@ -214,7 +214,11 @@ export function PDFWatermarkClient() {
           textHeight
         )
         
-        // Add watermark text
+        // In PDF coordinate system, text is positioned from bottom-left of the text
+        // We need to use the coordinates directly without adjustment for centering
+        // because pdf-lib handles text positioning differently
+        
+        // Add watermark text using the original coordinates
         page.drawText(watermarkSettings.text, {
           x,
           y,
@@ -513,49 +517,30 @@ export function PDFWatermarkClient() {
               <div className="relative inline-block">
                 <div className="w-48 h-64 bg-white border border-gray-300 rounded shadow-sm flex items-center justify-center relative overflow-hidden">
                   {(() => {
-                    // Calculate preview position using the same logic as PDF processing
+                    // Use exact same calculations as PDF processing
                     const previewWidth = 192 // 48 * 4 (w-48 = 12rem = 192px)
                     const previewHeight = 256 // 64 * 4 (h-64 = 16rem = 256px)
-                    const margin = 10 // Scaled down margin for preview
-                    const fontSize = Math.max(8, watermarkSettings.fontSize / 6)
+                    
+                    // Scale down font size proportionally to preview size
+                    const scaleFactor = previewWidth / 595 // A4 width is ~595 points
+                    const fontSize = watermarkSettings.fontSize * scaleFactor
+                    
+                    // Calculate text dimensions using same formula as PDF
                     const textWidth = watermarkSettings.text.length * (fontSize * 0.6)
                     const textHeight = fontSize
                     
-                    // Use the same coordinate calculation as PDF processing
-                    let x, y
-                    switch (watermarkSettings.position) {
-                      case 'top-left':
-                        x = margin
-                        y = margin
-                        break
-                      case 'top-center':
-                        x = previewWidth / 2
-                        y = margin
-                        break
-                      case 'top-right':
-                        x = previewWidth - margin
-                        y = margin
-                        break
-                      case 'center':
-                        x = previewWidth / 2
-                        y = previewHeight / 2
-                        break
-                      case 'bottom-left':
-                        x = margin
-                        y = previewHeight - margin - textHeight
-                        break
-                      case 'bottom-center':
-                        x = previewWidth / 2
-                        y = previewHeight - margin - textHeight
-                        break
-                      case 'bottom-right':
-                        x = previewWidth - margin
-                        y = previewHeight - margin - textHeight
-                        break
-                      default:
-                        x = previewWidth / 2
-                        y = previewHeight / 2
-                    }
+                    // Get PDF coordinates using same function
+                    const pdfCoords = getPositionCoordinates(
+                      watermarkSettings.position,
+                      previewWidth,
+                      previewHeight,
+                      textWidth,
+                      textHeight
+                    )
+                    
+                    // Convert PDF coordinates (bottom-left origin) to CSS coordinates (top-left origin)
+                    const cssX = pdfCoords.x
+                    const cssY = previewHeight - pdfCoords.y - textHeight
                     
                     return (
                       <div
@@ -564,10 +549,11 @@ export function PDFWatermarkClient() {
                           color: watermarkSettings.color,
                           opacity: watermarkSettings.opacity,
                           fontSize: `${fontSize}px`,
-                          left: `${x}px`,
-                          top: `${y}px`,
+                          left: `${cssX}px`,
+                          top: `${cssY}px`,
                           transform: `rotate(${watermarkSettings.rotation}deg)`,
-                          transformOrigin: 'center center',
+                          transformOrigin: 'left top',
+                          whiteSpace: 'nowrap',
                         }}
                       >
                         {watermarkSettings.text}
