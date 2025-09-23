@@ -40,7 +40,12 @@ export default function robots(): MetadataRoute.Robots {
           '/.well-known/apple-app-site-association',
         ],
         disallow: [
-          '/_next/static/media/*', // Block media files only
+          '/_next/static/media/*.png',
+          '/_next/static/media/*.jpg',
+          '/_next/static/media/*.jpeg',
+          '/_next/static/media/*.gif',
+          '/_next/static/media/*.svg',
+          '/_next/static/media/*.ico',
           '/public/samples/*',
           '/public/og/*',
           '/sw.js',
@@ -64,7 +69,12 @@ export default function robots(): MetadataRoute.Robots {
           '/manifest.webmanifest',
         ],
         disallow: [
-          '/_next/static/media/*',
+          '/_next/static/media/*.png',
+          '/_next/static/media/*.jpg',
+          '/_next/static/media/*.jpeg',
+          '/_next/static/media/*.gif',
+          '/_next/static/media/*.svg',
+          '/_next/static/media/*.ico',
           '/public/samples/*',
           '/workers/*',
         ],
