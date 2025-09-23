@@ -20,7 +20,7 @@ export default function ImagesToPDFClient() {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
   const [convertedFiles, setConvertedFiles] = useState<ConvertedFile[]>([])
-  const [conversionMode, setConversionMode] = useState<'single' | 'multiple'>('single')
+  const [conversionMode, setConversionMode] = useState<'single' | 'multiple'>('multiple')
   const [pageSize, setPageSize] = useState<'A4' | 'Letter' | 'Auto'>('A4')
   const [orientation, setOrientation] = useState<'portrait' | 'landscape' | 'auto'>('auto')
 
@@ -357,9 +357,12 @@ export default function ImagesToPDFClient() {
                 <h4 className="font-medium text-gray-900 dark:text-white">
                   Multiple PDFs
                 </h4>
+                <span className="ml-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-2 py-1 rounded-full">
+                  Individual Downloads
+                </span>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-300">
-                Create separate PDF for each image
+                Create separate PDF for each image - each gets its own download button
               </p>
             </div>
           </div>
