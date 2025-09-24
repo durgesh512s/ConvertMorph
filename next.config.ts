@@ -217,7 +217,7 @@ const nextConfig: NextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https://vercel.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com",
               "connect-src 'self' https://vercel.live https://va.vercel-scripts.com https://vitals.vercel-insights.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net",
-              "frame-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com",
+              "frame-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
