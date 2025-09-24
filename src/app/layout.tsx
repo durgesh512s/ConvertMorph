@@ -389,10 +389,10 @@ export default function RootLayout({
           `
         }} />
         
-        {/* Google AdSense - Defer loading to prevent blocking */}
+        {/* Google AdSense - Verification Script Only */}
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
           <script
-            defer
+            async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
             crossOrigin="anonymous"
           />
@@ -408,7 +408,7 @@ export default function RootLayout({
           <div className="flex min-h-screen flex-col">
             <header>
               <Navbar />
-              <LazyHeaderAd />
+              {/* LazyHeaderAd temporarily removed for AdSense verification - add back after approval */}
             </header>
             
             <main className="flex-1 relative min-h-[calc(100vh-200px)]">
