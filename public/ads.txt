@@ -1,16 +1,7 @@
-# ads.txt file for ConvertMorph.com
-# This file is required by Google AdSense and other ad networks
-# to verify authorized digital sellers of your ad inventory
-
-# Google AdSense - Add your Publisher ID after approval
-# Format: google.com, pub-XXXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
-# Replace XXXXXXXXXXXXXXXXX with your actual AdSense Publisher ID
-
-# Google AdSense - Publisher ID for ConvertMorph
+# ads.txt for convertmorph.com
+# Authorized digital sellers for ConvertMorph
+# Google AdSense Publisher ID (replace only if it changes)
 google.com, pub-1811205442467517, DIRECT, f08c47fec0942fa0
 
-# Additional ad networks can be added here following the same format
-# network_domain, publisher_id, relationship_type, certification_authority_id
-
-# For more information about ads.txt:
-# https://iabtechlab.com/ads-txt/
+# Add other networks here:
+# network.com, publisher_id, DIRECT/RESELLER, certification_id
