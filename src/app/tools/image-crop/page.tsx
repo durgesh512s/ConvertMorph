@@ -1,737 +1,369 @@
-'use client'
-
-import { useState, useCallback } from 'react'
-import { Crop, Download, FileImage, Settings, RotateCcw, Scissors, Zap, Palette, Shield } from 'lucide-react'
-import { Dropzone, UploadedFile } from '@/components/Dropzone'
+import { metadata } from './metadata'
+import ImageCropClient from './ImageCropClient'
 import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
-import { downloadFilesAsZip } from '@/lib/utils/zip'
-import { toast } from 'sonner'
-import { track } from '@/lib/analytics/client'
-import { generateFileId } from '@/lib/id-utils'
-import Cropper from 'react-easy-crop'
-import { cropImage, dataURLToBlob, getFileExtension, ASPECT_RATIOS, type AspectRatioKey, type CropArea } from '@/lib/imageCropper'
+import { 
+  Crop, 
+  Upload, 
+  Settings, 
+  Download, 
+  Scissors, 
+  Zap,
+  CheckCircle,
+  Shield,
+  FileImage,
+  Palette,
+  Target,
+  Grid,
+  Camera,
+  Monitor,
+  Smartphone
+} from 'lucide-react'
 
-interface ProcessedFile {
-  name: string
-  originalSize: number
-  croppedSize: number
-  originalDimensions: { width: number; height: number }
-  croppedDimensions: { width: number; height: number }
-  downloadUrl: string
-  format: string
-  sizeChange: { percentage: number; isReduction: boolean }
-}
-
-interface CropperState {
-  crop: { x: number; y: number }
-  zoom: number
-  aspect: number | undefined
-  croppedAreaPixels: CropArea | null
-}
+export { metadata }
 
 export default function ImageCropPage() {
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
-  const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([])
-  const [currentFileIndex, setCurrentFileIndex] = useState(0)
-  const [outputFormat, setOutputFormat] = useState<'original' | 'jpeg' | 'png' | 'webp'>('original')
-  const [quality, setQuality] = useState(90)
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [aspectRatio, setAspectRatio] = useState<AspectRatioKey>('free')
-  
-  // Cropper state for current image
-  const [cropperState, setCropperState] = useState<CropperState>({
-    crop: { x: 0, y: 0 },
-    zoom: 1,
-    aspect: undefined,
-    croppedAreaPixels: null
-  })
-
-  const handleFilesAdded = async (files: File[]) => {
-    const mapped = files.map(file => {
-      track('file_upload', {
-        tool: 'image-crop',
-        sizeMb: Math.round(file.size / (1024*1024) * 100) / 100,
-        format: file.type
-      })
-      return { 
-        id: generateFileId(), 
-        file, 
-        name: file.name, 
-        size: file.size, 
-        type: file.type, 
-        status: 'success' 
-      } as UploadedFile
-    })
-    setUploadedFiles(prev => [...prev, ...mapped])
-    setProcessedFiles([])
-    setCurrentFileIndex(0)
-  }
-
-  const handleFileRemove = (fileId: string) => {
-    setUploadedFiles(prev => {
-      const newFiles = prev.filter(f => f.id !== fileId)
-      if (currentFileIndex >= newFiles.length && newFiles.length > 0) {
-        setCurrentFileIndex(newFiles.length - 1)
-      }
-      return newFiles
-    })
-  }
-
-  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: CropArea) => {
-    setCropperState(prev => ({ ...prev, croppedAreaPixels }))
-  }, [])
-
-  const handleAspectRatioChange = (ratio: AspectRatioKey) => {
-    setAspectRatio(ratio)
-    const aspectValue = ASPECT_RATIOS[ratio]
-    setCropperState(prev => ({ 
-      ...prev, 
-      aspect: aspectValue === null ? undefined : aspectValue,
-      crop: { x: 0, y: 0 },
-      zoom: 1
-    }))
-  }
-
-  const calculateSizeChange = (originalSize: number, newSize: number) => {
-    const percentage = Math.round(Math.abs((newSize - originalSize) / originalSize) * 100)
-    return {
-      percentage,
-      isReduction: newSize < originalSize
-    }
-  }
-
-  const handleCrop = async () => {
-    if (uploadedFiles.length === 0 || !cropperState.croppedAreaPixels) return
-
-    setIsProcessing(true)
-    setProcessedFiles([])
-
-    try {
-      const results: ProcessedFile[] = []
-
-      for (let i = 0; i < uploadedFiles.length; i++) {
-        const uf = uploadedFiles[i]
-        if (!uf) continue
-        
-        try {
-          // Create image URL for cropping
-          const imageUrl = URL.createObjectURL(uf.file)
-          
-          // Get original image dimensions
-          const img = new Image()
-          await new Promise((resolve, reject) => {
-            img.onload = resolve
-            img.onerror = reject
-            img.src = imageUrl
-          })
-
-          // Use the crop area from the current file being displayed, or default crop for others
-          const cropArea = i === currentFileIndex && cropperState.croppedAreaPixels ? cropperState.croppedAreaPixels : {
-            x: 0,
-            y: 0,
-            width: img.naturalWidth,
-            height: img.naturalHeight
-          }
-
-          // Determine output format
-          const format = outputFormat === 'original' ? 
-            (uf.file.type.split('/')[1] as 'jpeg' | 'png' | 'webp') : 
-            outputFormat
-
-          // Crop the image
-          const croppedDataUrl = await cropImage(imageUrl, cropArea, {
-            format,
-            quality: quality / 100
-          })
-
-          // Convert to blob
-          const blob = dataURLToBlob(croppedDataUrl)
-          const url = URL.createObjectURL(blob)
-          
-          const safeName = uf.name.replace(/[^\w.\-()\s]/g, '_')
-          const extension = getFileExtension(format)
-          const nameWithoutExt = safeName.replace(/\.[^/.]+$/, '')
-          const finalName = `${nameWithoutExt}_cropped.${extension}`
-
-          const sizeChange = calculateSizeChange(uf.file.size, blob.size)
-
-          results.push({
-            name: finalName,
-            originalSize: uf.file.size,
-            croppedSize: blob.size,
-            originalDimensions: { width: img.naturalWidth, height: img.naturalHeight },
-            croppedDimensions: { width: cropArea.width, height: cropArea.height },
-            downloadUrl: url,
-            format: format,
-            sizeChange
-          })
-
-          // Clean up
-          URL.revokeObjectURL(imageUrl)
-        } catch (err) {
-          console.error('Crop error:', err)
-          toast.error(`Failed to crop ${uf.name}`)
-        }
-      }
-
-      if (results.length > 0) {
-        setProcessedFiles(results)
-        toast.success(`Cropped ${results.length} image${results.length > 1 ? 's' : ''} successfully!`)
-      }
-    } catch (error) {
-      console.error('Crop failed:', error)
-      toast.error('Crop failed. Please try again.')
-    } finally {
-      setIsProcessing(false)
-    }
-  }
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
-
-  const formatOptions = [
-    { format: 'original' as const, name: 'Keep Original', description: 'Maintain original format' },
-    { format: 'jpeg' as const, name: 'JPEG', description: 'Best for photos, smaller size' },
-    { format: 'png' as const, name: 'PNG', description: 'Best for graphics, lossless' },
-    { format: 'webp' as const, name: 'WebP', description: 'Modern format, excellent compression' },
-  ]
-
-  const aspectRatioOptions = [
-    { key: 'free' as AspectRatioKey, name: 'Free', description: 'Any aspect ratio' },
-    { key: 'square' as AspectRatioKey, name: 'Square', description: '1:1' },
-    { key: '4:3' as AspectRatioKey, name: '4:3', description: 'Standard photo' },
-    { key: '3:4' as AspectRatioKey, name: '3:4', description: 'Portrait photo' },
-    { key: '16:9' as AspectRatioKey, name: '16:9', description: 'Widescreen' },
-    { key: '9:16' as AspectRatioKey, name: '9:16', description: 'Mobile/Story' },
-  ]
-
-  const currentFile = uploadedFiles[currentFileIndex]
-  const currentImageUrl = currentFile ? URL.createObjectURL(currentFile.file) : null
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-8 sm:py-16">
         <div className="max-w-6xl mx-auto">
-
-          {/* Header */}
-          <div className="text-center mb-8 sm:mb-12">
-            <div className="flex justify-center mb-4">
-              <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full">
-                <Crop className="h-6 w-6 sm:h-8 sm:w-8 text-green-600 dark:text-green-400" />
-              </div>
-            </div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Image Crop</h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
-              Crop images with precision using React Easy Crop. Support for multiple aspect ratios and formats.
-            </p>
-          </div>
-
-          {/* File Upload */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
-            <Dropzone
-              onFilesAdded={handleFilesAdded}
-              onFileRemove={handleFileRemove}
-              uploadedFiles={uploadedFiles}
-              accept={{ 
-                'image/jpeg': ['.jpg', '.jpeg'],
-                'image/png': ['.png'],
-                'image/webp': ['.webp'],
-                'image/gif': ['.gif'],
-                'image/bmp': ['.bmp']
-              }}
-              maxFiles={20}
-              maxSize={50 * 1024 * 1024}
-            />
-          </div>
-
-          {/* Crop Interface */}
-          {uploadedFiles.length > 0 && currentImageUrl && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              
-              {/* Cropper */}
-              <div className="lg:col-span-2">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white flex items-center">
-                      <Scissors className="h-4 w-4 sm:h-5 sm:w-5 mr-2" /> Crop Image
-                    </h2>
-                    {uploadedFiles.length > 1 && (
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => setCurrentFileIndex(Math.max(0, currentFileIndex - 1))}
-                          disabled={currentFileIndex === 0}
-                          className="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded disabled:opacity-50"
-                        >
-                          ←
-                        </button>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          {currentFileIndex + 1} / {uploadedFiles.length}
-                        </span>
-                        <button
-                          onClick={() => setCurrentFileIndex(Math.min(uploadedFiles.length - 1, currentFileIndex + 1))}
-                          disabled={currentFileIndex === uploadedFiles.length - 1}
-                          className="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded disabled:opacity-50"
-                        >
-                          →
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="relative w-full h-96 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
-                    <Cropper
-                      image={currentImageUrl}
-                      crop={cropperState.crop}
-                      zoom={cropperState.zoom}
-                      aspect={cropperState.aspect}
-                      onCropChange={(crop) => setCropperState(prev => ({ ...prev, crop }))}
-                      onZoomChange={(zoom) => setCropperState(prev => ({ ...prev, zoom }))}
-                      onCropComplete={onCropComplete}
-                      showGrid={true}
-                    />
-                  </div>
-
-                  {/* Zoom Control */}
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Zoom: {Math.round(cropperState.zoom * 100)}%
-                    </label>
-                    <input
-                      type="range"
-                      min="1"
-                      max="3"
-                      step="0.1"
-                      value={cropperState.zoom}
-                      onChange={(e) => setCropperState(prev => ({ ...prev, zoom: parseFloat(e.target.value) }))}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Settings */}
-              <div className="space-y-6">
-                
-                {/* Aspect Ratio */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                    <Settings className="h-4 w-4 mr-2" /> Aspect Ratio
-                  </h3>
-                  <div className="space-y-2">
-                    {aspectRatioOptions.map(option => (
-                      <div
-                        key={option.key}
-                        className={`border-2 rounded-lg p-3 transition-all cursor-pointer ${
-                          aspectRatio === option.key
-                            ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                            : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
-                        }`}
-                        onClick={() => handleAspectRatioChange(option.key)}
-                      >
-                        <div className="flex items-center mb-1">
-                          <input
-                            type="radio"
-                            checked={aspectRatio === option.key}
-                            onChange={() => handleAspectRatioChange(option.key)}
-                            className="mr-2 flex-shrink-0"
-                            id={`aspect-${option.key}`}
-                            name="aspect-ratio"
-                          />
-                          <label htmlFor={`aspect-${option.key}`} className="font-medium text-sm cursor-pointer text-gray-900 dark:text-white">
-                            {option.name}
-                          </label>
-                        </div>
-                        <p className="text-xs text-gray-600 dark:text-gray-300">
-                          {option.description}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Output Format */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                    <Palette className="h-4 w-4 mr-2" /> Output Format
-                  </h3>
-                  <div className="space-y-2">
-                    {formatOptions.map(option => (
-                      <div
-                        key={option.format}
-                        className={`border-2 rounded-lg p-3 transition-all cursor-pointer ${
-                          outputFormat === option.format
-                            ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                            : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
-                        }`}
-                        onClick={() => setOutputFormat(option.format)}
-                      >
-                        <div className="flex items-center mb-1">
-                          <input
-                            type="radio"
-                            checked={outputFormat === option.format}
-                            onChange={() => setOutputFormat(option.format)}
-                            className="mr-2 flex-shrink-0"
-                            id={`format-${option.format}`}
-                            name="output-format"
-                          />
-                          <label htmlFor={`format-${option.format}`} className="font-medium text-sm cursor-pointer text-gray-900 dark:text-white">
-                            {option.name}
-                          </label>
-                        </div>
-                        <p className="text-xs text-gray-600 dark:text-gray-300">
-                          {option.description}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Quality Slider (for JPEG/WebP) */}
-                  {(outputFormat === 'jpeg' || outputFormat === 'webp') && (
-                    <div className="mt-4">
-                      <h4 className="text-md font-medium text-gray-900 dark:text-white mb-3">
-                        Quality: {quality}%
-                      </h4>
-                      <input
-                        type="range"
-                        min="10"
-                        max="100"
-                        value={quality}
-                        onChange={(e) => setQuality(parseInt(e.target.value))}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-                      />
-                      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        <span>Lower quality</span>
-                        <span>Higher quality</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Crop Button */}
-                <button
-                  onClick={handleCrop}
-                  disabled={isProcessing || !cropperState.croppedAreaPixels}
-                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
-                >
-                  {isProcessing ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Cropping...
-                    </>
-                  ) : (
-                    <>
-                      <Crop className="h-4 w-4 mr-2" />
-                      Crop Images ({uploadedFiles.length})
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Results */}
-          {processedFiles.length > 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <Download className="h-4 w-4 mr-2" /> Cropped Images
-              </h3>
-              <div className="space-y-3 sm:space-y-4">
-                {processedFiles.map((file, index) => (
-                  <div key={index} className="border border-gray-200 dark:border-gray-600 rounded-lg p-3 sm:p-4">
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3">
-                      <div className="flex items-start min-w-0 flex-1">
-                        <FileImage className="h-4 w-4 text-green-500 mr-2 mt-0.5" />
-                        <div className="min-w-0 flex-1">
-                          <p className="font-medium text-sm text-gray-900 dark:text-white break-words">{file.name}</p>
-                          <div className="flex flex-col sm:flex-row sm:space-x-4 text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            <span>Original: {file.originalDimensions.width}×{file.originalDimensions.height}</span>
-                            <span>Cropped: {file.croppedDimensions.width}×{file.croppedDimensions.height}</span>
-                            <span>Size: {formatFileSize(file.originalSize)} → {formatFileSize(file.croppedSize)}</span>
-                            <span className={file.sizeChange.isReduction ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-400'}>
-                              ({file.sizeChange.isReduction ? '-' : '+'}{file.sizeChange.percentage}%)
-                            </span>
-                            <span className="text-green-600 dark:text-green-400">{file.format.toUpperCase()}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <a
-                        href={file.downloadUrl}
-                        download={file.name}
-                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center text-sm mt-2 sm:mt-0"
-                      >
-                        <Download className="h-3 w-3 mr-1" /> Download
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {processedFiles.length > 1 && (
-                <button
-                  onClick={async () => {
-                    const files = processedFiles.map(file => ({ name: file.name, url: file.downloadUrl }))
-                    await downloadFilesAsZip(files, 'cropped-images.zip')
-                  }}
-                  className="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg flex items-center justify-center"
-                >
-                  <Download className="h-4 w-4 mr-2" /> Download All as ZIP
-                </button>
-              )}
-            </div>
-          )}
-
-          {/* Feature Highlights */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="bg-green-100 dark:bg-green-900/40 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                  <Scissors className="h-6 w-6 text-green-600 dark:text-green-400" />
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Precise Cropping</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Crop images with pixel-perfect precision using React Easy Crop</p>
-              </div>
-              <div className="text-center">
-                <div className="bg-blue-100 dark:bg-blue-900/40 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                  <Zap className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Multiple Aspect Ratios</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Support for common aspect ratios including square, 16:9, 4:3, and free crop</p>
-              </div>
-              <div className="text-center">
-                <div className="bg-purple-100 dark:bg-purple-900/40 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                  <Palette className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Format Conversion</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Convert between JPEG, PNG, WebP formats with quality control</p>
-              </div>
-              <div className="text-center">
-                <div className="bg-orange-100 dark:bg-orange-900/40 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                  <Shield className="h-6 w-6 text-orange-600 dark:text-orange-400" />
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Client-Side Only</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">All processing happens in your browser - your images never leave your device</p>
-              </div>
-            </div>
-          </div>
+          {/* Client Component for Interactive Functionality */}
+          <ImageCropClient />
 
           {/* How to Use Section */}
-          <div className="mt-16 sm:mt-20 mb-8">
-            <div className="bg-gradient-to-br from-gray-600 via-slate-700 to-gray-800 dark:from-gray-700 dark:via-slate-800 dark:to-gray-900 rounded-2xl p-8 sm:p-12 text-white shadow-2xl">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6">
-                  <Crop className="h-8 w-8 text-white" />
-                </div>
-                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Professional Image Cropping Guide</h2>
-                <p className="text-xl text-gray-200 dark:text-gray-300 max-w-3xl mx-auto">
-                  Master precision image cropping with our advanced tools and professional techniques for perfect composition
-                </p>
-              </div>
+          <div className="mt-16 sm:mt-20 bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 dark:from-gray-800 dark:via-slate-800 dark:to-gray-900 rounded-3xl p-8 sm:p-12 border border-gray-200 dark:border-gray-700 backdrop-blur-sm">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-700 via-slate-600 to-gray-800 dark:from-gray-200 dark:via-slate-300 dark:to-gray-100 bg-clip-text text-transparent mb-4">
+                Professional Image Cropping Guide
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Master precision image cropping with React Easy Crop. Learn professional techniques for perfect composition and aspect ratio control.
+              </p>
+            </div>
 
-              {/* Cropping Workflow */}
-              <div className="mb-16">
-                <h3 className="text-2xl font-bold text-center mb-8 text-white">✂️ Cropping Workflow</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
-                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                      <FileImage className="h-6 w-6 text-white" />
-                    </div>
-                    <h4 className="font-semibold text-lg mb-2">Upload & Select</h4>
-                    <p className="text-gray-200 dark:text-gray-300 text-sm">
-                      Upload your images and navigate between multiple files using the intuitive file selector interface.
-                    </p>
+            {/* Step-by-Step Process */}
+            <div className="mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-2 border-gray-200 dark:border-gray-700 text-center">
+                  <div className="bg-gradient-to-br from-gray-600 to-slate-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <Upload className="h-8 w-8 text-white" />
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
-                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                      <Settings className="h-6 w-6 text-white" />
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">1. Upload Images</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                    Select up to 20 images in JPEG, PNG, WebP, GIF, or BMP format. Each file can be up to 50MB.
+                  </p>
+                  <div className="space-y-2 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center justify-center space-x-1">
+                      <CheckCircle className="h-3 w-3 text-green-500" />
+                      <span>Batch processing</span>
                     </div>
-                    <h4 className="font-semibold text-lg mb-2">Set Aspect Ratio</h4>
-                    <p className="text-gray-200 dark:text-gray-300 text-sm">
-                      Choose from preset ratios (square, 16:9, 4:3) or use free crop for custom dimensions and compositions.
-                    </p>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
-                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                      <Scissors className="h-6 w-6 text-white" />
+                    <div className="flex items-center justify-center space-x-1">
+                      <CheckCircle className="h-3 w-3 text-green-500" />
+                      <span>Multiple formats</span>
                     </div>
-                    <h4 className="font-semibold text-lg mb-2">Position & Zoom</h4>
-                    <p className="text-gray-200 dark:text-gray-300 text-sm">
-                      Drag to position the crop area and use zoom controls for precise framing with grid overlay guidance.
-                    </p>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20">
-                    <div className="bg-white/20 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                      <Download className="h-6 w-6 text-white" />
-                    </div>
-                    <h4 className="font-semibold text-lg mb-2">Process & Download</h4>
-                    <p className="text-gray-200 dark:text-gray-300 text-sm">
-                      Apply crops to all images, choose output format and quality, then download individually or as ZIP.
-                    </p>
                   </div>
                 </div>
-              </div>
 
-              {/* Aspect Ratio Guide */}
-              <div className="mb-16">
-                <h3 className="text-2xl font-bold text-center mb-8 text-white">📐 Aspect Ratio Mastery</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <div className="bg-gradient-to-br from-gray-500/20 to-slate-500/20 rounded-xl p-6 border border-white/20">
-                    <div className="flex items-center mb-4">
-                      <div className="bg-gray-500/30 rounded-lg p-2 mr-3">
-                        <span className="text-lg font-bold">1:1</span>
-                      </div>
-                      <h4 className="font-semibold text-lg">Square Format</h4>
-                    </div>
-                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
-                      <li>• Perfect for social media posts</li>
-                      <li>• Instagram profile pictures</li>
-                      <li>• Product photography</li>
-                      <li>• Balanced composition focus</li>
-                      <li>• Works great for portraits</li>
-                    </ul>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-2 border-gray-200 dark:border-gray-700 text-center">
+                  <div className="bg-gradient-to-br from-slate-600 to-gray-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <Settings className="h-8 w-8 text-white" />
                   </div>
-                  <div className="bg-gradient-to-br from-slate-500/20 to-gray-500/20 rounded-xl p-6 border border-white/20">
-                    <div className="flex items-center mb-4">
-                      <div className="bg-slate-500/30 rounded-lg p-2 mr-3">
-                        <span className="text-lg font-bold">16:9</span>
-                      </div>
-                      <h4 className="font-semibold text-lg">Widescreen</h4>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">2. Set Aspect Ratio</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                    Choose from preset ratios (square, 16:9, 4:3) or use free crop for custom dimensions.
+                  </p>
+                  <div className="space-y-2 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center justify-center space-x-1">
+                      <Target className="h-3 w-3 text-gray-500" />
+                      <span>Preset ratios</span>
                     </div>
-                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
-                      <li>• YouTube thumbnails & videos</li>
-                      <li>• Website hero banners</li>
-                      <li>• Landscape photography</li>
-                      <li>• Presentation slides</li>
-                      <li>• TV and monitor displays</li>
-                    </ul>
-                  </div>
-                  <div className="bg-gradient-to-br from-gray-600/20 to-slate-600/20 rounded-xl p-6 border border-white/20">
-                    <div className="flex items-center mb-4">
-                      <div className="bg-gray-600/30 rounded-lg p-2 mr-3">
-                        <span className="text-lg font-bold">9:16</span>
-                      </div>
-                      <h4 className="font-semibold text-lg">Mobile Stories</h4>
+                    <div className="flex items-center justify-center space-x-1">
+                      <Grid className="h-3 w-3 text-gray-500" />
+                      <span>Free crop mode</span>
                     </div>
-                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
-                      <li>• Instagram & TikTok stories</li>
-                      <li>• Mobile app screenshots</li>
-                      <li>• Vertical video content</li>
-                      <li>• Phone wallpapers</li>
-                      <li>• Portrait mode photography</li>
-                    </ul>
                   </div>
                 </div>
-              </div>
 
-              {/* Cropping Techniques */}
-              <div className="mb-12">
-                <h3 className="text-2xl font-bold text-center mb-8 text-white">🎯 Professional Techniques</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <h4 className="font-semibold text-lg mb-4 flex items-center">
-                      <span className="bg-gray-500/30 rounded-lg p-2 mr-3 text-sm">RULE</span>
-                      Rule of Thirds
-                    </h4>
-                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
-                      <li><strong>Grid Alignment:</strong> Use the grid overlay to position subjects</li>
-                      <li><strong>Intersection Points:</strong> Place focal points at grid intersections</li>
-                      <li><strong>Horizon Lines:</strong> Align horizons with grid lines</li>
-                      <li><strong>Visual Balance:</strong> Create more dynamic compositions</li>
-                    </ul>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-2 border-gray-200 dark:border-gray-700 text-center">
+                  <div className="bg-gradient-to-br from-gray-700 to-slate-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <Scissors className="h-8 w-8 text-white" />
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <h4 className="font-semibold text-lg mb-4 flex items-center">
-                      <span className="bg-slate-500/30 rounded-lg p-2 mr-3 text-sm">ZOOM</span>
-                      Precision Control
-                    </h4>
-                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
-                      <li><strong>Fine Adjustments:</strong> Use zoom for detailed positioning</li>
-                      <li><strong>Edge Detection:</strong> Zoom in to align with object edges</li>
-                      <li><strong>Perfect Framing:</strong> Get exact crop boundaries</li>
-                      <li><strong>Detail Focus:</strong> Ensure important elements are included</li>
-                    </ul>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">3. Position & Crop</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                    Drag to position the crop area and use zoom controls for precise framing with grid overlay.
+                  </p>
+                  <div className="space-y-2 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center justify-center space-x-1">
+                      <Crop className="h-3 w-3 text-gray-500" />
+                      <span>Drag positioning</span>
+                    </div>
+                    <div className="flex items-center justify-center space-x-1">
+                      <Zap className="h-3 w-3 text-gray-500" />
+                      <span>Zoom controls</span>
+                    </div>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <h4 className="font-semibold text-lg mb-4 flex items-center">
-                      <span className="bg-gray-600/30 rounded-lg p-2 mr-3 text-sm">BATCH</span>
-                      Multi-Image Workflow
-                    </h4>
-                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
-                      <li><strong>Consistent Ratios:</strong> Apply same aspect ratio to all images</li>
-                      <li><strong>Navigation:</strong> Use arrow controls to switch between images</li>
-                      <li><strong>Individual Crops:</strong> Set unique crop area for each image</li>
-                      <li><strong>Batch Processing:</strong> Process all images with one click</li>
-                    </ul>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-2 border-gray-200 dark:border-gray-700 text-center">
+                  <div className="bg-gradient-to-br from-slate-700 to-gray-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <Download className="h-8 w-8 text-white" />
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <h4 className="font-semibold text-lg mb-4 flex items-center">
-                      <span className="bg-slate-600/30 rounded-lg p-2 mr-3 text-sm">PRO</span>
-                      Advanced Tips
-                    </h4>
-                    <ul className="space-y-2 text-gray-200 dark:text-gray-300 text-sm">
-                      <li><strong>Format Strategy:</strong> Choose format based on use case</li>
-                      <li><strong>Quality Balance:</strong> Optimize file size vs quality</li>
-                      <li><strong>Composition:</strong> Consider negative space and balance</li>
-                      <li><strong>Preview First:</strong> Check results before downloading</li>
-                    </ul>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">4. Process & Download</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                    Apply crops to all images, choose output format and quality, then download individually or as ZIP.
+                  </p>
+                  <div className="space-y-2 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center justify-center space-x-1">
+                      <FileImage className="h-3 w-3 text-gray-500" />
+                      <span>Individual files</span>
+                    </div>
+                    <div className="flex items-center justify-center space-x-1">
+                      <FileImage className="h-3 w-3 text-gray-500" />
+                      <span>Bulk ZIP download</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* FAQ Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Frequently Asked Questions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">What image formats are supported?</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  You can upload JPEG, PNG, WebP, GIF, and BMP images. Output formats include JPEG, PNG, and WebP, or you can keep the original format.
-                </p>
+            {/* Aspect Ratio Guide */}
+            <div className="mb-12">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">Aspect Ratio Mastery</h3>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <div className="text-center mb-6">
+                    <div className="bg-gradient-to-br from-red-500 to-orange-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <Camera className="h-8 w-8 text-white" />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Square (1:1)</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">Perfect for social media and balanced compositions</p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4">
+                      <h5 className="font-semibold text-gray-900 dark:text-white mb-2">Best Use Cases:</h5>
+                      <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <strong>Instagram Posts:</strong> Perfect square format</li>
+                        <li>• <strong>Profile Pictures:</strong> Avatars and headshots</li>
+                        <li>• <strong>Product Photos:</strong> E-commerce thumbnails</li>
+                        <li>• <strong>Logo Design:</strong> Balanced brand elements</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h5 className="font-semibold text-gray-900 dark:text-white">Characteristics:</h5>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded text-xs">Balanced Focus</span>
+                        <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded text-xs">Social Media</span>
+                        <span className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded text-xs">Symmetrical</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <div className="text-center mb-6">
+                    <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <Monitor className="h-8 w-8 text-white" />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Widescreen (16:9)</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">Ideal for landscapes and video content</p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                      <h5 className="font-semibold text-gray-900 dark:text-white mb-2">Best Use Cases:</h5>
+                      <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <strong>YouTube Thumbnails:</strong> Video preview images</li>
+                        <li>• <strong>Website Banners:</strong> Hero section images</li>
+                        <li>• <strong>Landscape Photos:</strong> Scenic photography</li>
+                        <li>• <strong>Presentations:</strong> Slide backgrounds</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h5 className="font-semibold text-gray-900 dark:text-white">Characteristics:</h5>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-xs">Cinematic</span>
+                        <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-xs">Wide View</span>
+                        <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-xs">Professional</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <div className="text-center mb-6">
+                    <div className="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                      <Smartphone className="h-8 w-8 text-white" />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Mobile Stories (9:16)</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">Optimized for mobile and vertical content</p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                      <h5 className="font-semibold text-gray-900 dark:text-white mb-2">Best Use Cases:</h5>
+                      <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• <strong>Instagram Stories:</strong> Vertical story format</li>
+                        <li>• <strong>TikTok Videos:</strong> Mobile-first content</li>
+                        <li>• <strong>Phone Wallpapers:</strong> Lock screen images</li>
+                        <li>• <strong>App Screenshots:</strong> Mobile app previews</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h5 className="font-semibold text-gray-900 dark:text-white">Characteristics:</h5>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-xs">Mobile First</span>
+                        <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-xs">Vertical</span>
+                        <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-xs">Story Format</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">How do aspect ratios work?</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Choose from preset aspect ratios like square (1:1), widescreen (16:9), or standard photo (4:3). Free crop allows any custom aspect ratio.
-                </p>
+            </div>
+
+            {/* Cropping Strategies */}
+            <div className="mb-12">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">Professional Cropping Strategies</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                      <Target className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white">Composition Rules</h4>
+                  </div>
+                  <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                    <li className="flex items-start">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Rule of Thirds:</strong> Position key elements along grid lines for balanced composition</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Leading Lines:</strong> Use crop boundaries to guide viewer attention to focal points</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Negative Space:</strong> Include breathing room around subjects for visual impact</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Center Focus:</strong> Use square crops for symmetrical, centered compositions</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                      <Zap className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white">Technical Tips</h4>
+                  </div>
+                  <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
+                    <li className="flex items-start">
+                      <CheckCircle className="h-4 w-4 text-orange-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Zoom Control:</strong> Use 1x-3x zoom for precise positioning and detail work</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="h-4 w-4 text-orange-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Grid Overlay:</strong> Enable grid lines for accurate alignment and composition</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="h-4 w-4 text-orange-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Quality Settings:</strong> Adjust JPEG/WebP quality based on intended use case</span>
+                    </li>
+                    <li className="flex items-start">
+                      <CheckCircle className="h-4 w-4 text-orange-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span><strong>Batch Processing:</strong> Apply consistent crops across multiple images efficiently</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Can I crop multiple images at once?</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Yes! Upload multiple images and use the navigation controls to set crop areas for each image individually, then process them all at once.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">What's the maximum file size I can crop?</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  You can crop images up to 50MB each, with a maximum of 20 files per batch. This ensures smooth processing in your browser.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Will cropping affect image quality?</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Cropping itself doesn't reduce quality since you're just selecting a portion of the original image. Quality settings only apply to JPEG and WebP formats.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Is my data secure during cropping?</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Absolutely! All image processing happens entirely in your browser using Canvas API and React Easy Crop. Your images are never uploaded to our servers.
-                </p>
+            </div>
+
+            {/* FAQ Section */}
+            <div className="mb-12">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">Frequently Asked Questions</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <h4 className="font-bold text-gray-900 dark:text-white mb-3">What aspect ratios are available for cropping?</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    We offer common aspect ratios like 1:1 (square), 4:3, 16:9, 3:2, and custom ratios. You can also crop freely without any ratio constraints using React Easy Crop's flexible interface.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <h4 className="font-bold text-gray-900 dark:text-white mb-3">Can I crop multiple images with the same settings?</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Yes, you can apply the same crop settings to multiple images in batch mode, ensuring consistent dimensions across all your images with Canvas API processing.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <h4 className="font-bold text-gray-900 dark:text-white mb-3">Will cropping affect image quality?</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Cropping only removes pixels and doesn't compress the remaining image, so there's no quality loss in the cropped area. Quality settings only apply when converting formats.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <h4 className="font-bold text-gray-900 dark:text-white mb-3">What image formats are supported for cropping?</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    We support JPEG, PNG, WebP, GIF, and BMP formats. The output can maintain the same format as your input image or convert to JPEG, PNG, or WebP with quality control.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <h4 className="font-bold text-gray-900 dark:text-white mb-3">Is my data secure during cropping?</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Absolutely! All image cropping happens entirely in your browser using Canvas API. Your images are never uploaded to our servers, ensuring complete privacy and security.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                  <h4 className="font-bold text-gray-900 dark:text-white mb-3">Can I undo crop operations?</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    You can reset the crop area before applying changes using the zoom and position controls. Once applied, you'll need to re-upload the original image to start over.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Related Articles */}
-          <RelatedArticles toolName="image-crop" />
+          <RelatedArticles 
+            toolName="Image Crop"
+            articles={[
+              {
+                title: "Crop Images Online",
+                description: "Learn professional image cropping techniques",
+                href: "/blog/crop-images-online",
+                category: "Tutorial",
+                readTime: "5 min read"
+              },
+              {
+                title: "Image Resize Guide", 
+                description: "Resize images while maintaining quality",
+                href: "/blog/resize-images-online",
+                category: "Guide",
+                readTime: "4 min read"
+              },
+              {
+                title: "Convert Image Formats",
+                description: "Convert between JPEG, PNG, WebP formats",
+                href: "/blog/convert-image-formats-online", 
+                category: "Tutorial",
+                readTime: "6 min read"
+              }
+            ]}
+          />
 
           {/* Tools Navigation */}
-          <ToolsNavigation currentTool="image-crop" className="mt-8" />
+          <ToolsNavigation currentTool="image-crop" />
         </div>
       </div>
     </div>
