@@ -80,36 +80,39 @@ export function AdSense({
   );
 }
 
-// Specific ad components for different placements
-export function HeaderAd() {
+// Auto ads component - Google will automatically place ads
+export function AutoAd({ className = '', style = {} }: { className?: string; style?: React.CSSProperties }) {
   return (
     <AdSense
-      adSlot="1234567890" // Replace with your actual ad slot ID
-      adFormat="banner"
-      className="w-full"
-      style={{ minHeight: '90px' }}
+      adSlot="auto" // Auto ads don't need specific slot IDs
+      adFormat="auto"
+      className={className}
+      style={style}
     />
+  );
+}
+
+// Specific ad components for different placements (if you want manual control)
+export function HeaderAd() {
+  return (
+    <div className="w-full" style={{ minHeight: '90px' }}>
+      {/* Auto ads will be placed here by Google */}
+    </div>
   );
 }
 
 export function ContentAd() {
   return (
-    <AdSense
-      adSlot="0987654321" // Replace with your actual ad slot ID
-      adFormat="rectangle"
-      className="w-full max-w-4xl mx-auto"
-      style={{ minHeight: '250px' }}
-    />
+    <div className="w-full max-w-4xl mx-auto" style={{ minHeight: '250px' }}>
+      {/* Auto ads will be placed here by Google */}
+    </div>
   );
 }
 
 export function SidebarAd() {
   return (
-    <AdSense
-      adSlot="1122334455" // Replace with your actual ad slot ID
-      adFormat="auto"
-      className="w-full"
-      style={{ minHeight: '600px' }}
-    />
+    <div className="w-full" style={{ minHeight: '600px' }}>
+      {/* Auto ads will be placed here by Google */}
+    </div>
   );
 }

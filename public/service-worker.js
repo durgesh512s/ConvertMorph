@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v69"; // Cline  Manually increment this to invalidate old caches
+const CACHE_VERSION = "v70"; // Cline  Manually increment this to invalidate old caches
 const STATIC_CACHE = `cm-static-${CACHE_VERSION}`;
 const CSS_CACHE = `cm-css-${CACHE_VERSION}`;
 const HTML_CACHE = `cm-html-${CACHE_VERSION}`;
