@@ -362,7 +362,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://vercel.live" />
         <link rel="preconnect" href="https://va.vercel-scripts.com" />
         <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
-        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
+        
         
         {/* Font preloading handled by Next.js font optimization */}
         
@@ -389,11 +390,12 @@ export default function RootLayout({
         
       </head>
       <body className={`min-h-screen bg-background font-sans antialiased ${poppins.variable}`}>
-        {/* Google AdSense - Using Next.js Script with beforeInteractive strategy */}
+        {/* Google AdSense Script - Single instance with beforeInteractive strategy */}
         <Script
+          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1811205442467517"
-          strategy="beforeInteractive"
           crossOrigin="anonymous"
+          strategy="beforeInteractive"
         />
         
         <HydrationErrorSuppressor>
