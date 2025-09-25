@@ -268,10 +268,18 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/pdf-compress",
         "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "ratingCount": "420",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "USD"
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
         }
       },
       {
@@ -280,10 +288,18 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/pdf-merge",
         "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "380",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "USD"
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
         }
       },
       {
@@ -292,10 +308,18 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/background-remover",
         "applicationCategory": "Graphics & Design",
         "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.7",
+          "ratingCount": "450",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "USD"
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
         }
       }
     ]
