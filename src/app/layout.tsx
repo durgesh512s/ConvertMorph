@@ -181,10 +181,6 @@ const organizationJsonLd = {
       "availableLanguage": ["English"]
     }
   ],
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "US"
-  },
   "sameAs": ["https://convertmorph.com"],
   "foundingDate": "2025",
   "slogan": "Fast, private file tools for everyone",
