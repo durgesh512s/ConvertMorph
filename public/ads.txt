@@ -1,7 +1,1 @@
-# ads.txt for convertmorph.com
-# Authorized digital sellers for ConvertMorph
-# Google AdSense Publisher ID (replace only if it changes)
 google.com, pub-1811205442467517, DIRECT, f08c47fec0942fa0
-
-# Add other networks here:
-# network.com, publisher_id, DIRECT/RESELLER, certification_id
