@@ -70,6 +70,33 @@ const nextConfig: NextConfig = {
   },
 
   async headers() {
+    // CSP as an array for readability, then join
+    const cspDirectives = [
+      "default-src 'self'",
+      // Allow scripts from site + the Google/AdSense domains required.
+      // NOTE: keep 'unsafe-inline' only if you still have inline scripts that need it.
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://vercel.live https://va.vercel-scripts.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com",
+      // Worker (PDF.js etc)
+      "worker-src 'self' blob:",
+      // Stylesheets (allow fonts.googleapis)
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      // Fonts
+      "font-src 'self' https://fonts.gstatic.com",
+      // Images - allow Google ad image hosts and data: for inline images
+      "img-src 'self' data: blob: https://vercel.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://www.google.com",
+      // Connect (XHR/fetch/websocket endpoints used by analytics and ads)
+      "connect-src 'self' https://vercel.live https://va.vercel-scripts.com https://vitals.vercel-insights.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google",
+      // Frames (Ad iframes)
+      "frame-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+      "upgrade-insecure-requests"
+    ];
+
+    const cspValue = cspDirectives.join('; ');
+
     return [
       // Static assets - long cache with immutable
       {
@@ -101,57 +128,57 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-  // Images and other assets in public folder
-  {
-    source: '/:path*\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot)',
-    headers: [
+      // Images and other assets in public folder
       {
-        key: 'Cache-Control',
-        value: 'public, max-age=31536000, immutable',
+        source: '/:path*\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
       },
-    ],
-  },
-  // OG images specific headers
-  {
-    source: '/og/:path*',
-    headers: [
+      // OG images specific headers
       {
-        key: 'Cache-Control',
-        value: 'public, max-age=31536000, immutable',
+        source: '/og/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Content-Type',
+            value: 'image/png',
+          },
+        ],
       },
+      // Apple App Site Association files
       {
-        key: 'Content-Type',
-        value: 'image/png',
-      },
-    ],
-  },
-  // Apple App Site Association files
-  {
-    source: '/apple-app-site-association',
-    headers: [
-      {
-        key: 'Content-Type',
-        value: 'application/json',
-      },
-      {
-        key: 'Cache-Control',
-        value: 'public, max-age=3600',
-      },
-    ],
-  },
-  {
-    source: '/.well-known/apple-app-site-association',
-    headers: [
-      {
-        key: 'Content-Type',
-        value: 'application/json',
+        source: '/apple-app-site-association',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/json',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600',
+          },
+        ],
       },
       {
-        key: 'Cache-Control',
-        value: 'public, max-age=3600',
+        source: '/.well-known/apple-app-site-association',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/json',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600',
+          },
+        ],
       },
-    ],
-  },
       // API routes - no cache
       {
         source: '/api/:path*',
@@ -170,7 +197,7 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // HTML pages - optimized for GSC crawling
+      // HTML pages - optimized for GSC crawling + security headers
       {
         source: '/((?!api|_next|static).*)',
         headers: [
@@ -209,21 +236,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://vercel.live https://va.vercel-scripts.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://www.googletagmanager.com https://www.google-analytics.com https://ep2.adtrafficquality.google",
-              "worker-src 'self' blob:",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: blob: https://vercel.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://ep1.adtrafficquality.google",
-              "connect-src 'self' https://vercel.live https://va.vercel-scripts.com https://vitals.vercel-insights.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://ep1.adtrafficquality.google",
-              "frame-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google https://www.google.com",
-              "object-src 'none'",
-              "base-uri 'self'",
-              "form-action 'self'",
-              "frame-ancestors 'none'",
-              "upgrade-insecure-requests"
-            ].join('; '),
+            value: cspValue,
           },
           // Cache busting header with build ID
           {
