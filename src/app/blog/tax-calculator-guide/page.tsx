@@ -75,6 +75,7 @@ const faqs = [
 export default function TaxCalculatorGuide() {  const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": "https://convertmorph.com/blog/tax-calculator-guide#breadcrumb",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
       { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://convertmorph.com/blog" },
@@ -85,12 +86,8 @@ export default function TaxCalculatorGuide() {  const breadcrumbJsonLd = {
 
   return (
     <>
-      
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-{/* JSON-LD Structured Data */}
+      {/* JSON-LD Structured Data */}
+      <JsonLd data={breadcrumbJsonLd} />{/* JSON-LD Structured Data */}
       <JsonLd data={articleJsonLd(postData)} />
       <JsonLd data={faqJsonLd(faqs)} />
       {/* Breadcrumb JSON-LD added directly to this page */}

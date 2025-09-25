@@ -94,8 +94,8 @@ export const jsonLd = [
     applicationSubCategory: 'Document Processing',
     operatingSystem: 'Web Browser',
     softwareVersion: '2.0',
-    releaseDate: '2025-01-01',
-    dateModified: '2025-01-15',
+    releaseDate: '2025-05-01',
+    dateModified: '2025-05-15',
     publisher: {
       '@type': 'Organization',
       '@id': absoluteUrl('/#organization'),
