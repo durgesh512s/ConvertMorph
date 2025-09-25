@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { formatDate } from '@/lib/date-utils';
 import Newsletter from '@/components/Newsletter';
+import JsonLd from '@/components/JsonLd';
 
 const blogPosts = [
   {
@@ -175,8 +176,20 @@ export default function BlogPage() {
     return <div>No blog posts available</div>;
   }
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": "https://convertmorph.com/blog#breadcrumb",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://convertmorph.com/blog" }
+    ]
+  };
+
   return (
     <>
+      {/* JSON-LD Structured Data */}
+      <JsonLd data={breadcrumbJsonLd} />
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-950 dark:to-blue-950/40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}

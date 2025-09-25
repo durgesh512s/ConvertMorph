@@ -47,16 +47,7 @@ export default function BlogLayout({
 }: {
   children: React.ReactNode
 }) {
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
-      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://convertmorph.com/blog" }
-    ]
-  };
-
-  // Blog page schema
+  // Blog page schema - breadcrumbs handled by individual pages
   const blogPageSchema = {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -94,7 +85,6 @@ export default function BlogLayout({
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={blogPageSchema} />
       {children}
     </>
