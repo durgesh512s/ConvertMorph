@@ -148,11 +148,6 @@ export const jsonLd = [
     memoryRequirements: '512MB RAM',
     storageRequirements: '0MB (browser-based)',
     permissions: 'No special permissions required',
-    supportingData: {
-      '@type': 'DataSet',
-      name: 'PDF Compression Statistics',
-      description: 'Performance data showing average compression rates'
-    }
   },
   
   // WebPage Schema for SEO

@@ -256,7 +256,7 @@ const websiteJsonLd = {
     "@type": "ItemList",
     "name": "ConvertMorph Tools",
     "description": "Comprehensive digital toolkit with PDF, image, text, and finance tools",
-    "numberOfItems": 20,
+    "numberOfItems": 19,
     "itemListElement": [
       {
         "@type": "SoftwareApplication",
@@ -300,14 +300,334 @@ const websiteJsonLd = {
       },
       {
         "@type": "SoftwareApplication",
-        "name": "Background Remover",
-        "url": "https://convertmorph.com/tools/background-remover",
-        "applicationCategory": "Graphics & Design",
+        "name": "PDF Split",
+        "url": "https://convertmorph.com/tools/pdf-split",
+        "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "4.7",
-          "ratingCount": "450",
+          "ratingCount": "350",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Images to PDF",
+        "url": "https://convertmorph.com/tools/images-to-pdf",
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.6",
+          "ratingCount": "320",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "PDF to Images",
+        "url": "https://convertmorph.com/tools/pdf-to-images",
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.5",
+          "ratingCount": "280",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Image Compress",
+        "url": "https://convertmorph.com/tools/image-compress",
+        "applicationCategory": "Graphics & Design",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "410",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Image Resize",
+        "url": "https://convertmorph.com/tools/image-resize",
+        "applicationCategory": "Graphics & Design",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.6",
+          "ratingCount": "290",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Image Convert",
+        "url": "https://convertmorph.com/tools/image-convert",
+        "applicationCategory": "Graphics & Design",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.5",
+          "ratingCount": "260",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Image Crop",
+        "url": "https://convertmorph.com/tools/image-crop",
+        "applicationCategory": "Graphics & Design",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.4",
+          "ratingCount": "240",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Word Counter",
+        "url": "https://convertmorph.com/tools/word-counter",
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.5",
+          "ratingCount": "210",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Text Compare",
+        "url": "https://convertmorph.com/tools/text-compare",
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.3",
+          "ratingCount": "180",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Tax Calculator",
+        "url": "https://convertmorph.com/tools/tax-calculator",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.6",
+          "ratingCount": "290",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "EMI Calculator",
+        "url": "https://convertmorph.com/tools/emi-calculator",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.7",
+          "ratingCount": "340",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "SIP Calculator",
+        "url": "https://convertmorph.com/tools/sip-calculator",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.5",
+          "ratingCount": "250",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Loan Calculator",
+        "url": "https://convertmorph.com/tools/loan-calculator",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.4",
+          "ratingCount": "220",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "HRA Calculator",
+        "url": "https://convertmorph.com/tools/hra-calculator",
+        "applicationCategory": "Finance",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.3",
+          "ratingCount": "190",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "PDF Sign",
+        "url": "https://convertmorph.com/tools/pdf-sign",
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.6",
+          "ratingCount": "310",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "PDF Watermark",
+        "url": "https://convertmorph.com/tools/pdf-watermark",
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.4",
+          "ratingCount": "270",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "PDF Organize",
+        "url": "https://convertmorph.com/tools/pdf-organize",
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Web Browser",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.3",
+          "ratingCount": "230",
           "bestRating": "5",
           "worstRating": "1"
         },
@@ -321,8 +641,6 @@ const websiteJsonLd = {
     ]
   }
 };
-
-
 
 export default function RootLayout({
   children,
