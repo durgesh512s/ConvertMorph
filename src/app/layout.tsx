@@ -213,14 +213,7 @@ const organizationJsonLd = {
   },
   "applicationCategory": "Productivity Software",
   "operatingSystem": "Web Browser",
-  "softwareVersion": "1.0",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "ratingCount": "1250",
-    "bestRating": "5",
-    "worstRating": "1"
-  }
+  "softwareVersion": "1.0"
 };
 
 const websiteJsonLd = {
@@ -264,13 +257,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/pdf-compress",
         "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "ratingCount": "420",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -284,13 +270,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/pdf-merge",
         "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "380",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -304,13 +283,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/pdf-split",
         "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.7",
-          "ratingCount": "350",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -324,13 +296,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/images-to-pdf",
         "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.6",
-          "ratingCount": "320",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -344,13 +309,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/pdf-to-images",
         "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.5",
-          "ratingCount": "280",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -364,13 +322,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/image-compress",
         "applicationCategory": "Graphics & Design",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "410",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -384,13 +335,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/image-resize",
         "applicationCategory": "Graphics & Design",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.6",
-          "ratingCount": "290",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -404,13 +348,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/image-convert",
         "applicationCategory": "Graphics & Design",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.5",
-          "ratingCount": "260",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -424,13 +361,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/image-crop",
         "applicationCategory": "Graphics & Design",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.4",
-          "ratingCount": "240",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -444,13 +374,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/word-counter",
         "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.5",
-          "ratingCount": "210",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -464,13 +387,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/text-compare",
         "applicationCategory": "Productivity",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.3",
-          "ratingCount": "180",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -484,13 +400,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/tax-calculator",
         "applicationCategory": "Finance",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.6",
-          "ratingCount": "290",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -504,13 +413,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/emi-calculator",
         "applicationCategory": "Finance",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.7",
-          "ratingCount": "340",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -524,113 +426,6 @@ const websiteJsonLd = {
         "url": "https://convertmorph.com/tools/sip-calculator",
         "applicationCategory": "Finance",
         "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.5",
-          "ratingCount": "250",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock"
-        }
-      },
-      {
-        "@type": "SoftwareApplication",
-        "name": "Loan Calculator",
-        "url": "https://convertmorph.com/tools/loan-calculator",
-        "applicationCategory": "Finance",
-        "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.4",
-          "ratingCount": "220",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock"
-        }
-      },
-      {
-        "@type": "SoftwareApplication",
-        "name": "HRA Calculator",
-        "url": "https://convertmorph.com/tools/hra-calculator",
-        "applicationCategory": "Finance",
-        "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.3",
-          "ratingCount": "190",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock"
-        }
-      },
-      {
-        "@type": "SoftwareApplication",
-        "name": "PDF Sign",
-        "url": "https://convertmorph.com/tools/pdf-sign",
-        "applicationCategory": "Productivity",
-        "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.6",
-          "ratingCount": "310",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock"
-        }
-      },
-      {
-        "@type": "SoftwareApplication",
-        "name": "PDF Watermark",
-        "url": "https://convertmorph.com/tools/pdf-watermark",
-        "applicationCategory": "Productivity",
-        "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.4",
-          "ratingCount": "270",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD",
-          "availability": "https://schema.org/InStock"
-        }
-      },
-      {
-        "@type": "SoftwareApplication",
-        "name": "PDF Organize",
-        "url": "https://convertmorph.com/tools/pdf-organize",
-        "applicationCategory": "Productivity",
-        "operatingSystem": "Web Browser",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.3",
-          "ratingCount": "230",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
         "offers": {
           "@type": "Offer",
           "price": "0",

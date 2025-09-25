@@ -69,14 +69,7 @@ export const generateToolJsonLd = (tool: {
     "availability": "https://schema.org/InStock"
   },
   "featureList": tool.features || [],
-  "screenshot": `https://convertmorph.com/og/${tool.name.toLowerCase().replace(/\s+/g, '-')}.png`,
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "ratingCount": "1250",
-    "bestRating": "5",
-    "worstRating": "1"
-  }
+  "screenshot": `https://convertmorph.com/og/${tool.name.toLowerCase().replace(/\s+/g, '-')}.png`
 });
 
 export const generateBlogPostJsonLd = (post: {
