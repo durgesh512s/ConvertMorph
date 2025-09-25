@@ -1,5 +1,5 @@
 // service-worker.js (patched)
-const CACHE_VERSION = "v74"; // increment manually when you want to invalidate
+const CACHE_VERSION = "v75"; // increment manually when you want to invalidate
 const STATIC_CACHE = `cm-static-${CACHE_VERSION}`;
 const CSS_CACHE = `cm-css-${CACHE_VERSION}`;
 const HTML_CACHE = `cm-html-${CACHE_VERSION}`;
@@ -21,6 +21,7 @@ const THIRD_PARTY_BLOCKLIST = [
 const shouldBypass = (url) =>
   url.includes("/download") ||
   url.includes("jobId=") ||
+  url.endsWith("/ads.txt") ||
   THIRD_PARTY_BLOCKLIST.some((host) => url.includes(host));
 
 const isCSSRequest = (request) =>

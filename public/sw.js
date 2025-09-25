@@ -22,6 +22,11 @@ self.addEventListener('install', (event) => {
 
 // Fetch event
 self.addEventListener('fetch', (event) => {
+  // Always bypass service worker for ads.txt to ensure direct server delivery
+  if (event.request.url.endsWith('/ads.txt')) {
+    return;
+  }
+  
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
