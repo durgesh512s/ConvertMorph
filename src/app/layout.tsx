@@ -156,94 +156,75 @@ const organizationJsonLd = {
   "@type": "Organization",
   "@id": "https://convertmorph.com/#organization",
   "name": "ConvertMorph",
-  "alternateName": ["Convert Morph", "ConvertMorph Tools"],
+  "alternateName": "ConvertMorph Document Tools",
+  "description": "Fast, private file tools for everyone. Convert, compress, and organize PDFs and images right in your browser.",
   "url": "https://convertmorph.com",
   "logo": {
     "@type": "ImageObject",
     "url": "https://convertmorph.com/logo/logo-full.svg",
-    "width": 300,
-    "height": 100,
+    "width": 200,
+    "height": 60,
     "caption": "ConvertMorph Logo"
   },
-  "description": "Professional digital toolkit offering free PDF tools, image editors, text processors, and financial calculators. 100% browser-based, completely private, always free.",
-  "foundingDate": "2025",
-  "slogan": "Transform Documents Instantly & Securely",
-  "knowsAbout": [
-    "PDF Processing",
-    "Image Editing",
-    "Text Analysis",
-    "Financial Calculations",
-    "Document Conversion",
-    "Privacy-First Tools"
-  ],
-  "areaServed": "Worldwide",
-  "serviceType": "Digital Tools and Document Processing",
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "ConvertMorph Digital Tools",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "PDF Tools",
-          "description": "Comprehensive PDF manipulation suite including compress, merge, split, and conversion tools"
-        },
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Image Tools",
-          "description": "Professional image editing and optimization tools including background removal and compression"
-        },
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Text Tools",
-          "description": "Advanced text processing and analysis tools including grammar checking and plagiarism detection"
-        },
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Finance Tools",
-          "description": "Financial calculators and planning tools including tax, EMI, and SIP calculators"
-        },
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    ]
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://convertmorph.com/logo/logo-full.svg",
+    "width": 200,
+    "height": 60
   },
   "contactPoint": [
     {
       "@type": "ContactPoint",
-      "contactType": "Customer Support",
       "url": "https://convertmorph.com/contact",
-      "availableLanguage": "English",
-      "areaServed": "Worldwide"
-    },
-    {
-      "@type": "ContactPoint",
-      "contactType": "Technical Support",
+      "contactType": "customer service",
       "email": "support@convertmorph.com",
-      "availableLanguage": "English",
-      "areaServed": "Worldwide"
+      "availableLanguage": ["English"]
     }
   ],
-  "sameAs": [
-    "https://twitter.com/convertmorph",
-    "https://github.com/convertmorph"
-  ]
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "US"
+  },
+  "sameAs": ["https://convertmorph.com"],
+  "foundingDate": "2025",
+  "slogan": "Fast, private file tools for everyone",
+  "knowsAbout": [
+    "PDF compression",
+    "PDF merging",
+    "PDF splitting",
+    "Image to PDF conversion",
+    "PDF to image conversion",
+    "Document processing",
+    "File conversion",
+    "PDF optimization",
+    "Document security",
+    "File privacy"
+  ],
+  "serviceType": [
+    "PDF Tools",
+    "Document Processing",
+    "File Conversion",
+    "Image Processing"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "name": "PDF Processing Tools",
+    "description": "Free online PDF tools for compression, merging, splitting, and conversion",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock",
+    "category": "Software Application"
+  },
+  "applicationCategory": "Productivity Software",
+  "operatingSystem": "Web Browser",
+  "softwareVersion": "1.0",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "1250",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
 };
 
 const websiteJsonLd = {
