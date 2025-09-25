@@ -1,55 +1,12 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { getCurrentDate } from '@/lib/date-utils'
-import { absoluteUrl } from '@/lib/url'
 import { FileText, Shield, AlertTriangle, Scale } from 'lucide-react'
-
-export const metadata: Metadata = {
-  title: 'Terms of Service | ConvertMorph - PDF Tools',
-  description: 'Terms of Service for ConvertMorph. Learn about our service terms, user responsibilities, and legal agreements for using our PDF tools.',
-  keywords: 'terms of service, user agreement, legal terms, PDF tools terms, service agreement',
-  openGraph: {
-    title: 'Terms of Service | ConvertMorph',
-    description: 'Terms of Service and user agreements for ConvertMorph PDF tools.',
-    type: 'website',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: absoluteUrl('/terms'),
-  },
-}
 
 export default function TermsPage() {
   const today = getCurrentDate()
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://convertmorph.com/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Terms of Service",
-        "item": "https://convertmorph.com/terms"
-      }
-    ]
-  }
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
