@@ -16,9 +16,72 @@ export default function ToolsPage() {
     ]
   };
 
+  // Collection page schema for tools - only on main /tools page
+  const collectionPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Free Online Tools - PDF, Image, Text & Finance Calculator Toolkit",
+    "description": "Discover 20+ professional online tools for PDF processing, image editing, text analysis, and financial calculations. 100% free, browser-based, completely private.",
+    "url": "https://convertmorph.com/tools",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "ConvertMorph Online Tools",
+      "description": "Comprehensive collection of free online tools for document processing, image editing, text analysis, and financial calculations",
+      "numberOfItems": 20,
+      "itemListElement": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF Compress",
+          "url": "https://convertmorph.com/tools/pdf-compress",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Compress PDF files while maintaining quality",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF Merge",
+          "url": "https://convertmorph.com/tools/pdf-merge",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Combine multiple PDF files into one document",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Tax Calculator",
+          "url": "https://convertmorph.com/tools/tax-calculator",
+          "applicationCategory": "Finance",
+          "operatingSystem": "Web Browser",
+          "description": "Calculate income tax for FY 2024-25 with regime comparison",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "EMI Calculator",
+          "url": "https://convertmorph.com/tools/emi-calculator",
+          "applicationCategory": "Finance",
+          "operatingSystem": "Web Browser",
+          "description": "Calculate loan EMI for home, personal, and car loans",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Word Counter",
+          "url": "https://convertmorph.com/tools/word-counter",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Count words, characters, and analyze text readability",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        }
+      ]
+    }
+  };
+
   return (
     <>
       <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={collectionPageSchema} />
       
       <section className="relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 via-white to-white dark:from-blue-950/40 dark:via-gray-950 dark:to-gray-950" />

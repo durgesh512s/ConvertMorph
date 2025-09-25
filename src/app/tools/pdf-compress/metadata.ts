@@ -116,14 +116,6 @@ export const jsonLd = [
       category: 'Software Application',
       validFrom: '2025-01-01'
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      ratingCount: '420',
-      bestRating: '5',
-      worstRating: '1',
-      reviewCount: '420'
-    },
     featureList: [
       'Smart compression algorithms with quality preservation',
       'Multiple compression levels (Light, Medium, Strong)',

@@ -45,106 +45,10 @@ export default function ToolsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Collection page schema for tools
-  const collectionPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "Free Online Tools - PDF, Image, Text & Finance Calculator Toolkit",
-    "description": "Discover 20+ professional online tools for PDF processing, image editing, text analysis, and financial calculations. 100% free, browser-based, completely private.",
-    "url": "https://convertmorph.com/tools",
-    "mainEntity": {
-      "@type": "ItemList",
-      "name": "ConvertMorph Online Tools",
-      "description": "Comprehensive collection of free online tools for document processing, image editing, text analysis, and financial calculations",
-      "numberOfItems": 20,
-      "itemListElement": [
-        {
-          "@type": "SoftwareApplication",
-          "name": "PDF Compress",
-          "url": "https://convertmorph.com/tools/pdf-compress",
-          "applicationCategory": "Productivity",
-          "operatingSystem": "Web Browser",
-          "description": "Compress PDF files while maintaining quality",
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "ratingCount": "420",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
-        },
-        {
-          "@type": "SoftwareApplication",
-          "name": "PDF Merge",
-          "url": "https://convertmorph.com/tools/pdf-merge",
-          "applicationCategory": "Productivity",
-          "operatingSystem": "Web Browser",
-          "description": "Combine multiple PDF files into one document",
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "380",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
-        },
-        {
-          "@type": "SoftwareApplication",
-          "name": "Tax Calculator",
-          "url": "https://convertmorph.com/tools/tax-calculator",
-          "applicationCategory": "Finance",
-          "operatingSystem": "Web Browser",
-          "description": "Calculate income tax for FY 2024-25 with regime comparison",
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.6",
-            "ratingCount": "290",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
-        },
-        {
-          "@type": "SoftwareApplication",
-          "name": "EMI Calculator",
-          "url": "https://convertmorph.com/tools/emi-calculator",
-          "applicationCategory": "Finance",
-          "operatingSystem": "Web Browser",
-          "description": "Calculate loan EMI for home, personal, and car loans",
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.7",
-            "ratingCount": "340",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
-        },
-        {
-          "@type": "SoftwareApplication",
-          "name": "Word Counter",
-          "url": "https://convertmorph.com/tools/word-counter",
-          "applicationCategory": "Productivity",
-          "operatingSystem": "Web Browser",
-          "description": "Count words, characters, and analyze text readability",
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.5",
-            "ratingCount": "210",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
-        }
-      ]
-    }
-  };
-
+  // No schema in layout - individual tool pages will have their own specific schemas
+  // This prevents duplicate SoftwareApplication schemas on individual tool pages
   return (
     <>
-      <JsonLd data={collectionPageSchema} />
       {children}
     </>
   );
