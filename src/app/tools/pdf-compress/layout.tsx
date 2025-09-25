@@ -6,17 +6,6 @@ export default function PdfCompressLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Specific breadcrumb for PDF Compress tool
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
-      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://convertmorph.com/tools" },
-      { "@type": "ListItem", "position": 3, "name": "PDF Compress", "item": "https://convertmorph.com/tools/pdf-compress" }
-    ]
-  };
-
   // FAQ data for structured data
   const faqs = [
     {
@@ -47,7 +36,6 @@ export default function PdfCompressLayout({
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={faqJsonLd(faqs)} />
       {children}
     </>

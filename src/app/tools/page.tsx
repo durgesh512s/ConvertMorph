@@ -2,11 +2,23 @@ import React from 'react';
 import { Archive, GitMerge, Scissors } from 'lucide-react';
 import { getAllTools } from './toolsData';
 import ToolsClientWrapper from './ToolsClientWrapper';
+import JsonLd from '@/components/JsonLd';
 
 // Server Component - renders immediately with all content
 export default function ToolsPage() {
+  // Breadcrumb schema specifically for /tools page
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://convertmorph.com/tools" }
+    ]
+  };
+
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd} />
       
       <section className="relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 via-white to-white dark:from-blue-950/40 dark:via-gray-950 dark:to-gray-950" />

@@ -45,16 +45,6 @@ export default function ToolsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Dynamic breadcrumb that works for both /tools and /tools/[tool] pages
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
-      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://convertmorph.com/tools" }
-    ]
-  };
-
   // Collection page schema for tools
   const collectionPageSchema = {
     "@context": "https://schema.org",
@@ -154,7 +144,6 @@ export default function ToolsLayout({
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={collectionPageSchema} />
       {children}
     </>
