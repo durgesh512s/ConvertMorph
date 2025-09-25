@@ -8,7 +8,10 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: [
+          '/',
+          '/ads.txt', // Allow AdSense ads.txt file
+        ],
         disallow: [
           '/api/',
           '/samples/',
@@ -32,6 +35,7 @@ export default function robots(): MetadataRoute.Robots {
           '/contact',
           '/privacy',
           '/terms',
+          '/ads.txt', // Allow AdSense ads.txt file
           '/_next/static/css/*', // Essential for rendering
           '/_next/static/chunks/*', // Allow JS chunks for proper rendering
           '/favicon.ico',
@@ -63,6 +67,7 @@ export default function robots(): MetadataRoute.Robots {
           '/',
           '/tools/',
           '/blog/',
+          '/ads.txt', // Allow AdSense ads.txt file
           '/_next/static/css/*',
           '/_next/static/chunks/*', // Allow JS for mobile rendering
           '/favicon.ico',
