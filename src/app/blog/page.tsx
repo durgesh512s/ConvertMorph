@@ -4,28 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { formatDate } from '@/lib/date-utils';
 import Newsletter from '@/components/Newsletter';
-import { absoluteUrl } from '@/lib/url';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Blog - PDF Tips & Tutorials | ConvertMorph',
-  description: 'Expert tips, tutorials, and insights about PDF tools, document management, and file conversion best practices.',
-  keywords: 'PDF tips, PDF tutorials, document management, file conversion, PDF tools guide',
-  openGraph: {
-    title: 'Blog - PDF Tips & Tutorials | ConvertMorph',
-    description: 'Expert tips, tutorials, and insights about PDF tools, document management, and file conversion best practices.',
-    type: 'website',
-  },
-  alternates: {
-    canonical: absoluteUrl('/blog'),
-  },
-};
 
 const blogPosts = [
   {
     title: 'ConvertMorph - Free Online Tools for PDF, Image, Text & Finance',
     excerpt: 'Discover ConvertMorph\'s comprehensive suite of free online tools. Process PDFs, edit images, analyze text, and calculate finances securely with our browser-based tools.',
-    date: '2025-09-01',
+    date: '2025-09-10',
     readTime: '12 min read',
     slug: 'convertmorph-free-online-tools',
     category: 'Platform Guide',
@@ -73,7 +57,7 @@ const blogPosts = [
   {
     title: 'Text Analysis Tools: Word Counter & Text Comparison Online Free',
     excerpt: 'Comprehensive text analysis tools for writers, students, and professionals. Count words, analyze readability, compare texts, and export detailed reports.',
-    date: '2025-03-20',
+    date: '2025-05-20',
     readTime: '8 min read',
     slug: 'text-analysis-tools',
     category: 'Text Tools',
@@ -81,7 +65,7 @@ const blogPosts = [
   {
     title: 'Crop Images Online: Complete Guide to Image Cropping',
     excerpt: 'Learn how to crop images online with precision using professional tools. Complete guide to aspect ratios, batch cropping, and format conversion.',
-    date: '2025-03-15',
+    date: '2025-05-15',
     readTime: '12 min read',
     slug: 'crop-images-online',
     category: 'Image Tools',
@@ -89,7 +73,7 @@ const blogPosts = [
   {
     title: 'Convert Image Formats Online: Free Image Converter',
     excerpt: 'Convert images between JPEG, PNG, WebP, and other formats online. Free image format converter with quality control and batch processing.',
-    date: '2025-03-10',
+    date: '2025-07-10',
     readTime: '9 min read',
     slug: 'convert-image-formats-online',
     category: 'Image Tools',
@@ -97,7 +81,7 @@ const blogPosts = [
   {
     title: 'Resize Images Online: Free Image Resizer Tool',
     excerpt: 'Resize images online for free with our powerful image resizer. Change image dimensions while maintaining quality for web, social media, and print.',
-    date: '2025-03-05',
+    date: '2025-07-05',
     readTime: '8 min read',
     slug: 'resize-images-online',
     category: 'Image Tools',
@@ -105,7 +89,7 @@ const blogPosts = [
   {
     title: 'Compress Images Online: Complete Guide to Reducing File Size',
     excerpt: 'Learn how to compress images online effectively while maintaining quality. Complete guide to reducing JPEG, PNG, WebP file sizes.',
-    date: '2025-03-01',
+    date: '2025-06-01',
     readTime: '7 min read',
     slug: 'compress-images-online',
     category: 'Image Tools',
@@ -113,7 +97,7 @@ const blogPosts = [
   {
     title: 'How to Compress PDF Files: Complete Guide 2025',
     excerpt: 'Learn how to compress PDF files effectively. Reduce file size while maintaining quality with our step-by-step guide and free online tools.',
-    date: '2025-01-15',
+    date: '2025-06-15',
     readTime: '8 min read',
     slug: 'how-to-compress-pdf-files',
     category: 'PDF Tools',
@@ -121,7 +105,7 @@ const blogPosts = [
   {
     title: 'How to Merge PDF Files Online: Free & Secure',
     excerpt: 'Learn how to merge multiple PDF files into one document online. Free, secure, and easy-to-use PDF merger tool with step-by-step guide.',
-    date: '2025-01-20',
+    date: '2025-08-20',
     readTime: '6 min read',
     slug: 'merge-pdf-files-online',
     category: 'PDF Tools',
@@ -129,7 +113,7 @@ const blogPosts = [
   {
     title: 'Convert Images to PDF: JPG, PNG to PDF Online Free',
     excerpt: 'Convert JPG, PNG, and other images to PDF online for free. Combine multiple images into one PDF or create separate PDFs. No software required.',
-    date: '2025-01-25',
+    date: '2025-10-25',
     readTime: '7 min read',
     slug: 'convert-images-to-pdf',
     category: 'PDF Tools',
@@ -137,7 +121,7 @@ const blogPosts = [
   {
     title: 'How to Split PDF Pages: Extract & Separate PDF Files Online',
     excerpt: 'Learn how to split PDF files by pages, extract specific pages, or separate large PDFs into smaller documents. Free online PDF splitter tool.',
-    date: '2025-01-30',
+    date: '2025-08-30',
     readTime: '6 min read',
     slug: 'split-pdf-pages',
     category: 'PDF Tools',
@@ -145,7 +129,7 @@ const blogPosts = [
   {
     title: 'Convert PDF to Images: Extract Pages as JPG/PNG Online',
     excerpt: 'Convert PDF pages to high-quality JPG or PNG images online. Extract all pages or specific pages from PDF documents. Free and secure conversion.',
-    date: '2025-02-05',
+    date: '2025-04-05',
     readTime: '7 min read',
     slug: 'convert-pdf-to-images',
     category: 'PDF Tools',
@@ -153,7 +137,7 @@ const blogPosts = [
   {
     title: 'Organize PDF Pages: Reorder and Rearrange Documents',
     excerpt: 'Learn how to organize, reorder, and rearrange PDF pages with our free online tool. Perfect for restructuring documents and improving readability.',
-    date: '2025-02-10',
+    date: '2025-07-10',
     readTime: '6 min read',
     slug: 'organize-pdf-pages',
     category: 'PDF Tools',
@@ -161,7 +145,7 @@ const blogPosts = [
   {
     title: 'Add Watermark to PDF: Complete Protection Guide',
     excerpt: 'Protect and brand your PDF documents with text or image watermarks. Learn how to add professional watermarks using our free online tool.',
-    date: '2025-02-15',
+    date: '2025-09-15',
     readTime: '7 min read',
     slug: 'add-watermark-to-pdf',
     category: 'PDF Tools',
@@ -169,7 +153,7 @@ const blogPosts = [
   {
     title: 'Sign PDF Documents: Digital Signature Guide',
     excerpt: 'Add secure digital signatures to your PDF documents with our easy-to-use signing tool. Learn about digital signature security and best practices.',
-    date: '2025-02-20',
+    date: '2025-10-20',
     readTime: '8 min read',
     slug: 'sign-pdf-documents',
     category: 'PDF Tools',
@@ -177,7 +161,7 @@ const blogPosts = [
   {
     title: 'Add Page Numbers to PDF: Professional Formatting',
     excerpt: 'Add professional page numbering to your PDF documents with customizable positioning and styles. Perfect for reports, books, and formal documents.',
-    date: '2025-02-25',
+    date: '2025-09-25',
     readTime: '5 min read',
     slug: 'add-page-numbers-to-pdf',
     category: 'PDF Tools',
@@ -191,21 +175,8 @@ export default function BlogPage() {
     return <div>No blog posts available</div>;
   }
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
-      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://convertmorph.com/blog" }
-    ]
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-950 dark:to-blue-950/40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}

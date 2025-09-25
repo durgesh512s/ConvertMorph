@@ -1,54 +1,11 @@
-import { Metadata } from 'next'
 import { getCurrentDate } from '@/lib/date-utils'
-import { absoluteUrl } from '@/lib/url'
 import { Shield, Lock, Trash2, Eye } from 'lucide-react'
-
-export const metadata: Metadata = {
-  title: 'Privacy Policy | ConvertMorph - PDF Tools',
-  description: 'Learn how ConvertMorph protects your privacy. We process files locally in your browser and never store your documents on our servers. GDPR compliant.',
-  keywords: 'privacy policy, GDPR, data protection, file privacy, PDF tools privacy',
-  openGraph: {
-    title: 'Privacy Policy | ConvertMorph',
-    description: 'Your privacy is our priority. All file processing happens locally in your browser. GDPR compliant.',
-    type: 'website',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: absoluteUrl('/privacy'),
-  },
-}
 
 export default function PrivacyPage() {
   const today = getCurrentDate()
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://convertmorph.com/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Privacy Policy",
-        "item": "https://convertmorph.com/privacy"
-      }
-    ]
-  }
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
