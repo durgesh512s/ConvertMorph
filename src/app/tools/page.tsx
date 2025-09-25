@@ -3,64 +3,10 @@ import { Archive, GitMerge, Scissors } from 'lucide-react';
 import { getAllTools } from './toolsData';
 import ToolsClientWrapper from './ToolsClientWrapper';
 
-// Generate JSON-LD structured data on server
-function generateJsonLd() {
-  const baseUrl = 'https://convertmorph.com';
-  const allTools = getAllTools();
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "ConvertMorph Tools",
-    "description": "Professional-grade tools for PDF, Image, Text, and Finance tasks",
-    "url": `${baseUrl}/tools`,
-    "numberOfItems": allTools.filter(tool => !tool.comingSoon).length,
-    "itemListElement": allTools
-      .filter(tool => !tool.comingSoon)
-      .map((tool, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
-          "@type": "SoftwareApplication",
-          "name": tool.title,
-          "description": tool.description,
-          "url": `${baseUrl}${tool.href}`,
-          "applicationCategory": "WebApplication",
-          "operatingSystem": "Any",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        }
-      }))
-  };
-}
-
 // Server Component - renders immediately with all content
 export default function ToolsPage() {
-  const jsonLd = generateJsonLd();
-  
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
-      { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://convertmorph.com/tools" }
-    ]
-  };
-
   return (
     <>
-      {/* JSON-LD Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
       
       <section className="relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 via-white to-white dark:from-blue-950/40 dark:via-gray-950 dark:to-gray-950" />
