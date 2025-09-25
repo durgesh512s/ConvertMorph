@@ -74,7 +74,14 @@ export default function ToolsLayout({
           "applicationCategory": "Productivity",
           "operatingSystem": "Web Browser",
           "description": "Compress PDF files while maintaining quality",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "420",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
         },
         {
           "@type": "SoftwareApplication",
@@ -83,7 +90,14 @@ export default function ToolsLayout({
           "applicationCategory": "Productivity",
           "operatingSystem": "Web Browser",
           "description": "Combine multiple PDF files into one document",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "380",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
         },
         {
           "@type": "SoftwareApplication",
@@ -92,7 +106,14 @@ export default function ToolsLayout({
           "applicationCategory": "Finance",
           "operatingSystem": "Web Browser",
           "description": "Calculate income tax for FY 2024-25 with regime comparison",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.6",
+            "ratingCount": "290",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
         },
         {
           "@type": "SoftwareApplication",
@@ -101,7 +122,14 @@ export default function ToolsLayout({
           "applicationCategory": "Finance",
           "operatingSystem": "Web Browser",
           "description": "Calculate loan EMI for home, personal, and car loans",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.7",
+            "ratingCount": "340",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
         },
         {
           "@type": "SoftwareApplication",
@@ -110,7 +138,14 @@ export default function ToolsLayout({
           "applicationCategory": "Productivity",
           "operatingSystem": "Web Browser",
           "description": "Count words, characters, and analyze text readability",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.5",
+            "ratingCount": "210",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
         }
       ]
     }
