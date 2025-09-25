@@ -10,16 +10,18 @@ export default function ToolsPage() {
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": "https://convertmorph.com/tools#breadcrumb",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://convertmorph.com/" },
       { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://convertmorph.com/tools" }
     ]
   };
 
-  // Collection page schema for tools - only on main /tools page
+  // Collection page schema for tools - ONLY on main /tools page, not sub-pages
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": "https://convertmorph.com/tools#collection",
     "name": "Free Online Tools - PDF, Image, Text & Finance Calculator Toolkit",
     "description": "Discover 20+ professional online tools for PDF processing, image editing, text analysis, and financial calculations. 100% free, browser-based, completely private.",
     "url": "https://convertmorph.com/tools",
@@ -49,6 +51,123 @@ export default function ToolsPage() {
         },
         {
           "@type": "SoftwareApplication",
+          "name": "PDF Split",
+          "url": "https://convertmorph.com/tools/pdf-split",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Split PDF files into separate pages or ranges",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Images to PDF",
+          "url": "https://convertmorph.com/tools/images-to-pdf",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Convert JPG, PNG, and other images to PDF format",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF to Images",
+          "url": "https://convertmorph.com/tools/pdf-to-images",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Convert PDF pages to JPG, PNG, or other image formats",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF Organize",
+          "url": "https://convertmorph.com/tools/pdf-organize",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Reorder, rotate, and organize PDF pages",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF Watermark",
+          "url": "https://convertmorph.com/tools/pdf-watermark",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Add text or image watermarks to PDF documents",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF Sign",
+          "url": "https://convertmorph.com/tools/pdf-sign",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Add digital signatures to PDF documents",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF Page Numbers",
+          "url": "https://convertmorph.com/tools/pdf-pagenum",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Add page numbers to PDF documents",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Image Compress",
+          "url": "https://convertmorph.com/tools/image-compress",
+          "applicationCategory": "Graphics & Design",
+          "operatingSystem": "Web Browser",
+          "description": "Compress JPG, PNG, and WebP images while maintaining quality",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Image Resize",
+          "url": "https://convertmorph.com/tools/image-resize",
+          "applicationCategory": "Graphics & Design",
+          "operatingSystem": "Web Browser",
+          "description": "Resize images to specific dimensions or percentages",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Image Convert",
+          "url": "https://convertmorph.com/tools/image-convert",
+          "applicationCategory": "Graphics & Design",
+          "operatingSystem": "Web Browser",
+          "description": "Convert between JPG, PNG, WebP, and other image formats",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Image Crop",
+          "url": "https://convertmorph.com/tools/image-crop",
+          "applicationCategory": "Graphics & Design",
+          "operatingSystem": "Web Browser",
+          "description": "Crop images to specific dimensions or aspect ratios",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Word Counter",
+          "url": "https://convertmorph.com/tools/word-counter",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Count words, characters, and analyze text readability",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Text Compare",
+          "url": "https://convertmorph.com/tools/text-compare",
+          "applicationCategory": "Productivity",
+          "operatingSystem": "Web Browser",
+          "description": "Compare two texts and highlight differences",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
           "name": "Tax Calculator",
           "url": "https://convertmorph.com/tools/tax-calculator",
           "applicationCategory": "Finance",
@@ -67,11 +186,29 @@ export default function ToolsPage() {
         },
         {
           "@type": "SoftwareApplication",
-          "name": "Word Counter",
-          "url": "https://convertmorph.com/tools/word-counter",
-          "applicationCategory": "Productivity",
+          "name": "SIP Calculator",
+          "url": "https://convertmorph.com/tools/sip-calculator",
+          "applicationCategory": "Finance",
           "operatingSystem": "Web Browser",
-          "description": "Count words, characters, and analyze text readability",
+          "description": "Calculate SIP returns and investment planning",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "HRA Calculator",
+          "url": "https://convertmorph.com/tools/hra-calculator",
+          "applicationCategory": "Finance",
+          "operatingSystem": "Web Browser",
+          "description": "Calculate House Rent Allowance exemption for tax planning",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Loan Calculator",
+          "url": "https://convertmorph.com/tools/loan-calculator",
+          "applicationCategory": "Finance",
+          "operatingSystem": "Web Browser",
+          "description": "Calculate loan payments and interest for various loan types",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" }
         }
       ]
