@@ -113,9 +113,6 @@ export default function ToolsLayout({
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
         }
       ]
-    },
-    "breadcrumb": {
-      "@id": "https://convertmorph.com/tools#breadcrumb"
     }
   };
 
