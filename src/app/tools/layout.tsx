@@ -45,6 +45,7 @@ export default function ToolsLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Dynamic breadcrumb that works for both /tools and /tools/[tool] pages
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

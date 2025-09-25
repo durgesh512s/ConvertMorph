@@ -6,6 +6,7 @@ export default function PdfCompressLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Specific breadcrumb for PDF Compress tool
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
