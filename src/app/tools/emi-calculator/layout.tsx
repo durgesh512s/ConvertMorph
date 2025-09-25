@@ -4,15 +4,15 @@ import JsonLd from '@/components/JsonLd'
 import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Emi Calculator — ConvertMorph',
-  description: 'Professional emi calculator tool. Fast, private, free forever.',
-  keywords: ["emi calculator", "emi calculator", "online tool", "free tool"],
+  title: 'EMI Calculator - Calculate Loan EMI Online Free | ConvertMorph',
+  description: 'Calculate EMI for home loan, personal loan, car loan with our free EMI calculator. Get instant monthly installment, total interest, and amortization schedule. Compare loan options easily.',
+  keywords: ["EMI calculator", "loan EMI calculator", "home loan EMI", "personal loan EMI", "car loan EMI", "monthly installment calculator", "loan calculator", "interest calculator", "amortization calculator", "free EMI calculator"],
   alternates: {
     canonical: absoluteUrl('/tools/emi-calculator'),
   },
   openGraph: {
-    title: 'Emi Calculator — ConvertMorph',
-    description: 'Professional emi calculator tool. Fast, private, free forever.',
+    title: 'EMI Calculator - Calculate Loan EMI Online Free',
+    description: 'Calculate EMI for home loan, personal loan, car loan with our free EMI calculator. Get instant monthly installment, total interest, and amortization schedule.',
     images: [
       {
         url: absoluteUrl('/og/emi-calculator.png'),
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Emi Calculator — ConvertMorph',
-    description: 'Professional emi calculator tool. Fast, private, free forever.',
+    title: 'EMI Calculator - Calculate Loan EMI Online Free',
+    description: 'Calculate EMI for home loan, personal loan, car loan with our free EMI calculator. Get instant monthly installment, total interest, and amortization schedule.',
     images: [absoluteUrl('/og/emi-calculator.png')],
   },
 }

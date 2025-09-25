@@ -4,15 +4,15 @@ import JsonLd from '@/components/JsonLd'
 import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Sip Calculator — ConvertMorph',
-  description: 'Professional sip calculator tool. Fast, private, free forever.',
-  keywords: ["sip calculator", "sip calculator", "online tool", "free tool"],
+  title: 'SIP Calculator - Calculate Mutual Fund SIP Returns Online | ConvertMorph',
+  description: 'Calculate SIP returns with our free mutual fund SIP calculator. Plan your systematic investment, estimate wealth creation, and compare different SIP scenarios. Start investing smartly today.',
+  keywords: ["SIP calculator", "mutual fund SIP calculator", "systematic investment plan", "SIP return calculator", "mutual fund calculator", "investment calculator", "wealth calculator", "SIP planning", "mutual fund investment", "free SIP calculator"],
   alternates: {
     canonical: absoluteUrl('/tools/sip-calculator'),
   },
   openGraph: {
-    title: 'Sip Calculator — ConvertMorph',
-    description: 'Professional sip calculator tool. Fast, private, free forever.',
+    title: 'SIP Calculator - Calculate Mutual Fund SIP Returns Online',
+    description: 'Calculate SIP returns with our free mutual fund SIP calculator. Plan your systematic investment, estimate wealth creation, and compare different SIP scenarios.',
     images: [
       {
         url: absoluteUrl('/og/sip-calculator.png'),
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sip Calculator — ConvertMorph',
-    description: 'Professional sip calculator tool. Fast, private, free forever.',
+    title: 'SIP Calculator - Calculate Mutual Fund SIP Returns Online',
+    description: 'Calculate SIP returns with our free mutual fund SIP calculator. Plan your systematic investment, estimate wealth creation, and compare different SIP scenarios.',
     images: [absoluteUrl('/og/sip-calculator.png')],
   },
 }

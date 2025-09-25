@@ -4,15 +4,15 @@ import JsonLd from '@/components/JsonLd'
 import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Tax Calculator — ConvertMorph',
-  description: 'Professional tax calculator tool. Fast, private, free forever.',
-  keywords: ["tax calculator", "tax calculator", "online tool", "free tool"],
+  title: 'Income Tax Calculator 2025-26 - Calculate Tax Online Free | ConvertMorph',
+  description: 'Calculate income tax for FY 2025-26 with our free online tax calculator. Compare old vs new tax regime, get instant tax liability, deductions, and refund calculations. 100% accurate and secure.',
+  keywords: ["income tax calculator", "tax calculator 2025-26", "income tax calculation", "tax regime comparison", "old vs new tax regime", "tax liability calculator", "income tax online", "free tax calculator", "tax deduction calculator", "tax refund calculator"],
   alternates: {
     canonical: absoluteUrl('/tools/tax-calculator'),
   },
   openGraph: {
-    title: 'Tax Calculator — ConvertMorph',
-    description: 'Professional tax calculator tool. Fast, private, free forever.',
+    title: 'Income Tax Calculator 2025-26 - Calculate Tax Online Free',
+    description: 'Calculate income tax for FY 2025-26 with our free online tax calculator. Compare old vs new tax regime, get instant tax liability and deductions.',
     images: [
       {
         url: absoluteUrl('/og/tax-calculator.png'),
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tax Calculator — ConvertMorph',
-    description: 'Professional tax calculator tool. Fast, private, free forever.',
+    title: 'Income Tax Calculator 2025-26 - Calculate Tax Online Free',
+    description: 'Calculate income tax for FY 2025-26 with our free online tax calculator. Compare old vs new tax regime, get instant tax liability and deductions.',
     images: [absoluteUrl('/og/tax-calculator.png')],
   },
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { Suspense } from "react";
+import Script from "next/script";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { LazyFooter } from "@/components/LazyFooter";
@@ -38,10 +39,7 @@ const poppins = Poppins({
 const cacheBustId = getCacheBustId();
 
 export const metadata: Metadata = {
-  title: {
-    default: "ConvertMorph - Professional PDF, Image, Text & Finance Tools | Free Online Toolkit",
-    template: "%s | ConvertMorph - Free Digital Tools",
-  },
+  title: "ConvertMorph - Professional PDF, Image, Text & Finance Tools | Free Online Toolkit",
   description: "Transform documents instantly with ConvertMorph's comprehensive digital toolkit. Free PDF tools, image editors, text processors, and financial calculators. 100% browser-based, completely private, always free. No registration required.",
   keywords: [
     "PDF tools", "PDF compress", "PDF merge", "PDF split", "PDF converter",
@@ -168,7 +166,7 @@ const organizationJsonLd = {
     "caption": "ConvertMorph Logo"
   },
   "description": "Professional digital toolkit offering free PDF tools, image editors, text processors, and financial calculators. 100% browser-based, completely private, always free.",
-  "foundingDate": "2024",
+  "foundingDate": "2025",
   "slogan": "Transform Documents Instantly & Securely",
   "knowsAbout": [
     "PDF Processing",
@@ -389,16 +387,15 @@ export default function RootLayout({
           `
         }} />
         
-        {/* Google AdSense - Verification Script Only */}
-        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-          />
-        )}
       </head>
       <body className={`min-h-screen bg-background font-sans antialiased ${poppins.variable}`}>
+        {/* Google AdSense - Using Next.js Script with beforeInteractive strategy */}
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1811205442467517"
+          strategy="beforeInteractive"
+          crossOrigin="anonymous"
+        />
+        
         <HydrationErrorSuppressor>
           <Suspense fallback={null}>
             <ProgressBar />

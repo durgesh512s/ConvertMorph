@@ -4,15 +4,15 @@ import JsonLd from '@/components/JsonLd'
 import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Word Counter — ConvertMorph',
-  description: 'Professional word counter tool. Fast, private, free forever.',
-  keywords: ["word counter", "word counter", "online tool", "free tool"],
+  title: 'Word Counter - Count Words, Characters & Reading Time Online | ConvertMorph',
+  description: 'Free online word counter tool. Count words, characters, sentences, paragraphs instantly. Get reading time estimates and readability scores. Perfect for writers, students, and content creators.',
+  keywords: ["word counter", "character counter", "text analyzer", "reading time calculator", "word count tool", "character count", "sentence counter", "paragraph counter", "readability checker", "free word counter"],
   alternates: {
     canonical: absoluteUrl('/tools/word-counter'),
   },
   openGraph: {
-    title: 'Word Counter — ConvertMorph',
-    description: 'Professional word counter tool. Fast, private, free forever.',
+    title: 'Word Counter - Count Words, Characters & Reading Time Online',
+    description: 'Free online word counter tool. Count words, characters, sentences, paragraphs instantly. Get reading time estimates and readability scores.',
     images: [
       {
         url: absoluteUrl('/og/word-counter.png'),
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Word Counter — ConvertMorph',
-    description: 'Professional word counter tool. Fast, private, free forever.',
+    title: 'Word Counter - Count Words, Characters & Reading Time Online',
+    description: 'Free online word counter tool. Count words, characters, sentences, paragraphs instantly. Get reading time estimates and readability scores.',
     images: [absoluteUrl('/og/word-counter.png')],
   },
 }

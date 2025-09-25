@@ -4,15 +4,15 @@ import JsonLd from '@/components/JsonLd'
 import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Text Compare — ConvertMorph',
-  description: 'Professional text compare tool. Fast, private, free forever.',
-  keywords: ["text compare", "text compare", "online tool", "free tool"],
+  title: 'Text Compare - Compare Documents & Find Differences Online | ConvertMorph',
+  description: 'Compare two texts and find differences instantly with our free text comparison tool. Highlight changes, additions, deletions. Perfect for document review, code comparison, and content editing.',
+  keywords: ["text compare", "document compare", "text diff", "compare documents", "text comparison tool", "diff checker", "document diff", "text difference", "compare text online", "free text compare"],
   alternates: {
     canonical: absoluteUrl('/tools/text-compare'),
   },
   openGraph: {
-    title: 'Text Compare — ConvertMorph',
-    description: 'Professional text compare tool. Fast, private, free forever.',
+    title: 'Text Compare - Compare Documents & Find Differences Online',
+    description: 'Compare two texts and find differences instantly with our free text comparison tool. Highlight changes, additions, deletions. Perfect for document review.',
     images: [
       {
         url: absoluteUrl('/og/text-compare.png'),
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Text Compare — ConvertMorph',
-    description: 'Professional text compare tool. Fast, private, free forever.',
+    title: 'Text Compare - Compare Documents & Find Differences Online',
+    description: 'Compare two texts and find differences instantly with our free text comparison tool. Highlight changes, additions, deletions. Perfect for document review.',
     images: [absoluteUrl('/og/text-compare.png')],
   },
 }

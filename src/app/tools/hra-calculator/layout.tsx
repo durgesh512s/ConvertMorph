@@ -4,15 +4,15 @@ import JsonLd from '@/components/JsonLd'
 import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Hra Calculator — ConvertMorph',
-  description: 'Professional hra calculator tool. Fast, private, free forever.',
-  keywords: ["hra calculator", "hra calculator", "online tool", "free tool"],
+  title: 'HRA Calculator - Calculate House Rent Allowance Tax Exemption | ConvertMorph',
+  description: 'Calculate HRA tax exemption with our free HRA calculator. Determine maximum HRA benefit, compare metro vs non-metro rates, and optimize your tax savings. Updated with latest tax rules.',
+  keywords: ["HRA calculator", "house rent allowance calculator", "HRA exemption calculator", "HRA tax benefit", "rent allowance calculator", "HRA deduction", "metro HRA calculator", "tax exemption calculator", "free HRA calculator", "HRA tax savings"],
   alternates: {
     canonical: absoluteUrl('/tools/hra-calculator'),
   },
   openGraph: {
-    title: 'Hra Calculator — ConvertMorph',
-    description: 'Professional hra calculator tool. Fast, private, free forever.',
+    title: 'HRA Calculator - Calculate House Rent Allowance Tax Exemption',
+    description: 'Calculate HRA tax exemption with our free HRA calculator. Determine maximum HRA benefit, compare metro vs non-metro rates, and optimize your tax savings.',
     images: [
       {
         url: absoluteUrl('/og/hra-calculator.png'),
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hra Calculator — ConvertMorph',
-    description: 'Professional hra calculator tool. Fast, private, free forever.',
+    title: 'HRA Calculator - Calculate House Rent Allowance Tax Exemption',
+    description: 'Calculate HRA tax exemption with our free HRA calculator. Determine maximum HRA benefit, compare metro vs non-metro rates, and optimize your tax savings.',
     images: [absoluteUrl('/og/hra-calculator.png')],
   },
 }

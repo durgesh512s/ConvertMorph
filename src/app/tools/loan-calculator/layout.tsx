@@ -4,15 +4,15 @@ import JsonLd from '@/components/JsonLd'
 import { faqJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Loan Calculator — ConvertMorph',
-  description: 'Professional loan calculator tool. Fast, private, free forever.',
-  keywords: ["loan calculator", "loan calculator", "online tool", "free tool"],
+  title: 'Loan Calculator - Calculate EMI, Interest & Amortization Schedule | ConvertMorph',
+  description: 'Calculate loan EMI, total interest, and payment schedule with our free loan calculator. Compare home loans, personal loans, car loans. Get detailed amortization table and payment breakdown.',
+  keywords: ["loan calculator", "EMI calculator", "home loan calculator", "personal loan calculator", "car loan calculator", "loan EMI", "interest calculator", "amortization calculator", "loan payment calculator", "free loan calculator"],
   alternates: {
     canonical: absoluteUrl('/tools/loan-calculator'),
   },
   openGraph: {
-    title: 'Loan Calculator — ConvertMorph',
-    description: 'Professional loan calculator tool. Fast, private, free forever.',
+    title: 'Loan Calculator - Calculate EMI, Interest & Amortization Schedule',
+    description: 'Calculate loan EMI, total interest, and payment schedule with our free loan calculator. Compare home loans, personal loans, car loans.',
     images: [
       {
         url: absoluteUrl('/og/loan-calculator.png'),
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Loan Calculator — ConvertMorph',
-    description: 'Professional loan calculator tool. Fast, private, free forever.',
+    title: 'Loan Calculator - Calculate EMI, Interest & Amortization Schedule',
+    description: 'Calculate loan EMI, total interest, and payment schedule with our free loan calculator. Compare home loans, personal loans, car loans.',
     images: [absoluteUrl('/og/loan-calculator.png')],
   },
 }
