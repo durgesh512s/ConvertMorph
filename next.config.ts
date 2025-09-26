@@ -7,14 +7,14 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 // Generate build-time cache busting hash that works in both local and production
 const generateProductionCacheBustId = () => {
   // In production, use git commit SHA or generate deterministic hash
-  const gitSha = process.env.VERCEL_GIT_COMMIT_SHA || 
-                 process.env.GITHUB_SHA || 
-                 process.env.CI_COMMIT_SHA;
-  
+  const gitSha = process.env.VERCEL_GIT_COMMIT_SHA ||
+    process.env.GITHUB_SHA ||
+    process.env.CI_COMMIT_SHA;
+
   if (gitSha) {
     return gitSha.substring(0, 8);
   }
-  
+
   // For production builds without git info, use timestamp
   return Date.now().toString().substring(-8);
 };
@@ -50,13 +50,13 @@ const nextConfig: NextConfig = {
   generateBuildId: async () => {
     // Use the same cache bust ID as favicons for consistency
     const cacheBustId = process.env.NEXT_PUBLIC_CACHE_BUST_ID;
-    
+
     if (cacheBustId) {
       console.log('Next.js Build ID (RSC cache):', cacheBustId);
       console.log('Using consistent cache bust ID for both RSC and static assets');
       return cacheBustId;
     }
-    
+
     // Fallback to git hash or timestamp
     const shortBuildId = buildId.slice(0, 8);
     console.log('Next.js Build ID (RSC cache):', shortBuildId);
@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
       GITHUB_SHA: process.env.GITHUB_SHA?.slice(0, 8),
       NEXT_PUBLIC_CACHE_BUST_ID: process.env.NEXT_PUBLIC_CACHE_BUST_ID
     });
-    
+
     return shortBuildId;
   },
 
@@ -101,57 +101,57 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-  // Images and other assets in public folder
-  {
-    source: '/:path*\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot)',
-    headers: [
+      // Images and other assets in public folder
       {
-        key: 'Cache-Control',
-        value: 'public, max-age=31536000, immutable',
+        source: '/:path*\\.(jpg|jpeg|png|gif|ico|svg|webp|avif|woff|woff2|ttf|eot)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
       },
-    ],
-  },
-  // OG images specific headers
-  {
-    source: '/og/:path*',
-    headers: [
+      // OG images specific headers
       {
-        key: 'Cache-Control',
-        value: 'public, max-age=31536000, immutable',
+        source: '/og/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Content-Type',
+            value: 'image/png',
+          },
+        ],
       },
+      // Apple App Site Association files
       {
-        key: 'Content-Type',
-        value: 'image/png',
-      },
-    ],
-  },
-  // Apple App Site Association files
-  {
-    source: '/apple-app-site-association',
-    headers: [
-      {
-        key: 'Content-Type',
-        value: 'application/json',
-      },
-      {
-        key: 'Cache-Control',
-        value: 'public, max-age=3600',
-      },
-    ],
-  },
-  {
-    source: '/.well-known/apple-app-site-association',
-    headers: [
-      {
-        key: 'Content-Type',
-        value: 'application/json',
+        source: '/apple-app-site-association',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/json',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600',
+          },
+        ],
       },
       {
-        key: 'Cache-Control',
-        value: 'public, max-age=3600',
+        source: '/.well-known/apple-app-site-association',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/json',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600',
+          },
+        ],
       },
-    ],
-  },
       // API routes - no cache
       {
         source: '/api/:path*',
@@ -211,13 +211,13 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://vercel.live https://va.vercel-scripts.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://www.googletagmanager.com https://www.google-analytics.com https://ep2.adtrafficquality.google",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://vercel.live https://va.vercel-scripts.com https://vitals.vercel-insights.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://ep2.adtrafficquality.google",
               "worker-src 'self' blob:",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: blob: https://vercel.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://ep1.adtrafficquality.google",
-              "connect-src 'self' https://vercel.live https://va.vercel-scripts.com https://vitals.vercel-insights.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://ep1.adtrafficquality.google",
-              "frame-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google https://www.google.com",
+              "img-src 'self' data: blob: https://vercel.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://www.googletagmanager.com https://www.google.com https://ep1.adtrafficquality.google",
+              "connect-src 'self' https://vercel.live https://va.vercel-scripts.com https://vitals.vercel-insights.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://www.googletagmanager.com https://www.google.com https://ep1.adtrafficquality.google",
+              "frame-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google https://www.googletagmanager.com https://www.google.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
@@ -285,8 +285,8 @@ const nextConfig: NextConfig = {
   experimental: {
     // Package import optimization for faster builds and smaller bundles
     optimizePackageImports: [
-      'lucide-react', 
-      '@radix-ui/react-slot', 
+      'lucide-react',
+      '@radix-ui/react-slot',
       'clsx',
       'tailwind-merge',
       'class-variance-authority',
@@ -339,7 +339,7 @@ const nextConfig: NextConfig = {
     config.optimization.sideEffects = false;
     config.optimization.providedExports = true;
     config.optimization.innerGraph = true;
-    
+
     // Mark specific packages as side-effect free for better tree shaking
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -349,7 +349,7 @@ const nextConfig: NextConfig = {
 
     // Configure module resolution for better tree shaking
     config.resolve.mainFields = ['es2015', 'module', 'main'];
-    
+
     // Let Next.js handle CSS optimization natively
     if (!dev && !isServer) {
       // Enhanced dead code elimination - rely on Next.js built-in optimization
@@ -366,7 +366,7 @@ const nextConfig: NextConfig = {
         cacheGroups: {
           default: false,
           vendors: false,
-          
+
           // Framework chunk
           framework: {
             chunks: 'all',
@@ -376,7 +376,7 @@ const nextConfig: NextConfig = {
             enforce: true,
             reuseExistingChunk: true,
           },
-          
+
           // Vendor libraries
           vendor: {
             name: 'vendor',
@@ -386,7 +386,7 @@ const nextConfig: NextConfig = {
             minChunks: 1,
             reuseExistingChunk: true,
           },
-          
+
           // Common app code
           common: {
             name: 'common',
@@ -408,7 +408,7 @@ const nextConfig: NextConfig = {
 
   // Output configuration for better performance
   output: 'standalone',
-  
+
   // Compiler optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
