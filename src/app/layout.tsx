@@ -13,6 +13,7 @@ import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
 import HydrationErrorSuppressor from '@/components/HydrationErrorSuppressor';
+import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components/GoogleTagManager';
 import { absoluteUrl } from '@/lib/url';
 import { getCacheBustId, addCacheBust } from '@/lib/cache-bust';
 
@@ -288,6 +289,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         
+        {/* Google Tag Manager */}
+        <GoogleTagManager />
+        
         {/* Google AdSense Script - Direct HTML script tag to avoid Next.js preload conversion */}
         <script 
           async 
@@ -320,6 +324,9 @@ export default function RootLayout({
         
       </head>
       <body className={`min-h-screen bg-background font-sans antialiased ${poppins.variable}`}>
+        {/* Google Tag Manager (noscript) */}
+        <GoogleTagManagerNoScript />
+        
         <HydrationErrorSuppressor>
           <Suspense fallback={null}>
             <ProgressBar />
