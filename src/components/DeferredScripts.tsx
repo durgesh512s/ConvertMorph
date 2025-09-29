@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { VercelAnalytics } from './VercelAnalytics';
-import { GoogleAnalytics } from './GoogleAnalytics';
+// GoogleAnalytics removed - using GTM-only setup
 import { PerformanceMonitor } from './PerformanceMonitor';
 
 interface DeferredScriptsProps {
@@ -61,7 +61,6 @@ export function DeferredScripts({ children }: DeferredScriptsProps) {
       {children}
       {shouldLoadAnalytics && (
         <>
-          <GoogleAnalytics />
           <VercelAnalytics />
         </>
       )}

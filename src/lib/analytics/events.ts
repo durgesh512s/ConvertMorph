@@ -1,4 +1,4 @@
-import { gtag } from '@/components/GoogleAnalytics';
+import { gtm } from '@/components/GoogleTagManager';
 
 // Analytics event tracking - vendor agnostic, no PII collection
 export interface AnalyticsEvent {
@@ -61,8 +61,11 @@ export function trackEvent(event: string, properties: Record<string, string | nu
     timestamp: Date.now(),
   };
 
-  // Send to Google Analytics
-  gtag.event(event, sanitizedProperties);
+  // Send to Google Tag Manager
+  gtm.push({
+    event,
+    ...sanitizedProperties,
+  });
 
   eventQueue.push(analyticsEvent);
 
@@ -85,8 +88,12 @@ export function trackFileEvent(
     ...properties,
   };
   
-  // Send to Google Analytics with specific file event tracking
-  gtag.fileEvent(event, toolName, properties);
+  // Send to Google Tag Manager with specific file event tracking
+  gtm.push({
+    event,
+    tool_name: toolName,
+    ...properties,
+  });
   
   trackEvent(event, eventProperties);
 }
@@ -98,9 +105,12 @@ export function trackInteraction(
   event: UserInteractionEvent['event'],
   properties: Partial<UserInteractionEvent['properties']> = {}
 ): void {
-  // Send to Google Analytics with specific interaction tracking
+  // Send to Google Tag Manager with specific interaction tracking
   if (event === 'tool_select' || event === 'pwa_install' || event === 'keyboard_shortcut') {
-    gtag.interaction(event, properties);
+    gtm.push({
+      event,
+      ...properties,
+    });
   }
   
   trackEvent(event, properties);
@@ -110,8 +120,11 @@ export function trackInteraction(
  * Track page views automatically
  */
 export function trackPageView(path: string): void {
-  // Send to Google Analytics
-  gtag.pageView(path);
+  // Send to Google Tag Manager
+  gtm.push({
+    event: 'page_view',
+    page_path: path,
+  });
   
   trackInteraction('page_view', { page_path: path });
 }

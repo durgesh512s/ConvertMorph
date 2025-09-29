@@ -4,7 +4,11 @@ import Script from 'next/script';
 
 const GTM_ID = 'GTM-5XPD58C8';
 
-export function GoogleTagManager() {
+interface GoogleTagManagerProps {
+  gtmId?: string;
+}
+
+export function GoogleTagManager({ gtmId = GTM_ID }: GoogleTagManagerProps = {}) {
   // Don't render in development unless explicitly enabled
   if (process.env.NODE_ENV === 'development' && !process.env.NEXT_PUBLIC_GTM_DEV) {
     return null;
@@ -22,7 +26,7 @@ export function GoogleTagManager() {
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','${GTM_ID}');
+            })(window,document,'script','dataLayer','${gtmId}');
           `,
         }}
       />
@@ -30,7 +34,7 @@ export function GoogleTagManager() {
   );
 }
 
-export function GoogleTagManagerNoScript() {
+export function GoogleTagManagerNoScript({ gtmId = GTM_ID }: GoogleTagManagerProps = {}) {
   // Don't render in development unless explicitly enabled
   if (process.env.NODE_ENV === 'development' && !process.env.NEXT_PUBLIC_GTM_DEV) {
     return null;
@@ -39,7 +43,7 @@ export function GoogleTagManagerNoScript() {
   return (
     <noscript>
       <iframe
-        src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+        src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
         height="0"
         width="0"
         style={{ display: 'none', visibility: 'hidden' }}

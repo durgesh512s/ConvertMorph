@@ -282,7 +282,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         
         {/* Google Tag Manager */}
-        <GoogleTagManager />
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || 'GTM-5XPD58C8'} />
         
         {/* Google AdSense Script - Direct HTML script tag to avoid Next.js preload conversion */}
         <script 
@@ -317,7 +317,7 @@ export default function RootLayout({
       </head>
       <body className={`min-h-screen bg-background font-sans antialiased ${poppins.variable}`}>
         {/* Google Tag Manager (noscript) */}
-        <GoogleTagManagerNoScript />
+        <GoogleTagManagerNoScript gtmId={process.env.NEXT_PUBLIC_GTM_ID || 'GTM-5XPD58C8'} />
         
         <HydrationErrorSuppressor>
           <Suspense fallback={null}>
