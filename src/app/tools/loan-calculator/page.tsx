@@ -11,6 +11,7 @@ import { Calculator, CreditCard, Percent, Calendar, DollarSign, PieChart, BarCha
 import { RelatedArticles } from '@/components/RelatedArticles';
 import ToolsNavigation from '@/components/ToolsNavigation';
 import { toast } from 'sonner';
+import { gtm } from '@/components/GoogleTagManager';
 
 interface LoanResult {
   loanAmount: number;
@@ -100,6 +101,22 @@ export default function LoanCalculatorPage() {
       }
 
       setPaymentSchedule(schedule);
+      
+      // Track loan calculation with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'loan-calculator',
+        action: 'calculate',
+        loan_amount: P,
+        interest_rate: annualRate,
+        loan_tenure: tenure,
+        tenure_type: tenureType,
+        loan_type: loanType,
+        monthly_emi: monthlyEMI,
+        total_interest: totalInterest,
+        total_amount: totalAmount
+      });
+      
       toast.success('Loan calculation completed successfully!');
     } catch (error) {
       toast.error('Error calculating loan. Please check your inputs.');

@@ -5,7 +5,7 @@ import { FileText, Download, Image, Zap, Settings, AlertCircle } from 'lucide-re
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 import { generateFileId, generateHistoryTimestamp } from '@/lib/id-utils'
 import { PdfToImagesOptions } from '@/lib/validation/schemas'
 
@@ -68,12 +68,15 @@ export default function PDFToImagesClient() {
     setConvertedImages([])
     setError(null)
     
-    // Track file uploads
+    // Track file uploads with GTM
     files.forEach(file => {
-      track('file_upload', {
-        tool: 'pdf2img',
-        sizeMb: Math.round(file.size / (1024 * 1024) * 100) / 100,
-        pages: 0 // Will be determined during processing
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'pdf-to-images',
+        action: 'upload',
+        file_type: 'pdf',
+        file_size_mb: Math.round(file.size / (1024 * 1024) * 100) / 100,
+        file_count: 1
       })
     })
   }, [])
@@ -94,17 +97,7 @@ export default function PDFToImagesClient() {
     setProcessingProgress(0)
     setProcessingMessage('Initializing...')
     
-    // Track job start
-    track('job_start', {
-      jobId,
-      tool: 'pdf2img',
-      fileCount: uploadedFiles.length,
-      extractMode,
-      imageFormat,
-      resolution,
-      imageQuality: imageFormat === 'jpg' ? imageQuality : undefined,
-      pageRange: extractMode === 'range' ? pageRange : undefined
-    })
+    // Job start tracking removed - we only track upload and success events
     
     try {
       const file = uploadedFiles[0]?.file
@@ -148,18 +141,15 @@ export default function PDFToImagesClient() {
       const durationMs = generateHistoryTimestamp() - startTime
       const totalResultSize = convertedResults.reduce((sum, img) => sum + img.blob.size, 0)
       
-      // Track successful conversion
-      track('job_success', {
-        jobId,
-        tool: 'pdf2img',
-        durationMs,
-        resultSizeMb: Math.round(totalResultSize / (1024 * 1024) * 100) / 100,
-        fileCount: uploadedFiles.length,
-        extractedImages: convertedResults.length,
-        totalPages: result.totalPages,
-        extractMode,
-        imageFormat,
-        resolution
+      // Track successful conversion with GTM
+      gtm.push({
+        event: 'file_convert',
+        tool_name: 'pdf-to-images',
+        file_type: 'pdf',
+        conversion_value: 1,
+        extracted_images: convertedResults.length,
+        image_format: imageFormat,
+        processing_method: 'client-side'
       })
       
       setConvertedImages(convertedResults)
@@ -171,13 +161,7 @@ export default function PDFToImagesClient() {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
       setError(errorMessage)
       
-      // Track error
-      track('job_error', {
-        jobId,
-        tool: 'pdf2img',
-        code: 'conversion_failed',
-        error: errorMessage
-      })
+      // Error tracking removed - we only track successful conversions
     } finally {
       setIsProcessing(false)
     }
@@ -188,12 +172,7 @@ export default function PDFToImagesClient() {
       const { PDFToImagesProcessor } = await import('@/lib/pdf/pdfToImagesProcessor')
       await PDFToImagesProcessor.downloadImage(image.blob, image.name)
       
-      track('download', {
-        tool: 'pdf2img',
-        type: 'single_image',
-        format: imageFormat,
-        pageNumber: image.pageNumber
-      })
+      // Download tracking removed - we only track conversions
     } catch (error) {
       console.error('Error downloading image:', error)
       setError('Failed to download image')
@@ -217,12 +196,7 @@ export default function PDFToImagesClient() {
       const originalFileName = uploadedFiles[0]?.name || 'document.pdf'
       await PDFToImagesProcessor.downloadAllAsZip(images, originalFileName, imageFormat)
       
-      track('download', {
-        tool: 'pdf2img',
-        type: 'zip_archive',
-        format: imageFormat,
-        imageCount: convertedImages.length
-      })
+      // Download tracking removed - we only track conversions
     } catch (error) {
       console.error('Error downloading ZIP:', error)
       setError('Failed to create ZIP file')

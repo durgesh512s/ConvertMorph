@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { Progress } from '@/components/Progress'
-import { useAnalytics } from '@/hooks/useAnalytics'
+import { gtm } from '@/components/GoogleTagManager'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { generateFileId } from '@/lib/id-utils'
@@ -70,7 +70,7 @@ export function PDFPageNumClient() {
     margin: 20
   })
   
-  const { track } = useAnalytics()
+  // GTM tracking will be used instead of useAnalytics
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Handle file upload
@@ -92,10 +92,16 @@ export function PDFPageNumClient() {
     }
     setUploadedFiles([uploadedFile])
     
-    track('pdf_pagenum_uploaded', {
-      file_size: pdfFile.size
+    // Track file upload with GTM
+    gtm.push({
+      event: 'tool_usage',
+      tool_name: 'pdf-pagenum',
+      action: 'upload',
+      file_type: 'pdf',
+      file_size_mb: Math.round(pdfFile.size / (1024 * 1024) * 100) / 100,
+      file_count: 1
     })
-  }, [track])
+  }, [])
 
   // Handle file remove
   const handleFileRemove = useCallback((fileId: string) => {
@@ -213,17 +219,17 @@ export function PDFPageNumClient() {
     setProgress(0)
     setError(null)
     
-    // Track job start
-    track('job_start', {
-      jobId,
-      tool: 'pagenum',
-      fileCount: 1,
+    // Track processing start with GTM
+    gtm.push({
+      event: 'tool_usage',
+      tool_name: 'pdf-pagenum',
+      action: 'process_start',
       position: pageNumSettings.position,
       alignment: pageNumSettings.alignment,
       format: pageNumSettings.format,
-      startNumber: pageNumSettings.startNumber,
-      fontSize: pageNumSettings.fontSize,
-      originalSizeMb
+      start_number: pageNumSettings.startNumber,
+      font_size: pageNumSettings.fontSize,
+      file_size_mb: originalSizeMb
     })
     
     try {
@@ -299,18 +305,19 @@ export function PDFPageNumClient() {
       
       toast.success('Page numbers added and PDF downloaded successfully!')
       
-      // Track successful completion
-      track('job_success', {
-        jobId,
-        tool: 'pagenum',
-        durationMs,
-        pageCount: totalPages,
+      // Track successful completion with GTM
+      gtm.push({
+        event: 'file_convert',
+        tool_name: 'pdf-pagenum',
+        file_type: 'pdf',
+        conversion_value: 1,
+        file_count: 1,
+        output_format: 'pdf',
+        processing_method: 'client-side',
+        page_count: totalPages,
         position: pageNumSettings.position,
         alignment: pageNumSettings.alignment,
-        format: pageNumSettings.format,
-        startNumber: pageNumSettings.startNumber,
-        originalSizeMb,
-        resultSizeMb
+        format: pageNumSettings.format
       })
       
     } catch (error) {
@@ -321,20 +328,12 @@ export function PDFPageNumClient() {
       setError(errorMessage)
       toast.error('Failed to add page numbers to PDF')
       
-      // Track error
-      track('job_error', {
-        jobId,
-        tool: 'pagenum',
-        error: errorMessage,
-        durationMs,
-        position: pageNumSettings.position,
-        format: pageNumSettings.format
-      })
+      // Note: We don't track errors with GTM, only successful conversions
     } finally {
       setIsProcessing(false)
       setProgress(0)
     }
-  }, [file, pageNumSettings, track, formatPageNumber])
+  }, [file, pageNumSettings, formatPageNumber])
 
   // Reset function
   const handleReset = useCallback(() => {

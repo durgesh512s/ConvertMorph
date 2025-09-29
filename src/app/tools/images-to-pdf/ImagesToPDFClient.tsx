@@ -7,7 +7,7 @@ import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 import { generateFileId, generateHistoryTimestamp } from '@/lib/id-utils'
 
 interface ConvertedFile {
@@ -36,12 +36,15 @@ export default function ImagesToPDFClient() {
     setUploadedFiles(prev => [...prev, ...newFiles])
     setConvertedFiles([])
     
-    // Track file uploads
+    // Track file uploads with GTM
     files.forEach(file => {
-      track('file_upload', {
-        tool: 'img2pdf',
-        sizeMb: Math.round(file.size / (1024 * 1024) * 100) / 100,
-        pages: 0
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'images-to-pdf',
+        action: 'upload',
+        file_type: file.type.split('/')[1] || 'image',
+        file_size_mb: Math.round(file.size / (1024 * 1024) * 100) / 100,
+        file_count: 1
       })
     })
   }
@@ -57,15 +60,7 @@ export default function ImagesToPDFClient() {
     const startTime = generateHistoryTimestamp()
     setIsProcessing(true)
     
-    // Track job start
-    track('job_start', {
-      jobId,
-      tool: 'img2pdf',
-      fileCount: uploadedFiles.length,
-      conversionMode,
-      pageSize,
-      orientation
-    })
+    // Job start tracking removed - we only track upload and success events
     
     try {
       // Import pdf-lib dynamically to avoid SSR issues
@@ -233,28 +228,22 @@ export default function ImagesToPDFClient() {
         return sum + (totalOriginalSize / uploadedFiles.length)
       }, 0)
       
-      // Track successful conversion
-      track('job_success', {
-        jobId,
-        tool: 'img2pdf',
-        durationMs,
-        resultSizeMb: Math.round(totalResultSize / (1024 * 1024) * 100) / 100,
-        fileCount: uploadedFiles.length,
-        conversionMode,
-        pageSize,
-        orientation
+      // Track successful conversion with GTM
+      gtm.push({
+        event: 'file_convert',
+        tool_name: 'images-to-pdf',
+        file_type: 'image',
+        conversion_value: 1,
+        file_count: uploadedFiles.length,
+        output_format: 'pdf',
+        processing_method: 'client-side'
       })
       
       setConvertedFiles(results)
     } catch (error) {
       console.error('Error converting images to PDF:', error)
       
-      // Track error
-      track('job_error', {
-        jobId,
-        tool: 'img2pdf',
-        code: 'conversion_failed'
-      })
+      // Error tracking removed - we only track successful conversions
       
       // Fallback to simulation if pdf-lib fails
       let results: ConvertedFile[] = []

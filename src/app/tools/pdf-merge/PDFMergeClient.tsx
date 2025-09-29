@@ -8,7 +8,7 @@ import { GitMerge, Download, AlertCircle, CheckCircle, FileText, Zap, Settings }
 import { toast } from 'sonner';
 import { newJobId } from '@/lib/jobs/id';
 import { names } from '@/lib/names';
-import { track } from '@/lib/analytics/client';
+import { gtm } from '@/components/GoogleTagManager';
 import { generateFileId } from '@/lib/id-utils';
 
 interface ProcessingResult {
@@ -44,12 +44,15 @@ export default function PDFMergeClient() {
 
     setUploadedFiles(prev => [...prev, ...newFiles]);
     
-    // Track file uploads
+    // Track file uploads with GTM
     pdfFiles.forEach(file => {
-      track('file_upload', {
-        tool: 'merge',
-        sizeMb: Math.round(file.size / (1024 * 1024) * 100) / 100,
-        pages: 0 // PDF page count would need to be extracted
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'pdf-merge',
+        action: 'upload',
+        file_type: 'pdf',
+        file_size_mb: Math.round(file.size / (1024 * 1024) * 100) / 100,
+        file_count: pdfFiles.length
       })
     })
   };
@@ -72,12 +75,7 @@ export default function PDFMergeClient() {
     setProcessingProgress(0);
     setResult(null);
 
-    // Track job start
-    track('job_start', {
-      tool: 'merge',
-      jobId,
-      fileCount: uploadedFiles.length
-    });
+    // Job start tracking removed - we only track upload and success events
 
     try {
       // Import pdf-lib dynamically to avoid SSR issues
@@ -132,26 +130,22 @@ export default function PDFMergeClient() {
         newSize: pdfBytes.length,
       });
 
-      // Track successful completion
-      track('job_success', {
-        tool: 'merge',
-        jobId,
-        fileCount: uploadedFiles.length,
-        totalPages,
-        totalOriginalSize: totalSize,
-        finalSize: pdfBytes.length
+      // Track successful completion with GTM
+      gtm.push({
+        event: 'file_convert',
+        tool_name: 'pdf-merge',
+        file_type: 'pdf',
+        conversion_value: 1,
+        file_count: uploadedFiles.length,
+        total_pages: totalPages,
+        processing_method: 'client-side'
       });
 
       toast.success('PDFs merged successfully!');
     } catch (error) {
       console.error('Error merging PDFs:', error);
       
-      // Track error
-      track('job_error', {
-        tool: 'merge',
-        jobId,
-        error: error instanceof Error ? error.message : 'Unknown error'
-      });
+      // Error tracking removed - we only track successful conversions
 
       setResult({
         success: false,

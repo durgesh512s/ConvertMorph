@@ -6,7 +6,7 @@ import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { names } from '@/lib/names'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 import { generateFileId } from '@/lib/id-utils'
 
 interface ProcessedFile {
@@ -32,10 +32,14 @@ export default function ImageResizeClient() {
 
   const handleFilesAdded = async (files: File[]) => {
     const mapped = files.map(file => {
-      track('file_upload', {
-        tool: 'image-resize',
-        sizeMb: Math.round(file.size / (1024*1024) * 100) / 100,
-        format: file.type
+      // Track file upload with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'image-resize',
+        action: 'upload',
+        file_type: file.type.split('/')[1] || 'image',
+        file_size_mb: Math.round(file.size / (1024 * 1024) * 100) / 100,
+        file_count: 1
       })
       return { 
         id: generateFileId(), 
@@ -141,6 +145,18 @@ export default function ImageResizeClient() {
 
       if (results.length > 0) {
         setProcessedFiles(results)
+        
+        // Track successful resize with GTM
+        gtm.push({
+          event: 'file_convert',
+          tool_name: 'image-resize',
+          file_type: 'image',
+          conversion_value: 1,
+          file_count: results.length,
+          output_format: outputFormat,
+          processing_method: 'client-side'
+        })
+        
         toast.success(`Resized ${results.length} image${results.length > 1 ? 's' : ''} successfully!`)
       }
     } catch (error) {

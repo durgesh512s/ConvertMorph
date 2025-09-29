@@ -11,6 +11,7 @@ import { Calculator, TrendingUp, Target, PiggyBank, BarChart3, Calendar, DollarS
 import { RelatedArticles } from '@/components/RelatedArticles';
 import ToolsNavigation from '@/components/ToolsNavigation';
 import { toast } from 'sonner';
+import { gtm } from '@/components/GoogleTagManager';
 
 interface SIPResult {
   monthlyInvestment: number;
@@ -61,6 +62,21 @@ export default function SIPCalculatorPage() {
       };
 
       setResult(sipResult);
+      
+      // Track SIP calculation with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'sip-calculator',
+        action: 'calculate',
+        monthly_investment: P,
+        annual_return: parseFloat(annualReturn),
+        investment_period: parseFloat(timePeriod),
+        total_investment: totalInvestment,
+        maturity_amount: maturityAmount,
+        wealth_gain: wealthGain,
+        return_percentage: ((wealthGain / totalInvestment) * 100).toFixed(1)
+      });
+      
       toast.success('SIP calculation completed successfully!');
     } catch (error) {
       toast.error('Error calculating SIP. Please check your inputs.');

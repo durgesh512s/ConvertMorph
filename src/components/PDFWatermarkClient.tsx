@@ -16,7 +16,7 @@ import {
 } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { Progress } from '@/components/Progress'
-import { useAnalytics } from '@/hooks/useAnalytics'
+import { gtm } from '@/components/GoogleTagManager'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { generateFileId } from '@/lib/id-utils'
@@ -65,7 +65,7 @@ export function PDFWatermarkClient() {
     rotation: 45
   })
   
-  const { track } = useAnalytics()
+  // GTM tracking will be used instead of useAnalytics
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Handle file upload
@@ -87,10 +87,16 @@ export function PDFWatermarkClient() {
     }
     setUploadedFiles([uploadedFile])
     
-    track('pdf_watermark_uploaded', {
-      file_size: pdfFile.size
+    // Track file upload with GTM
+    gtm.push({
+      event: 'tool_usage',
+      tool_name: 'pdf-watermark',
+      action: 'upload',
+      file_type: 'pdf',
+      file_size_mb: Math.round(pdfFile.size / (1024 * 1024) * 100) / 100,
+      file_count: 1
     })
-  }, [track])
+  }, [])
 
   // Handle file remove
   const handleFileRemove = useCallback((fileId: string) => {
@@ -149,17 +155,17 @@ export function PDFWatermarkClient() {
     setProgress(0)
     setError(null)
     
-    // Track job start
-    track('job_start', {
-      jobId,
-      tool: 'watermark',
-      fileCount: 1,
-      watermarkText: watermarkSettings.text,
+    // Track processing start with GTM
+    gtm.push({
+      event: 'tool_usage',
+      tool_name: 'pdf-watermark',
+      action: 'process_start',
+      watermark_text: watermarkSettings.text,
       position: watermarkSettings.position,
       opacity: watermarkSettings.opacity,
-      fontSize: watermarkSettings.fontSize,
+      font_size: watermarkSettings.fontSize,
       rotation: watermarkSettings.rotation,
-      originalSizeMb
+      file_size_mb: originalSizeMb
     })
     
     try {
@@ -258,17 +264,19 @@ export function PDFWatermarkClient() {
       
       toast.success('PDF watermarked and downloaded successfully!')
       
-      // Track successful completion
-      track('job_success', {
-        jobId,
-        tool: 'watermark',
-        durationMs,
-        pageCount: totalPages,
-        watermarkText: watermarkSettings.text,
+      // Track successful completion with GTM
+      gtm.push({
+        event: 'file_convert',
+        tool_name: 'pdf-watermark',
+        file_type: 'pdf',
+        conversion_value: 1,
+        file_count: 1,
+        output_format: 'pdf',
+        processing_method: 'client-side',
+        page_count: totalPages,
+        watermark_text: watermarkSettings.text,
         position: watermarkSettings.position,
-        opacity: watermarkSettings.opacity,
-        originalSizeMb,
-        resultSizeMb
+        opacity: watermarkSettings.opacity
       })
       
     } catch (error) {
@@ -279,19 +287,12 @@ export function PDFWatermarkClient() {
       setError(errorMessage)
       toast.error('Failed to add watermark to PDF')
       
-      // Track error
-      track('job_error', {
-        jobId,
-        tool: 'watermark',
-        error: errorMessage,
-        durationMs,
-        watermarkText: watermarkSettings.text
-      })
+      // Note: We don't track errors with GTM, only successful conversions
     } finally {
       setIsProcessing(false)
       setProgress(0)
     }
-  }, [file, watermarkSettings, track])
+  }, [file, watermarkSettings])
 
   // Reset function
   const handleReset = useCallback(() => {

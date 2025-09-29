@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
 import { toast } from 'sonner'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 import { compareTexts, getSimilarityLevel, exportComparison, type ComparisonResult, type ComparisonOptions } from '@/lib/textComparator'
 
 export default function TextComparePage() {
@@ -31,12 +31,15 @@ export default function TextComparePage() {
           const result = compareTexts(text1, text2, options)
           setComparison(result)
           
-          track('text_comparison', {
-            tool: 'text-compare',
-            text1Length: text1.length,
-            text2Length: text2.length,
+          // Track text comparison with GTM
+          gtm.push({
+            event: 'tool_usage',
+            tool_name: 'text-compare',
+            action: 'compare',
+            text1_length: text1.length,
+            text2_length: text2.length,
             similarity: result.statistics.similarity,
-            compareBy: options.compareBy
+            compare_by: options.compareBy
           })
         } catch (error) {
           console.error('Comparison error:', error)
@@ -83,9 +86,12 @@ export default function TextComparePage() {
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
       
-      track('export_comparison', {
-        tool: 'text-compare',
-        format,
+      // Track export with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'text-compare',
+        action: 'export',
+        export_format: format,
         similarity: comparison.statistics.similarity
       })
       

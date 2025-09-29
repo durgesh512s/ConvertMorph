@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { Progress } from '@/components/Progress'
-import { useAnalytics } from '@/hooks/useAnalytics'
+import { gtm } from '@/components/GoogleTagManager'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { generateFileId, generateSignatureId, generateTextId } from '@/lib/id-utils'
@@ -61,7 +61,7 @@ export function PDFSignClient() {
   const [resizeHandle, setResizeHandle] = useState<string | null>(null)
   const [initialSize, setInitialSize] = useState({ width: 0, height: 0 })
   
-  const { track } = useAnalytics()
+  // GTM tracking will be used instead of useAnalytics
   const fileInputRef = useRef<HTMLInputElement>(null)
   const signatureCanvasRef = useRef<HTMLCanvasElement>(null)
   const pdfContainerRef = useRef<HTMLDivElement>(null)
@@ -89,10 +89,16 @@ export function PDFSignClient() {
     // Load PDF pages
     await loadPDFPages(pdfFile)
     
-    track('pdf_sign_uploaded', {
-      file_size: pdfFile.size
+    // Track file upload with GTM
+    gtm.push({
+      event: 'tool_usage',
+      tool_name: 'pdf-sign',
+      action: 'upload',
+      file_type: 'pdf',
+      file_size_mb: Math.round(pdfFile.size / (1024 * 1024) * 100) / 100,
+      file_count: 1
     })
-  }, [track])
+  }, [])
 
   // Load PDF pages for preview
   const loadPDFPages = async (file: File) => {
@@ -855,15 +861,15 @@ export function PDFSignClient() {
     const textCount = elements.filter(el => el.type === 'text').length
     const originalSizeMb = Number((file.size / (1024 * 1024)).toFixed(2))
     
-    // Track job start
-    track('job_start', {
-      jobId,
-      tool: 'sign',
-      fileCount: 1,
-      elementCount,
-      signatureCount,
-      textCount,
-      originalSizeMb
+    // Track processing start with GTM
+    gtm.push({
+      event: 'tool_usage',
+      tool_name: 'pdf-sign',
+      action: 'process_start',
+      element_count: elementCount,
+      signature_count: signatureCount,
+      text_count: textCount,
+      file_size_mb: originalSizeMb
     })
     
     try {
@@ -972,17 +978,19 @@ export function PDFSignClient() {
       
       toast.success('PDF signed and downloaded successfully!')
       
-      // Track job success
-      track('job_success', {
-        jobId,
-        tool: 'sign',
-        durationMs,
-        pageCount,
-        elementCount,
-        signatureCount,
-        textCount,
-        originalSizeMb,
-        resultSizeMb
+      // Track successful completion with GTM
+      gtm.push({
+        event: 'file_convert',
+        tool_name: 'pdf-sign',
+        file_type: 'pdf',
+        conversion_value: 1,
+        file_count: 1,
+        output_format: 'pdf',
+        processing_method: 'client-side',
+        page_count: pageCount,
+        element_count: elementCount,
+        signature_count: signatureCount,
+        text_count: textCount
       })
       
     } catch (error) {
@@ -993,22 +1001,12 @@ export function PDFSignClient() {
       
       const durationMs = Date.now() - startTime
       
-      // Track job error
-      track('job_error', {
-        jobId,
-        tool: 'sign',
-        durationMs,
-        error: errorMessage,
-        elementCount,
-        signatureCount,
-        textCount,
-        originalSizeMb
-      })
+      // Note: We don't track errors with GTM, only successful conversions
     } finally {
       setIsProcessing(false)
       setProgress(0)
     }
-  }, [file, elements, track])
+  }, [file, elements])
 
   // Reset function
   const handleReset = useCallback(() => {

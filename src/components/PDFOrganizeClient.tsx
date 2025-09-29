@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { Progress } from '@/components/Progress'
-import { useAnalytics } from '@/hooks/useAnalytics'
+import { gtm } from '@/components/GoogleTagManager'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
 import { generateFileId, generateHistoryTimestamp } from '@/lib/id-utils'
@@ -183,7 +183,7 @@ export function PDFOrganizeClient() {
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false)
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   
-  const { track } = useAnalytics()
+  // GTM tracking will be used instead of useAnalytics
   
   // Local processing state (replacing worker system for now)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -286,9 +286,15 @@ export function PDFOrganizeClient() {
       }])
       setHistoryIndex(0)
       
-      track('pdf_organize_loaded', {
-        page_count: numPages,
-        file_size: pdfFile.size
+      // Track file upload with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'pdf-organize',
+        action: 'upload',
+        file_type: 'pdf',
+        file_size_mb: Math.round(pdfFile.size / (1024 * 1024) * 100) / 100,
+        file_count: 1,
+        page_count: numPages
       })
       
     } catch (error) {
@@ -297,7 +303,7 @@ export function PDFOrganizeClient() {
     } finally {
       setIsLoadingPages(false)
     }
-  }, [track])
+  }, [])
 
   // Handle file upload
   const handleFileUpload = useCallback((files: File[]) => {
@@ -341,12 +347,16 @@ export function PDFOrganizeClient() {
       setPages(newPages)
       saveToHistory(newPages)
       
-      track('pdf_organize_reorder', {
+      // Track page reorder with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'pdf-organize',
+        action: 'reorder',
         from_position: oldIndex,
         to_position: newIndex
       })
     }
-  }, [pages, saveToHistory, track])
+  }, [pages, saveToHistory])
 
   // Handle page rotation
   const handleRotate = useCallback((pageId: string, direction: 'cw' | 'ccw') => {
@@ -364,11 +374,15 @@ export function PDFOrganizeClient() {
     setPages(newPages)
     saveToHistory(newPages)
     
-    track('pdf_organize_rotate', {
+    // Track page rotation with GTM
+    gtm.push({
+      event: 'tool_usage',
+      tool_name: 'pdf-organize',
+      action: 'rotate',
       direction,
       page_number: pages.find(p => p.id === pageId)?.pageNumber || 0
     })
-  }, [pages, saveToHistory, track])
+  }, [pages, saveToHistory])
 
   // Undo/Redo functions
   const undo = useCallback(() => {
@@ -378,10 +392,15 @@ export function PDFOrganizeClient() {
       if (historyState) {
         setPages([...historyState.pages])
         setHistoryIndex(newIndex)
-        track('pdf_organize_undo')
+        // Track undo action with GTM
+        gtm.push({
+          event: 'tool_usage',
+          tool_name: 'pdf-organize',
+          action: 'undo'
+        })
       }
     }
-  }, [history, historyIndex, track])
+  }, [history, historyIndex])
 
   const redo = useCallback(() => {
     if (historyIndex < history.length - 1) {
@@ -390,10 +409,15 @@ export function PDFOrganizeClient() {
       if (historyState) {
         setPages([...historyState.pages])
         setHistoryIndex(newIndex)
-        track('pdf_organize_redo')
+        // Track redo action with GTM
+        gtm.push({
+          event: 'tool_usage',
+          tool_name: 'pdf-organize',
+          action: 'redo'
+        })
       }
     }
-  }, [history, historyIndex, track])
+  }, [history, historyIndex])
 
   // Process and download - actual PDF processing implementation
   const handleProcess = useCallback(async () => {
@@ -408,14 +432,14 @@ export function PDFOrganizeClient() {
     setProgress(0)
     setError(null)
     
-    // Track job start
-    track('job_start', {
-      jobId,
-      tool: 'organize',
-      fileCount: 1,
-      pageCount: pages.length,
-      rotationsApplied,
-      originalSizeMb
+    // Track processing start with GTM
+    gtm.push({
+      event: 'tool_usage',
+      tool_name: 'pdf-organize',
+      action: 'process_start',
+      page_count: pages.length,
+      rotations_applied: rotationsApplied,
+      file_size_mb: originalSizeMb
     })
     
     try {
@@ -481,15 +505,17 @@ export function PDFOrganizeClient() {
       
       toast.success('PDF organized and downloaded successfully!')
       
-      // Track successful completion
-      track('job_success', {
-        jobId,
-        tool: 'organize',
-        durationMs,
-        pageCount: pages.length,
-        rotationsApplied,
-        originalSizeMb,
-        resultSizeMb
+      // Track successful completion with GTM
+      gtm.push({
+        event: 'file_convert',
+        tool_name: 'pdf-organize',
+        file_type: 'pdf',
+        conversion_value: 1,
+        file_count: 1,
+        output_format: 'pdf',
+        processing_method: 'client-side',
+        page_count: pages.length,
+        rotations_applied: rotationsApplied
       })
       
     } catch (error) {
@@ -500,19 +526,12 @@ export function PDFOrganizeClient() {
       setError(errorMessage)
       toast.error('Failed to organize PDF')
       
-      // Track error
-      track('job_error', {
-        jobId,
-        tool: 'organize',
-        error: errorMessage,
-        durationMs,
-        pageCount: pages.length
-      })
+      // Note: We don't track errors with GTM, only successful conversions
     } finally {
       setIsProcessing(false)
       setProgress(0)
     }
-  }, [file, pages, track])
+  }, [file, pages])
 
   // Reset function
   const handleReset = useCallback(() => {

@@ -5,7 +5,7 @@ import { Calculator, Home, DollarSign, FileText, TrendingUp, Settings, AlertCirc
 import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
 import { toast } from 'sonner'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 
 interface EMICalculation {
   loanAmount: number
@@ -88,11 +88,17 @@ export default function EMICalculatorPage() {
 
       setCalculation(result)
       
-      track('emi_calculation', {
+      // Track EMI calculation with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'emi-calculator',
+        action: 'calculate',
         loan_amount: principal,
         interest_rate: rate,
         tenure_months: tenureInMonths,
-        loan_type: principal > 5000000 ? 'high_value' : principal > 1000000 ? 'medium' : 'low'
+        loan_type: principal > 5000000 ? 'high_value' : principal > 1000000 ? 'medium' : 'low',
+        emi_amount: emi,
+        total_interest: totalInterest
       })
 
       toast.success('EMI calculation completed!')

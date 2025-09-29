@@ -7,7 +7,7 @@ import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { newJobId } from '@/lib/jobs/id'
 import { names } from '@/lib/names'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 import { generateFileId } from '@/lib/id-utils'
 
 interface SplitFile {
@@ -37,12 +37,15 @@ export default function PDFSplitClient() {
     setUploadedFiles(newFiles.slice(0, 1)) // Only allow one file for splitting
     setSplitFiles([])
     
-    // Track file uploads
+    // Track file uploads with GTM
     files.slice(0, 1).forEach(file => {
-      track('file_upload', {
-        tool: 'split',
-        sizeMb: Math.round(file.size / (1024 * 1024) * 100) / 100,
-        pages: 0 // PDF page count would need to be extracted
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'pdf-split',
+        action: 'upload',
+        file_type: 'pdf',
+        file_size_mb: Math.round(file.size / (1024 * 1024) * 100) / 100,
+        file_count: 1
       })
     })
   }
@@ -59,13 +62,7 @@ export default function PDFSplitClient() {
 
     setIsProcessing(true)
     
-    // Track job start
-    track('job_start', {
-      tool: 'split',
-      jobId,
-      splitMode,
-      pageRanges: splitMode === 'ranges' ? pageRanges : undefined
-    })
+    // Job start tracking removed - we only track upload and success events
     
     try {
       // Import pdf-lib dynamically to avoid SSR issues
@@ -192,24 +189,21 @@ export default function PDFSplitClient() {
       
       setSplitFiles(splits)
       
-      // Track successful completion
-      track('job_success', {
-        tool: 'split',
-        jobId,
-        splitMode,
-        splitCount: splits.length,
-        totalPages: splits.reduce((sum, s) => sum + s.pageCount, 0)
+      // Track successful completion with GTM
+      gtm.push({
+        event: 'file_convert',
+        tool_name: 'pdf-split',
+        file_type: 'pdf',
+        conversion_value: 1,
+        split_count: splits.length,
+        split_mode: splitMode,
+        processing_method: 'client-side'
       })
       
     } catch (error) {
       console.error('Error splitting PDF:', error)
       
-      // Track error
-      track('job_error', {
-        tool: 'split',
-        jobId,
-        error: error instanceof Error ? error.message : 'Unknown error'
-      })
+      // Error tracking removed - we only track successful conversions
       // Fallback to simulation if pdf-lib fails
       const file = uploadedFiles[0]
       if (!file) {

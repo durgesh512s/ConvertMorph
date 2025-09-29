@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
 import { toast } from 'sonner'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 import { analyzeText, getReadabilityLevel, exportTextAnalysis, type TextStats, type TextAnalysisResult } from '@/lib/textAnalyzer'
 import { generateHistoryTimestamp } from '@/lib/id-utils'
 
@@ -45,9 +45,12 @@ export default function WordCounterPage() {
   const handleTextChange = (value: string) => {
     setText(value)
     if (value.length > 0) {
-      track('text_input', {
-        tool: 'word-counter',
-        length: value.length
+      // Track text input with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'word-counter',
+        action: 'text_input',
+        text_length: value.length
       })
     }
   }
@@ -75,10 +78,13 @@ export default function WordCounterPage() {
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
       
-      track('export_analysis', {
-        tool: 'word-counter',
-        format,
-        wordCount: analysis.stats.words
+      // Track export with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'word-counter',
+        action: 'export',
+        export_format: format,
+        word_count: analysis.stats.words
       })
       
       toast.success(`Analysis exported as ${format.toUpperCase()}`)

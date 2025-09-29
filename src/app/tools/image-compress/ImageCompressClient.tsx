@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Image, Download, FileImage, Zap, Settings, Upload, CheckCircle } from 'lucide-react'
 import { toast } from 'sonner'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 
 interface ProcessingResult {
   blob: Blob
@@ -83,10 +83,14 @@ export default function ImageCompressClient() {
     setFile(selectedFile)
     setResult(null)
 
-    track('file_upload', {
-      tool: 'image-compress',
-      sizeMb: Math.round(selectedFile.size / (1024*1024) * 100) / 100,
-      format: selectedFile.type
+    // Track file upload with GTM
+    gtm.push({
+      event: 'tool_usage',
+      tool_name: 'image-compress',
+      action: 'upload',
+      file_type: selectedFile.type.split('/')[1] || 'image',
+      file_size_mb: Math.round(selectedFile.size / (1024 * 1024) * 100) / 100,
+      file_count: 1
     })
   }
 
@@ -129,6 +133,16 @@ export default function ImageCompressClient() {
             originalSize,
             processedSize,
             metadata
+          })
+
+          // Track successful compression with GTM
+          gtm.push({
+            event: 'file_convert',
+            tool_name: 'image-compress',
+            file_type: file.type.split('/')[1] || 'image',
+            conversion_value: 1,
+            output_format: format,
+            processing_method: 'server-side'
           })
 
           toast.success('Image compressed successfully using server processing!')
@@ -177,6 +191,16 @@ export default function ImageCompressClient() {
           'original-format': file.type,
           'output-format': result.blob.type
         }
+      })
+
+      // Track successful compression with GTM (client-side fallback)
+      gtm.push({
+        event: 'file_convert',
+        tool_name: 'image-compress',
+        file_type: file.type.split('/')[1] || 'image',
+        conversion_value: 1,
+        output_format: format,
+        processing_method: 'client-side'
       })
 
       toast.success('Image compressed successfully using client-side processing!')

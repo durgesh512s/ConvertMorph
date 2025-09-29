@@ -5,7 +5,7 @@ import { Calculator, DollarSign, FileText, TrendingUp, Settings, AlertCircle, In
 import { RelatedArticles } from '@/components/RelatedArticles'
 import ToolsNavigation from '@/components/ToolsNavigation'
 import { toast } from 'sonner'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 
 interface TaxCalculation {
   grossIncome: number
@@ -110,8 +110,18 @@ export default function TaxCalculatorPage() {
 
       setCalculation(result)
       
-      track('tax_calculation', {
-        regime,
+      // Track tax calculation with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'tax-calculator',
+        action: 'calculate',
+        tax_regime: regime,
+        gross_income: income,
+        deductions: deductionAmount,
+        taxable_income: taxableIncome,
+        total_tax: finalTax,
+        effective_rate: income > 0 ? (finalTax / income) * 100 : 0,
+        marginal_rate: marginalRate,
         income_range: income < 500000 ? 'low' : income < 1000000 ? 'medium' : 'high',
         has_deductions: deductionAmount > 0
       })

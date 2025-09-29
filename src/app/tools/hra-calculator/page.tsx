@@ -11,6 +11,7 @@ import { Calculator, Home, Receipt, Building, MapPin, IndianRupee, FileText } fr
 import { RelatedArticles } from '@/components/RelatedArticles';
 import ToolsNavigation from '@/components/ToolsNavigation';
 import { toast } from 'sonner';
+import { gtm } from '@/components/GoogleTagManager';
 
 interface HRAResult {
   basicSalary: number;
@@ -73,6 +74,21 @@ export default function HRACalculatorPage() {
       };
 
       setResult(hraResult);
+      
+      // Track HRA calculation with GTM
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'hra-calculator',
+        action: 'calculate',
+        basic_salary: basic,
+        hra_received: hra,
+        rent_paid: rent,
+        city_type: city,
+        exempt_hra: exemptHRA,
+        taxable_hra: taxableHRA,
+        annual_savings: exemptHRA * 12
+      });
+      
       toast.success('HRA calculation completed successfully!');
     } catch (error) {
       toast.error('Error calculating HRA. Please check your inputs.');
