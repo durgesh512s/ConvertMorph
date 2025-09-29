@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { gtm } from '@/components/GoogleTagManager';
 import { 
   LucideIcon,
   Archive, 
@@ -112,6 +113,24 @@ export default function ToolCard({
   // Get the icon component - handle both string and component types
   const IconComponent = typeof icon === 'string' ? iconMap[icon] || FileText : icon;
 
+  // Handle tool card click tracking
+  const handleToolClick = () => {
+    if (!comingSoon) {
+      // Extract tool name from href (e.g., /tools/pdf-compress -> pdf-compress)
+      const toolName = href.split('/').pop() || title.toLowerCase().replace(/\s+/g, '-');
+      
+      // Track tool navigation from tools page
+      gtm.push({
+        event: 'tool_navigation',
+        tool_name: toolName,
+        tool_title: title,
+        category: categoryId || 'unknown',
+        source_page: 'tools_directory',
+        action: 'click_tool_card'
+      });
+    }
+  };
+
   const cardContent = (
     <Card className="h-full flex flex-col border rounded-2xl p-4 transition hover:-translate-y-0.5 hover:shadow-lg relative overflow-hidden bg-white dark:bg-gray-900">
       {badgeInfo && (
@@ -148,7 +167,7 @@ export default function ToolCard({
           {comingSoon ? (
             <span>Coming Soon</span>
           ) : (
-            <Link href={href} className="flex items-center justify-center">
+            <Link href={href} className="flex items-center justify-center" onClick={handleToolClick}>
               Use Tool
             </Link>
           )}

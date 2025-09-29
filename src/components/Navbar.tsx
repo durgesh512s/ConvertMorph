@@ -12,6 +12,7 @@ import { PWAInstall } from './PWAInstall';
 import { ThemeToggle } from './ThemeToggle';
 import { useIsClient } from '@/hooks/useIsClient';
 import Logo from './Logo';
+import { gtm } from '@/components/GoogleTagManager';
 
 const pdfTools = [
   { 
@@ -209,7 +210,7 @@ export function Navbar() {
     .map(slug => allTools.find(tool => tool.href.includes(slug)))
     .filter(Boolean) as typeof allTools;
 
-  const handleToolClick = (toolHref: string) => {
+  const handleToolClick = (toolHref: string, toolName?: string) => {
     if (!isClient || !mounted) return;
     const toolSlug = toolHref.split('/').pop();
     if (toolSlug) {
@@ -218,6 +219,15 @@ export function Navbar() {
       setTimeout(() => {
         setRecentlyUsedSlugs(getRecentlyUsedTools());
       }, 50);
+      
+      // Track tool navigation from navbar
+      gtm.push({
+        event: 'tool_navigation',
+        tool_name: toolSlug,
+        tool_title: toolName || toolSlug,
+        source_page: 'navbar_dropdown',
+        action: 'click_navbar_tool'
+      });
     }
     setToolsDropdownOpen(false);
   };
@@ -280,7 +290,7 @@ export function Navbar() {
                                   key={tool.name}
                                   href={tool.href}
                                   className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
-                                  onClick={() => handleToolClick(tool.href)}
+                                  onClick={() => handleToolClick(tool.href, tool.name)}
                                 >
                                   <div className={cn("w-8 h-8 rounded-full flex items-center justify-center mb-1", tool.color)}>
                                     <Icon className="h-4 w-4" />
@@ -309,7 +319,7 @@ export function Navbar() {
                                 key={tool.name}
                                 href={tool.href}
                                 className="flex items-start space-x-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 group"
-                                onClick={() => handleToolClick(tool.href)}
+                                onClick={() => handleToolClick(tool.href, tool.name)}
                               >
                                 <div className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors group-hover:brightness-110", tool.color)}>
                                   <Icon className="h-3 w-3" />
@@ -343,7 +353,7 @@ export function Navbar() {
                                 key={tool.name}
                                 href={tool.href}
                                 className="flex items-start space-x-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 group"
-                                onClick={() => handleToolClick(tool.href)}
+                                onClick={() => handleToolClick(tool.href, tool.name)}
                               >
                                 <div className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors group-hover:brightness-110", tool.color)}>
                                   <Icon className="h-3 w-3" />
@@ -377,7 +387,7 @@ export function Navbar() {
                                 key={tool.name}
                                 href={tool.href}
                                 className="flex items-start space-x-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 group"
-                                onClick={() => handleToolClick(tool.href)}
+                                onClick={() => handleToolClick(tool.href, tool.name)}
                               >
                                 <div className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors group-hover:brightness-110", tool.color)}>
                                   <Icon className="h-3 w-3" />
@@ -411,7 +421,7 @@ export function Navbar() {
                                 key={tool.name}
                                 href={tool.href}
                                 className="flex items-start space-x-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 group"
-                                onClick={() => handleToolClick(tool.href)}
+                                onClick={() => handleToolClick(tool.href, tool.name)}
                               >
                                 <div className={cn("flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors group-hover:brightness-110", tool.color)}>
                                   <Icon className="h-3 w-3" />
