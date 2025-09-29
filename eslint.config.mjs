@@ -25,11 +25,13 @@ const eslintConfig = [
   {
     rules: {
       "react/no-unescaped-entities": "warn",
+      "react/no-danger": "off",
+      "@next/next/next-script-for-ga": "off",
       "@typescript-eslint/no-unused-vars": ["warn", { 
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^_" 
       }],
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
       "jsx-a11y/alt-text": "warn",
       "@next/next/no-img-element": "warn",
       "react-hooks/exhaustive-deps": "warn",

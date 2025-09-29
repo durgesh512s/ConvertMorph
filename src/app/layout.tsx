@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { Suspense } from "react";
-import Script from "next/script";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { LazyFooter } from "@/components/LazyFooter";
 import { Toaster } from "@/components/ui/sonner";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
-import { LazyHeaderAd } from "@/components/LazyAdSense";
 import { DeferredScripts } from '@/components/DeferredScripts';
 import { ProgressBar } from '@/components/ProgressBar';
 import JsonLd from '@/components/JsonLd';
 import CacheBuster from '../CacheBuster';
 import HydrationErrorSuppressor from '@/components/HydrationErrorSuppressor';
-import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components/GoogleTagManager';
+import { GoogleTagManagerNoScript } from '@/components/GoogleTagManager';
 import { absoluteUrl } from '@/lib/url';
 import { getCacheBustId, addCacheBust } from '@/lib/cache-bust';
 
@@ -281,8 +279,13 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         
-        {/* Google Tag Manager */}
-        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || 'GTM-5XPD58C8'} />
+        {/* Google Tag Manager - Direct script for optimal placement */}
+        <script
+           
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID || 'GTM-5XPD58C8'}');`,
+          }}
+        />
         
         {/* Google AdSense Script - Direct HTML script tag to avoid Next.js preload conversion */}
         <script 
