@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { VercelAnalytics } from './VercelAnalytics';
+// VercelAnalytics removed - using GTM-only setup
 // GoogleAnalytics removed - using GTM-only setup
 import { PerformanceMonitor } from './PerformanceMonitor';
 
@@ -59,11 +59,7 @@ export function DeferredScripts({ children }: DeferredScriptsProps) {
   return (
     <>
       {children}
-      {shouldLoadAnalytics && (
-        <>
-          <VercelAnalytics />
-        </>
-      )}
+      {/* VercelAnalytics removed - using GTM-only setup */}
       {shouldLoadPerformance && <PerformanceMonitor />}
     </>
   );
