@@ -6,7 +6,7 @@ import { Dropzone, UploadedFile } from '@/components/Dropzone'
 import { downloadFilesAsZip } from '@/lib/utils/zip'
 import { toast } from 'sonner'
 import { names } from '@/lib/names'
-import { track } from '@/lib/analytics/client'
+import { gtm } from '@/components/GoogleTagManager'
 import { generateFileId } from '@/lib/id-utils'
 import { 
   compressPDFHybrid, 
@@ -41,10 +41,13 @@ export default function PDFCompressClient() {
         const pdf = await PDFDocument.load(ab)
         pages = pdf.getPageCount()
       } catch {}
-      track('file_upload', {
-        tool: 'compress',
-        sizeMb: Math.round(file.size / (1024*1024) * 100) / 100,
-        pages
+      gtm.push({
+        event: 'tool_usage',
+        tool_name: 'pdf-compress',
+        action: 'upload',
+        file_type: 'pdf',
+        file_size_mb: Math.round(file.size / (1024*1024) * 100) / 100,
+        page_count: pages
       })
       return { id: generateFileId(), file, name: file.name, size: file.size, type: file.type, status: 'success' } as UploadedFile
     }))
@@ -109,6 +112,19 @@ export default function PDFCompressClient() {
       if (results.length > 0) {
         setProcessedFiles(results)
         toast.success(`Compressed ${results.length} file${results.length > 1 ? 's' : ''} successfully!`)
+        
+        // Send file_convert events to GTM
+        results.forEach(result => {
+          gtm.push({
+            event: 'file_convert',
+            tool_name: 'pdf-compress',
+            file_type: 'pdf',
+            conversion_value: 1,
+            compression_level: compressionLevel,
+            compression_ratio: result.compressionRatio,
+            processing_method: result.method
+          })
+        })
       }
     } catch (error) {
       console.error('Compression failed:', error)
