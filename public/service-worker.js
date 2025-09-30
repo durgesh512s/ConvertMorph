@@ -1,5 +1,5 @@
 // service-worker.js (patched)
-const CACHE_VERSION = "v77"; // increment manually when you want to invalidate
+const CACHE_VERSION = "v78"; // increment manually when you want to invalidate
 const STATIC_CACHE = `cm-static-${CACHE_VERSION}`;
 const CSS_CACHE = `cm-css-${CACHE_VERSION}`;
 const HTML_CACHE = `cm-html-${CACHE_VERSION}`;
